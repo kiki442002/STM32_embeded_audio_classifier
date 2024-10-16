@@ -34,6 +34,7 @@
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "filtrage.h"
 #include <stdio.h>
 #include <string.h>
 /* USER CODE END Includes */
@@ -65,7 +66,7 @@ typedef enum
 #define RECORD_BUFFER_SIZE 2048
 
 uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
-uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE];
+uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
 
@@ -194,7 +195,7 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        CopyBuffer(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 2);
+        StereoToMono(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 2);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -208,10 +209,11 @@ int main(void)
             Error_Handler();
           }
 
-          BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+          // BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+          BSP_AUDIO_OUT_SetAudioFrameSlot_MONO();
 
           /* Play the recorded buffer */
-          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], 2 * RECORD_BUFFER_SIZE);
+          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], RECORD_BUFFER_SIZE);
 
           /* Audio device is initialized only once */
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
@@ -220,7 +222,7 @@ int main(void)
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        CopyBuffer(&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 2);
+        StereoToMono(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE);
       }
 
       /* Wait for next data */

@@ -553,7 +553,31 @@ void BSP_AUDIO_OUT_SetAudioFrameSlot(uint32_t AudioFrameSlot)
   /* Enable SAI peripheral to generate MCLK */
   __HAL_SAI_ENABLE(&haudio_out_sai);
 }
+void BSP_AUDIO_OUT_SetAudioFrameSlot_MONO()
+{
+  /* Disable SAI peripheral to allow access to SAI internal registers */
+  __HAL_SAI_DISABLE(&haudio_out_sai);
 
+  /* Update the SAI audio frame slot configuration */
+  haudio_out_sai.SlotInit.SlotActive = SAI_SLOTACTIVE_0;
+
+  /* Configure SAI for mono output */
+  haudio_out_sai.Init.MonoStereoMode = SAI_MONOMODE;                 // Configurer le mode mono
+  haudio_out_sai.Init.AudioMode = SAI_MODEMASTER_TX;                 // Mode maître transmission
+  haudio_out_sai.Init.NoDivider = SAI_MASTERDIVIDER_ENABLE;          // Diviseur maître activé
+  haudio_out_sai.Init.Protocol = SAI_FREE_PROTOCOL;                  // Protocole libre
+  haudio_out_sai.Init.DataSize = SAI_DATASIZE_16;                    // Taille des données 16 bits
+  haudio_out_sai.Init.FirstBit = SAI_FIRSTBIT_MSB;                   // Premier bit MSB
+  haudio_out_sai.Init.ClockStrobing = SAI_CLOCKSTROBING_FALLINGEDGE; // Bord de descente
+  haudio_out_sai.Init.Synchro = SAI_ASYNCHRONOUS;                    // Mode asynchrone
+  haudio_out_sai.Init.OutputDrive = SAI_OUTPUTDRIVE_ENABLE;          // Sortie activée
+  haudio_out_sai.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_1QF;         // Seuil FIFO
+
+  HAL_SAI_Init(&haudio_out_sai);
+
+  /* Enable SAI peripheral to generate MCLK */
+  __HAL_SAI_ENABLE(&haudio_out_sai);
+}
 /**
  * @brief  De-initializes the audio out peripheral.
  * @retval None

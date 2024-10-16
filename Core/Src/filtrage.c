@@ -1,6 +1,6 @@
 #include "filtrage.h"
 
-uint8_t StereoToMono(int16_t *pIn, int16_t *pOut, uint32_t size)
+uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
 {
     uint32_t i = 0;
 
