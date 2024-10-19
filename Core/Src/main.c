@@ -18,25 +18,19 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "dsihost.h"
 #include "fatfs.h"
-#include "ltdc.h"
 #include "quadspi.h"
 #include "rtc.h"
-#include "sai.h"
 #include "sdmmc.h"
 #include "usart.h"
-#include "gpio.h"
-#include "fmc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
 #include "filtrage.h"
-#include <stdio.h>
-#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -145,6 +139,24 @@ int main(void)
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
 
   // ! ||--------------------------------------------------------------------------------||
+  // ! ||                          Configuration du touch screen                         ||
+  // ! ||--------------------------------------------------------------------------------||
+  if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS Init", CENTER_MODE);
+    Error_Handler();
+  }
+  if (BSP_TS_ITConfig() != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS IT Config", CENTER_MODE);
+    Error_Handler();
+  }
+
+  // ! ||--------------------------------------------------------------------------------||
   // ! ||                                Configuration LED                               ||
   // ! ||--------------------------------------------------------------------------------||
   BSP_LED_Init(LED1);
@@ -180,6 +192,7 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
+  print_Menu_Interface();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -191,7 +204,6 @@ int main(void)
     to the playbakc buffer */
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      printf("test\r\n");
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
@@ -341,6 +353,14 @@ static void CopyBuffer(uint16_t *pbuffer1, uint16_t *pbuffer2, uint16_t BufferSi
   for (i = 0; i < BufferSize; i++)
   {
     pbuffer1[i] = pbuffer2[i];
+  }
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == TS_INT_PIN)
+  {
+    touchscreen_Handle();
   }
 }
 
