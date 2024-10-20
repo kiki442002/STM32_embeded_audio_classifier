@@ -31,6 +31,8 @@
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
 #include "filtrage.h"
+#include "screen.h"
+#include "touchscreen.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,6 +53,17 @@ typedef enum
   BUFFER_OFFSET_HALF = 1,
   BUFFER_OFFSET_FULL = 2,
 } BUFFER_StateTypeDef;
+
+typedef struct App_HandleTypeDef
+{
+  uint8_t IA_activation;
+  uint8_t record_activation;
+  uint8_t play_activation;
+  uint8_t output_activation;
+  uint8_t luminosity;
+  uint8_t volume;
+} App_HandleTypeDef;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -63,6 +76,7 @@ uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
 uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
+App_HandleTypeDef hApp;
 
 /* USER CODE END PV */
 
@@ -88,6 +102,13 @@ int main(void)
   /* USER CODE BEGIN 1 */
   uint8_t lcd_status = LCD_OK;
   uint32_t audio_loop_back_init = RESET;
+
+  hApp.IA_activation = IA_DESACTIVATE;
+  hApp.record_activation = RECORD_DESACTIVATE;
+  hApp.play_activation = PLAY_DESACTIVATE;
+  hApp.output_activation = OUTPUT_DESACTIVATE;
+  hApp.luminosity = LUMINOSITY_MAX;
+  hApp.volume = VOLUME_MAX;
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
