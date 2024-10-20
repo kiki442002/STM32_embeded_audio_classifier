@@ -81,7 +81,7 @@ static void CopyBuffer(uint16_t *pbuffer1, uint16_t *pbuffer2, uint16_t BufferSi
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void BSP_AUDIO_IN_TransferComplete_CallBack(void);
+
 /* USER CODE END 0 */
 
 /**
