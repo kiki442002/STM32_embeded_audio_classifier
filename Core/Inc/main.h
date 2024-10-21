@@ -32,7 +32,8 @@ extern "C"
 
   /* Private includes ----------------------------------------------------------*/
   /* USER CODE BEGIN Includes */
-
+#include <stdint.h>
+#include <stdlib.h>
   /* USER CODE END Includes */
 
   /* Exported types ------------------------------------------------------------*/
@@ -368,7 +369,7 @@ extern "C"
 #define ARDUINO_MOSI_PWM_D11_GPIO_Port GPIOB
 
   /* USER CODE BEGIN Private defines */
-  extern float hammingWindow[1024];
+
   /* USER CODE END Private defines */
 
 #ifdef __cplusplus

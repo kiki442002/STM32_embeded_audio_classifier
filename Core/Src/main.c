@@ -63,10 +63,12 @@ typedef enum
 
 /* USER CODE BEGIN PV */
 #define SCRATCH_BUFF_SIZE 512
-#define RECORD_BUFFER_SIZE 2048
+#define RECORD_BUFFER_SIZE 4096
 
 uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
 uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
+float PlaybackBufferF32[RECORD_BUFFER_SIZE / 2];
+
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
 
@@ -76,7 +78,7 @@ uint32_t audio_rec_buffer_state;
 void SystemClock_Config(void);
 void PeriphCommonClock_Config(void);
 /* USER CODE BEGIN PFP */
-static void CopyBuffer(uint16_t *pbuffer1, uint16_t *pbuffer2, uint16_t BufferSize);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -140,6 +142,10 @@ int main(void)
   while (lcd_status != LCD_OK)
     ;
 
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                             Configuration du filtre                            ||
+  // ! ||--------------------------------------------------------------------------------||
+  Hamming_filter_Init(RECORD_BUFFER_SIZE / 2);
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
@@ -191,11 +197,11 @@ int main(void)
     to the playbakc buffer */
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      printf("test\r\n");
+
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        StereoToMono(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 2);
+        Hamming_filter(&PlaybackBuffer[0], &RecordBuffer[0], MONO);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -222,7 +228,7 @@ int main(void)
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        StereoToMono(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE);
+        Hamming_filter(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], MONO);
       }
 
       /* Wait for next data */
@@ -333,15 +339,6 @@ void BSP_AUDIO_IN_Error_CallBack(void)
   BSP_LCD_SetTextColor(LCD_COLOR_RED);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN", CENTER_MODE);
   Error_Handler();
-}
-
-static void CopyBuffer(uint16_t *pbuffer1, uint16_t *pbuffer2, uint16_t BufferSize)
-{
-  uint32_t i = 0;
-  for (i = 0; i < BufferSize; i++)
-  {
-    pbuffer1[i] = pbuffer2[i];
-  }
 }
 
 int __io_putchar(int ch)

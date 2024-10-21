@@ -81,6 +81,7 @@ includeDirectories:
   - Core/Src/**
   - Core/Lib/**
   - Drivers/BSP/**
+  - Drivers/CMSIS/DSP/Include/**
 
 
 # Files that should be included in the compilation.
@@ -93,6 +94,7 @@ sourceFiles:
   - Core/Src/**
   - Core/Lib/**
   - Drivers/BSP/**
+  - Drivers/CMSIS/DSP/Source/**
 
 
 # When no makefile is present it will show a warning pop-up.
