@@ -1,6 +1,7 @@
 
 #include "filtrage.h"
 #include "../../Drivers/CMSIS/DSP/Include/arm_math.h"
+#include "fir_coef.h"
 
 arm_fir_instance_f32 hammingFilter;
 uint32_t blockSize;

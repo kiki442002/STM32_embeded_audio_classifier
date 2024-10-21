@@ -1,6 +1,4 @@
 #include "main.h"
-#include "fir_coef.h"
-#include <stdlib.h>
 
 #define STEREO_TO_MONO_OK ((uint8_t)1)
 #define STEREO_TO_MONO_ERROR ((uint8_t)0)
