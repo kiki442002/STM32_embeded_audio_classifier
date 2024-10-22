@@ -8,6 +8,6 @@
 #define STEREO ((uint8_t)1)
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size);
-uint8_t Hamming_filter(int16_t *pOut, int16_t *pIn, uint8_t signal_input);
+uint8_t Hamming_filter(int16_t *pOut, int16_t *pIn);
 uint8_t Hamming_filter_DeInit(void);
-uint8_t Hamming_filter_Init(uint32_t size);
+uint8_t Hamming_filter_Init(uint32_t size, uint8_t signal_input);

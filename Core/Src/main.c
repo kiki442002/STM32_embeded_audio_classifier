@@ -67,7 +67,6 @@ typedef enum
 
 uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
 uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
-float PlaybackBufferF32[RECORD_BUFFER_SIZE / 2];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
@@ -141,14 +140,14 @@ int main(void)
   lcd_status = BSP_LCD_Init();
   while (lcd_status != LCD_OK)
     ;
+  BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
+  BSP_LCD_Clear(LCD_COLOR_WHITE);
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
 
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                             Configuration du filtre                            ||
   // ! ||--------------------------------------------------------------------------------||
-  Hamming_filter_Init(RECORD_BUFFER_SIZE / 2);
-  BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
+  Hamming_filter_Init(RECORD_BUFFER_SIZE / 4, STEREO);
 
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                                Configuration LED                               ||
@@ -201,7 +200,7 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        Hamming_filter(&PlaybackBuffer[0], &RecordBuffer[0], MONO);
+        Hamming_filter(&PlaybackBuffer[0], &RecordBuffer[0]);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -228,7 +227,13 @@ int main(void)
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        Hamming_filter(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], MONO);
+        Hamming_filter(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2]);
+        //  Affichage du buffer deans les log
+        // for (int i = 0; i < RECORD_BUFFER_SIZE / 2; i++)
+        // {
+        //   PlaybackBuffer[i] = (float)PlaybackBuffer[i];
+        //   printf("%d\n\r", PlaybackBuffer[i]);
+        // }
       }
 
       /* Wait for next data */
