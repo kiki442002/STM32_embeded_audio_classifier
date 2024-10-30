@@ -145,11 +145,6 @@ int main(void)
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
 
   // ! ||--------------------------------------------------------------------------------||
-  // ! ||                             Configuration du filtre                            ||
-  // ! ||--------------------------------------------------------------------------------||
-  Hamming_filter_Init(RECORD_BUFFER_SIZE / 4, STEREO);
-
-  // ! ||--------------------------------------------------------------------------------||
   // ! ||                                Configuration LED                               ||
   // ! ||--------------------------------------------------------------------------------||
   BSP_LED_Init(LED1);
@@ -200,7 +195,7 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        Hamming_filter(&PlaybackBuffer[0], &RecordBuffer[0]);
+        Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, STEREO);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -227,7 +222,7 @@ int main(void)
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        Hamming_filter(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2]);
+        Hamming_window(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 4, STEREO);
         //  Affichage du buffer deans les log
         // for (int i = 0; i < RECORD_BUFFER_SIZE / 2; i++)
         // {
