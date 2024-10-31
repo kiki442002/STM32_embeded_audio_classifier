@@ -1,6 +1,5 @@
 
 #include "filtrage.h"
-#include "../../Drivers/CMSIS/DSP/Include/arm_math.h"
 #include "fir_coef.h"
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
@@ -20,7 +19,7 @@ uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
     return STEREO_TO_MONO_OK;
 }
 
-uint8_t Hamming_window(int16_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type)
+uint8_t Hamming_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type)
 {
 
     if (pIn == NULL || pOut == NULL)
@@ -37,7 +36,21 @@ uint8_t Hamming_window(int16_t *pOut, int16_t *pIn, uint32_t size, uint8_t signa
     }
     for (uint32_t i = 0; i < size; i++)
     {
-        pOut[i] = (int16_t)(hammingWindow[i] * (float)pIn_tmp[i]);
+        pOut[i] = (hammingWindow[i] * (float)pIn_tmp[i]);
     }
     return HAMMING_FILTER_OK;
+}
+
+uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn, uint32_t size)
+{
+    if (pIn == NULL || pOut == NULL || size < 16 || size > 4096 || size % 2 != 0)
+    {
+        return FFT_CALCULATION_ERROR;
+    }
+
+    arm_rfft_fast_instance_f32 S;
+    arm_rfft_fast_init_f32(&S, size);
+    arm_rfft_fast_f32(&S, pIn, pOut, 0);
+
+    return FFT_CALCULATION_OK;
 }

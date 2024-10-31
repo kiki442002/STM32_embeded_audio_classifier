@@ -67,6 +67,7 @@ typedef enum
 
 uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
 uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
+float32_t FFTBuffer[RECORD_BUFFER_SIZE / 2];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;

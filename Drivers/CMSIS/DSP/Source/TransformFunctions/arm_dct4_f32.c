@@ -109,7 +109,7 @@
  * Refer to the function specific documentation below for usage guidelines.
  */
 
- /**
+/**
  * @addtogroup DCT4_IDCT4
  * @{
  */
@@ -123,16 +123,15 @@
  */
 
 void arm_dct4_f32(
-  const arm_dct4_instance_f32 * S,
-  float32_t * pState,
-  float32_t * pInlineBuffer)
+    const arm_dct4_instance_f32 *S,
+    float32_t *pState,
+    float32_t *pInlineBuffer)
 {
-  uint32_t i;                                    /* Loop counter */
-  float32_t *weights = S->pTwiddle;              /* Pointer to the Weights table */
-  float32_t *cosFact = S->pCosFactor;            /* Pointer to the cos factors table */
-  float32_t *pS1, *pS2, *pbuff;                  /* Temporary pointers for input buffer and pState buffer */
-  float32_t in;                                  /* Temporary variable */
-
+  uint32_t i;                         /* Loop counter */
+  float32_t *weights = S->pTwiddle;   /* Pointer to the Weights table */
+  float32_t *cosFact = S->pCosFactor; /* Pointer to the cos factors table */
+  float32_t *pS1, *pS2, *pbuff;       /* Temporary pointers for input buffer and pState buffer */
+  float32_t in;                       /* Temporary variable */
 
   /* DCT4 computation involves DCT2 (which is calculated using RFFT)
    * along with some pre-processing and post-processing.
@@ -153,7 +152,7 @@ void arm_dct4_f32(
    * (d) Multiplying the output with the normalizing factor sqrt(2/N).
    */
 
-        /*-------- Pre-processing ------------*/
+  /*-------- Pre-processing ------------*/
   /* Multiplying input with cos factor i.e. r(n) = 2 * x(n) * cos(pi*(2*n+1)/(4*n)) */
   arm_scale_f32(pInlineBuffer, 2.0f, pInlineBuffer, S->N);
   arm_mult_f32(pInlineBuffer, cosFact, pInlineBuffer, S->N);
@@ -173,12 +172,12 @@ void arm_dct4_f32(
   /* pbuff initialized to input buffer */
   pbuff = pInlineBuffer;
 
-#if defined (ARM_MATH_DSP)
+#if defined(ARM_MATH_DSP)
 
   /* Run the below code for Cortex-M4 and Cortex-M3 */
 
   /* Initializing the loop counter to N/2 >> 2 for loop unrolling by 4 */
-  i = (uint32_t) S->Nby2 >> 2U;
+  i = (uint32_t)S->Nby2 >> 2U;
 
   /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
    ** a second loop below computes the remaining 1 to 3 samples. */
@@ -210,7 +209,7 @@ void arm_dct4_f32(
   pS1 = pState;
 
   /* Initializing the loop counter to N/4 instead of N for loop unrolling */
-  i = (uint32_t) S->N >> 2U;
+  i = (uint32_t)S->N >> 2U;
 
   /* Processing with loop unrolling 4 times as N is always multiple of 4.
    * Compute 4 outputs at a time */
@@ -226,16 +225,15 @@ void arm_dct4_f32(
     i--;
   } while (i > 0U);
 
-
   /* ---------------------------------------------------------
    *     Step2: Calculate RFFT for N-point input
    * ---------------------------------------------------------- */
   /* pInlineBuffer is real input of length N , pState is the complex output of length 2N */
   arm_rfft_f32(S->pRfft, pInlineBuffer, pState);
 
-        /*----------------------------------------------------------------------
-	 *  Step3: Multiply the FFT output with the weights.
-	 *----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------
+   *  Step3: Multiply the FFT output with the weights.
+   *----------------------------------------------------------------------*/
   arm_cmplx_mult_cmplx_f32(pState, weights, pState, S->N);
 
   /* ----------- Post-processing ---------- */
@@ -245,7 +243,7 @@ void arm_dct4_f32(
   /* Getting only real part from the output and Converting to DCT-IV */
 
   /* Initializing the loop counter to N >> 2 for loop unrolling by 4 */
-  i = ((uint32_t) S->N - 1U) >> 2U;
+  i = ((uint32_t)S->N - 1U) >> 2U;
 
   /* pbuff initialized to input buffer. */
   pbuff = pInlineBuffer;
@@ -254,7 +252,7 @@ void arm_dct4_f32(
   pS1 = pState;
 
   /* Calculating Y4(0) from Y2(0) using Y4(0) = Y2(0)/2 */
-  in = *pS1++ * (float32_t) 0.5;
+  in = *pS1++ * (float32_t)0.5;
   /* input buffer acts as inplace, so output values are stored in the input itself. */
   *pbuff++ = in;
 
@@ -290,7 +288,7 @@ void arm_dct4_f32(
 
   /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
    ** No loop unrolling is used. */
-  i = ((uint32_t) S->N - 1U) % 0x4U;
+  i = ((uint32_t)S->N - 1U) % 0x4U;
 
   while (i > 0U)
   {
@@ -305,11 +303,10 @@ void arm_dct4_f32(
     i--;
   }
 
-
-        /*------------ Normalizing the output by multiplying with the normalizing factor ----------*/
+  /*------------ Normalizing the output by multiplying with the normalizing factor ----------*/
 
   /* Initializing the loop counter to N/4 instead of N for loop unrolling */
-  i = (uint32_t) S->N >> 2U;
+  i = (uint32_t)S->N >> 2U;
 
   /* pbuff initialized to the pInlineBuffer(now contains the output values) */
   pbuff = pInlineBuffer;
@@ -334,13 +331,12 @@ void arm_dct4_f32(
     i--;
   } while (i > 0U);
 
-
 #else
 
   /* Run the below code for Cortex-M0 */
 
   /* Initializing the loop counter to N/2 */
-  i = (uint32_t) S->Nby2;
+  i = (uint32_t)S->Nby2;
 
   do
   {
@@ -361,7 +357,7 @@ void arm_dct4_f32(
   pS1 = pState;
 
   /* Initializing the loop counter */
-  i = (uint32_t) S->N;
+  i = (uint32_t)S->N;
 
   do
   {
@@ -372,16 +368,15 @@ void arm_dct4_f32(
     i--;
   } while (i > 0U);
 
-
   /* ---------------------------------------------------------
    *     Step2: Calculate RFFT for N-point input
    * ---------------------------------------------------------- */
   /* pInlineBuffer is real input of length N , pState is the complex output of length 2N */
   arm_rfft_f32(S->pRfft, pInlineBuffer, pState);
 
-        /*----------------------------------------------------------------------
-	 *  Step3: Multiply the FFT output with the weights.
-	 *----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------
+   *  Step3: Multiply the FFT output with the weights.
+   *----------------------------------------------------------------------*/
   arm_cmplx_mult_cmplx_f32(pState, weights, pState, S->N);
 
   /* ----------- Post-processing ---------- */
@@ -397,7 +392,7 @@ void arm_dct4_f32(
   pS1 = pState;
 
   /* Calculating Y4(0) from Y2(0) using Y4(0) = Y2(0)/2 */
-  in = *pS1++ * (float32_t) 0.5;
+  in = *pS1++ * (float32_t)0.5;
   /* input buffer acts as inplace, so output values are stored in the input itself. */
   *pbuff++ = in;
 
@@ -405,7 +400,7 @@ void arm_dct4_f32(
   pS1++;
 
   /* Initializing the loop counter */
-  i = ((uint32_t) S->N - 1U);
+  i = ((uint32_t)S->N - 1U);
 
   do
   {
@@ -416,16 +411,14 @@ void arm_dct4_f32(
     /* points to the next real value */
     pS1++;
 
-
     /* Decrement the loop counter */
     i--;
   } while (i > 0U);
 
-
-        /*------------ Normalizing the output by multiplying with the normalizing factor ----------*/
+  /*------------ Normalizing the output by multiplying with the normalizing factor ----------*/
 
   /* Initializing the loop counter */
-  i = (uint32_t) S->N;
+  i = (uint32_t)S->N;
 
   /* pbuff initialized to the pInlineBuffer(now contains the output values) */
   pbuff = pInlineBuffer;
@@ -441,9 +434,8 @@ void arm_dct4_f32(
   } while (i > 0U);
 
 #endif /* #if defined (ARM_MATH_DSP) */
-
 }
 
 /**
-   * @} end of DCT4_IDCT4 group
-   */
+ * @} end of DCT4_IDCT4 group
+ */
