@@ -34,6 +34,7 @@
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "../../Drivers/CMSIS/DSP/Include/arm_math.h"
 #include "filtrage.h"
 #include <stdio.h>
 #include <string.h>
@@ -95,6 +96,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   uint8_t lcd_status = LCD_OK;
   uint32_t audio_loop_back_init = RESET;
+
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
@@ -161,24 +163,34 @@ int main(void)
   }
 
   printf("\rHello, world!\n\r");
+
+  for (int i = 0; i < RECORD_BUFFER_SIZE / 4; i++)
+  {
+    RecordBuffer[i] = 10000;
+  }
+  Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
+
   HAL_Delay(1000);
-  if (BSP_AUDIO_IN_AllocScratch(Scratch, SCRATCH_BUFF_SIZE) != AUDIO_OK)
+
+  /* Initialize the audio device*/
+  if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
+                         100,
+                         BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
     BSP_LCD_Clear(LCD_COLOR_WHITE);
-    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN Scratch", CENTER_MODE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
     Error_Handler();
   }
-  if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], RECORD_BUFFER_SIZE) != AUDIO_OK)
-  {
-    BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    BSP_LCD_Clear(LCD_COLOR_WHITE);
-    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN RECORD", CENTER_MODE);
-    Error_Handler();
-  }
-  audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+
+  // BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+  BSP_AUDIO_OUT_SetAudioFrameSlot_MONO();
+
+  /* Play the recorded buffer */
+  BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], RECORD_BUFFER_SIZE / 4);
+
+  /* Audio device is initialized only once */
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
 
   /* USER CODE END 2 */
 
@@ -186,54 +198,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-    /* 1st or 2nd half of the record buffer ready for being copied
-    to the playbakc buffer */
-    if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
-    {
-
-      /* Copy half of the record buffer to the playback buffer */
-      if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
-      {
-        Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, STEREO);
-        if (audio_loop_back_init == RESET)
-        {
-          /* Initialize the audio device*/
-          if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
-                                 100,
-                                 BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
-          {
-            BSP_LCD_SetTextColor(LCD_COLOR_RED);
-            BSP_LCD_Clear(LCD_COLOR_WHITE);
-            BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
-            Error_Handler();
-          }
-
-          // BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
-          BSP_AUDIO_OUT_SetAudioFrameSlot_MONO();
-
-          /* Play the recorded buffer */
-          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], RECORD_BUFFER_SIZE);
-
-          /* Audio device is initialized only once */
-          BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
-          audio_loop_back_init = SET;
-        }
-      }
-      else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
-      {
-        Hamming_window(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 4, STEREO);
-        //  Affichage du buffer deans les log
-        // for (int i = 0; i < RECORD_BUFFER_SIZE / 2; i++)
-        // {
-        //   PlaybackBuffer[i] = (float)PlaybackBuffer[i];
-        //   printf("%d\n\r", PlaybackBuffer[i]);
-        // }
-      }
-
-      /* Wait for next data */
-      audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-    }
   }
   /* USER CODE END 3 */
 }
