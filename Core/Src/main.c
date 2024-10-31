@@ -168,7 +168,7 @@ int main(void)
   {
     RecordBuffer[i] = 10000;
   }
-  Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
+  Hanning_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
 
   HAL_Delay(1000);
 
