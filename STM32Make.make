@@ -75,17 +75,14 @@ endif
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/crc.c \
-Core/Src/dma2d.c \
 Core/Src/dsihost.c \
+Core/Src/filtrage.c \
 Core/Src/fir_coef.c \
 Core/Src/fmc.c \
 Core/Src/gpio.c \
 Core/Src/ltdc.c \
 Core/Src/main.c \
-Core/Src/quadspi.c \
 Core/Src/rtc.c \
-Core/Src/sai.c \
 Core/Src/sdmmc.c \
 Core/Src/stm32f7xx_hal_msp.c \
 Core/Src/stm32f7xx_hal_timebase_tim.c \

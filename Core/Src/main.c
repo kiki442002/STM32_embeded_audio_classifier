@@ -34,6 +34,7 @@
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "../../FATFS/Target/sd_diskio.h"
 #include <stdio.h>
 #include <string.h>
 /* USER CODE END Includes */
@@ -127,9 +128,10 @@ int main(void)
   // MX_FMC_Init();
   // MX_QUADSPI_Init();
   // MX_RTC_Init();
-  // MX_SDMMC2_SD_Init();
   MX_USART1_UART_Init();
-  // MX_FATFS_Init();
+  printf("\n\n\n\r");
+  // MX_SDMMC2_SD_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   // ! ||--------------------------------------------------------------------------------||
@@ -179,6 +181,36 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
+  // BYTE lun = 0;
+  // DSTATUS res;
+  // DRESULT result;
+  // res = SD_initialize(lun);
+  // printf("SD Card status: %x\n\r", res);
+
+  // BYTE buffer[512];                     // Buffer de données à écrire (taille d'un secteur)
+  // memset(buffer, 0xAA, sizeof(buffer)); // Remplir le buffer avec des données (par exemple, 0xAA)
+
+  // // print the buffer
+  // for (int i = 0; i < 512; i++)
+  // {
+  //   printf("%x ", buffer[i]);
+  // }
+
+  // result = SD_write(lun, &buffer[0], 6, 1);
+  // printf("Write result: %d\n\r", result);
+
+  // // erase the buffer
+  // memset(buffer, 0x00, sizeof(buffer));
+
+  // result = SD_read(lun, buffer, 6, 1);
+  // printf("Read result: %d\n\r", result);
+
+  // // print the buffer
+  // for (int i = 0; i < 512; i++)
+  // {
+  //   printf("%x ", buffer[i]);
+  // }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -190,7 +222,7 @@ int main(void)
     to the playbakc buffer */
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      printf("test\r\n");
+
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
