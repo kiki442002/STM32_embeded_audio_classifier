@@ -31,6 +31,8 @@ extern "C"
   /* USER CODE BEGIN Includes */
 
   /* USER CODE END Includes */
+#define CONTINUE_WAV_FILE 0
+#define END_WAV_FILE 1
 
   extern uint8_t retSD;  /* Return value for SD */
   extern char SDPath[4]; /* SD logical drive path */
@@ -41,6 +43,8 @@ extern "C"
 
   /* USER CODE BEGIN Prototypes */
   void WriteToSDCard(void);
+  void WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize);
+  void GenerateUniqueFilename(char *filename);
 /* USER CODE END Prototypes */
 #ifdef __cplusplus
 }

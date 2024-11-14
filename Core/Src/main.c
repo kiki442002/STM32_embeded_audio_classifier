@@ -94,6 +94,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   uint8_t lcd_status = LCD_OK;
   uint32_t audio_loop_back_init = RESET;
+  uint8_t number_of_repeat = 0;
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
@@ -124,13 +125,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  // MX_CRC_Init();
-  // MX_FMC_Init();
-  // MX_QUADSPI_Init();
-  // MX_RTC_Init();
   MX_USART1_UART_Init();
-  printf("\n\n\n\r");
-  // MX_SDMMC2_SD_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
@@ -181,36 +176,6 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
-  // BYTE lun = 0;
-  // DSTATUS res;
-  // DRESULT result;
-  // res = SD_initialize(lun);
-  // printf("SD Card status: %x\n\r", res);
-
-  // BYTE buffer[512];                     // Buffer de données à écrire (taille d'un secteur)
-  // memset(buffer, 0xAA, sizeof(buffer)); // Remplir le buffer avec des données (par exemple, 0xAA)
-
-  // // print the buffer
-  // for (int i = 0; i < 512; i++)
-  // {
-  //   printf("%x ", buffer[i]);
-  // }
-
-  // result = SD_write(lun, &buffer[0], 6, 1);
-  // printf("Write result: %d\n\r", result);
-
-  // // erase the buffer
-  // memset(buffer, 0x00, sizeof(buffer));
-
-  // result = SD_read(lun, buffer, 6, 1);
-  // printf("Read result: %d\n\r", result);
-
-  // // print the buffer
-  // for (int i = 0; i < 512; i++)
-  // {
-  //   printf("%x ", buffer[i]);
-  // }
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -249,10 +214,19 @@ int main(void)
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
           audio_loop_back_init = SET;
         }
+        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer), 8 == number_of_repeat++);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
         CopyBuffer(&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 2);
+        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer), 8 == number_of_repeat++);
+      }
+
+      if (8 == number_of_repeat)
+      {
+        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"File Save", CENTER_MODE);
+        while (1)
+          ;
       }
 
       /* Wait for next data */
