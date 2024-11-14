@@ -187,6 +187,7 @@ int main(void)
     to the playbakc buffer */
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
+      printf("\rHello, world!\n\r");
 
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
