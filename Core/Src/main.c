@@ -162,10 +162,10 @@ int main(void)
 
   for (int i = 0; i < RECORD_BUFFER_SIZE / 4; i++)
   {
-    RecordBuffer[i] = 10000;
+    RecordBuffer[i] = (int16_t)(10000 * sin(2 * M_PI * 1000 * i / BSP_AUDIO_FREQUENCY_16K));
   }
-  Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
-  WriteBufferFile_INT16(&PlaybackBuffer[0], RECORD_BUFFER_SIZE / 4, "hamm.txt");
+  Hanning_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
+  WriteBufferFile_INT16(&PlaybackBuffer[0], RECORD_BUFFER_SIZE / 4, "hann_cos.txt");
 
   HAL_Delay(1000);
 
