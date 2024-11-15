@@ -34,7 +34,6 @@
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
-#include "../../FATFS/Target/sd_diskio.h"
 #include <stdio.h>
 #include <string.h>
 /* USER CODE END Includes */
