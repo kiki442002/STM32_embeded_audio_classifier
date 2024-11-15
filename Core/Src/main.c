@@ -175,6 +175,7 @@ int main(void)
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+  printf("res: %d\n\r", res);
   OpenWavFile();
 
   /* USER CODE END 2 */

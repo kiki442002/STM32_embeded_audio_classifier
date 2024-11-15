@@ -46,6 +46,7 @@ extern "C"
   FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize);
   FRESULT GenerateUniqueFilename(char *filename);
   FRESULT OpenWavFile();
+  FRESULT WriteBufferFile(float *pIn, uint32_t size, char *filename);
 /* USER CODE END Prototypes */
 #ifdef __cplusplus
 }

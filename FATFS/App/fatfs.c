@@ -147,6 +147,47 @@ void WriteToSDCard()
   printf("Data written to file\n");
 }
 
+FRESULT WriteBufferFile(float *pIn, uint32_t size, char *filename)
+{
+  FRESULT res = FR_OK; // Variable pour stocker les résultats des fonctions FATFS
+  UINT bytesWritten;
+  char buffer[32]; // Tampon pour convertir les valeurs en chaînes de caractères
+
+  retSD = f_mount(&SDFatFS, SDPath, 1);
+  if (retSD != FR_OK)
+  {
+    return retSD;
+  }
+
+  res = f_open(&SDFile, filename, FA_CREATE_ALWAYS | FA_WRITE);
+  if (res != FR_OK)
+  {
+    // Erreur lors de l'ouverture du fichier
+    f_mount(0, SDPath, 1); // Démonter le système de fichiers
+    return res;
+  }
+
+  // Écrire les données en format texte avec une valeur par ligne
+  for (uint32_t i = 0; i < size; i++)
+  {
+    // Convertir la valeur flottante en chaîne de caractères
+    res = f_printf(&SDFile, "%d.%d\r\n", (int)pIn[i], (int)((pIn[i] - (int)pIn[i]) * 1000000));
+    if (res < 0 || res == 255)
+    {
+      printf("Erreur lors de l'écriture des données: %d\n", res);
+      f_close(&SDFile);      // Fermer le fichier
+      f_mount(0, SDPath, 1); // Démonter le système de fichiers
+      return FR_DENIED;
+    }
+  }
+  // Fermer le fichier
+  f_close(&SDFile);
+
+  // Démonter le système de fichiers
+  f_mount(0, SDPath, 1);
+  printf("Data written to file\r\n");
+  return FR_OK;
+}
 FRESULT OpenWavFile()
 {
   FRESULT res = FR_OK;
