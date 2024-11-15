@@ -150,8 +150,6 @@ void WriteToSDCard()
 FRESULT WriteBufferFile(float *pIn, uint32_t size, char *filename)
 {
   FRESULT res = FR_OK; // Variable pour stocker les résultats des fonctions FATFS
-  UINT bytesWritten;
-  char buffer[32]; // Tampon pour convertir les valeurs en chaînes de caractères
 
   retSD = f_mount(&SDFatFS, SDPath, 1);
   if (retSD != FR_OK)
@@ -171,7 +169,7 @@ FRESULT WriteBufferFile(float *pIn, uint32_t size, char *filename)
   for (uint32_t i = 0; i < size; i++)
   {
     // Convertir la valeur flottante en chaîne de caractères
-    res = f_printf(&SDFile, "%d.%d\r\n", (int)pIn[i], (int)((pIn[i] - (int)pIn[i]) * 1000000));
+    res = f_printf(&SDFile, "%d.%d\r\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
     if (res < 0 || res == 255)
     {
       printf("Erreur lors de l'écriture des données: %d\n", res);
