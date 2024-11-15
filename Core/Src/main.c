@@ -43,6 +43,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+#define TIME_TO_RECORD 157 // 5 seconds
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -127,13 +128,8 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  // MX_CRC_Init();
-  // MX_FMC_Init();
-  // MX_QUADSPI_Init();
-  // MX_RTC_Init();
-  // MX_SDMMC2_SD_Init();
   MX_USART1_UART_Init();
-  // MX_FATFS_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   // ! ||--------------------------------------------------------------------------------||

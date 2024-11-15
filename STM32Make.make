@@ -77,6 +77,7 @@ endif
 C_SOURCES =  \
 Core/Src/dsihost.c \
 Core/Src/filtrage.c \
+Core/Src/fir_coef.c \
 Core/Src/fmc.c \
 Core/Src/gpio.c \
 Core/Src/ltdc.c \
