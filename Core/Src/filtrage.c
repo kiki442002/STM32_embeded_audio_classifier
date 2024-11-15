@@ -85,3 +85,23 @@ uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn)
 
     return FFT_CALCULATION_OK;
 }
+
+uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn, uint32_t size)
+{
+    // Calculer la FFT
+    arm_rfft_fast_f32(&FFT_struct, pIn, pOut, 0);
+
+    // Calculer le module au carré des coefficients de la FFT
+    float32_t magSquared[size / 2];
+    arm_cmplx_mag_squared_f32(pOut + 2, magSquared, size / 2 - 1);
+
+    // Traiter les deux premières valeurs spéciales
+    magSquared[0] = pOut[0] * pOut[0];            // Coefficient DC
+    magSquared[size / 2 - 1] = pOut[1] * pOut[1]; // Coefficient de la fréquence de Nyquist
+
+    // Normaliser les valeurs pour obtenir la densité spectrale de puissance
+    for (uint32_t i = 0; i < size / 2; i++)
+    {
+        pOut[i] = magSquared[i] / size;
+    }
+}
