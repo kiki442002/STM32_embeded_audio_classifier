@@ -88,6 +88,11 @@ uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn)
 
 uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn, uint32_t size)
 {
+    if (pIn == NULL || pOut == NULL)
+    {
+        return FFT_CALCULATION_ERROR;
+    }
+
     // Calculer la FFT
     arm_rfft_fast_f32(&FFT_struct, pIn, pOut, 0);
 
@@ -104,4 +109,5 @@ uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn, uint32_t size)
     {
         pOut[i] = magSquared[i] / size;
     }
+    return FFT_CALCULATION_OK;
 }
