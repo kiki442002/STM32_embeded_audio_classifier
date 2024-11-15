@@ -2,6 +2,7 @@
 #include "filtrage.h"
 #include "../../Drivers/CMSIS/DSP/Include/arm_math.h"
 #include "hanningWindow.h"
+#include "hammingWindow.h"
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
 {
