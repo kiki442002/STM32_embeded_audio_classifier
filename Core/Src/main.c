@@ -164,8 +164,8 @@ int main(void)
   {
     RecordBuffer[i] = 10000;
   }
-  Hanning_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
-  WriteBufferFile_INT16(&PlaybackBuffer[0], RECORD_BUFFER_SIZE / 4, "hanning_window.txt");
+  Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, MONO);
+  WriteBufferFile_INT16(&PlaybackBuffer[0], RECORD_BUFFER_SIZE / 4, "hamm.txt");
 
   HAL_Delay(1000);
 

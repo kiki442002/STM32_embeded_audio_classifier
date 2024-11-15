@@ -209,7 +209,7 @@ FRESULT WriteBufferFile_INT16(int16_t *pIn, uint32_t size, char *filename)
   for (uint32_t i = 0; i < size; i++)
   {
     // Convertir la valeur flottante en chaîne de caractères
-    res = f_printf(&SDFile, "%d\r\n", pIn[i]);
+    res = f_printf(&SDFile, "%d\n", pIn[i]);
     if (res < 0 || res == 255)
     {
       printf("Erreur lors de l'écriture des données: %d\n", res);
@@ -226,7 +226,6 @@ FRESULT WriteBufferFile_INT16(int16_t *pIn, uint32_t size, char *filename)
   printf("Data written to file\r\n");
   return FR_OK;
 }
-
 FRESULT OpenWavFile()
 {
   FRESULT res = FR_OK;
@@ -326,8 +325,6 @@ FRESULT GenerateUniqueFilename(char *filename)
   DIR dir;
   FILINFO fno;
   int maxNumber = 0;
-  char baseName[] = "samp_";
-  char extension[] = ".wav";
 
   // Ouvrir le répertoire racine
   res = f_opendir(&dir, "/");
