@@ -169,6 +169,8 @@ int main(void)
 
   HAL_Delay(1000);
 
+  // ok
+
   /* Initialize the audio device*/
   if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
                          100,
