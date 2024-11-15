@@ -42,6 +42,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+#define TIME_TO_RECORD 157 // 5 seconds
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -175,6 +176,7 @@ int main(void)
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+  OpenWavFile();
 
   /* USER CODE END 2 */
 
@@ -187,8 +189,6 @@ int main(void)
     to the playbakc buffer */
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      printf("\rHello, world!\n\r");
-
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
@@ -215,16 +215,17 @@ int main(void)
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
           audio_loop_back_init = SET;
         }
-        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer), 8 == number_of_repeat++);
+        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer) / 2, TIME_TO_RECORD == ++number_of_repeat);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
         CopyBuffer(&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 2);
-        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer), 8 == number_of_repeat++);
+        WriteWAVFile((uint8_t *)&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], sizeof(PlaybackBuffer) / 2, TIME_TO_RECORD == ++number_of_repeat);
       }
 
-      if (8 == number_of_repeat)
+      if (TIME_TO_RECORD == number_of_repeat)
       {
+        BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
         BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"File Save", CENTER_MODE);
         while (1)
           ;

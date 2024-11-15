@@ -43,8 +43,9 @@ extern "C"
 
   /* USER CODE BEGIN Prototypes */
   void WriteToSDCard(void);
-  void WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize);
-  void GenerateUniqueFilename(char *filename);
+  FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize);
+  FRESULT GenerateUniqueFilename(char *filename);
+  FRESULT OpenWavFile();
 /* USER CODE END Prototypes */
 #ifdef __cplusplus
 }
