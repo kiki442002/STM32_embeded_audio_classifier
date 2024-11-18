@@ -96,11 +96,11 @@ uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn)
 
     // Calculer le module au carré des coefficients de la FFT
     float32_t magSquared[size / 2];
-    arm_cmplx_mag_squared_f32(pOut + 2, magSquared, size / 2 - 1);
+    arm_cmplx_mag_squared_f32(pIn + 2, magSquared, size / 2 - 1);
 
     // Traiter les deux premières valeurs spéciales
-    magSquared[0] = pOut[0] * pOut[0];            // Coefficient DC
-    magSquared[size / 2 - 1] = pOut[1] * pOut[1]; // Coefficient de la fréquence de Nyquist
+    magSquared[0] = pIn[0] * pIn[0];            // Coefficient DC
+    magSquared[size / 2 - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
 
     // Normaliser les valeurs pour obtenir la densité spectrale de puissance
     for (uint32_t i = 0; i < size / 2; i++)
