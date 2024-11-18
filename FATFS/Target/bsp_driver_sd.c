@@ -139,7 +139,7 @@ uint8_t BSP_SD_Init(void)
   uSdHandle.Init.ClockBypass = SDMMC_CLOCK_BYPASS_DISABLE;
   uSdHandle.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
   uSdHandle.Init.BusWide = SDMMC_BUS_WIDE_1B;
-  uSdHandle.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
+  uSdHandle.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_ENABLE;
   uSdHandle.Init.ClockDiv = SDMMC_TRANSFER_CLK_DIV;
 
   /* Msp SD Detect pin initialization */
@@ -266,10 +266,8 @@ uint8_t BSP_SD_ReadBlocks(uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBloc
  */
 uint8_t BSP_SD_WriteBlocks(uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks, uint32_t Timeout)
 {
-  HAL_StatusTypeDef res = HAL_SD_WriteBlocks(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks, Timeout);
-  if (res != HAL_OK)
+  if (HAL_SD_WriteBlocks(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks, Timeout) != HAL_OK)
   {
-    printf("Error: %d\n\r", res);
     return MSD_ERROR;
   }
   else
