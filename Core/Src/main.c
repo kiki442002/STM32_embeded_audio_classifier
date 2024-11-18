@@ -63,11 +63,13 @@ typedef enum
 
 /* USER CODE BEGIN PV */
 #define SCRATCH_BUFF_SIZE 512
-#define RECORD_BUFFER_SIZE 4096
+#define STEREO_RECORD_BUFFER_SIZE 4096
+#define MONO_RECORD_BUFFER_SIZE STEREO_RECORD_BUFFER_SIZE / 2
+#define FFT_BUFFER_SIZE MONO_RECORD_BUFFER_SIZE / 2
 
-uint16_t RecordBuffer[RECORD_BUFFER_SIZE];
-uint16_t PlaybackBuffer[RECORD_BUFFER_SIZE / 2];
-float32_t FFTBuffer[RECORD_BUFFER_SIZE / 2];
+uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
+uint16_t PlaybackBuffer[MONO_RECORD_BUFFER_SIZE];
+float32_t FFTBuffer[FFT_BUFFER_SIZE];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
@@ -135,6 +137,8 @@ int main(void)
   // MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
+  FFT_init(FFT_BUFFER_SIZE);
+
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                            Configuration de l'écran                            ||
   // ! ||--------------------------------------------------------------------------------||
@@ -170,7 +174,7 @@ int main(void)
     BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN Scratch", CENTER_MODE);
     Error_Handler();
   }
-  if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], RECORD_BUFFER_SIZE) != AUDIO_OK)
+  if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
     BSP_LCD_Clear(LCD_COLOR_WHITE);
@@ -196,7 +200,7 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 4, STEREO);
+        Hamming_window(&PlaybackBuffer[0], &RecordBuffer[0], FFT_BUFFER_SIZE, STEREO);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -214,7 +218,7 @@ int main(void)
           BSP_AUDIO_OUT_SetAudioFrameSlot_MONO();
 
           /* Play the recorded buffer */
-          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], RECORD_BUFFER_SIZE);
+          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], FFT_BUFFER_SIZE);
 
           /* Audio device is initialized only once */
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
@@ -223,7 +227,7 @@ int main(void)
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        Hamming_window(&PlaybackBuffer[RECORD_BUFFER_SIZE / 4], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 4, STEREO);
+        Hamming_window(&PlaybackBuffer[FFT_BUFFER_SIZE], &RecordBuffer[MONO_RECORD_BUFFER_SIZE], FFT_BUFFER_SIZE, STEREO);
         //  Affichage du buffer deans les log
         // for (int i = 0; i < RECORD_BUFFER_SIZE / 2; i++)
         // {

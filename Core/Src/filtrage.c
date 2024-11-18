@@ -86,15 +86,13 @@ uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn)
     return FFT_CALCULATION_OK;
 }
 
-uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn, uint32_t size)
+uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn)
 {
     if (pIn == NULL || pOut == NULL)
     {
         return FFT_CALCULATION_ERROR;
     }
-
-    // Calculer la FFT
-    arm_rfft_fast_f32(&FFT_struct, pIn, pOut, 0);
+    uint32_t size = FFT_struct.fftLenRFFT;
 
     // Calculer le module au carré des coefficients de la FFT
     float32_t magSquared[size / 2];
