@@ -652,7 +652,7 @@ extern "C"
 #define SDMMC_INIT_CLK_DIV ((uint8_t)0x76) /* 48MHz / (SDMMC_INIT_CLK_DIV + 2) < 400KHz */
 
 /* SDMMC Data Transfer Frequency (25MHz max) */
-#define SDMMC_TRANSFER_CLK_DIV ((uint8_t)0xA) /* 48MHz / (SDMMC_TRANSFER_CLK_DIV + 2) < 25MHz */
+#define SDMMC_TRANSFER_CLK_DIV ((uint8_t)0x0) /* 48MHz / (SDMMC_TRANSFER_CLK_DIV + 2) < 25MHz */
 /**
  * @}
  */
