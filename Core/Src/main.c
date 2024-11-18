@@ -182,8 +182,6 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
-  OpenWavFile();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -223,17 +221,10 @@ int main(void)
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
           audio_loop_back_init = SET;
         }
-        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer) / 2, TIME_TO_RECORD == ++number_of_repeat);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
         Hamming_window(&PlaybackBuffer[FFT_BUFFER_SIZE], &RecordBuffer[MONO_RECORD_BUFFER_SIZE], FFT_BUFFER_SIZE, STEREO);
-        //  Affichage du buffer deans les log
-        // for (int i = 0; i < RECORD_BUFFER_SIZE / 2; i++)
-        // {
-        //   PlaybackBuffer[i] = (float)PlaybackBuffer[i];
-        //   printf("%d\n\r", PlaybackBuffer[i]);
-        // }
       }
 
       /* Wait for next data */
