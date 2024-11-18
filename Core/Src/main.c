@@ -42,6 +42,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+#define TIME_TO_RECORD 157 // 5 seconds
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -98,6 +99,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
   uint8_t lcd_status = LCD_OK;
   uint32_t audio_loop_back_init = RESET;
+  uint8_t number_of_repeat = 0;
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
@@ -128,13 +130,8 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  // MX_CRC_Init();
-  // MX_FMC_Init();
-  // MX_QUADSPI_Init();
-  // MX_RTC_Init();
-  // MX_SDMMC2_SD_Init();
   MX_USART1_UART_Init();
-  // MX_FATFS_Init();
+  MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
   FFT_init(FFT_BUFFER_SIZE);
@@ -185,6 +182,8 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
+  OpenWavFile();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -224,6 +223,7 @@ int main(void)
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
           audio_loop_back_init = SET;
         }
+        WriteWAVFile((uint8_t *)&PlaybackBuffer[0], sizeof(PlaybackBuffer) / 2, TIME_TO_RECORD == ++number_of_repeat);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
