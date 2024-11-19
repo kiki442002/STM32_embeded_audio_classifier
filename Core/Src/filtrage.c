@@ -2,6 +2,7 @@
 #include "filtrage.h"
 #include "hammingWindow.h"
 #include "hanningWindow.h"
+#include "mel_filters.h"
 
 arm_rfft_fast_instance_f32 FFT_struct;
 
@@ -69,43 +70,104 @@ uint8_t FFT_init(uint32_t size)
 {
     if (arm_rfft_fast_init_f32(&FFT_struct, size) != ARM_MATH_SUCCESS)
     {
-        return FFT_CALCULATION_ERROR;
+        return FILTER_CALCULATION_ERROR;
     }
-    return FFT_CALCULATION_OK;
+    return FILTER_CALCULATION_OK;
 }
 
 uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn)
 {
     if (pIn == NULL || pOut == NULL)
     {
-        return FFT_CALCULATION_ERROR;
+        return FILTER_CALCULATION_ERROR;
     }
 
     arm_rfft_fast_f32(&FFT_struct, pIn, pOut, 0);
 
-    return FFT_CALCULATION_OK;
+    return FILTER_CALCULATION_OK;
 }
 
 uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn)
 {
     if (pIn == NULL || pOut == NULL)
     {
-        return FFT_CALCULATION_ERROR;
+        return FILTER_CALCULATION_ERROR;
     }
-    uint32_t size = FFT_struct.fftLenRFFT;
+    uint32_t size = FFT_struct.fftLenRFFT / 2;
 
     // Calculer le module au carré des coefficients de la FFT
-    float32_t magSquared[size / 2];
-    arm_cmplx_mag_squared_f32(pIn + 2, magSquared, size / 2 - 1);
+    float32_t magSquared[size];
+    arm_cmplx_mag_squared_f32(pIn + 2, magSquared, size - 1);
 
     // Traiter les deux premières valeurs spéciales
-    magSquared[0] = pIn[0] * pIn[0];            // Coefficient DC
-    magSquared[size / 2 - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
+    magSquared[0] = pIn[0] * pIn[0];        // Coefficient DC
+    magSquared[size - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
 
     // Normaliser les valeurs pour obtenir la densité spectrale de puissance
-    for (uint32_t i = 0; i < size / 2; i++)
+    for (uint32_t i = 0; i < size; i++)
     {
         pOut[i] = magSquared[i] / size;
     }
-    return FFT_CALCULATION_OK;
+    return FILTER_CALCULATION_OK;
+}
+
+uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn)
+{
+    if (pIn == NULL || pOut == NULL)
+    {
+        return FILTER_CALCULATION_ERROR;
+    }
+
+    int start_data = 0;
+    for (int i = 0; i < n_mels; i++)
+    {
+        float sum = 0.0;
+        int end_data = mel_filters_num_non_zero[i] + start_data;
+        int start_segment = mel_filters_zeros_before[i];
+        for (int j = start_data, x = start_segment; j <= end_data; j++, x++)
+        {
+            sum += pIn[x] * mel_filters_non_zero_data[j];
+        }
+        start_data = end_data;
+
+        pOut[i] = logf(sum + 1e-10);
+    }
+    return FILTER_CALCULATION_OK;
+}
+
+void print_mel_filters(float32_t *pOut, int n_mels)
+{
+
+    int start_data = 0;
+
+    for (int j = 0; j < 512; j++)
+    {
+        pOut[j] = 1.0;
+    }
+
+    for (int i = 0; i < n_mels; i++)
+    {
+        start_data += mel_filters_num_non_zero[i];
+    }
+    printf("start_data: %d\n\r", start_data);
+
+    int end_data = mel_filters_num_non_zero[n_mels] + start_data;
+    int start_segment = mel_filters_zeros_before[n_mels];
+
+    printf("end_data: %d\n\r", end_data);
+
+    for (int j = 0; j < start_segment; j++)
+    {
+        pOut[j] = 0;
+    }
+
+    for (int j = start_data, x = start_segment; j < end_data; j++, x++)
+    {
+        pOut[x] = mel_filters_non_zero_data[j];
+    }
+
+    for (int j = start_segment + mel_filters_num_non_zero[n_mels]; j < 512; j++)
+    {
+        pOut[j] = 0;
+    }
 }

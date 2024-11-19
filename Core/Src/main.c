@@ -134,6 +134,18 @@ int main(void)
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
+  float32_t mel_1[FFT_BUFFER_SIZE / 2];
+  float32_t mel_2[FFT_BUFFER_SIZE / 2];
+  float32_t mel_3[FFT_BUFFER_SIZE / 2];
+
+  print_mel_filters(mel_1, 0);
+  print_mel_filters(mel_2, 1);
+  print_mel_filters(mel_3, 2);
+
+  WriteBufferFile_F32(mel_1, FFT_BUFFER_SIZE / 2, "mel_1.txt");
+  WriteBufferFile_F32(mel_2, FFT_BUFFER_SIZE / 2, "mel_2.txt");
+  WriteBufferFile_F32(mel_3, FFT_BUFFER_SIZE / 2, "mel_3.txt");
+
   FFT_init(FFT_BUFFER_SIZE);
 
   // ! ||--------------------------------------------------------------------------------||
