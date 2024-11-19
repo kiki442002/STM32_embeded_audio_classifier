@@ -87,7 +87,7 @@ uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn)
     return FILTER_CALCULATION_OK;
 }
 
-uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn)
+uint8_t DSE_Calculation(float32_t *pOut, float32_t *pIn)
 {
     if (pIn == NULL || pOut == NULL)
     {
@@ -96,18 +96,12 @@ uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn)
     uint32_t size = FFT_struct.fftLenRFFT / 2;
 
     // Calculer le module au carré des coefficients de la FFT
-    float32_t magSquared[size];
-    arm_cmplx_mag_squared_f32(pIn + 2, magSquared, size - 1);
+    arm_cmplx_mag_squared_f32(pIn + 2, pOut + 1, size - 1);
 
     // Traiter les deux premières valeurs spéciales
-    magSquared[0] = pIn[0] * pIn[0];        // Coefficient DC
-    magSquared[size - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
+    pOut[0] = pIn[0] * pIn[0];        // Coefficient DC
+    pOut[size - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
 
-    // Normaliser les valeurs pour obtenir la densité spectrale de puissance
-    for (uint32_t i = 0; i < size; i++)
-    {
-        pOut[i] = magSquared[i] / size;
-    }
     return FILTER_CALCULATION_OK;
 }
 
@@ -119,7 +113,7 @@ uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn)
     }
 
     int start_data = 0;
-    for (int i = 0; i < n_mels; i++)
+    for (int i = 0; i < N_MELS; i++)
     {
         float sum = 0.0;
         int end_data = mel_filters_num_non_zero[i] + start_data;
