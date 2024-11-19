@@ -19,6 +19,6 @@ uint8_t Hamming_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t sig
 uint8_t Hanning_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type);
 uint8_t FFT_Calculation(float32_t *pOut, float32_t *pIn);
 uint8_t FFT_init(uint32_t size);
-uint8_t PSD_Calculation(float32_t *pOut, float32_t *pIn);
+uint8_t DSE_Calculation(float32_t *pOut, float32_t *pIn);
 void print_mel_filters(float32_t *pOut, int n_mels);
 uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn);

@@ -99,8 +99,8 @@ uint8_t DSE_Calculation(float32_t *pOut, float32_t *pIn)
     arm_cmplx_mag_squared_f32(pIn + 2, pOut + 1, size - 1);
 
     // Traiter les deux premières valeurs spéciales
-    pOut[0] = pIn[0] * pIn[0];        // Coefficient DC
-    pOut[size - 1] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
+    pOut[0] = pIn[0] * pIn[0];    // Coefficient DC
+    pOut[size] = pIn[1] * pIn[1]; // Coefficient de la fréquence de Nyquist
 
     return FILTER_CALCULATION_OK;
 }
