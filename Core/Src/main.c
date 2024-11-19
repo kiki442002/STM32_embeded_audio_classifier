@@ -190,8 +190,8 @@ int main(void)
   float32_t fft_out[FFT_BUFFER_SIZE];
   FFT_Calculation(fft_out, fft_test);
   printf("0hz: %d\r\nNyquist: %d\r\n", (int)fft_out[0], (int)fft_out[1]);
-  PSD_Calculation(fft_test, fft_out);
-  printf("0hz: %d\r\nNyquist: %d\r\n", (int)fft_test[0], (int)fft_test[FFT_BUFFER_SIZE / 2-1]);
+  DSE_Calculation(fft_test, fft_out);
+  printf("0hz: %d\r\nNyquist: %d\r\n", (int)fft_test[0], (int)fft_test[FFT_BUFFER_SIZE / 2 - 1]);
 
   WriteBufferFile_F32(fft_test, FFT_BUFFER_SIZE / 2, "FFT.txt");
 
