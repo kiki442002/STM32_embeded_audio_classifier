@@ -185,15 +185,15 @@ int main(void)
   float32_t fft_test[FFT_BUFFER_SIZE];
   for (int i = 0; i < FFT_BUFFER_SIZE; i++)
   {
-    fft_test[i] = 100.0;
+    float32_t t = (float32_t)i / BSP_AUDIO_FREQUENCY_16K;
+    fft_test[i] = 20 * sinf(2 * PI * 100 * t) + 40 * sinf(2 * PI * 5000 * t) + 10 * sinf(2 * PI * 1000 * t);
   }
   float32_t fft_out[FFT_BUFFER_SIZE];
   FFT_Calculation(fft_out, fft_test);
-  printf("0hz: %d\r\nNyquist: %d\r\n", (int)fft_out[0], (int)fft_out[1]);
+  WriteBufferFile_F32(fft_out, FFT_BUFFER_SIZE / 2, "FFT.txt");
   DSE_Calculation(fft_test, fft_out);
-  printf("0hz: %d\r\nNyquist: %d\r\n", (int)fft_test[0], (int)fft_test[FFT_BUFFER_SIZE / 2 - 1]);
 
-  WriteBufferFile_F32(fft_test, FFT_BUFFER_SIZE / 2, "FFT.txt");
+  WriteBufferFile_F32(fft_test, FFT_BUFFER_SIZE / 2 + 1, "DSE.txt");
 
   /* USER CODE END 2 */
 
