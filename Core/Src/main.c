@@ -226,7 +226,7 @@ int main(void)
       if (TIME_TO_RECORD == number_of_repeat)
       {
         BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"File Save", CENTER_MODE);
+        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"File save in SD card", CENTER_MODE);
         while (1)
           ;
       }
