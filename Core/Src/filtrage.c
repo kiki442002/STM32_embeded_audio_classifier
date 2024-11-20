@@ -186,3 +186,24 @@ uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size)
 
     return FILTER_CALCULATION_OK;
 }
+
+uint8_t Feature_Export(float32_t *pOut, int16_t *pIn)
+{
+    float32_t tmp_buf[FILTRAGE_SIZE];
+    uint8_t status;
+    if (pIn == NULL)
+    {
+        return FILTER_CALCULATION_ERROR;
+    }
+    status = Hanning_window(tmp_buf, pIn, FILTRAGE_SIZE, STEREO);
+    status = FFT_Calculation(pIn, tmp_buf);
+    status = DSE_Calculation(tmp_buf, pIn);
+    status = MEL_Calculation(pOut, tmp_buf);
+    status = ZScore_Calculation(pOut, N_MELS);
+    return status;
+}
+
+uint8_t Feature_Export_Init()
+{
+    return FFT_init(FILTRAGE_SIZE);
+}
