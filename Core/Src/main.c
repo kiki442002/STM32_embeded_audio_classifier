@@ -188,6 +188,45 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    /* 1st or 2nd half of the record buffer ready for being copied
+    to the playbakc buffer */
+    if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
+    {
+      /* Copy half of the record buffer to the playback buffer */
+      if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
+      {
+        CopyBuffer(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 2);
+        if (audio_loop_back_init == RESET)
+        {
+          /* Initialize the audio device*/
+          if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
+                                 100,
+                                 BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
+          {
+            BSP_LCD_SetTextColor(LCD_COLOR_RED);
+            BSP_LCD_Clear(LCD_COLOR_WHITE);
+            BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
+            Error_Handler();
+          }
+
+          BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+
+          /* Play the recorded buffer */
+          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], 2 * RECORD_BUFFER_SIZE);
+
+          /* Audio device is initialized only once */
+          BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
+          audio_loop_back_init = SET;
+        }
+      }
+      else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
+      {
+        CopyBuffer(&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 2);
+      }
+
+      /* Wait for next data */
+      audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+    }
   }
   /* USER CODE END 3 */
 }
