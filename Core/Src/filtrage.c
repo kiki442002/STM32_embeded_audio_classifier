@@ -118,7 +118,7 @@ uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn)
         float sum = 0.0;
         int end_data = mel_filters_num_non_zero[i] + start_data;
         int start_segment = mel_filters_zeros_before[i];
-        for (int j = start_data, x = start_segment; j <= end_data; j++, x++)
+        for (int j = start_data, x = start_segment; j < end_data; j++, x++)
         {
             sum += pIn[x] * mel_filters_non_zero_data[j];
         }
@@ -164,4 +164,25 @@ void print_mel_filters(float32_t *pOut, int n_mels)
     {
         pOut[j] = 0;
     }
+}
+
+uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size)
+{
+    if (pIn == NULL)
+    {
+        return FILTER_CALCULATION_ERROR;
+    }
+
+    float32_t mean;
+    float32_t std;
+
+    arm_mean_f32(pIn, size, &mean);
+    arm_std_f32(pIn, size, &std);
+
+    for (int i = 0; i < size; i++)
+    {
+        pIn[i] = (pIn[i] - mean) / std;
+    }
+
+    return FILTER_CALCULATION_OK;
 }

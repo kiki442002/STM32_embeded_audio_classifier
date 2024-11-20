@@ -22,3 +22,4 @@ uint8_t FFT_init(uint32_t size);
 uint8_t DSE_Calculation(float32_t *pOut, float32_t *pIn);
 void print_mel_filters(float32_t *pOut, int n_mels);
 uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn);
+uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size);

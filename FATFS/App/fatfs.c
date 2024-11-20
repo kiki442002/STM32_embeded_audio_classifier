@@ -169,7 +169,15 @@ FRESULT WriteBufferFile_F32(float *pIn, uint32_t size, char *filename)
   for (uint32_t i = 0; i < size; i++)
   {
     // Convertir la valeur flottante en chaîne de caractères
-    res = f_printf(&SDFile, "%d.%06d\r\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
+    if (pIn[i] < 0)
+    {
+      res = f_printf(&SDFile, "-%d.%06d\n", (int)abs(pIn[i]), abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
+    }
+    else
+    {
+      res = f_printf(&SDFile, "%d.%06d\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
+    }
+    // res = f_printf(&SDFile, "%d.%06d\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
     if (res < 0 || res == 255)
     {
       printf("Erreur lors de l'écriture des données: %d\n", res);

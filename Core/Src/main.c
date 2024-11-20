@@ -204,9 +204,9 @@ int main(void)
   FFT_Calculation(fft_out, fft_test);
   WriteBufferFile_F32(fft_out, FFT_BUFFER_SIZE / 2, "FFT.txt");
   DSE_Calculation(fft_test, fft_out);
-
   WriteBufferFile_F32(fft_test, FFT_BUFFER_SIZE / 2 + 1, "DSE.txt");
-
+  MEL_Calculation(fft_out, fft_test);
+  WriteBufferFile_F32(fft_out, 30, "MEL.txt");
   /* USER CODE END 2 */
 
   /* Infinite loop */
