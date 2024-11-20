@@ -63,14 +63,10 @@ typedef enum
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-#define SCRATCH_BUFF_SIZE 512
-#define STEREO_RECORD_BUFFER_SIZE 4096
-#define MONO_RECORD_BUFFER_SIZE STEREO_RECORD_BUFFER_SIZE / 2
-#define FFT_BUFFER_SIZE MONO_RECORD_BUFFER_SIZE / 2
 
 uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
-uint16_t PlaybackBuffer[MONO_RECORD_BUFFER_SIZE];
-float32_t FFTBuffer[FFT_BUFFER_SIZE];
+uint16_t PlaybackBuffer[STEREO_RECORD_BUFFER_SIZE];
+float32_t MelData[30 * 32];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
@@ -195,7 +191,7 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        CopyBuffer(&PlaybackBuffer[0], &RecordBuffer[0], RECORD_BUFFER_SIZE / 2);
+        arm_copy_f32(&RecordBuffer[0], &PlaybackBuffer[0], STEREO_RECORD_BUFFER_SIZE / 2);
         if (audio_loop_back_init == RESET)
         {
           /* Initialize the audio device*/
@@ -212,16 +208,18 @@ int main(void)
           BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
 
           /* Play the recorded buffer */
-          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], 2 * RECORD_BUFFER_SIZE);
+          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], STEREO_RECORD_BUFFER_SIZE);
 
           /* Audio device is initialized only once */
           BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
           audio_loop_back_init = SET;
         }
+        // Feature_Export(MelData, (int16_t *)PlaybackBuffer, BUFFER_OFFSET_HALF);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        CopyBuffer(&PlaybackBuffer[RECORD_BUFFER_SIZE / 2], &RecordBuffer[RECORD_BUFFER_SIZE / 2], RECORD_BUFFER_SIZE / 2);
+        arm_copy_f32(&RecordBuffer[STEREO_RECORD_BUFFER_SIZE / 2], &PlaybackBuffer[STEREO_RECORD_BUFFER_SIZE / 2], STEREO_RECORD_BUFFER_SIZE / 2);
+        // Feature_Export(MelData, (int16_t *)PlaybackBuffer, BUFFER_OFFSET_FULL);
       }
 
       /* Wait for next data */

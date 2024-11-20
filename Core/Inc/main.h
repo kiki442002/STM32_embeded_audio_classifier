@@ -371,7 +371,10 @@ extern "C"
 #define ARDUINO_MOSI_PWM_D11_GPIO_Port GPIOB
 
   /* USER CODE BEGIN Private defines */
-
+#define SCRATCH_BUFF_SIZE 512
+#define STEREO_RECORD_BUFFER_SIZE 4096
+#define MONO_RECORD_BUFFER_SIZE STEREO_RECORD_BUFFER_SIZE / 2
+#define FFT_BUFFER_SIZE MONO_RECORD_BUFFER_SIZE / 2
   /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -5,6 +5,12 @@
 #include "mel_filters.h"
 
 arm_rfft_fast_instance_f32 FFT_struct;
+uint32_t cReadIndex = 0;
+uint32_t distIndex = 0;
+float32_t tmp_buf_1[FILTRAGE_SIZE];
+float32_t tmp_buf_2[FILTRAGE_SIZE];
+uint8_t buffer_run = BUFFER_HALF_FIRST;
+uint8_t mel_indice = 0;
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
 {
@@ -187,23 +193,54 @@ uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size)
     return FILTER_CALCULATION_OK;
 }
 
-uint8_t Feature_Export(float32_t *pOut, int16_t *pIn)
+uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
 {
-    float32_t tmp_buf[FILTRAGE_SIZE];
-    uint8_t status;
-    if (pIn == NULL)
+    if (bufferState == BUFFER_HALF)
     {
-        return FILTER_CALCULATION_ERROR;
+        if (buffer_run != BUFFER_HALF_FIRST)
+        {
+            cReadIndex = 0;
+            distIndex = 0;
+            arm_circularRead_f32(pIn, STEREO_RECORD_BUFFER_SIZE, cReadIndex, 2, tmp_buf_2, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
+
+            Hanning_window(tmp_buf_1, tmp_buf_2, FILTRAGE_SIZE, STEREO);
+            FFT_Calculation(tmp_buf_2, tmp_buf_1);
+            DSE_Calculation(tmp_buf_1, tmp_buf_2);
+            MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+            ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+            buffer_run = BUFFER_HALF_NONE;
+            mel_indice++;
+        }
+        Hanning_window(tmp_buf_1, pIn, FILTRAGE_SIZE, STEREO);
+        FFT_Calculation(tmp_buf_2, tmp_buf_1);
+        DSE_Calculation(tmp_buf_1, tmp_buf_2);
+        MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+        ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        buffer_run = BUFFER_HALF_NONE;
+        mel_indice++;
     }
-    status = Hanning_window(tmp_buf, pIn, FILTRAGE_SIZE, STEREO);
-    status = FFT_Calculation(pIn, tmp_buf);
-    status = DSE_Calculation(tmp_buf, pIn);
-    status = MEL_Calculation(pOut, tmp_buf);
-    status = ZScore_Calculation(pOut, N_MELS);
-    return status;
+    else if (bufferState == BUFFER_FULL)
+    {
+        Hanning_window(tmp_buf_1, &pIn[STEREO_RECORD_BUFFER_SIZE / 4], FILTRAGE_SIZE, STEREO);
+        FFT_Calculation(tmp_buf_2, tmp_buf_1);
+        DSE_Calculation(tmp_buf_1, tmp_buf_2);
+        MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+        ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        mel_indice++;
+
+        Hanning_window(tmp_buf_1, &pIn[STEREO_RECORD_BUFFER_SIZE / 2], FILTRAGE_SIZE, STEREO);
+        FFT_Calculation(tmp_buf_2, tmp_buf_1);
+        DSE_Calculation(tmp_buf_1, tmp_buf_2);
+        MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+        ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        mel_indice++;
+    }
+
+    return FILTER_CALCULATION_OK;
 }
 
-uint8_t Feature_Export_Init()
+uint8_t
+Feature_Export_Init()
 {
     return FFT_init(FILTRAGE_SIZE);
 }
