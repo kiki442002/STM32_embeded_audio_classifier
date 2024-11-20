@@ -17,6 +17,10 @@
 #define BUFFER_HALF_FIRST ((uint8_t)1)
 #define BUFFER_HALF_NONE ((uint8_t)0)
 
+#define FEATURE_EXPORT_PROGRESS ((uint8_t)1)
+#define FEATURE_EXPORT_OK ((uint8_t)2)
+#define FEATURE_EXPORT_ERROR ((uint8_t)0)
+
 #define PSD_init(size) FFT_init(size)
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size);

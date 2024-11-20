@@ -65,7 +65,6 @@ typedef enum
 /* USER CODE BEGIN PV */
 
 uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
-uint16_t PlaybackBuffer[STEREO_RECORD_BUFFER_SIZE];
 float32_t MelData[30 * 32];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
@@ -94,8 +93,6 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
   uint8_t lcd_status = LCD_OK;
-  uint32_t audio_loop_back_init = RESET;
-  uint8_t number_of_repeat = 0;
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
@@ -178,8 +175,28 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
+  /* Initialize the audio device*/
+  if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
+                         100,
+                         BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
+    Error_Handler();
+  }
+
+  BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+
+  /* Play the recorded buffer */
+  BSP_AUDIO_OUT_Play((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE * 2);
+
+  /* Audio device is initialized only once */
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
+
   /* USER CODE END 2 */
 
+  uint8_t res = FEATURE_EXPORT_PROGRESS;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -191,39 +208,24 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
-        arm_copy_f32(&RecordBuffer[0], &PlaybackBuffer[0], STEREO_RECORD_BUFFER_SIZE / 2);
-        if (audio_loop_back_init == RESET)
-        {
-          /* Initialize the audio device*/
-          if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
-                                 100,
-                                 BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
-          {
-            BSP_LCD_SetTextColor(LCD_COLOR_RED);
-            BSP_LCD_Clear(LCD_COLOR_WHITE);
-            BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
-            Error_Handler();
-          }
-
-          BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
-
-          /* Play the recorded buffer */
-          BSP_AUDIO_OUT_Play((uint16_t *)&PlaybackBuffer[0], STEREO_RECORD_BUFFER_SIZE);
-
-          /* Audio device is initialized only once */
-          BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
-          audio_loop_back_init = SET;
-        }
-        // Feature_Export(MelData, (int16_t *)PlaybackBuffer, BUFFER_OFFSET_HALF);
+        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
-        arm_copy_f32(&RecordBuffer[STEREO_RECORD_BUFFER_SIZE / 2], &PlaybackBuffer[STEREO_RECORD_BUFFER_SIZE / 2], STEREO_RECORD_BUFFER_SIZE / 2);
-        // Feature_Export(MelData, (int16_t *)PlaybackBuffer, BUFFER_OFFSET_FULL);
+        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL);
       }
 
       /* Wait for next data */
       audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+    }
+    if (res == FEATURE_EXPORT_OK)
+    {
+      BSP_LCD_Clear(LCD_COLOR_WHITE);
+      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Feature Export OK", CENTER_MODE);
+      BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+      WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      while (1)
+        ;
     }
   }
   /* USER CODE END 3 */
