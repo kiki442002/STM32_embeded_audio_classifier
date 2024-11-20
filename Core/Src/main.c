@@ -134,19 +134,7 @@ int main(void)
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
 
-  float32_t mel_1[FFT_BUFFER_SIZE / 2];
-  float32_t mel_2[FFT_BUFFER_SIZE / 2];
-  float32_t mel_3[FFT_BUFFER_SIZE / 2];
-
-  print_mel_filters(mel_1, 0);
-  print_mel_filters(mel_2, 1);
-  print_mel_filters(mel_3, 2);
-
-  WriteBufferFile_F32(mel_1, FFT_BUFFER_SIZE / 2, "mel_1.txt");
-  WriteBufferFile_F32(mel_2, FFT_BUFFER_SIZE / 2, "mel_2.txt");
-  WriteBufferFile_F32(mel_3, FFT_BUFFER_SIZE / 2, "mel_3.txt");
-
-  FFT_init(FFT_BUFFER_SIZE);
+  Feature_Export_Init();
 
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                            Configuration de l'écran                            ||
@@ -194,19 +182,6 @@ int main(void)
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
-  float32_t fft_test[FFT_BUFFER_SIZE];
-  for (int i = 0; i < FFT_BUFFER_SIZE; i++)
-  {
-    float32_t t = (float32_t)i / BSP_AUDIO_FREQUENCY_16K;
-    fft_test[i] = 20 * sinf(2 * PI * 100 * t) + 40 * sinf(2 * PI * 5000 * t) + 10 * sinf(2 * PI * 1000 * t);
-  }
-  float32_t fft_out[FFT_BUFFER_SIZE];
-  FFT_Calculation(fft_out, fft_test);
-  WriteBufferFile_F32(fft_out, FFT_BUFFER_SIZE / 2, "FFT.txt");
-  DSE_Calculation(fft_test, fft_out);
-  WriteBufferFile_F32(fft_test, FFT_BUFFER_SIZE / 2 + 1, "DSE.txt");
-  MEL_Calculation(fft_out, fft_test);
-  WriteBufferFile_F32(fft_out, 30, "MEL.txt");
   /* USER CODE END 2 */
 
   /* Infinite loop */
