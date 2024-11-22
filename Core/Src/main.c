@@ -194,6 +194,8 @@ int main(void)
   /* Audio device is initialized only once */
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
 
+  OpenWavFile();
+
   /* USER CODE END 2 */
 
   uint8_t res = FEATURE_EXPORT_PROGRESS;
@@ -209,23 +211,26 @@ int main(void)
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
         res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF);
+        WriteWAVFile((uint8_t *)RecordBuffer, STEREO_RECORD_BUFFER_SIZE, CONTINUE_WAV_FILE);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
         res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL);
+        WriteWAVFile((uint8_t *)&RecordBuffer[STEREO_RECORD_BUFFER_SIZE / 2], STEREO_RECORD_BUFFER_SIZE, CONTINUE_WAV_FILE);
+      }
+      if (res == FEATURE_EXPORT_OK)
+      {
+        BSP_LCD_Clear(LCD_COLOR_WHITE);
+        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Feature Export OK", CENTER_MODE);
+        BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+        WriteWAVFile((uint8_t *)RecordBuffer, 0, END_WAV_FILE);
+        WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+        while (1)
+          ;
       }
 
       /* Wait for next data */
       audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-    }
-    if (res == FEATURE_EXPORT_OK)
-    {
-      BSP_LCD_Clear(LCD_COLOR_WHITE);
-      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Feature Export OK", CENTER_MODE);
-      BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-      WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
-      while (1)
-        ;
     }
   }
   /* USER CODE END 3 */
