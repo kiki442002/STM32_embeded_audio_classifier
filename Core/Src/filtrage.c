@@ -3,6 +3,7 @@
 #include "hammingWindow.h"
 #include "hanningWindow.h"
 #include "mel_filters.h"
+#include "fatfs.h"
 
 arm_rfft_fast_instance_f32 FFT_struct;
 int32_t cReadIndex = FILTRAGE_SIZE;
@@ -80,6 +81,7 @@ uint8_t FFT_init(uint32_t size)
     {
         return FILTER_CALCULATION_ERROR;
     }
+    OpenWavFile(MONO_WAV);
     return FILTER_CALCULATION_OK;
 }
 
@@ -215,6 +217,7 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         if (mel_indice == 32)
         {
             mel_indice = 0;
+            WriteWAVFile(rawPCMdata, 0, END_WAV_FILE);
             return FEATURE_EXPORT_OK;
         }
         cReadIndex -= FILTRAGE_SIZE;
@@ -226,6 +229,7 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         buffer_run = BUFFER_HALF_NONE;
         mel_indice++;
+        WriteWAVFile(rawPCMdata, FILTRAGE_SIZE * 2, CONTINUE_WAV_FILE);
     }
     else if (bufferState == BUFFER_FULL)
     {
@@ -241,6 +245,7 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         if (mel_indice == 32)
         {
             mel_indice = 0;
+            WriteWAVFile(rawPCMdata, 0, END_WAV_FILE);
             return FEATURE_EXPORT_OK;
         }
         cReadIndex -= FILTRAGE_SIZE;
@@ -250,6 +255,7 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         DSE_Calculation(tmp_buf_1, tmp_buf_2);
         MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        WriteWAVFile(rawPCMdata, FILTRAGE_SIZE * 2, CONTINUE_WAV_FILE);
         mel_indice++;
     }
 

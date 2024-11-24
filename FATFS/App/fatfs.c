@@ -51,7 +51,7 @@ uint32_t totalDataSize = 0;
 uint8_t fileOpened = 0;
 char filename[] = "samp_001.wav";
 
-WAVHeader header = {
+WAVHeader headerStereo = {
     .riff = "RIFF",
     .chunkSize = 0, // Sera calculé plus tard
     .wave = "WAVE",
@@ -62,6 +62,22 @@ WAVHeader header = {
     .sampleRate = 16000, // Sera défini plus tard
     .byteRate = 64000,   // Sera calculé plus tard
     .blockAlign = 4,     // Sera calculé plus tard
+    .bitsPerSample = 16, // Sera défini plus tard
+    .data = "data",
+    .dataSize = 0 // Sera défini plus tard
+};
+
+WAVHeader headerMono = {
+    .riff = "RIFF",
+    .chunkSize = 0, // Sera calculé plus tard
+    .wave = "WAVE",
+    .fmt = "fmt ",
+    .subchunk1Size = 16,
+    .audioFormat = 1,    // PCM
+    .numChannels = 1,    // Sera défini plus tard
+    .sampleRate = 16000, // Sera défini plus tard
+    .byteRate = 32000,   // Sera calculé plus tard
+    .blockAlign = 2,     // Sera calculé plus tard
     .bitsPerSample = 16, // Sera défini plus tard
     .data = "data",
     .dataSize = 0 // Sera défini plus tard
@@ -235,7 +251,7 @@ FRESULT WriteBufferFile_INT16(int16_t *pIn, uint32_t size, char *filename)
   return FR_OK;
 }
 
-FRESULT OpenWavFile()
+FRESULT OpenWavFile(uint8_t type)
 {
   FRESULT res = FR_OK;
   UINT bytesWritten;
@@ -266,7 +282,10 @@ FRESULT OpenWavFile()
   }
 
   // Écrire un en-tête vide pour réserver de l'espace
-  res = f_write(&file, &header, sizeof(WAVHeader), &bytesWritten);
+  if (type == MONO_WAV)
+    res = f_write(&file, &headerMono, sizeof(WAVHeader), &bytesWritten);
+  else
+    res = f_write(&file, &headerStereo, sizeof(WAVHeader), &bytesWritten);
   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
   {
     // printf("Erreur lors de l'écriture de l'en-tête WAV: %d\n", res);
