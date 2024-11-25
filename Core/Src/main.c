@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usart.h"
 #include "crc.h"
 #include "rtc.h"
 #include "gpio.h"
@@ -100,6 +101,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_USART1_UART_Init();
   MX_GPIO_Init();
   MX_CRC_Init();
   MX_RTC_Init();
@@ -112,31 +114,62 @@ int main(void)
   ai_i8 out_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES];
 
   ai_handle model = AI_HANDLE_NULL;
-  ai_buffer ai_input[AI_AUDIO_CLASSIFIER_IN_NUM];
-  ai_buffer ai_output[AI_AUDIO_CLASSIFIER_OUT_NUM];
 
   /* Create and initialize the AI model */
   const ai_handle activations_handle[] = {activations};
   const ai_handle weights_handle[] = {ai_audio_classifier_data_weights_get()};
 
-  ai_input[0].data = AI_HANDLE_PTR(in_data);
-  ai_output[0].data = AI_HANDLE_PTR(out_data);
-
   ai_error err;
   /* Create and initialize the AI model */
   err = ai_audio_classifier_create_and_init(&model, activations_handle, weights_handle);
-  // if (err.type != AI_ERROR_NONE)
-  // {
-  //   printf("AI model creation failed: %d\n", err.code);
-  //   return;
-  // }
-  // /* Initialize the AI model */
-  // if (!ai_audio_classifier_init(model, &ai_params))
-  // {
-  //   err = ai_audio_classifier_get_error(model);
-  //   printf("AI model initialization failed: %d\n", err.code);
-  //   return;
-  // }
+  if (err.type != AI_ERROR_NONE)
+  {
+    printf("Error: %d\n\r", err);
+    return -1;
+  }
+
+  ai_buffer ai_input[AI_AUDIO_CLASSIFIER_IN_NUM] = {*ai_audio_classifier_inputs_get(model, (ai_u16 *)in_data)};
+  ai_buffer ai_output[AI_AUDIO_CLASSIFIER_OUT_NUM] = {*ai_audio_classifier_outputs_get(model, (ai_u16 *)out_data)};
+
+  /* Example input data */
+  float input_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE];
+  for (int i = 0; i < AI_AUDIO_CLASSIFIER_IN_1_SIZE; i++)
+  {
+    input_data[i] = sin(i);
+  }
+
+  /* Example output data */
+  float output_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE];
+
+  /* Copy input data to in_data buffer */
+  memcpy(in_data, input_data, AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES);
+
+  /* Run the inference */
+  if (ai_audio_classifier_run(model, ai_input, ai_output) != 1)
+  {
+    ai_error err = ai_audio_classifier_get_error(model);
+    printf("AI model inference failed: 0X%x %x\n\r", err.code, err.type);
+    return -1;
+  }
+
+  /* Copy output data from out_data buffer */
+  memcpy(output_data, out_data, AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES);
+
+  /* Find the maximum value in the output data */
+  float max_value = output_data[0];
+  int max_index = 0;
+  for (int i = 1; i < AI_AUDIO_CLASSIFIER_OUT_1_SIZE; i++)
+  {
+    if (output_data[i] > max_value)
+    {
+      max_value = output_data[i];
+      max_index = i;
+    }
+  }
+
+  /* Process the output data */
+  printf("Maximum value: %d at index %d\r\n", (int)max_value, max_index);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -212,11 +245,11 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-// int __io_putchar(int ch)
-// {
-//   HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-//   return ch;
-// }
+int __io_putchar(int ch)
+{
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 
 /* USER CODE END 4 */
 
