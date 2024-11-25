@@ -58,9 +58,7 @@
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
-extern DFSDM_Filter_HandleTypeDef hAudioInTopLeftFilter;
-extern DFSDM_Filter_HandleTypeDef hAudioInTopRightFilter;
-extern SAI_HandleTypeDef haudio_out_sai;
+
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -216,19 +214,5 @@ void TIM6_DAC_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-void DMA2_Stream0_IRQHandler(void)
-{
-  HAL_DMA_IRQHandler(hAudioInTopLeftFilter.hdmaReg);
-}
-
-void DMA2_Stream5_IRQHandler(void)
-{
-  HAL_DMA_IRQHandler(hAudioInTopRightFilter.hdmaReg);
-}
-
-void DMA2_Stream1_IRQHandler(void)
-{
-  HAL_DMA_IRQHandler(haudio_out_sai.hdmatx);
-}
 
 /* USER CODE END 1 */

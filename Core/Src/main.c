@@ -19,13 +19,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "crc.h"
-#include "fmc.h"
-#include "usart.h"
+#include "rtc.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include "ai_datatypes_defines.h"
+#include "ai_platform.h"
+#include "audio_classifier.h"
+#include "audio_classifier_data.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,7 +56,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void PeriphCommonClock_Config(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -91,18 +95,48 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-  /* Configure the peripherals common clocks */
-  PeriphCommonClock_Config();
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
   MX_CRC_Init();
-  MX_USART1_UART_Init();
-
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
+  AI_ALIGNED(4)
+  ai_u8 activations[AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_SIZE];
+  AI_ALIGNED(4)
+  ai_i8 in_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES];
+  AI_ALIGNED(4)
+  ai_i8 out_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES];
+
+  ai_handle model = AI_HANDLE_NULL;
+  ai_buffer ai_input[AI_AUDIO_CLASSIFIER_IN_NUM];
+  ai_buffer ai_output[AI_AUDIO_CLASSIFIER_OUT_NUM];
+
+  /* Create and initialize the AI model */
+  const ai_handle activations_handle[] = {activations};
+  const ai_handle weights_handle[] = {ai_audio_classifier_data_weights_get()};
+
+  ai_input[0].data = AI_HANDLE_PTR(in_data);
+  ai_output[0].data = AI_HANDLE_PTR(out_data);
+
+  ai_error err;
+  /* Create and initialize the AI model */
+  err = ai_audio_classifier_create_and_init(&model, activations_handle, weights_handle);
+  // if (err.type != AI_ERROR_NONE)
+  // {
+  //   printf("AI model creation failed: %d\n", err.code);
+  //   return;
+  // }
+  // /* Initialize the AI model */
+  // if (!ai_audio_classifier_init(model, &ai_params))
+  // {
+  //   err = ai_audio_classifier_get_error(model);
+  //   printf("AI model initialization failed: %d\n", err.code);
+  //   return;
+  // }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,7 +145,6 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-    MX_X_CUBE_AI_Process();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -177,40 +210,13 @@ void SystemClock_Config(void)
   HAL_RCC_MCOConfig(RCC_MCO1, RCC_MCO1SOURCE_HSI, RCC_MCODIV_1);
 }
 
-/**
- * @brief Peripherals Common Clock Configuration
- * @retval None
- */
-void PeriphCommonClock_Config(void)
-{
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-
-  /** Initializes the peripherals clock
-   */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC | RCC_PERIPHCLK_SAI1 | RCC_PERIPHCLK_SAI2 | RCC_PERIPHCLK_SDMMC2 | RCC_PERIPHCLK_CLK48;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 192;
-  PeriphClkInitStruct.PLLSAI.PLLSAIR = 2;
-  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 3;
-  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV4;
-  PeriphClkInitStruct.PLLSAIDivQ = 1;
-  PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
-  PeriphClkInitStruct.Sai1ClockSelection = RCC_SAI1CLKSOURCE_PLLSAI;
-  PeriphClkInitStruct.Sai2ClockSelection = RCC_SAI2CLKSOURCE_PLLSAI;
-  PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLLSAIP;
-  PeriphClkInitStruct.Sdmmc2ClockSelection = RCC_SDMMC2CLKSOURCE_CLK48;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
-
 /* USER CODE BEGIN 4 */
 
-int __io_putchar(int ch)
-{
-  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-  return ch;
-}
+// int __io_putchar(int ch)
+// {
+//   HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+//   return ch;
+// }
 
 /* USER CODE END 4 */
 

@@ -55,9 +55,12 @@ linkerFlags:
 libraries: 
   - c
   - m
+  - :NetworkRuntime810_CM7_GCC.a
 
 # Library directories. Folders can be added here that contain custom libraries.
-libraryDirectories: []
+libraryDirectories: 
+  - Middlewares/ST/AI/Lib/
+
 
 # Files or folders that will be excluded from compilation.
 # Glob patterns (https://www.wikiwand.com/en/Glob_(programming)) can be used.
@@ -80,8 +83,9 @@ includeDirectories:
   - Src/**
   - Core/Src/**
   - Core/Lib/**
-  - Drivers/BSP/**
   - Drivers/CMSIS/DSP/Include/**
+  - X-CUBE-AI/Inc/**
+  - Middlewares/ST/AI/Inc/**
 
 
 # Files that should be included in the compilation.
@@ -93,8 +97,7 @@ sourceFiles:
   - Src/**
   - Core/Src/**
   - Core/Lib/**
-  - Drivers/BSP/**
-  - Drivers/CMSIS/DSP/Source/**
+  #- Drivers/CMSIS/DSP/Source/**
 
 
 # When no makefile is present it will show a warning pop-up.
