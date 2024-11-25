@@ -20,30 +20,25 @@
 #ifndef __fatfs_H
 #define __fatfs_H
 #ifdef __cplusplus
-extern "C"
-{
+ extern "C" {
 #endif
 
 #include "ff.h"
 #include "ff_gen_drv.h"
 #include "sd_diskio.h" /* defines SD_Driver as external */
 
-  /* USER CODE BEGIN Includes */
+/* USER CODE BEGIN Includes */
 
-  /* USER CODE END Includes */
-#define CONTINUE_WAV_FILE 0
-#define END_WAV_FILE 1
-#define MONO_WAV 1
-#define STEREO_WAV 0
+/* USER CODE END Includes */
 
-  extern uint8_t retSD;  /* Return value for SD */
-  extern char SDPath[4]; /* SD logical drive path */
-  extern FATFS SDFatFS;  /* File system object for SD logical drive */
-  extern FIL SDFile;     /* File object for SD */
+extern uint8_t retSD; /* Return value for SD */
+extern char SDPath[4]; /* SD logical drive path */
+extern FATFS SDFatFS; /* File system object for SD logical drive */
+extern FIL SDFile; /* File object for SD */
 
-  void MX_FATFS_Init(void);
+void MX_FATFS_Init(void);
 
-  /* USER CODE BEGIN Prototypes */
+/* USER CODE BEGIN Prototypes */
   void WriteToSDCard(void);
   FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize);
   FRESULT GenerateUniqueFilename(char *filename);

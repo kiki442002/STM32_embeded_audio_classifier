@@ -17,71 +17,11 @@
  */
 /* USER CODE END Header */
 #include "fatfs.h"
-#include "main.h"
 
-#define MAX_FILENAME_LENGTH 14
-
-#pragma pack(push, 1)
-typedef struct
-{
-  char riff[4];           // "RIFF"
-  uint32_t chunkSize;     // Taille du fichier - 8
-  char wave[4];           // "WAVE"
-  char fmt[4];            // "fmt "
-  uint32_t subchunk1Size; // 16 for PCM
-  uint16_t audioFormat;   // PCM = 1
-  uint16_t numChannels;   // Nombre de canaux
-  uint32_t sampleRate;    // Taux d'échantillonnage
-  uint32_t byteRate;      // sampleRate * numChannels * bitsPerSample/8
-  uint16_t blockAlign;    // numChannels * bitsPerSample/8
-  uint16_t bitsPerSample; // Bits par échantillon
-  char data[4];           // "data"
-  uint32_t dataSize;      // Taille des données audio
-} WAVHeader;
-#pragma pack(pop)
-
-uint8_t retSD;  /* Return value for SD */
-char SDPath[4]; /* SD logical drive path */
-FATFS SDFatFS;  /* File system object for SD logical drive */
-FIL SDFile;     /* File object for SD */
-
-// Variables pour le fichier WAV
-FIL file;
-uint32_t totalDataSize = 0;
-uint8_t fileOpened = 0;
-char filename[] = "samp_001.wav";
-
-WAVHeader headerStereo = {
-    .riff = "RIFF",
-    .chunkSize = 0, // Sera calculé plus tard
-    .wave = "WAVE",
-    .fmt = "fmt ",
-    .subchunk1Size = 16,
-    .audioFormat = 1,    // PCM
-    .numChannels = 2,    // Sera défini plus tard
-    .sampleRate = 16000, // Sera défini plus tard
-    .byteRate = 64000,   // Sera calculé plus tard
-    .blockAlign = 4,     // Sera calculé plus tard
-    .bitsPerSample = 16, // Sera défini plus tard
-    .data = "data",
-    .dataSize = 0 // Sera défini plus tard
-};
-
-WAVHeader headerMono = {
-    .riff = "RIFF",
-    .chunkSize = 0, // Sera calculé plus tard
-    .wave = "WAVE",
-    .fmt = "fmt ",
-    .subchunk1Size = 16,
-    .audioFormat = 1,    // PCM
-    .numChannels = 1,    // Sera défini plus tard
-    .sampleRate = 16000, // Sera défini plus tard
-    .byteRate = 32000,   // Sera calculé plus tard
-    .blockAlign = 2,     // Sera calculé plus tard
-    .bitsPerSample = 16, // Sera défini plus tard
-    .data = "data",
-    .dataSize = 0 // Sera défini plus tard
-};
+uint8_t retSD;    /* Return value for SD */
+char SDPath[4];   /* SD logical drive path */
+FATFS SDFatFS;    /* File system object for SD logical drive */
+FIL SDFile;       /* File object for SD */
 
 /* USER CODE BEGIN Variables */
 
@@ -89,15 +29,9 @@ WAVHeader headerMono = {
 
 void MX_FATFS_Init(void)
 {
-  if (BSP_SD_Init() == MSD_ERROR)
-  {
-    printf("\rError initializing SD card\n\r");
-  }
-  printf("\rSD card initialized\n\r");
-
   /*## FatFS: Link the SD driver ###########################*/
   retSD = FATFS_LinkDriver(&SD_Driver, SDPath);
-  // printf("\rFATFS Link Driver: %d\n\r", retSD);
+
   /* USER CODE BEGIN Init */
   /* additional user code for init */
   // WriteToSDCard();
@@ -105,10 +39,10 @@ void MX_FATFS_Init(void)
 }
 
 /**
- * @brief  Gets Time from RTC
- * @param  None
- * @retval Time in DWORD
- */
+  * @brief  Gets Time from RTC
+  * @param  None
+  * @retval Time in DWORD
+  */
 DWORD get_fattime(void)
 {
   /* USER CODE BEGIN get_fattime */

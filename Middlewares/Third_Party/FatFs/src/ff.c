@@ -1030,8 +1030,7 @@ DWORD get_fat (	/* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x7FFFFFFF:Cluste
 			break;
 
 		case FS_FAT32 :
-			FRESULT res = move_window(fs, fs->fatbase + (clst / (SS(fs) / 4)));
-			if ( res != FR_OK){ break;}
+			if (move_window(fs, fs->fatbase + (clst / (SS(fs) / 4))) != FR_OK) break;
 			val = ld_dword(fs->win + clst * 4 % SS(fs)) & 0x0FFFFFFF;
 			break;
 #if _FS_EXFAT
@@ -1366,7 +1365,7 @@ DWORD create_chain (	/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:Disk err
 	else {				/* Stretch current chain */
 		cs = get_fat(obj, clst);			/* Check the cluster status */
 		if (cs < 2) return 1;				/* Invalid FAT value */
-		if (cs == 0xFFFFFFFF) {return cs;}	/* A disk error occurred */
+		if (cs == 0xFFFFFFFF) return cs;	/* A disk error occurred */
 		if (cs < fs->n_fatent) return cs;	/* It is already followed by next cluster */
 		scl = clst;
 	}
@@ -1407,7 +1406,7 @@ DWORD create_chain (	/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:Disk err
 			}
 			cs = get_fat(obj, ncl);			/* Get the cluster status */
 			if (cs == 0) break;				/* Found a free cluster */
-			if (cs == 1 || cs == 0xFFFFFFFF) {return cs;}	/* An error occurred */
+			if (cs == 1 || cs == 0xFFFFFFFF) return cs;	/* An error occurred */
 			if (ncl == scl) return 0;		/* No free cluster */
 		}
 		res = put_fat(fs, ncl, 0xFFFFFFFF);	/* Mark the new cluster 'EOC' */
@@ -3042,8 +3041,8 @@ FRESULT find_volume (	/* FR_OK(0): successful, !=0: any error occurred */
 		return FR_WRITE_PROTECTED;
 	}
 #if _MAX_SS != _MIN_SS					/* Get sector size (multiple sector size cfg only) */
-	if (disk_ioctl(fs->drv, GET_SECTOR_SIZE, &SS(fs)) != RES_OK) {return FR_DISK_ERR;}
-	if (SS(fs) > _MAX_SS || SS(fs) < _MIN_SS || (SS(fs) & (SS(fs) - 1))) {return FR_DISK_ERR;}
+	if (disk_ioctl(fs->drv, GET_SECTOR_SIZE, &SS(fs)) != RES_OK) return FR_DISK_ERR;
+	if (SS(fs) > _MAX_SS || SS(fs) < _MIN_SS || (SS(fs) & (SS(fs) - 1))) return FR_DISK_ERR;
 #endif
 
 	/* Find an FAT partition on the drive. Supports only generic partitioning rules, FDISK and SFD. */
@@ -3477,7 +3476,7 @@ FRESULT f_open (
 				for (ofs = fp->obj.objsize; res == FR_OK && ofs > bcs; ofs -= bcs) {
 					clst = get_fat(&fp->obj, clst);
 					if (clst <= 1) res = FR_INT_ERR;
-					if (clst == 0xFFFFFFFF) {res = FR_DISK_ERR;}
+					if (clst == 0xFFFFFFFF) res = FR_DISK_ERR;
 				}
 				fp->clust = clst;
 				if (res == FR_OK && ofs % SS(fs)) {	/* Fill sector buffer if not on the sector boundary */
@@ -3486,7 +3485,7 @@ FRESULT f_open (
 					} else {
 						fp->sect = sc + (DWORD)(ofs / SS(fs));
 #if !_FS_TINY
-						if (disk_read(fs->drv, fp->buf, fp->sect, 1) != RES_OK) {res = FR_DISK_ERR;}
+						if (disk_read(fs->drv, fp->buf, fp->sect, 1) != RES_OK) res = FR_DISK_ERR;
 #endif
 					}
 				}
@@ -3642,23 +3641,20 @@ FRESULT f_write (
 					clst = fp->obj.sclust;	/* Follow from the origin */
 					if (clst == 0) {		/* If no cluster is allocated, */
 						clst = create_chain(&fp->obj, 0);	/* create a new cluster chain */
-
 					}
 				} else {					/* On the middle or end of the file */
 #if _USE_FASTSEEK
 					if (fp->cltbl) {
 						clst = clmt_clust(fp, fp->fptr);	/* Get cluster# from the CLMT */
-
 					} else
 #endif
 					{
 						clst = create_chain(&fp->obj, fp->clust);	/* Follow or stretch cluster chain on the FAT */
-
 					}
 				}
 				if (clst == 0) break;		/* Could not allocate a new cluster (disk full) */
 				if (clst == 1) ABORT(fs, FR_INT_ERR);
-				if (clst == 0xFFFFFFFF) { ABORT(fs, FR_DISK_ERR);}
+				if (clst == 0xFFFFFFFF) ABORT(fs, FR_DISK_ERR);
 				fp->clust = clst;			/* Update current cluster */
 				if (fp->obj.sclust == 0) fp->obj.sclust = clst;	/* Set start cluster if the first write */
 			}
@@ -3666,7 +3662,7 @@ FRESULT f_write (
 			if (fs->winsect == fp->sect && sync_window(fs) != FR_OK) ABORT(fs, FR_DISK_ERR);	/* Write-back sector cache */
 #else
 			if (fp->flag & FA_DIRTY) {		/* Write-back sector cache */
-				if (disk_write(fs->drv, fp->buf, fp->sect, 1) != RES_OK) {  ABORT(fs, FR_DISK_ERR);}
+				if (disk_write(fs->drv, fp->buf, fp->sect, 1) != RES_OK) ABORT(fs, FR_DISK_ERR);
 				fp->flag &= (BYTE)~FA_DIRTY;
 			}
 #endif
@@ -3678,7 +3674,7 @@ FRESULT f_write (
 				if (csect + cc > fs->csize) {	/* Clip at cluster boundary */
 					cc = fs->csize - csect;
 				}
-				if (disk_write(fs->drv, wbuff, sect, cc) != RES_OK){ ABORT(fs, FR_DISK_ERR);}
+				if (disk_write(fs->drv, wbuff, sect, cc) != RES_OK) ABORT(fs, FR_DISK_ERR);
 #if _FS_MINIMIZE <= 2
 #if _FS_TINY
 				if (fs->winsect - sect < cc) {	/* Refill sector cache if it gets invalidated by the direct write */
@@ -6031,6 +6027,7 @@ int f_puts (
 	while (*str) putc_bfd(&pb, *str++);		/* Put the string */
 	return putc_flush(&pb);
 }
+
 
 
 
