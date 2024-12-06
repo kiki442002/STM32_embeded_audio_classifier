@@ -1,7 +1,7 @@
 {
     "_allocate_inputs": 4,
     "_allocate_outputs": 4,
-    "cli_parameters": "validate --name audio_classifier -m /Users/killian/Documents/Projet_5A/IA_embeded_audio_classifier/small_cnn_model.onnx --type onnx --compression lossless --verbosity 1 --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace3213284257258313764944747326883947 --output /Users/killian/.stm32cubemx/audio_classifier_output --allocate-inputs -O time --allocate-outputs",
+    "cli_parameters": "validate --name audio_classifier -m /Users/killian/Documents/Projet_5A/IA_embeded_audio_classifier/small_cnn_model.onnx --type onnx --compression lossless --verbosity 1 --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace7240757088320817995558257184995960 --output /Users/killian/.stm32cubemx/audio_classifier_output --allocate-inputs -O time --allocate-outputs",
     "cli_version": {
         "major": 1,
         "micro": 0,
@@ -13,7 +13,7 @@
         "factor": null,
         "layers": {}
     },
-    "date_time": "Mon Nov 25 18:55:35 2024",
+    "date_time": "Tue Nov 26 16:14:32 2024",
     "error": 0,
     "error_str": [],
     "exec_cmd": "validate",
