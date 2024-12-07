@@ -277,46 +277,6 @@ uint8_t BSP_SD_WriteBlocks(uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBl
 }
 
 /**
- * @brief  Reads block(s) from a specified address in an SD card, in DMA mode.
- * @param  pData: Pointer to the buffer that will contain the data to transmit
- * @param  ReadAddr: Address from where data is to be read
- * @param  NumOfBlocks: Number of SD blocks to read
- * @retval SD status
- */
-uint8_t BSP_SD_ReadBlocks_DMA(uint32_t *pData, uint32_t ReadAddr, uint32_t NumOfBlocks)
-{
-  /* Read block(s) in DMA transfer mode */
-  if (HAL_SD_ReadBlocks_DMA(&uSdHandle, (uint8_t *)pData, ReadAddr, NumOfBlocks) != HAL_OK)
-  {
-    return MSD_ERROR;
-  }
-  else
-  {
-    return MSD_OK;
-  }
-}
-
-/**
- * @brief  Writes block(s) to a specified address in an SD card, in DMA mode.
- * @param  pData: Pointer to the buffer that will contain the data to transmit
- * @param  WriteAddr: Address from where data is to be written
- * @param  NumOfBlocks: Number of SD blocks to write
- * @retval SD status
- */
-uint8_t BSP_SD_WriteBlocks_DMA(uint32_t *pData, uint32_t WriteAddr, uint32_t NumOfBlocks)
-{
-  /* Write block(s) in DMA transfer mode */
-  if (HAL_SD_WriteBlocks_DMA(&uSdHandle, (uint8_t *)pData, WriteAddr, NumOfBlocks) != HAL_OK)
-  {
-    return MSD_ERROR;
-  }
-  else
-  {
-    return MSD_OK;
-  }
-}
-
-/**
  * @brief  Erases the specified memory area of the given SD card.
  * @param  StartAddr: Start byte address
  * @param  EndAddr: End byte address
@@ -341,15 +301,10 @@ uint8_t BSP_SD_Erase(uint32_t StartAddr, uint32_t EndAddr)
  */
 __weak void BSP_SD_MspInit(SD_HandleTypeDef *hsd, void *Params)
 {
-  static DMA_HandleTypeDef dma_rx_handle;
-  static DMA_HandleTypeDef dma_tx_handle;
   GPIO_InitTypeDef gpio_init_structure;
 
   /* Enable SDMMC2 clock */
   __HAL_RCC_SDMMC2_CLK_ENABLE();
-
-  /* Enable DMA2 clocks */
-  __DMAx_TxRx_CLK_ENABLE();
 
   /* Enable GPIOs clock */
   __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -378,64 +333,6 @@ __weak void BSP_SD_MspInit(SD_HandleTypeDef *hsd, void *Params)
   /* NVIC configuration for SDMMC2 interrupts */
   HAL_NVIC_SetPriority(SDMMC2_IRQn, 0x0E, 0);
   HAL_NVIC_EnableIRQ(SDMMC2_IRQn);
-
-  // /* Configure DMA Rx parameters */
-  // dma_rx_handle.Init.Channel = SD_DMAx_Rx_CHANNEL;
-  // dma_rx_handle.Init.Direction = DMA_PERIPH_TO_MEMORY;
-  // dma_rx_handle.Init.PeriphInc = DMA_PINC_DISABLE;
-  // dma_rx_handle.Init.MemInc = DMA_MINC_ENABLE;
-  // dma_rx_handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-  // dma_rx_handle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-  // dma_rx_handle.Init.Mode = DMA_PFCTRL;
-  // dma_rx_handle.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-  // dma_rx_handle.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
-  // dma_rx_handle.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
-  // dma_rx_handle.Init.MemBurst = DMA_MBURST_INC4;
-  // dma_rx_handle.Init.PeriphBurst = DMA_PBURST_INC4;
-
-  // dma_rx_handle.Instance = SD_DMAx_Rx_STREAM;
-
-  // /* Associate the DMA handle */
-  // __HAL_LINKDMA(hsd, hdmarx, dma_rx_handle);
-
-  // /* Deinitialize the stream for new transfer */
-  // HAL_DMA_DeInit(&dma_rx_handle);
-
-  // /* Configure the DMA stream */
-  // HAL_DMA_Init(&dma_rx_handle);
-
-  // /* Configure DMA Tx parameters */
-  // dma_tx_handle.Init.Channel = SD_DMAx_Tx_CHANNEL;
-  // dma_tx_handle.Init.Direction = DMA_MEMORY_TO_PERIPH;
-  // dma_tx_handle.Init.PeriphInc = DMA_PINC_DISABLE;
-  // dma_tx_handle.Init.MemInc = DMA_MINC_ENABLE;
-  // dma_tx_handle.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
-  // dma_tx_handle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
-  // dma_tx_handle.Init.Mode = DMA_PFCTRL;
-  // dma_tx_handle.Init.Priority = DMA_PRIORITY_VERY_HIGH;
-  // dma_tx_handle.Init.FIFOMode = DMA_FIFOMODE_ENABLE;
-  // dma_tx_handle.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL;
-  // dma_tx_handle.Init.MemBurst = DMA_MBURST_INC4;
-  // dma_tx_handle.Init.PeriphBurst = DMA_PBURST_INC4;
-
-  // dma_tx_handle.Instance = SD_DMAx_Tx_STREAM;
-
-  // /* Associate the DMA handle */
-  // __HAL_LINKDMA(hsd, hdmatx, dma_tx_handle);
-
-  // /* Deinitialize the stream for new transfer */
-  // HAL_DMA_DeInit(&dma_tx_handle);
-
-  // /* Configure the DMA stream */
-  // HAL_DMA_Init(&dma_tx_handle);
-
-  // /* NVIC configuration for DMA transfer complete interrupt */
-  // HAL_NVIC_SetPriority(SD_DMAx_Rx_IRQn, 0x0F, 0);
-  // HAL_NVIC_EnableIRQ(SD_DMAx_Rx_IRQn);
-
-  // /* NVIC configuration for DMA transfer complete interrupt */
-  // HAL_NVIC_SetPriority(SD_DMAx_Tx_IRQn, 0x0F, 0);
-  // HAL_NVIC_EnableIRQ(SD_DMAx_Tx_IRQn);
 }
 
 /**
@@ -465,20 +362,6 @@ __weak void BSP_SD_Detect_MspInit(SD_HandleTypeDef *hsd, void *Params)
  */
 __weak void BSP_SD_MspDeInit(SD_HandleTypeDef *hsd, void *Params)
 {
-  static DMA_HandleTypeDef dma_rx_handle;
-  static DMA_HandleTypeDef dma_tx_handle;
-
-  /* Disable NVIC for DMA transfer complete interrupts */
-  HAL_NVIC_DisableIRQ(SD_DMAx_Rx_IRQn);
-  HAL_NVIC_DisableIRQ(SD_DMAx_Tx_IRQn);
-
-  /* Deinitialize the stream for new transfer */
-  dma_rx_handle.Instance = SD_DMAx_Rx_STREAM;
-  HAL_DMA_DeInit(&dma_rx_handle);
-
-  /* Deinitialize the stream for new transfer */
-  dma_tx_handle.Instance = SD_DMAx_Tx_STREAM;
-  HAL_DMA_DeInit(&dma_tx_handle);
 
   /* Disable NVIC for SDIO interrupts */
   HAL_NVIC_DisableIRQ(SDIO_IRQn);
@@ -514,60 +397,6 @@ void BSP_SD_GetCardInfo(HAL_SD_CardInfoTypeDef *CardInfo)
 {
   /* Get SD card Information */
   HAL_SD_GetCardInfo(&uSdHandle, CardInfo);
-}
-
-/**
- * @brief SD Abort callbacks
- * @param hsd: SD handle
- * @retval None
- */
-void HAL_SD_AbortCallback(SD_HandleTypeDef *hsd)
-{
-  BSP_SD_AbortCallback();
-}
-
-/**
- * @brief Tx Transfer completed callbacks
- * @param hsd: SD handle
- * @retval None
- */
-void HAL_SD_TxCpltCallback(SD_HandleTypeDef *hsd)
-{
-  BSP_SD_WriteCpltCallback();
-}
-
-/**
- * @brief Rx Transfer completed callbacks
- * @param hsd: SD handle
- * @retval None
- */
-void HAL_SD_RxCpltCallback(SD_HandleTypeDef *hsd)
-{
-  BSP_SD_ReadCpltCallback();
-}
-
-/**
- * @brief BSP SD Abort callbacks
- * @retval None
- */
-__weak void BSP_SD_AbortCallback(void)
-{
-}
-
-/**
- * @brief BSP Tx Transfer completed callbacks
- * @retval None
- */
-__weak void BSP_SD_WriteCpltCallback(void)
-{
-}
-
-/**
- * @brief BSP Rx Transfer completed callbacks
- * @retval None
- */
-__weak void BSP_SD_ReadCpltCallback(void)
-{
 }
 
 /**
