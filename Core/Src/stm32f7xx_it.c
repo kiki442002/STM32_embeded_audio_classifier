@@ -231,6 +231,7 @@ void DMA2_Stream1_IRQHandler(void)
 {
   HAL_DMA_IRQHandler(haudio_out_sai.hdmatx);
 }
+
 void EXTI15_10_IRQHandler(void)
 {
   HAL_GPIO_EXTI_IRQHandler(TS_INT_PIN);
