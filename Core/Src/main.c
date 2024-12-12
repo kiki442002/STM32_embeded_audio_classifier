@@ -18,25 +18,21 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "dsihost.h"
 #include "fatfs.h"
-#include "ltdc.h"
 #include "quadspi.h"
 #include "rtc.h"
-#include "sai.h"
 #include "sdmmc.h"
 #include "usart.h"
-#include "gpio.h"
-#include "fmc.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
 #include "filtrage.h"
-#include <stdio.h>
-#include <string.h>
+#include "screen.h"
+#include "touchscreen.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,6 +54,17 @@ typedef enum
   BUFFER_OFFSET_HALF = 1,
   BUFFER_OFFSET_FULL = 2,
 } BUFFER_StateTypeDef;
+
+typedef struct App_HandleTypeDef
+{
+  uint8_t IA_activation;
+  uint8_t record_activation;
+  uint8_t play_activation;
+  uint8_t output_activation;
+  uint8_t luminosity;
+  uint8_t volume;
+} App_HandleTypeDef;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -69,6 +76,7 @@ float32_t MelData[30 * 32];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint32_t audio_rec_buffer_state;
+App_HandleTypeDef hApp;
 
 /* USER CODE END PV */
 
@@ -138,6 +146,24 @@ int main(void)
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
   BSP_LCD_Clear(LCD_COLOR_WHITE);
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
+
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                          Configuration du touch screen                         ||
+  // ! ||--------------------------------------------------------------------------------||
+  if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS Init", CENTER_MODE);
+    Error_Handler();
+  }
+  if (BSP_TS_ITConfig() != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS IT Config", CENTER_MODE);
+    Error_Handler();
+  }
 
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                                Configuration LED                               ||

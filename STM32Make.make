@@ -75,13 +75,13 @@ endif
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/dsihost.c \
 Core/Src/filtrage.c \
 Core/Src/fmc.c \
 Core/Src/gpio.c \
 Core/Src/ltdc.c \
 Core/Src/main.c \
 Core/Src/rtc.c \
+Core/Src/screen.c \
 Core/Src/sdmmc.c \
 Core/Src/stm32f7xx_hal_msp.c \
 Core/Src/stm32f7xx_hal_timebase_tim.c \
@@ -89,6 +89,7 @@ Core/Src/stm32f7xx_it.c \
 Core/Src/syscalls.c \
 Core/Src/sysmem.c \
 Core/Src/system_stm32f7xx.c \
+Core/Src/touchscreen.c \
 Core/Src/usart.c \
 Drivers/BSP/Components/adv7533/adv7533.c \
 Drivers/BSP/Components/dp83848/dp83848.c \
