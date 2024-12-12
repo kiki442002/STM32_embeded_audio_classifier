@@ -170,6 +170,10 @@ int main(void)
   // ! ||--------------------------------------------------------------------------------||
   BSP_LED_Init(LED1);
 
+  printf("\rHello, world!\n\r");
+  HAL_Delay(1000);
+  print_Menu_Interface();
+
   // ! ||--------------------------------------------------------------------------------||
   // ! ||                               Configuration Audio                              ||
   // ! ||--------------------------------------------------------------------------------||
@@ -181,9 +185,6 @@ int main(void)
     Error_Handler();
   }
 
-  printf("\rHello, world!\n\r");
-  HAL_Delay(1000);
-  print_Menu_Interface();
   if (BSP_AUDIO_IN_AllocScratch(Scratch, SCRATCH_BUFF_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -245,7 +246,7 @@ int main(void)
       if (res == FEATURE_EXPORT_OK)
       {
         BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
-        //BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+        // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
         WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
         while (1)
           ;
