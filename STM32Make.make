@@ -76,9 +76,6 @@ endif
 # C sources
 C_SOURCES =  \
 Core/Src/filtrage.c \
-Core/Src/fmc.c \
-Core/Src/gpio.c \
-Core/Src/ltdc.c \
 Core/Src/main.c \
 Core/Src/rtc.c \
 Core/Src/screen.c \

@@ -183,6 +183,7 @@ int main(void)
 
   printf("\rHello, world!\n\r");
   HAL_Delay(1000);
+  print_Menu_Interface();
   if (BSP_AUDIO_IN_AllocScratch(Scratch, SCRATCH_BUFF_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -198,8 +199,7 @@ int main(void)
     Error_Handler();
   }
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-  BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 - 20, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
   /* Initialize the audio device*/
   if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
@@ -218,7 +218,7 @@ int main(void)
   BSP_AUDIO_OUT_Play((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE * 2);
 
   /* Audio device is initialized only once */
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 20, (uint8_t *)"Retour Active", CENTER_MODE);
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
 
   // OpenWavFile();
 
@@ -244,8 +244,7 @@ int main(void)
       }
       if (res == FEATURE_EXPORT_OK)
       {
-        BSP_LCD_Clear(LCD_COLOR_WHITE);
-        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Feature Export OK", CENTER_MODE);
+        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 60, (uint8_t *)"Feature Export OK", CENTER_MODE);
         BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
         WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
         while (1)

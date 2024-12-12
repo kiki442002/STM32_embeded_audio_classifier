@@ -152,6 +152,6 @@ void Draw_AI_Button(void)
 void Clear_Log(void)
 {
     BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-    BSP_LCD_FillRect(20, START_Y + BUTTON_WIDTH_HEIGHT + 50, BSP_LCD_GetXSize() - 40, BSP_LCD_GetYSize() / 2 - 60);
+    BSP_LCD_FillRect(30, START_Y + BUTTON_WIDTH_HEIGHT + 60, BSP_LCD_GetXSize() - 40, BSP_LCD_GetYSize() / 2 - 50);
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 }
