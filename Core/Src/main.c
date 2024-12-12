@@ -202,6 +202,8 @@ int main(void)
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
+  HAL_Delay(2);
+
   /* Initialize the audio device*/
   if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
                          100,
