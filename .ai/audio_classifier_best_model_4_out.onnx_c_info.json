@@ -996,49 +996,20 @@
     }
   ],
   "environment": {
-    "device": null,
+    "device": "stm32 family - 0x451 - STM32F76x/F77x @216/216MHz::fpu,art_lat=7,core_icache,core_dcache",
     "generated_model": {
-      "generated_time": "2025-01-13T16:52:02+0100",
-      "model_files": [
-        {
-          "name": "audio_classifier_data_params.h",
-          "signature": "0x5be2b232cb33fa45621a923cff5b4b49"
-        },
-        {
-          "name": "audio_classifier_data_params.c",
-          "signature": "0xbeffae98eff63dfb19a67f2dc2e35be5"
-        },
-        {
-          "name": "audio_classifier_data.h",
-          "signature": "0xe330459034d930b307c1ebddf37bbe3a"
-        },
-        {
-          "name": "audio_classifier_data.c",
-          "signature": "0x906e655212c492159e57df9b70141e65"
-        },
-        {
-          "name": "audio_classifier_config.h",
-          "signature": "0x037a8239982bf1eac354e18328b62869"
-        },
-        {
-          "name": "audio_classifier.h",
-          "signature": "0xfb25ad8d1302e07dd2c10bba419b4621"
-        },
-        {
-          "name": "audio_classifier.c",
-          "signature": "0x5e72cd213bc1c195bed52d9f3afd4ec1"
-        }
-      ],
+      "generated_time": "2025-01-13T19:11:31+0100",
+      "model_files": [],
       "n_params": null,
       "name": "audio_classifier",
       "size": null,
       "type": null
     },
-    "network_signature": "0x8817c49334ac740a",
+    "network_signature": "0x1def0b51a3fa12e8",
     "test_name": "",
     "tools": [
       {
-        "arguments": "generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960 --output /Users/killian/.stm32cubemx/audio_classifier_output",
+        "arguments": "validate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2800455774444164726592133834140161 --output /Users/killian/.stm32cubemx/audio_classifier_output --mode target --desc serial:/dev/tty.usbmodem1303:115200",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],
@@ -1276,10 +1247,10 @@
       ],
       "exec_time": {
         "counters": [],
-        "cycles": null,
-        "cycles_by_macc": null,
-        "duration_ms": null,
-        "percentage": null
+        "cycles": 1971900,
+        "cycles_by_macc": 8.725069457231262,
+        "duration_ms": 9.129169433389325,
+        "percentage": 100.0
       },
       "id": 0,
       "inputs": [
@@ -1305,11 +1276,13 @@
           },
           "description": "Conv2D",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              505999
+            ],
+            "cycles": 505999,
+            "cycles_by_macc": 14.63948038421479,
+            "duration_ms": 2.342591667175293,
+            "percentage": 25.66051253915193
           },
           "id": 15,
           "inputs": [
@@ -1341,11 +1314,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              19418
+            ],
+            "cycles": 19418,
+            "cycles_by_macc": 5.056770833333333,
+            "duration_ms": 0.08989861384034156,
+            "percentage": 0.9847403369636608
           },
           "id": 16,
           "inputs": [
@@ -1377,11 +1352,13 @@
           },
           "description": "Pool",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              42536
+            ],
+            "cycles": 42536,
+            "cycles_by_macc": 11.077083333333333,
+            "duration_ms": 0.19692685157060624,
+            "percentage": 2.157116844062062
           },
           "id": 17,
           "inputs": [
@@ -1420,11 +1397,13 @@
           },
           "description": "Conv2D",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              1093211
+            ],
+            "cycles": 1093211,
+            "cycles_by_macc": 7.907150503413956,
+            "duration_ms": 5.061166191101075,
+            "percentage": 55.43950331987704
           },
           "id": 18,
           "inputs": [
@@ -1456,11 +1435,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              19400
+            ],
+            "cycles": 19400,
+            "cycles_by_macc": 5.052083333333333,
+            "duration_ms": 0.08981898054480553,
+            "percentage": 0.9838680418866871
           },
           "id": 19,
           "inputs": [
@@ -1492,11 +1473,13 @@
           },
           "description": "Pool",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              28135
+            ],
+            "cycles": 28135,
+            "cycles_by_macc": 7.850167410714286,
+            "duration_ms": 0.13025601655244828,
+            "percentage": 1.4268112504960817
           },
           "id": 20,
           "inputs": [
@@ -1525,11 +1508,13 @@
           },
           "description": "Transpose",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              39374
+            ],
+            "cycles": 39374,
+            "cycles_by_macc": 87.88839285714286,
+            "duration_ms": 0.18228703886270523,
+            "percentage": 1.996753814164108
           },
           "id": 21,
           "inputs": [
@@ -1557,11 +1542,13 @@
           },
           "description": "Dense",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              210333
+            ],
+            "cycles": 210333,
+            "cycles_by_macc": 5.862123745819398,
+            "duration_ms": 0.9737680554389954,
+            "percentage": 10.666556936466794
           },
           "id": 22,
           "inputs": [
@@ -1591,11 +1578,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              407
+            ],
+            "cycles": 407,
+            "cycles_by_macc": 10.175,
+            "duration_ms": 0.001884259283542633,
+            "percentage": 0.02063998589675728
           },
           "id": 23,
           "inputs": [
@@ -1623,11 +1612,13 @@
           },
           "description": "Dense",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              8937
+            ],
+            "cycles": 8937,
+            "cycles_by_macc": 6.811737804878049,
+            "duration_ms": 0.041378240659832956,
+            "percentage": 0.4532530693153181
           },
           "id": 24,
           "inputs": [
@@ -1657,11 +1648,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              369
+            ],
+            "cycles": 369,
+            "cycles_by_macc": 11.53125,
+            "duration_ms": 0.001711574080400169,
+            "percentage": 0.018748409621363815
           },
           "id": 25,
           "inputs": [
@@ -1689,11 +1682,13 @@
           },
           "description": "Dense",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              2023
+            ],
+            "cycles": 2023,
+            "cycles_by_macc": 7.662878787878788,
+            "duration_ms": 0.009367129486054181,
+            "percentage": 0.10260659038482223
           },
           "id": 26,
           "inputs": [
@@ -1723,11 +1718,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              235
+            ],
+            "cycles": 235,
+            "cycles_by_macc": 29.375,
+            "duration_ms": 0.0010893517988733946,
+            "percentage": 0.011932649589010401
           },
           "id": 27,
           "inputs": [
@@ -1755,11 +1752,13 @@
           },
           "description": "Dense",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              671
+            ],
+            "cycles": 671,
+            "cycles_by_macc": 18.63888888888889,
+            "duration_ms": 0.0031087962910532952,
+            "percentage": 0.03405344060855176
           },
           "id": 28,
           "inputs": [
@@ -1791,11 +1790,13 @@
           },
           "description": "Nonlinearity",
           "exec_time": {
-            "counters": [],
-            "cycles": null,
-            "cycles_by_macc": null,
-            "duration_ms": null,
-            "percentage": null
+            "counters": [
+              846
+            ],
+            "cycles": 846,
+            "cycles_by_macc": 14.1,
+            "duration_ms": 0.003916666703298688,
+            "percentage": 0.042902771515815466
           },
           "id": 29,
           "inputs": [
@@ -1934,8 +1935,20 @@
   ],
   "power_estimates": [],
   "validation": {
-    "val_error": null,
-    "val_error_desc": null,
-    "val_metrics": []
+    "val_error": 1.9717640498129185e-07,
+    "val_error_desc": "x-cross (l2r) #1",
+    "val_metrics": [
+      {
+        "acc": "100.00%",
+        "cos": 1.0,
+        "desc": "X-cross #1",
+        "l2r": 1.9717640498129185e-07,
+        "mae": 5.2875840594879264e-08,
+        "mean": -2.5029294192790985e-09,
+        "nse": 0.9999999999999358,
+        "rmse": 7.70525545590317e-08,
+        "std": 7.799297208066491e-08
+      }
+    ]
   }
 }

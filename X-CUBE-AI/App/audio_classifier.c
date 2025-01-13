@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    audio_classifier.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    2025-01-13T16:52:02+0100
+  * @date    2025-01-13T19:09:32+0100
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -42,7 +42,7 @@
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "2025-01-13T16:52:02+0100"
+#define AI_TOOLS_DATE_TIME   "2025-01-13T19:09:32+0100"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
@@ -707,7 +707,7 @@ AI_NETWORK_OBJ_DECLARE(
     19344, NULL, NULL),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_IN_NUM, &input_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_OUT_NUM, &output_output),
-  &_conv1_conv1_0_Conv_output_0_layer, 0x8817c493, NULL)
+  &_conv1_conv1_0_Conv_output_0_layer, 0x90005191, NULL)
 
 #else
 
@@ -727,7 +727,7 @@ AI_NETWORK_OBJ_DECLARE(
   ),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_IN_NUM, &input_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_OUT_NUM, &output_output),
-  &_conv1_conv1_0_Conv_output_0_layer, 0x8817c493, NULL)
+  &_conv1_conv1_0_Conv_output_0_layer, 0x90005191, NULL)
 
 #endif	/*(AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)*/
 
@@ -880,7 +880,7 @@ ai_bool ai_audio_classifier_get_info(
       .params            = AI_STRUCT_INIT,
       .activations       = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x8817c493,
+      .signature         = 0x90005191,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;
@@ -928,7 +928,7 @@ ai_bool ai_audio_classifier_get_report(
       .map_weights       = AI_STRUCT_INIT,
       .map_activations   = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x8817c493,
+      .signature         = 0x90005191,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;

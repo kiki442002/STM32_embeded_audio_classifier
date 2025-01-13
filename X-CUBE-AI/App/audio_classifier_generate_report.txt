@@ -1,6 +1,6 @@
 ST Edge AI Core v1.0.0-19899
-Created date          : 2025-01-13 16:52:02
-Parameters            : generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960 --output /Users/killian/.stm32cubemx/audio_classifier_output
+Created date          : 2025-01-13 19:09:32
+Parameters            : generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2799273075795832976475443942630080 --output /Users/killian/.stm32cubemx/audio_classifier_output
 
 Exec/report summary (generate)
 ---------------------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ compression        :   lossless
 options            :   allocate-inputs, allocate-outputs                                                                         
 optimization       :   time                                                                                                      
 target/series      :   stm32f7                                                                                                   
-workspace dir      :   /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960         
+workspace dir      :   /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2799273075795832976475443942630080         
 output dir         :   /Users/killian/.stm32cubemx/audio_classifier_output                                                       
 model_fmt          :   float                                                                                                     
 model_name         :   best_model_4_out                                                                                          

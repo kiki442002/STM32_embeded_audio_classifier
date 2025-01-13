@@ -108,10 +108,23 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c \
+X-CUBE-AI/App/aiPbIO.c \
+X-CUBE-AI/App/aiPbMemRWServices.c \
+X-CUBE-AI/App/aiPbMgr.c \
+X-CUBE-AI/App/aiTestHelper.c \
+X-CUBE-AI/App/aiTestUtility.c \
+X-CUBE-AI/App/aiValidation.c \
+X-CUBE-AI/App/ai_device_adaptor.c \
 X-CUBE-AI/App/app_x-cube-ai.c \
 X-CUBE-AI/App/audio_classifier.c \
 X-CUBE-AI/App/audio_classifier_data.c \
-X-CUBE-AI/App/audio_classifier_data_params.c
+X-CUBE-AI/App/audio_classifier_data_params.c \
+X-CUBE-AI/App/lc_print.c \
+X-CUBE-AI/App/pb_common.c \
+X-CUBE-AI/App/pb_decode.c \
+X-CUBE-AI/App/pb_encode.c \
+X-CUBE-AI/App/stm32msg.pb.c \
+X-CUBE-AI/App/syscalls.c
 
 
 CPP_SOURCES = \
@@ -212,7 +225,8 @@ C_INCLUDES =  \
 -IDrivers/STM32F7xx_HAL_Driver/Inc/Legacy \
 -IMiddlewares/ST/AI/Inc \
 -IX-CUBE-AI \
--IX-CUBE-AI/App
+-IX-CUBE-AI/App \
+-IX-CUBE-AI/Target
 
 
 

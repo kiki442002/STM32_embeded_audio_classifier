@@ -1,7 +1,7 @@
 {
     "_allocate_inputs": 4,
     "_allocate_outputs": 4,
-    "cli_parameters": "generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960 --output /Users/killian/.stm32cubemx/audio_classifier_output",
+    "cli_parameters": "validate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2800455774444164726592133834140161 --output /Users/killian/.stm32cubemx/audio_classifier_output --mode target --desc serial:/dev/tty.usbmodem1303:115200",
     "cli_version": {
         "extra": "19899",
         "major": 1,
@@ -11,10 +11,10 @@
     "cli_version_str": "1.0.0-19899",
     "code_size": 0,
     "compression": [],
-    "date_time": "2025-01-13T16:52:02+0100",
+    "date_time": "2025-01-13T19:11:31+0100",
     "error": 0,
     "error_str": [],
-    "exec_cmd": "generate",
+    "exec_cmd": "validate",
     "exec_duration": 0.0,
     "hash": "0xa1b612fd02abb0dd6389601db2ec0f4e",
     "inputs": [
@@ -613,7 +613,20 @@
     "strategy": "",
     "tools_api_version": "1.0.0-19899",
     "tools_version": "1.0.0-19899",
-    "val_error": -1.0,
-    "val_error_desc": "None (None) #-1",
-    "val_metrics": []
+    "val_error": 1.9717640498129185e-07,
+    "val_error_desc": "x-cross (l2r) #1",
+    "val_metrics": [
+        {
+            "acc": "100.00%",
+            "cos": 1.0,
+            "desc": "X-cross #1",
+            "l2r": 1.9717640498129185e-07,
+            "mae": 5.2875840594879264e-08,
+            "mean": -2.5029294192790985e-09,
+            "nse": 0.9999999999999358,
+            "rmse": 7.70525545590317e-08,
+            "std": 7.799297208066491e-08,
+            "ts_name": "output, (4,), m_id=[15]"
+        }
+    ]
 }

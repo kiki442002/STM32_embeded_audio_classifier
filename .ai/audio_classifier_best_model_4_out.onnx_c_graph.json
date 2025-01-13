@@ -102,7 +102,7 @@
         }
     },
     "activations_alignment": 4,
-    "arguments": "generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960 --output /Users/killian/.stm32cubemx/audio_classifier_output",
+    "arguments": "validate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2800455774444164726592133834140161 --output /Users/killian/.stm32cubemx/audio_classifier_output --mode target --desc serial:/dev/tty.usbmodem1303:115200",
     "c_activations_count": 1,
     "c_arrays": [
         {
@@ -879,6 +879,15 @@
                 "forward_conv2d_if32of32wf32"
             ],
             "c_id": 0,
+            "exec_time": {
+                "counters": [
+                    505999
+                ],
+                "cycles": 505999,
+                "cycles_by_macc": 14.63948038421479,
+                "duration_ms": 2.342591667175293,
+                "percentage": 25.66051253915193
+            },
             "is_wrapped": "",
             "layer_type": "Conv2D",
             "m_id": 1,
@@ -914,6 +923,15 @@
                 "forward_relu"
             ],
             "c_id": 1,
+            "exec_time": {
+                "counters": [
+                    19418
+                ],
+                "cycles": 19418,
+                "cycles_by_macc": 5.056770833333333,
+                "duration_ms": 0.08989861384034156,
+                "percentage": 0.9847403369636608
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 2,
@@ -944,6 +962,15 @@
                 "forward_mp"
             ],
             "c_id": 2,
+            "exec_time": {
+                "counters": [
+                    42536
+                ],
+                "cycles": 42536,
+                "cycles_by_macc": 11.077083333333333,
+                "duration_ms": 0.19692685157060624,
+                "percentage": 2.157116844062062
+            },
             "is_wrapped": "",
             "layer_type": "Pool",
             "m_id": 3,
@@ -974,6 +1001,15 @@
                 "forward_conv2d_if32of32wf32"
             ],
             "c_id": 3,
+            "exec_time": {
+                "counters": [
+                    1093211
+                ],
+                "cycles": 1093211,
+                "cycles_by_macc": 7.907150503413956,
+                "duration_ms": 5.061166191101075,
+                "percentage": 55.43950331987704
+            },
             "is_wrapped": "",
             "layer_type": "Conv2D",
             "m_id": 4,
@@ -1009,6 +1045,15 @@
                 "forward_relu"
             ],
             "c_id": 4,
+            "exec_time": {
+                "counters": [
+                    19400
+                ],
+                "cycles": 19400,
+                "cycles_by_macc": 5.052083333333333,
+                "duration_ms": 0.08981898054480553,
+                "percentage": 0.9838680418866871
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 5,
@@ -1039,6 +1084,15 @@
                 "forward_mp"
             ],
             "c_id": 5,
+            "exec_time": {
+                "counters": [
+                    28135
+                ],
+                "cycles": 28135,
+                "cycles_by_macc": 7.850167410714286,
+                "duration_ms": 0.13025601655244828,
+                "percentage": 1.4268112504960817
+            },
             "is_wrapped": "",
             "layer_type": "Pool",
             "m_id": 6,
@@ -1069,6 +1123,15 @@
                 "forward_transpose"
             ],
             "c_id": 6,
+            "exec_time": {
+                "counters": [
+                    39374
+                ],
+                "cycles": 39374,
+                "cycles_by_macc": 87.88839285714286,
+                "duration_ms": 0.18228703886270523,
+                "percentage": 1.996753814164108
+            },
             "is_wrapped": "",
             "layer_type": "Transpose",
             "m_id": 7,
@@ -1099,6 +1162,15 @@
                 "forward_dense"
             ],
             "c_id": 7,
+            "exec_time": {
+                "counters": [
+                    210333
+                ],
+                "cycles": 210333,
+                "cycles_by_macc": 5.862123745819398,
+                "duration_ms": 0.9737680554389954,
+                "percentage": 10.666556936466794
+            },
             "is_wrapped": "",
             "layer_type": "Dense",
             "m_id": 8,
@@ -1132,6 +1204,15 @@
                 "forward_relu"
             ],
             "c_id": 8,
+            "exec_time": {
+                "counters": [
+                    407
+                ],
+                "cycles": 407,
+                "cycles_by_macc": 10.175,
+                "duration_ms": 0.001884259283542633,
+                "percentage": 0.02063998589675728
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 9,
@@ -1162,6 +1243,15 @@
                 "forward_dense"
             ],
             "c_id": 9,
+            "exec_time": {
+                "counters": [
+                    8937
+                ],
+                "cycles": 8937,
+                "cycles_by_macc": 6.811737804878049,
+                "duration_ms": 0.041378240659832956,
+                "percentage": 0.4532530693153181
+            },
             "is_wrapped": "",
             "layer_type": "Dense",
             "m_id": 10,
@@ -1195,6 +1285,15 @@
                 "forward_relu"
             ],
             "c_id": 10,
+            "exec_time": {
+                "counters": [
+                    369
+                ],
+                "cycles": 369,
+                "cycles_by_macc": 11.53125,
+                "duration_ms": 0.001711574080400169,
+                "percentage": 0.018748409621363815
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 11,
@@ -1225,6 +1324,15 @@
                 "forward_dense"
             ],
             "c_id": 11,
+            "exec_time": {
+                "counters": [
+                    2023
+                ],
+                "cycles": 2023,
+                "cycles_by_macc": 7.662878787878788,
+                "duration_ms": 0.009367129486054181,
+                "percentage": 0.10260659038482223
+            },
             "is_wrapped": "",
             "layer_type": "Dense",
             "m_id": 12,
@@ -1258,6 +1366,15 @@
                 "forward_relu"
             ],
             "c_id": 12,
+            "exec_time": {
+                "counters": [
+                    235
+                ],
+                "cycles": 235,
+                "cycles_by_macc": 29.375,
+                "duration_ms": 0.0010893517988733946,
+                "percentage": 0.011932649589010401
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 13,
@@ -1288,6 +1405,15 @@
                 "forward_dense"
             ],
             "c_id": 13,
+            "exec_time": {
+                "counters": [
+                    671
+                ],
+                "cycles": 671,
+                "cycles_by_macc": 18.63888888888889,
+                "duration_ms": 0.0031087962910532952,
+                "percentage": 0.03405344060855176
+            },
             "is_wrapped": "",
             "layer_type": "Dense",
             "m_id": 14,
@@ -1321,6 +1447,15 @@
                 "forward_sm"
             ],
             "c_id": 14,
+            "exec_time": {
+                "counters": [
+                    846
+                ],
+                "cycles": 846,
+                "cycles_by_macc": 14.1,
+                "duration_ms": 0.003916666703298688,
+                "percentage": 0.042902771515815466
+            },
             "is_wrapped": "",
             "layer_type": "Nonlinearity",
             "m_id": 15,
@@ -1360,7 +1495,13 @@
         ]
     },
     "data_alignment": 4,
-    "date_time": "2025-01-13T16:52:02+0100",
+    "date_time": "2025-01-13T19:11:31+0100",
+    "exec_time": {
+        "cycles": 1971900,
+        "cycles_by_macc": 8.725069457231262,
+        "device": "stm32 family - 0x451 - STM32F76x/F77x @216/216MHz::fpu,art_lat=7,core_icache,core_dcache",
+        "duration_ms": 9.129169433389325
+    },
     "inputs": [
         "input_output"
     ],
