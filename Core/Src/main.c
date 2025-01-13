@@ -111,7 +111,7 @@ int main(void)
   AI_ALIGNED(4)
   ai_i8 in_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES];
   AI_ALIGNED(4)
-  ai_i8 out_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES];
+  ai_i8 out_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES] = {0};
 
   ai_handle model = AI_HANDLE_NULL;
 
@@ -128,41 +128,50 @@ int main(void)
     return -1;
   }
 
-  ai_buffer ai_input[AI_AUDIO_CLASSIFIER_IN_NUM] = {*ai_audio_classifier_inputs_get(model, (ai_u16 *)in_data)};
-  ai_buffer ai_output[AI_AUDIO_CLASSIFIER_OUT_NUM] = {*ai_audio_classifier_outputs_get(model, (ai_u16 *)out_data)};
+  ai_buffer *ai_input = ai_audio_classifier_inputs_get(model, NULL);
+  ai_buffer *ai_output = ai_audio_classifier_outputs_get(model, NULL);
+
+  // print ai_input and ai_output
+  printf("ai_input: %ld\n\r", ai_input[0].format);
+  printf("ai_output: %ld\n\r", ai_output[0].format);
 
   /* Example input data */
   float input_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE];
   for (int i = 0; i < AI_AUDIO_CLASSIFIER_IN_1_SIZE; i++)
   {
-    input_data[i] = sin(i);
+    input_data[i] = 1.0;
   }
 
   /* Example output data */
-  float output_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE];
+  float output_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE] = {0};
 
-  /* Copy input data to in_data buffer */
-  memcpy(in_data, input_data, AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES);
+  ai_input[0].data = AI_HANDLE_PTR(input_data);
+  ai_output[0].data = AI_HANDLE_PTR(output_data);
 
+  uint32_t start_time = HAL_GetTick();
   /* Run the inference */
-  if (ai_audio_classifier_run(model, ai_input, ai_output) != 1)
+  int n_batch = ai_audio_classifier_run(model, &ai_input[0], &ai_output[0]);
+  printf("Number of batches: %d\n\r", n_batch);
+  if (n_batch != 1)
   {
     ai_error err = ai_audio_classifier_get_error(model);
     printf("AI model inference failed: 0X%x %x\n\r", err.code, err.type);
     return -1;
   }
-
-  /* Copy output data from out_data buffer */
-  memcpy(output_data, out_data, AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES);
+  uint32_t end_time = HAL_GetTick();
+  printf("Inference time: %d ms\n\r", end_time - start_time);
 
   /* Find the maximum value in the output data */
-  float max_value = output_data[0];
+  float max_value = (float)output_data[0];
   int max_index = 0;
+  printf("Output data: %d\n\r", (int)output_data[0]);
   for (int i = 1; i < AI_AUDIO_CLASSIFIER_OUT_1_SIZE; i++)
   {
-    if (output_data[i] > max_value)
+    printf("Output data: %d\n\r", (int)output_data[i]);
+    float value = (float)output_data[i];
+    if (value > max_value)
     {
-      max_value = output_data[i];
+      max_value = value;
       max_index = i;
     }
   }
