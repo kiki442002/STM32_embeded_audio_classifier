@@ -192,6 +192,7 @@ int main(void)
     BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN Scratch", CENTER_MODE);
     Error_Handler();
   }
+
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -199,6 +200,7 @@ int main(void)
     BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN RECORD", CENTER_MODE);
     Error_Handler();
   }
+
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
 
@@ -239,27 +241,31 @@ int main(void)
       /* Copy half of the record buffer to the playback buffer */
       if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
       {
+        uint32_t start = HAL_GetTick();
         res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF);
+        printf("Time: %ld\r\n", HAL_GetTick() - start);
       }
       else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
       {
+        uint32_t start = HAL_GetTick();
         res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL);
+        printf("Time: %ld\r\n", HAL_GetTick() - start);
       }
-      if (res == FEATURE_EXPORT_OK)
-      {
-        BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
-        // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-        WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
-        while (1)
-          ;
-      }
-
-      /* Wait for next data */
-      audio_rec_buffer_state = BUFFER_OFFSET_NONE;
     }
+    if (res == FEATURE_EXPORT_OK)
+    {
+      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
+      // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+      WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      while (1)
+        ;
+    }
+
+    /* Wait for next data */
+    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   }
-  /* USER CODE END 3 */
 }
+/* USER CODE END 3 */
 
 /**
  * @brief System Clock Configuration

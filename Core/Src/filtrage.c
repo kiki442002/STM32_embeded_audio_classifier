@@ -5,15 +5,20 @@
 #include "mel_filters.h"
 #include "fatfs.h"
 
+DMA_HandleTypeDef hdma_memtomem_dma2_stream2;
+
 arm_rfft_fast_instance_f32 FFT_struct;
 int32_t cReadIndex = FILTRAGE_SIZE;
+
 int16_t distIndex = 0;
 int16_t rawPCMdata[FILTRAGE_SIZE];
+int16_t sd_wav_cache[(FILTRAGE_SIZE * 31 / 2 + FILTRAGE_SIZE) * 2];
 float32_t tmp_buf_1[FILTRAGE_SIZE];
 float32_t tmp_buf_2[FILTRAGE_SIZE];
 
 uint8_t buffer_run = BUFFER_HALF_FIRST;
 uint8_t mel_indice = 0;
+uint32_t wav_indice = 0;
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size)
 {
@@ -53,6 +58,7 @@ uint8_t Hamming_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t sig
     }
     return HAMMING_FILTER_OK;
 }
+
 uint8_t Hanning_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type)
 {
 
@@ -197,13 +203,35 @@ uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size)
     return FILTER_CALCULATION_OK;
 }
 
+uint8_t DMA_Config(void)
+{
+    __HAL_RCC_DMA2_CLK_ENABLE();
+
+    hdma_memtomem_dma2_stream2.Instance = DMA2_Stream2;
+    hdma_memtomem_dma2_stream2.Init.Channel = DMA_CHANNEL_0;
+    hdma_memtomem_dma2_stream2.Init.Direction = DMA_MEMORY_TO_MEMORY;
+    hdma_memtomem_dma2_stream2.Init.PeriphInc = DMA_PINC_ENABLE;
+    hdma_memtomem_dma2_stream2.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_memtomem_dma2_stream2.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+    hdma_memtomem_dma2_stream2.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+    hdma_memtomem_dma2_stream2.Init.Mode = DMA_NORMAL;
+    hdma_memtomem_dma2_stream2.Init.Priority = DMA_PRIORITY_HIGH;
+    hdma_memtomem_dma2_stream2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+
+    if (HAL_DMA_Init(&hdma_memtomem_dma2_stream2) != HAL_OK)
+    {
+        return FILTER_CALCULATION_ERROR;
+    }
+    return FILTER_CALCULATION_OK;
+}
+
 uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
 {
     if (bufferState == BUFFER_HALF)
     {
         if (buffer_run != BUFFER_HALF_FIRST)
         {
-            cReadIndex -= FILTRAGE_SIZE;
+            cReadIndex = 3 * FILTRAGE_SIZE;
             arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
             Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
@@ -211,17 +239,20 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
             DSE_Calculation(tmp_buf_1, tmp_buf_2);
             MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
             ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
-            buffer_run = BUFFER_HALF_NONE;
             mel_indice++;
         }
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            WriteWAVFile(rawPCMdata, 0, END_WAV_FILE);
+            arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
+            WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
+            wav_indice = 0;
             return FEATURE_EXPORT_OK;
         }
-        cReadIndex -= FILTRAGE_SIZE;
+
+        cReadIndex = 0;
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
+
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
         FFT_Calculation(tmp_buf_2, tmp_buf_1);
         DSE_Calculation(tmp_buf_1, tmp_buf_2);
@@ -229,11 +260,11 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         buffer_run = BUFFER_HALF_NONE;
         mel_indice++;
-        WriteWAVFile(rawPCMdata, FILTRAGE_SIZE * 2, CONTINUE_WAV_FILE);
+        arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
     else if (bufferState == BUFFER_FULL)
     {
-        cReadIndex -= FILTRAGE_SIZE;
+        cReadIndex = FILTRAGE_SIZE;
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
@@ -242,34 +273,37 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         mel_indice++;
+
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            WriteWAVFile(rawPCMdata, 0, END_WAV_FILE);
+            arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
+            WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
+            wav_indice = 0;
             return FEATURE_EXPORT_OK;
         }
-        cReadIndex -= FILTRAGE_SIZE;
+
+        cReadIndex = 2 * FILTRAGE_SIZE;
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
+
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
         FFT_Calculation(tmp_buf_2, tmp_buf_1);
         DSE_Calculation(tmp_buf_1, tmp_buf_2);
         MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
-        WriteWAVFile(rawPCMdata, FILTRAGE_SIZE * 2, CONTINUE_WAV_FILE);
         mel_indice++;
-    }
-
-    if (mel_indice == 32)
-    {
-        mel_indice = 0;
-        return FEATURE_EXPORT_OK;
+        arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
 
     return FEATURE_EXPORT_PROGRESS;
 }
 
-uint8_t
-Feature_Export_Init()
+uint8_t Feature_Export_Init()
 {
+    uint8_t ret = DMA_Config();
+    if (ret != FILTER_CALCULATION_OK)
+    {
+        return ret;
+    }
     return FFT_init(FILTRAGE_SIZE);
 }
