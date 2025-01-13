@@ -108,6 +108,7 @@ Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c \
 Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c \
+X-CUBE-AI/App/app_x-cube-ai.c \
 X-CUBE-AI/App/audio_classifier.c \
 X-CUBE-AI/App/audio_classifier_data.c \
 X-CUBE-AI/App/audio_classifier_data_params.c
@@ -210,6 +211,7 @@ C_INCLUDES =  \
 -IDrivers/STM32F7xx_HAL_Driver/Inc \
 -IDrivers/STM32F7xx_HAL_Driver/Inc/Legacy \
 -IMiddlewares/ST/AI/Inc \
+-IX-CUBE-AI \
 -IX-CUBE-AI/App
 
 
@@ -243,7 +245,7 @@ CXXFLAGS += $(ASSEMBLER_LIST_OUTPUT_FLAG)
 LDSCRIPT = STM32F769NIHx_FLASH.ld
 
 # libraries
-LIBS = -l:NetworkRuntime810_CM7_GCC.a -lc -lm -lnosys 
+LIBS = -l:NetworkRuntime910_CM7_GCC.a -lc -lm -lnosys 
 LIBDIR = \
 -LMiddlewares/ST/AI/Lib/
 

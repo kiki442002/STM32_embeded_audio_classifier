@@ -2,10 +2,10 @@
   ******************************************************************************
   * @file    audio_classifier_data_params.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    Mon Nov 25 18:53:12 2024
+  * @date    2025-01-13T16:52:02+0100
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file

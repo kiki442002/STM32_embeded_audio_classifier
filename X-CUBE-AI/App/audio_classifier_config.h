@@ -3,12 +3,12 @@
   ******************************************************************************
   * @file    audio_classifier_config.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Mon Nov 25 18:53:12 2024
+  * @date    2025-01-13T16:52:02+0100
   * @brief   AI Tool Automatic Code Generator for Custom Layers Implementation
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -19,15 +19,14 @@
 
 #ifndef AI_AUDIO_CLASSIFIER_CONFIG_H
 #define AI_AUDIO_CLASSIFIER_CONFIG_H
-#pragma once
 
 #undef AI_TOOLS_VERSION_MAJOR
 #undef AI_TOOLS_VERSION_MINOR
 #undef AI_TOOLS_VERSION_MICRO
-#define AI_TOOLS_VERSION_MAJOR 8
-#define AI_TOOLS_VERSION_MINOR 1
+#define AI_TOOLS_VERSION_MAJOR 1
+#define AI_TOOLS_VERSION_MINOR 0
 #define AI_TOOLS_VERSION_MICRO 0
-#define AI_TOOLS_VERSION_EXTRA "19520"
+#define AI_TOOLS_VERSION_EXTRA "19899"
 
 
 #undef AI_PLATFORM_API_MAJOR

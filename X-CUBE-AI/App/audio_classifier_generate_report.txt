@@ -1,232 +1,234 @@
-Neural Network Tools for STM32 family v1.7.0 (stm.ai v8.1.0-19520)
-Created date          : 2024-11-25 18:53:12
-Parameters            : generate --name audio_classifier -m /Users/killian/Documents/Projet_5A/IA_embeded_audio_classifier/small_cnn_model.onnx --type onnx --compression lossless --verbosity 1 --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace3198938990570811930626990211295257 --output /Users/killian/.stm32cubemx/audio_classifier_output --allocate-inputs --series stm32f7 -O time --allocate-outputs
+ST Edge AI Core v1.0.0-19899
+Created date          : 2025-01-13 16:52:02
+Parameters            : generate --target stm32f7 --name audio_classifier -m /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx --compression lossless --verbosity 1 --allocate-inputs -O time --allocate-outputs --workspace /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960 --output /Users/killian/.stm32cubemx/audio_classifier_output
 
 Exec/report summary (generate)
----------------------------------------------------------------------------------------------------------------------------
-model file         :   /Users/killian/Documents/Projet_5A/IA_embeded_audio_classifier/small_cnn_model.onnx                 
-type               :   onnx                                                                                                
-c_name             :   audio_classifier                                                                                    
-compression        :   lossless                                                                                            
-options            :   allocate-inputs, allocate-outputs                                                                   
-optimization       :   time                                                                                                
-target/series      :   stm32f7                                                                                             
-workspace dir      :   /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace3198938990570811930626990211295257   
-output dir         :   /Users/killian/.stm32cubemx/audio_classifier_output                                                 
-model_fmt          :   float                                                                                               
-model_name         :   small_cnn_model                                                                                     
-model_hash         :   dde1d43199f1f3631d096596961b5780                                                                    
-params #           :   38,124 items (148.92 KiB)                                                                           
----------------------------------------------------------------------------------------------------------------------------
-input 1/1          :   'input' (domain:activations/**default**)                                                            
-                   :   960 items, 3.75 KiB, ai_float, float, (1,32,30,1)                                                   
-output 1/1         :   'output' (domain:activations/**default**)                                                           
-                   :   4 items, 16 B, ai_float, float, (1,4)                                                               
-macc               :   226,004                                                                                             
-weights (ro)       :   152,496 B (148.92 KiB) (1 segment)                                                                  
-activations (rw)   :   19,200 B (18.75 KiB) (1 segment) *                                                                  
-ram (total)        :   19,200 B (18.75 KiB) = 19,200 + 0 + 0                                                               
----------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------
+model file         :   /Users/killian/Documents/Projet ENSIM/Projet_5A/IA_embeded_audio_classifier/model/best_model_4_out.onnx   
+type               :   onnx                                                                                                      
+c_name             :   audio_classifier                                                                                          
+compression        :   lossless                                                                                                  
+options            :   allocate-inputs, allocate-outputs                                                                         
+optimization       :   time                                                                                                      
+target/series      :   stm32f7                                                                                                   
+workspace dir      :   /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T/mxAI_workspace2745583246181675237459769135564960         
+output dir         :   /Users/killian/.stm32cubemx/audio_classifier_output                                                       
+model_fmt          :   float                                                                                                     
+model_name         :   best_model_4_out                                                                                          
+model_hash         :   0xa1b612fd02abb0dd6389601db2ec0f4e                                                                        
+params #           :   38,124 items (148.92 KiB)                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------
+input 1/1          :   'input', f32(1x32x30x1), 3.75 KBytes, activations                                                         
+output 1/1         :   'output', f32(1x4), 16 Bytes, activations                                                                 
+macc               :   226,004                                                                                                   
+weights (ro)       :   152,496 B (148.92 KiB) (1 segment)                                                                        
+activations (rw)   :   19,344 B (18.89 KiB) (1 segment) *                                                                        
+ram (total)        :   19,344 B (18.89 KiB) = 19,344 + 0 + 0                                                                     
+---------------------------------------------------------------------------------------------------------------------------------
 (*) 'input'/'output' buffers can be used from the activations buffer
 
-Model name - small_cnn_model ['input'] ['output']
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-m_id   layer (type,original)                               oshape                      param/size            macc                      connected to   | c_size          c_macc             c_type              
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-8      fc1_0_weight (Placeholder, Gemm)                    [h:896,h:896,c:40]          35,840/143,360                                                 | +160(+0.1%)     +35,880(+100.0%)   dense_of32[7]       
-       fc1_0_bias (Placeholder, Gemm)                      [c:40]                      40/160                                                         | -160(-100.0%)                      
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-10     fc2_0_weight (Placeholder, Gemm)                    [h:40,h:40,c:32]            1,280/5,120                                                    | +128(+2.5%)     +1,312(+100.0%)    dense_of32[9]       
-       fc2_0_bias (Placeholder, Gemm)                      [c:32]                      32/128                                                         | -128(-100.0%)                      
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-12     fc3_0_weight (Placeholder, Gemm)                    [h:32,h:32,c:8]             256/1,024                                                      | +32(+3.1%)      +264(+100.0%)      dense_of32[11]      
-       fc3_0_bias (Placeholder, Gemm)                      [c:8]                       8/32                                                           | -32(-100.0%)                       
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-14     fc4_weight (Placeholder, Gemm)                      [h:8,h:8,c:4]               32/128                                                         | +16(+12.5%)     +36(+100.0%)       dense_of32[13]      
-       fc4_bias (Placeholder, Gemm)                        [c:4]                       4/16                                                           | -16(-100.0%)                       
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-0      input (Input, )                                     [b:1,h:32,h:32,w:30,c:1]                                                                   |                                    
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-1      _conv1_conv1_0_Conv_output_0 (Conv2D, Conv)         [b:1,h:32,h:32,w:30,c:4]    40/160              34,564                             input   |                                    conv2d_of32[0]      
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-2      _conv1_conv1_1_Relu_output_0 (Nonlinearity, Relu)   [b:1,h:32,h:32,w:30,c:4]                         3,840      _conv1_conv1_0_Conv_output_0   |                                    nl_of32[1]          
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-3      _conv1_conv1_2_MaxPool_output_0 (Pool, MaxPool)     [b:1,h:16,h:16,w:15,c:4]                         3,840      _conv1_conv1_1_Relu_output_0   |                                    pool_of32[2]        
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-4      _conv2_conv2_0_Conv_output_0 (Conv2D, Conv)         [b:1,h:16,h:16,w:15,c:16]   592/2,368          138,256   _conv1_conv1_2_MaxPool_output_0   |                                    conv2d_of32[3]      
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-5      _conv2_conv2_1_Relu_output_0 (Nonlinearity, Relu)   [b:1,h:16,h:16,w:15,c:16]                        3,840      _conv2_conv2_0_Conv_output_0   |                                    nl_of32[4]          
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-6      _conv2_conv2_2_MaxPool_output_0 (Pool, MaxPool)     [b:1,h:8,h:8,w:7,c:16]                           3,584      _conv2_conv2_1_Relu_output_0   |                                    pool_of32[5]        
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-7      _flatten_Flatten_output_0 (Reshape, Flatten)        [b:1,c:896]                                              _conv2_conv2_2_MaxPool_output_0   |                 +448(+100.0%)      transpose_of32[6]   
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-8      _fc1_fc1_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:40]                                      35,880         _flatten_Flatten_output_0   |                 -35,880(-100.0%)   
-                                                                                                                                       fc1_0_weight   | 
-                                                                                                                                         fc1_0_bias   | 
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-9      _fc1_fc1_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:40]                                          40          _fc1_fc1_0_Gemm_output_0   |                                    nl_of32[8]          
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-10     _fc2_fc2_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:32]                                       1,312          _fc1_fc1_1_Relu_output_0   |                 -1,312(-100.0%)    
-                                                                                                                                       fc2_0_weight   | 
-                                                                                                                                         fc2_0_bias   | 
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-11     _fc2_fc2_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:32]                                          32          _fc2_fc2_0_Gemm_output_0   |                                    nl_of32[10]         
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-12     _fc3_fc3_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:8]                                          264          _fc2_fc2_1_Relu_output_0   |                 -264(-100.0%)      
-                                                                                                                                       fc3_0_weight   | 
-                                                                                                                                         fc3_0_bias   | 
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-13     _fc3_fc3_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:8]                                            8          _fc3_fc3_0_Gemm_output_0   |                                    nl_of32[12]         
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-14     _fc4_Gemm_output_0 (Gemm, Gemm)                     [b:1,c:4]                                           36          _fc3_fc3_1_Relu_output_0   |                 -36(-100.0%)       
-                                                                                                                                         fc4_weight   | 
-                                                                                                                                           fc4_bias   | 
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-15     output (Nonlinearity, Softmax)                      [b:1,c:4]                                           60                _fc4_Gemm_output_0   |                                    nl_of32[o][14]      
------- --------------------------------------------------- --------------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ------------------- 
-model/c-model: macc=225,556/226,004 +448(+0.2%) weights=152,496/152,496  activations=--/19,200 io=--/0
+Model name - best_model_4_out
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+m_id   layer (type,original)                               oshape                 param/size            macc                      connected to   | c_size          c_macc             c_type                 
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+8      fc1_0_weight (Placeholder, Gemm)                    [h:896,c:40]           35,840/143,360                                                 | +160(+0.1%)     +35,880(+100.0%)   Dense_[7]              
+       fc1_0_bias (Placeholder, Gemm)                      [c:40]                 40/160                                                         | -160(-100.0%)                      
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+10     fc2_0_weight (Placeholder, Gemm)                    [h:40,c:32]            1,280/5,120                                                    | +128(+2.5%)     +1,312(+100.0%)    Dense_[9]              
+       fc2_0_bias (Placeholder, Gemm)                      [c:32]                 32/128                                                         | -128(-100.0%)                      
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+12     fc3_0_weight (Placeholder, Gemm)                    [h:32,c:8]             256/1,024                                                      | +32(+3.1%)      +264(+100.0%)      Dense_[11]             
+       fc3_0_bias (Placeholder, Gemm)                      [c:8]                  8/32                                                           | -32(-100.0%)                       
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+14     fc4_weight (Placeholder, Gemm)                      [h:8,c:4]              32/128                                                         | +16(+12.5%)     +36(+100.0%)       Dense_[13]             
+       fc4_bias (Placeholder, Gemm)                        [c:4]                  4/16                                                           | -16(-100.0%)                       
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+0      input (Input, )                                     [b:1,h:32,w:30,c:1]                                                                   |                                    
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+1      _conv1_conv1_0_Conv_output_0 (Conv2D, Conv)         [b:1,h:32,w:30,c:4]    40/160              34,564                             input   |                                    Conv2D_[0]             
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+2      _conv1_conv1_1_Relu_output_0 (Nonlinearity, Relu)   [b:1,h:32,w:30,c:4]                         3,840      _conv1_conv1_0_Conv_output_0   |                                    Nonlinearity_[1]       
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+3      _conv1_conv1_2_MaxPool_output_0 (Pool, MaxPool)     [b:1,h:16,w:15,c:4]                         3,840      _conv1_conv1_1_Relu_output_0   |                                    Pool_[2]               
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+4      _conv2_conv2_0_Conv_output_0 (Conv2D, Conv)         [b:1,h:16,w:15,c:16]   592/2,368          138,256   _conv1_conv1_2_MaxPool_output_0   |                                    Conv2D_[3]             
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+5      _conv2_conv2_1_Relu_output_0 (Nonlinearity, Relu)   [b:1,h:16,w:15,c:16]                        3,840      _conv2_conv2_0_Conv_output_0   |                                    Nonlinearity_[4]       
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+6      _conv2_conv2_2_MaxPool_output_0 (Pool, MaxPool)     [b:1,h:8,w:7,c:16]                          3,584      _conv2_conv2_1_Relu_output_0   |                                    Pool_[5]               
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+7      _flatten_Flatten_output_0 (Reshape, Flatten)        [b:1,c:896]                                         _conv2_conv2_2_MaxPool_output_0   |                 +448(+100.0%)      Transpose_[6]          
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+8      _fc1_fc1_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:40]                                 35,880         _flatten_Flatten_output_0   |                 -35,880(-100.0%)   
+                                                                                                                                  fc1_0_weight   | 
+                                                                                                                                    fc1_0_bias   | 
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+9      _fc1_fc1_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:40]                                     40          _fc1_fc1_0_Gemm_output_0   |                                    Nonlinearity_[8]       
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+10     _fc2_fc2_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:32]                                  1,312          _fc1_fc1_1_Relu_output_0   |                 -1,312(-100.0%)    
+                                                                                                                                  fc2_0_weight   | 
+                                                                                                                                    fc2_0_bias   | 
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+11     _fc2_fc2_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:32]                                     32          _fc2_fc2_0_Gemm_output_0   |                                    Nonlinearity_[10]      
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+12     _fc3_fc3_0_Gemm_output_0 (Gemm, Gemm)               [b:1,c:8]                                     264          _fc2_fc2_1_Relu_output_0   |                 -264(-100.0%)      
+                                                                                                                                  fc3_0_weight   | 
+                                                                                                                                    fc3_0_bias   | 
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+13     _fc3_fc3_1_Relu_output_0 (Nonlinearity, Relu)       [b:1,c:8]                                       8          _fc3_fc3_0_Gemm_output_0   |                                    Nonlinearity_[12]      
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+14     _fc4_Gemm_output_0 (Gemm, Gemm)                     [b:1,c:4]                                      36          _fc3_fc3_1_Relu_output_0   |                 -36(-100.0%)       
+                                                                                                                                    fc4_weight   | 
+                                                                                                                                      fc4_bias   | 
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+15     output (Nonlinearity, Softmax)                      [b:1,c:4]                                      60                _fc4_Gemm_output_0   |                                    Nonlinearity_[o][14]   
+------ --------------------------------------------------- ---------------------- ---------------- --------- --------------------------------- --- --------------- ------------------ ---------------------- 
+model/c-model: macc=225,556/226,004 +448(+0.2%) weights=152,496/152,496  activations=--/19,344 io=--/0
 
 
 
 Generated C-graph summary
 ------------------------------------------------------------------------------------------------------------------------
-model name            : small_cnn_model
+model name            : best_model_4_out
 c-name                : audio_classifier
 c-node #              : 15
-c-array #             : 28
-activations size      : 19200 (1 segment)
+c-array #             : 30
+activations size      : 19344 (1 segment)
 weights size          : 152496 (1 segment)
 macc                  : 226004
 inputs                : ['input_output']
 outputs               : ['output_output']
 
-C-Arrays (28)
------- -------------------------------------------- -------------- ------------------------- ------------- --------- --------- 
-c_id   name (*_array)                               item/size      domain/mem-pool           c-type        fmt       comment   
------- -------------------------------------------- -------------- ------------------------- ------------- --------- --------- 
-0      input_output                                 960/3840       activations/**default**   float         float32   /input    
-1      _conv1_conv1_0_Conv_output_0_output          3840/15360     activations/**default**   float         float32             
-2      _conv1_conv1_1_Relu_output_0_output          3840/15360     activations/**default**   float         float32             
-3      _conv1_conv1_2_MaxPool_output_0_output       960/3840       activations/**default**   float         float32             
-4      _conv2_conv2_0_Conv_output_0_output          3840/15360     activations/**default**   float         float32             
-5      _conv2_conv2_1_Relu_output_0_output          3840/15360     activations/**default**   float         float32             
-6      _conv2_conv2_2_MaxPool_output_0_output       896/3584       activations/**default**   float         float32             
-7      _flatten_Flatten_output_0_to_chlast_output   896/3584       activations/**default**   float         float32             
-8      _fc1_fc1_0_Gemm_output_0_output              40/160         activations/**default**   float         float32             
-9      _fc1_fc1_1_Relu_output_0_output              40/160         activations/**default**   float         float32             
-10     _fc2_fc2_0_Gemm_output_0_output              32/128         activations/**default**   float         float32             
-11     _fc2_fc2_1_Relu_output_0_output              32/128         activations/**default**   float         float32             
-12     _fc3_fc3_0_Gemm_output_0_output              8/32           activations/**default**   float         float32             
-13     _fc3_fc3_1_Relu_output_0_output              8/32           activations/**default**   float         float32             
-14     _fc4_Gemm_output_0_output                    4/16           activations/**default**   float         float32             
-15     output_output                                4/16           activations/**default**   float         float32   /output   
-16     _conv1_conv1_0_Conv_output_0_weights         36/144         weights/weights           const float   float32             
-17     _conv1_conv1_0_Conv_output_0_bias            4/16           weights/weights           const float   float32             
-18     _conv2_conv2_0_Conv_output_0_weights         576/2304       weights/weights           const float   float32             
-19     _conv2_conv2_0_Conv_output_0_bias            16/64          weights/weights           const float   float32             
-20     _fc1_fc1_0_Gemm_output_0_weights             35840/143360   weights/weights           const float   float32             
-21     _fc1_fc1_0_Gemm_output_0_bias                40/160         weights/weights           const float   float32             
-22     _fc2_fc2_0_Gemm_output_0_weights             1280/5120      weights/weights           const float   float32             
-23     _fc2_fc2_0_Gemm_output_0_bias                32/128         weights/weights           const float   float32             
-24     _fc3_fc3_0_Gemm_output_0_weights             256/1024       weights/weights           const float   float32             
-25     _fc3_fc3_0_Gemm_output_0_bias                8/32           weights/weights           const float   float32             
-26     _fc4_Gemm_output_0_weights                   32/128         weights/weights           const float   float32             
-27     _fc4_Gemm_output_0_bias                      4/16           weights/weights           const float   float32             
------- -------------------------------------------- -------------- ------------------------- ------------- --------- --------- 
+C-Arrays (30)
+------ -------------------------------------------- -------------- ------------------------- ------------- --------- 
+c_id   name (*_array)                               item/size      domain/mem-pool           c-type        comment   
+------ -------------------------------------------- -------------- ------------------------- ------------- --------- 
+0      _conv1_conv1_0_Conv_output_0_bias            4/16           weights/weights           const float             
+1      _conv1_conv1_0_Conv_output_0_output          3840/15360     activations/**default**   float                   
+2      _conv1_conv1_0_Conv_output_0_scratch0        9/36           activations/**default**   float                   
+3      _conv1_conv1_0_Conv_output_0_weights         36/144         weights/weights           const float             
+4      _conv1_conv1_1_Relu_output_0_output          3840/15360     activations/**default**   float                   
+5      _conv1_conv1_2_MaxPool_output_0_output       960/3840       activations/**default**   float                   
+6      _conv2_conv2_0_Conv_output_0_bias            16/64          weights/weights           const float             
+7      _conv2_conv2_0_Conv_output_0_output          3840/15360     activations/**default**   float                   
+8      _conv2_conv2_0_Conv_output_0_scratch0        36/144         activations/**default**   float                   
+9      _conv2_conv2_0_Conv_output_0_weights         576/2304       weights/weights           const float             
+10     _conv2_conv2_1_Relu_output_0_output          3840/15360     activations/**default**   float                   
+11     _conv2_conv2_2_MaxPool_output_0_output       896/3584       activations/**default**   float                   
+12     _fc1_fc1_0_Gemm_output_0_bias                40/160         weights/weights           const float             
+13     _fc1_fc1_0_Gemm_output_0_output              40/160         activations/**default**   float                   
+14     _fc1_fc1_0_Gemm_output_0_weights             35840/143360   weights/weights           const float             
+15     _fc1_fc1_1_Relu_output_0_output              40/160         activations/**default**   float                   
+16     _fc2_fc2_0_Gemm_output_0_bias                32/128         weights/weights           const float             
+17     _fc2_fc2_0_Gemm_output_0_output              32/128         activations/**default**   float                   
+18     _fc2_fc2_0_Gemm_output_0_weights             1280/5120      weights/weights           const float             
+19     _fc2_fc2_1_Relu_output_0_output              32/128         activations/**default**   float                   
+20     _fc3_fc3_0_Gemm_output_0_bias                8/32           weights/weights           const float             
+21     _fc3_fc3_0_Gemm_output_0_output              8/32           activations/**default**   float                   
+22     _fc3_fc3_0_Gemm_output_0_weights             256/1024       weights/weights           const float             
+23     _fc3_fc3_1_Relu_output_0_output              8/32           activations/**default**   float                   
+24     _fc4_Gemm_output_0_bias                      4/16           weights/weights           const float             
+25     _fc4_Gemm_output_0_output                    4/16           activations/**default**   float                   
+26     _fc4_Gemm_output_0_weights                   32/128         weights/weights           const float             
+27     _flatten_Flatten_output_0_to_chlast_output   896/3584       activations/**default**   float                   
+28     input_output                                 960/3840       activations/**default**   float         /input    
+29     output_output                                4/16           activations/**default**   float         /output   
+------ -------------------------------------------- -------------- ------------------------- ------------- --------- 
 
 C-Layers (15)
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-c_id   name (*_layer)                        id   layer_type   macc     rom      tensors                                          shape (array id)   
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-0      _conv1_conv1_0_Conv_output_0          1    conv2d       34564    160      I: input_output                                  (1,32,30,1) (0)    
-                                                                                 W: _conv1_conv1_0_Conv_output_0_weights          (1,3,3,4) (16)     
-                                                                                 W: _conv1_conv1_0_Conv_output_0_bias             (4,) (17)          
-                                                                                 O: _conv1_conv1_0_Conv_output_0_output           (1,32,30,4) (1)    
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-1      _conv1_conv1_1_Relu_output_0          2    nl           3840     0        I: _conv1_conv1_0_Conv_output_0_output           (1,32,30,4) (1)    
-                                                                                 O: _conv1_conv1_1_Relu_output_0_output           (1,32,30,4) (2)    
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-2      _conv1_conv1_2_MaxPool_output_0       3    pool         3840     0        I: _conv1_conv1_1_Relu_output_0_output           (1,32,30,4) (2)    
-                                                                                 O: _conv1_conv1_2_MaxPool_output_0_output        (1,16,15,4) (3)    
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-3      _conv2_conv2_0_Conv_output_0          4    conv2d       138256   2368     I: _conv1_conv1_2_MaxPool_output_0_output        (1,16,15,4) (3)    
-                                                                                 W: _conv2_conv2_0_Conv_output_0_weights          (4,3,3,16) (18)    
-                                                                                 W: _conv2_conv2_0_Conv_output_0_bias             (16,) (19)         
-                                                                                 O: _conv2_conv2_0_Conv_output_0_output           (1,16,15,16) (4)   
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-4      _conv2_conv2_1_Relu_output_0          5    nl           3840     0        I: _conv2_conv2_0_Conv_output_0_output           (1,16,15,16) (4)   
-                                                                                 O: _conv2_conv2_1_Relu_output_0_output           (1,16,15,16) (5)   
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-5      _conv2_conv2_2_MaxPool_output_0       6    pool         3584     0        I: _conv2_conv2_1_Relu_output_0_output           (1,16,15,16) (5)   
-                                                                                 O: _conv2_conv2_2_MaxPool_output_0_output        (1,8,7,16) (6)     
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-6      _flatten_Flatten_output_0_to_chlast   7    transpose    448      0        I: _conv2_conv2_2_MaxPool_output_0_output        (1,8,7,16) (6)     
-                                                                                 O: _flatten_Flatten_output_0_to_chlast_output    (1,16,8,7) (7)     
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-7      _fc1_fc1_0_Gemm_output_0              8    dense        35880    143520   I: _flatten_Flatten_output_0_to_chlast_output0   (1,896) (7)        
-                                                                                 W: _fc1_fc1_0_Gemm_output_0_weights              (896,40) (20)      
-                                                                                 W: _fc1_fc1_0_Gemm_output_0_bias                 (40,) (21)         
-                                                                                 O: _fc1_fc1_0_Gemm_output_0_output               (1,40) (8)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-8      _fc1_fc1_1_Relu_output_0              9    nl           40       0        I: _fc1_fc1_0_Gemm_output_0_output               (1,40) (8)         
-                                                                                 O: _fc1_fc1_1_Relu_output_0_output               (1,40) (9)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-9      _fc2_fc2_0_Gemm_output_0              10   dense        1312     5248     I: _fc1_fc1_1_Relu_output_0_output               (1,40) (9)         
-                                                                                 W: _fc2_fc2_0_Gemm_output_0_weights              (40,32) (22)       
-                                                                                 W: _fc2_fc2_0_Gemm_output_0_bias                 (32,) (23)         
-                                                                                 O: _fc2_fc2_0_Gemm_output_0_output               (1,32) (10)        
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-10     _fc2_fc2_1_Relu_output_0              11   nl           32       0        I: _fc2_fc2_0_Gemm_output_0_output               (1,32) (10)        
-                                                                                 O: _fc2_fc2_1_Relu_output_0_output               (1,32) (11)        
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-11     _fc3_fc3_0_Gemm_output_0              12   dense        264      1056     I: _fc2_fc2_1_Relu_output_0_output               (1,32) (11)        
-                                                                                 W: _fc3_fc3_0_Gemm_output_0_weights              (32,8) (24)        
-                                                                                 W: _fc3_fc3_0_Gemm_output_0_bias                 (8,) (25)          
-                                                                                 O: _fc3_fc3_0_Gemm_output_0_output               (1,8) (12)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-12     _fc3_fc3_1_Relu_output_0              13   nl           8        0        I: _fc3_fc3_0_Gemm_output_0_output               (1,8) (12)         
-                                                                                 O: _fc3_fc3_1_Relu_output_0_output               (1,8) (13)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-13     _fc4_Gemm_output_0                    14   dense        36       144      I: _fc3_fc3_1_Relu_output_0_output               (1,8) (13)         
-                                                                                 W: _fc4_Gemm_output_0_weights                    (8,4) (26)         
-                                                                                 W: _fc4_Gemm_output_0_bias                       (4,) (27)          
-                                                                                 O: _fc4_Gemm_output_0_output                     (1,4) (14)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
-14     output                                15   nl           60       0        I: _fc4_Gemm_output_0_output                     (1,4) (14)         
-                                                                                 O: output_output                                 (1,4) (15)         
------- ------------------------------------- ---- ------------ -------- -------- ------------------------------------------------ ------------------ 
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+c_id   name (*_layer)                        id   layer_type      macc     rom      tensors                                         shape (array id)       
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+0      _conv1_conv1_0_Conv_output_0          1    Conv2D          34564    160      I: input_output                                 f32(1x32x30x1) (28)    
+                                                                                    S: _conv1_conv1_0_Conv_output_0_scratch0                               
+                                                                                    W: _conv1_conv1_0_Conv_output_0_weights         f32(4x3x3x1) (3)       
+                                                                                    W: _conv1_conv1_0_Conv_output_0_bias            f32(4) (0)             
+                                                                                    O: _conv1_conv1_0_Conv_output_0_output          f32(1x32x30x4) (1)     
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+1      _conv1_conv1_1_Relu_output_0          2    Nonlinearity    3840     0        I: _conv1_conv1_0_Conv_output_0_output          f32(1x32x30x4) (1)     
+                                                                                    O: _conv1_conv1_1_Relu_output_0_output          f32(1x32x30x4) (4)     
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+2      _conv1_conv1_2_MaxPool_output_0       3    Pool            3840     0        I: _conv1_conv1_1_Relu_output_0_output          f32(1x32x30x4) (4)     
+                                                                                    O: _conv1_conv1_2_MaxPool_output_0_output       f32(1x16x15x4) (5)     
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+3      _conv2_conv2_0_Conv_output_0          4    Conv2D          138256   2368     I: _conv1_conv1_2_MaxPool_output_0_output       f32(1x16x15x4) (5)     
+                                                                                    S: _conv2_conv2_0_Conv_output_0_scratch0                               
+                                                                                    W: _conv2_conv2_0_Conv_output_0_weights         f32(16x3x3x4) (9)      
+                                                                                    W: _conv2_conv2_0_Conv_output_0_bias            f32(16) (6)            
+                                                                                    O: _conv2_conv2_0_Conv_output_0_output          f32(1x16x15x16) (7)    
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+4      _conv2_conv2_1_Relu_output_0          5    Nonlinearity    3840     0        I: _conv2_conv2_0_Conv_output_0_output          f32(1x16x15x16) (7)    
+                                                                                    O: _conv2_conv2_1_Relu_output_0_output          f32(1x16x15x16) (10)   
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+5      _conv2_conv2_2_MaxPool_output_0       6    Pool            3584     0        I: _conv2_conv2_1_Relu_output_0_output          f32(1x16x15x16) (10)   
+                                                                                    O: _conv2_conv2_2_MaxPool_output_0_output       f32(1x8x7x16) (11)     
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+6      _flatten_Flatten_output_0_to_chlast   7    Transpose       448      0        I: _conv2_conv2_2_MaxPool_output_0_output       f32(1x8x7x16) (11)     
+                                                                                    O: _flatten_Flatten_output_0_to_chlast_output   f32(1x16x8x7) (27)     
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+7      _fc1_fc1_0_Gemm_output_0              8    Dense           35880    143520   I: _flatten_Flatten_output_0_to_chlast_output   f32(1x16x8x7) (27)     
+                                                                                    W: _fc1_fc1_0_Gemm_output_0_weights             f32(40x896) (14)       
+                                                                                    W: _fc1_fc1_0_Gemm_output_0_bias                f32(40) (12)           
+                                                                                    O: _fc1_fc1_0_Gemm_output_0_output              f32(1x40) (13)         
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+8      _fc1_fc1_1_Relu_output_0              9    Nonlinearity    40       0        I: _fc1_fc1_0_Gemm_output_0_output              f32(1x40) (13)         
+                                                                                    O: _fc1_fc1_1_Relu_output_0_output              f32(1x40) (15)         
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+9      _fc2_fc2_0_Gemm_output_0              10   Dense           1312     5248     I: _fc1_fc1_1_Relu_output_0_output              f32(1x40) (15)         
+                                                                                    W: _fc2_fc2_0_Gemm_output_0_weights             f32(32x40) (18)        
+                                                                                    W: _fc2_fc2_0_Gemm_output_0_bias                f32(32) (16)           
+                                                                                    O: _fc2_fc2_0_Gemm_output_0_output              f32(1x32) (17)         
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+10     _fc2_fc2_1_Relu_output_0              11   Nonlinearity    32       0        I: _fc2_fc2_0_Gemm_output_0_output              f32(1x32) (17)         
+                                                                                    O: _fc2_fc2_1_Relu_output_0_output              f32(1x32) (19)         
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+11     _fc3_fc3_0_Gemm_output_0              12   Dense           264      1056     I: _fc2_fc2_1_Relu_output_0_output              f32(1x32) (19)         
+                                                                                    W: _fc3_fc3_0_Gemm_output_0_weights             f32(8x32) (22)         
+                                                                                    W: _fc3_fc3_0_Gemm_output_0_bias                f32(8) (20)            
+                                                                                    O: _fc3_fc3_0_Gemm_output_0_output              f32(1x8) (21)          
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+12     _fc3_fc3_1_Relu_output_0              13   Nonlinearity    8        0        I: _fc3_fc3_0_Gemm_output_0_output              f32(1x8) (21)          
+                                                                                    O: _fc3_fc3_1_Relu_output_0_output              f32(1x8) (23)          
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+13     _fc4_Gemm_output_0                    14   Dense           36       144      I: _fc3_fc3_1_Relu_output_0_output              f32(1x8) (23)          
+                                                                                    W: _fc4_Gemm_output_0_weights                   f32(4x8) (26)          
+                                                                                    W: _fc4_Gemm_output_0_bias                      f32(4) (24)            
+                                                                                    O: _fc4_Gemm_output_0_output                    f32(1x4) (25)          
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
+14     output                                15   Nonlinearity    60       0        I: _fc4_Gemm_output_0_output                    f32(1x4) (25)          
+                                                                                    O: output_output                                f32(1x4) (29)          
+------ ------------------------------------- ---- --------------- -------- -------- ----------------------------------------------- ---------------------- 
 
 
 
 Number of operations per c-layer
-------- ------ ------------------------------------------------- --------- -------------- -------- ---------- 
-c_id    m_id   name (type)                                             #op           type   #param   sparsity 
-------- ------ ------------------------------------------------- --------- -------------- -------- ---------- 
-0       1      _conv1_conv1_0_Conv_output_0 (conv2d)                34,564   smul_f32_f32       40     0.0000 
-1       2      _conv1_conv1_1_Relu_output_0 (nl)                     3,840     op_f32_f32          
-2       3      _conv1_conv1_2_MaxPool_output_0 (pool)                3,840     op_f32_f32          
-3       4      _conv2_conv2_0_Conv_output_0 (conv2d)               138,256   smul_f32_f32      592     0.0000 
-4       5      _conv2_conv2_1_Relu_output_0 (nl)                     3,840     op_f32_f32          
-5       6      _conv2_conv2_2_MaxPool_output_0 (pool)                3,584     op_f32_f32          
-6       7      _flatten_Flatten_output_0_to_chlast (transpose)         448     op_f32_f32          
-7       8      _fc1_fc1_0_Gemm_output_0 (dense)                     35,880   smul_f32_f32   35,880     0.0000 
-8       9      _fc1_fc1_1_Relu_output_0 (nl)                            40     op_f32_f32          
-9       10     _fc2_fc2_0_Gemm_output_0 (dense)                      1,312   smul_f32_f32    1,312     0.0000 
-10      11     _fc2_fc2_1_Relu_output_0 (nl)                            32     op_f32_f32          
-11      12     _fc3_fc3_0_Gemm_output_0 (dense)                        264   smul_f32_f32      264     0.0000 
-12      13     _fc3_fc3_1_Relu_output_0 (nl)                             8     op_f32_f32          
-13      14     _fc4_Gemm_output_0 (dense)                               36   smul_f32_f32       36     0.0000 
-14      15     output (nl)                                              60     op_f32_f32          
-------- ------ ------------------------------------------------- --------- -------------- -------- ---------- 
-total                                                              226,004                  38,124     0.0000 
+------- ------ ------------------------------------------------- --------- -------------- 
+c_id    m_id   name (type)                                             #op           type 
+------- ------ ------------------------------------------------- --------- -------------- 
+0       1      _conv1_conv1_0_Conv_output_0 (Conv2D)                34,564   smul_f32_f32 
+1       2      _conv1_conv1_1_Relu_output_0 (Nonlinearity)           3,840     op_f32_f32 
+2       3      _conv1_conv1_2_MaxPool_output_0 (Pool)                3,840   smul_f32_f32 
+3       4      _conv2_conv2_0_Conv_output_0 (Conv2D)               138,256   smul_f32_f32 
+4       5      _conv2_conv2_1_Relu_output_0 (Nonlinearity)           3,840     op_f32_f32 
+5       6      _conv2_conv2_2_MaxPool_output_0 (Pool)                3,584   smul_f32_f32 
+6       7      _flatten_Flatten_output_0_to_chlast (Transpose)         448   smul_f32_f32 
+7       8      _fc1_fc1_0_Gemm_output_0 (Dense)                     35,880   smul_f32_f32 
+8       9      _fc1_fc1_1_Relu_output_0 (Nonlinearity)                  40     op_f32_f32 
+9       10     _fc2_fc2_0_Gemm_output_0 (Dense)                      1,312   smul_f32_f32 
+10      11     _fc2_fc2_1_Relu_output_0 (Nonlinearity)                  32     op_f32_f32 
+11      12     _fc3_fc3_0_Gemm_output_0 (Dense)                        264   smul_f32_f32 
+12      13     _fc3_fc3_1_Relu_output_0 (Nonlinearity)                   8     op_f32_f32 
+13      14     _fc4_Gemm_output_0 (Dense)                               36   smul_f32_f32 
+14      15     output (Nonlinearity)                                    60     op_f32_f32 
+------- ------ ------------------------------------------------- --------- -------------- 
+total                                                              226,004 
 
 Number of operation types
 ---------------- --------- ----------- 
 operation type           #           % 
 ---------------- --------- ----------- 
-smul_f32_f32       210,312       93.1% 
-op_f32_f32          15,692        6.9% 
+smul_f32_f32       218,184       96.5% 
+op_f32_f32           7,820        3.5% 
 
 Complexity report (model)
 ------ --------------------------------- ------------------------- ------------------------- ------ 
@@ -248,14 +250,14 @@ m_id   name                              c_macc                    c_rom        
 13     _fc3_fc3_1_Relu_output_0          |                  0.0%   |                  0.0%   [12]   
 15     output                            |                  0.0%   |                  0.0%   [14]   
 ------ --------------------------------- ------------------------- ------------------------- ------ 
-macc=226,004 weights=152,496 act=19,200 ram_io=0
+macc=226,004 weights=152,496 act=19,344 ram_io=0
 
 Generated files (7)
 ------------------------------------------------------------------------------------ 
-/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_config.h        
-/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier.h               
-/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier.c               
 /Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_data_params.h   
 /Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_data_params.c   
 /Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_data.h          
 /Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_data.c          
+/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier_config.h        
+/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier.h               
+/Users/killian/.stm32cubemx/audio_classifier_output/audio_classifier.c               

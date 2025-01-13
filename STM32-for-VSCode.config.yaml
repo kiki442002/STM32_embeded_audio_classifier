@@ -55,7 +55,7 @@ linkerFlags:
 libraries: 
   - c
   - m
-  - :NetworkRuntime810_CM7_GCC.a
+  - :NetworkRuntime910_CM7_GCC.a
 
 # Library directories. Folders can be added here that contain custom libraries.
 libraryDirectories: 

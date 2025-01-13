@@ -18,10 +18,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usart.h"
 #include "crc.h"
 #include "rtc.h"
 #include "gpio.h"
+#include "app_x-cube-ai.h"
+#include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -38,6 +39,7 @@
 /* USER CODE BEGIN PTD */
 
 #define TIME_TO_RECORD 157 // 5 seconds
+extern UART_HandleTypeDef huart1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -101,83 +103,12 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_USART1_UART_Init();
   MX_GPIO_Init();
   MX_CRC_Init();
   MX_RTC_Init();
+  MX_USART1_UART_Init();
+  MX_X_CUBE_AI_Init();
   /* USER CODE BEGIN 2 */
-  AI_ALIGNED(4)
-  ai_u8 activations[AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_SIZE];
-  AI_ALIGNED(4)
-  ai_i8 in_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES];
-  AI_ALIGNED(4)
-  ai_i8 out_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES] = {0};
-
-  ai_handle model = AI_HANDLE_NULL;
-
-  /* Create and initialize the AI model */
-  const ai_handle activations_handle[] = {activations};
-  const ai_handle weights_handle[] = {ai_audio_classifier_data_weights_get()};
-
-  ai_error err;
-  /* Create and initialize the AI model */
-  err = ai_audio_classifier_create_and_init(&model, activations_handle, weights_handle);
-  if (err.type != AI_ERROR_NONE)
-  {
-    printf("Error: %d\n\r", err);
-    return -1;
-  }
-
-  ai_buffer *ai_input = ai_audio_classifier_inputs_get(model, NULL);
-  ai_buffer *ai_output = ai_audio_classifier_outputs_get(model, NULL);
-
-  // print ai_input and ai_output
-  printf("ai_input: %ld\n\r", ai_input[0].format);
-  printf("ai_output: %ld\n\r", ai_output[0].format);
-
-  /* Example input data */
-  float input_data[AI_AUDIO_CLASSIFIER_IN_1_SIZE];
-  for (int i = 0; i < AI_AUDIO_CLASSIFIER_IN_1_SIZE; i++)
-  {
-    input_data[i] = 1.0;
-  }
-
-  /* Example output data */
-  float output_data[AI_AUDIO_CLASSIFIER_OUT_1_SIZE] = {0};
-
-  ai_input[0].data = AI_HANDLE_PTR(input_data);
-  ai_output[0].data = AI_HANDLE_PTR(output_data);
-
-  uint32_t start_time = HAL_GetTick();
-  /* Run the inference */
-  int n_batch = ai_audio_classifier_run(model, &ai_input[0], &ai_output[0]);
-  printf("Number of batches: %d\n\r", n_batch);
-  if (n_batch != 1)
-  {
-    ai_error err = ai_audio_classifier_get_error(model);
-    printf("AI model inference failed: 0X%x %x\n\r", err.code, err.type);
-    return -1;
-  }
-  uint32_t end_time = HAL_GetTick();
-  printf("Inference time: %d ms\n\r", end_time - start_time);
-
-  /* Find the maximum value in the output data */
-  float max_value = (float)output_data[0];
-  int max_index = 0;
-  printf("Output data: %d\n\r", (int)output_data[0]);
-  for (int i = 1; i < AI_AUDIO_CLASSIFIER_OUT_1_SIZE; i++)
-  {
-    printf("Output data: %d\n\r", (int)output_data[i]);
-    float value = (float)output_data[i];
-    if (value > max_value)
-    {
-      max_value = value;
-      max_index = i;
-    }
-  }
-
-  /* Process the output data */
-  printf("Maximum value: %d at index %d\r\n", (int)max_value, max_index);
 
   /* USER CODE END 2 */
 
@@ -187,6 +118,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
+    MX_X_CUBE_AI_Process();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

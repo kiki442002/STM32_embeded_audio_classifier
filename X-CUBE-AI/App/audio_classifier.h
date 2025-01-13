@@ -2,12 +2,12 @@
   ******************************************************************************
   * @file    audio_classifier.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Mon Nov 25 18:53:12 2024
+  * @date    2025-01-13T16:52:02+0100
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -15,17 +15,15 @@
   * If no LICENSE file comes with this software, it is provided AS-IS.
   ******************************************************************************
   */
-
 #ifndef AI_AUDIO_CLASSIFIER_H
 #define AI_AUDIO_CLASSIFIER_H
-#pragma once
 
 #include "audio_classifier_config.h"
 #include "ai_platform.h"
 
 /******************************************************************************/
 #define AI_AUDIO_CLASSIFIER_MODEL_NAME          "audio_classifier"
-#define AI_AUDIO_CLASSIFIER_ORIGIN_MODEL_NAME   "small_cnn_model"
+#define AI_AUDIO_CLASSIFIER_ORIGIN_MODEL_NAME   "best_model_4_out"
 
 /******************************************************************************/
 #define AI_AUDIO_CLASSIFIER_ACTIVATIONS_ALIGNMENT   (4)
@@ -45,11 +43,11 @@ AI_DEPRECATED
 #define AI_AUDIO_CLASSIFIER_IN_SIZE_BYTES { \
   AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES, \
 }
-#define AI_AUDIO_CLASSIFIER_IN_1_FORMAT      AI_BUFFER_FORMAT_FLOAT
+#define AI_AUDIO_CLASSIFIER_IN_1_FORMAT      (AI_BUFFER_FORMAT_FLOAT)
 #define AI_AUDIO_CLASSIFIER_IN_1_HEIGHT      (32)
-#define AI_AUDIO_CLASSIFIER_IN_1_CHANNEL     (1)
 #define AI_AUDIO_CLASSIFIER_IN_1_WIDTH       (30)
-#define AI_AUDIO_CLASSIFIER_IN_1_SIZE        (32 * 1 * 30)
+#define AI_AUDIO_CLASSIFIER_IN_1_CHANNEL     (1)
+#define AI_AUDIO_CLASSIFIER_IN_1_SIZE        (960)
 #define AI_AUDIO_CLASSIFIER_IN_1_SIZE_BYTES  (3840)
 
 /******************************************************************************/
@@ -65,7 +63,7 @@ AI_DEPRECATED
 #define AI_AUDIO_CLASSIFIER_OUT_SIZE_BYTES { \
   AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES, \
 }
-#define AI_AUDIO_CLASSIFIER_OUT_1_FORMAT      AI_BUFFER_FORMAT_FLOAT
+#define AI_AUDIO_CLASSIFIER_OUT_1_FORMAT      (AI_BUFFER_FORMAT_FLOAT)
 #define AI_AUDIO_CLASSIFIER_OUT_1_CHANNEL     (4)
 #define AI_AUDIO_CLASSIFIER_OUT_1_SIZE        (4)
 #define AI_AUDIO_CLASSIFIER_OUT_1_SIZE_BYTES  (16)
@@ -108,6 +106,7 @@ ai_bool ai_audio_classifier_get_info(
   ai_handle network, ai_network_report* report);
 
 
+
 /*!
  * @brief Get network library report as a datastruct.
  * @ingroup audio_classifier
@@ -119,6 +118,7 @@ ai_bool ai_audio_classifier_get_info(
 AI_API_ENTRY
 ai_bool ai_audio_classifier_get_report(
   ai_handle network, ai_network_report* report);
+
 
 /*!
  * @brief Get first network error code.
@@ -134,6 +134,7 @@ ai_bool ai_audio_classifier_get_report(
 AI_API_ENTRY
 ai_error ai_audio_classifier_get_error(ai_handle network);
 
+
 /*!
  * @brief Create a neural network.
  * @ingroup audio_classifier
@@ -147,6 +148,7 @@ AI_API_ENTRY
 ai_error ai_audio_classifier_create(
   ai_handle* network, const ai_buffer* network_config);
 
+
 /*!
  * @brief Destroy a neural network and frees the allocated memory.
  * @ingroup audio_classifier
@@ -158,6 +160,7 @@ ai_error ai_audio_classifier_create(
  */
 AI_API_ENTRY
 ai_handle ai_audio_classifier_destroy(ai_handle network);
+
 
 /*!
  * @brief Initialize the data structures of the network.
@@ -177,6 +180,7 @@ AI_API_ENTRY
 ai_bool ai_audio_classifier_init(
   ai_handle network, const ai_network_params* params);
 
+
 /*!
  * @brief Create and initialize a neural network (helper function)
  * @ingroup audio_classifier
@@ -190,6 +194,7 @@ AI_API_ENTRY
 ai_error ai_audio_classifier_create_and_init(
   ai_handle* network, const ai_handle activations[], const ai_handle weights[]);
 
+
 /*!
  * @brief Get network inputs array pointer as a ai_buffer array pointer.
  * @ingroup audio_classifier
@@ -201,6 +206,7 @@ AI_API_ENTRY
 ai_buffer* ai_audio_classifier_inputs_get(
   ai_handle network, ai_u16 *n_buffer);
 
+
 /*!
  * @brief Get network outputs array pointer as a ai_buffer array pointer.
  * @ingroup audio_classifier
@@ -211,6 +217,7 @@ ai_buffer* ai_audio_classifier_inputs_get(
 AI_API_ENTRY
 ai_buffer* ai_audio_classifier_outputs_get(
   ai_handle network, ai_u16 *n_buffer);
+
 
 /*!
  * @brief Run the network and return the output
@@ -231,6 +238,7 @@ ai_buffer* ai_audio_classifier_outputs_get(
 AI_API_ENTRY
 ai_i32 ai_audio_classifier_run(
   ai_handle network, const ai_buffer* input, ai_buffer* output);
+
 
 /*!
  * @brief Runs the network on the inputs.

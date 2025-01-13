@@ -2,10 +2,10 @@
   ******************************************************************************
   * @file    audio_classifier_data_params.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    Mon Nov 25 18:53:12 2024
+  * @date    2025-01-13T16:52:02+0100
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -16,7 +16,6 @@
 
 #ifndef AUDIO_CLASSIFIER_DATA_PARAMS_H
 #define AUDIO_CLASSIFIER_DATA_PARAMS_H
-#pragma once
 
 #include "ai_platform.h"
 
@@ -29,10 +28,10 @@
 
 
 #define AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_SIZES \
-  { 19200, }
-#define AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_SIZE     (19200)
+  { 19344, }
+#define AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_SIZE     (19344)
 #define AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_COUNT    (1)
-#define AI_AUDIO_CLASSIFIER_DATA_ACTIVATION_1_SIZE    (19200)
+#define AI_AUDIO_CLASSIFIER_DATA_ACTIVATION_1_SIZE    (19344)
 
 
 

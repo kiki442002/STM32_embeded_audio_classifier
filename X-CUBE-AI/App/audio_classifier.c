@@ -2,12 +2,12 @@
   ******************************************************************************
   * @file    audio_classifier.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    Mon Nov 25 18:53:12 2024
+  * @date    2025-01-13T16:52:02+0100
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -35,14 +35,14 @@
 #define AI_NET_OBJ_INSTANCE g_audio_classifier
  
 #undef AI_AUDIO_CLASSIFIER_MODEL_SIGNATURE
-#define AI_AUDIO_CLASSIFIER_MODEL_SIGNATURE     "dde1d43199f1f3631d096596961b5780"
+#define AI_AUDIO_CLASSIFIER_MODEL_SIGNATURE     "0xa1b612fd02abb0dd6389601db2ec0f4e"
 
 #ifndef AI_TOOLS_REVISION_ID
 #define AI_TOOLS_REVISION_ID     ""
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "Mon Nov 25 18:53:12 2024"
+#define AI_TOOLS_DATE_TIME   "2025-01-13T16:52:02+0100"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
@@ -60,114 +60,152 @@ static ai_ptr g_audio_classifier_weights_map[1] = AI_C_ARRAY_INIT;
 AI_ARRAY_OBJ_DECLARE(
   input_output_array, AI_ARRAY_FORMAT_FLOAT|AI_FMT_FLAG_IS_IO,
   NULL, NULL, 960, AI_STATIC)
+
 /* Array#1 */
 AI_ARRAY_OBJ_DECLARE(
   _conv1_conv1_0_Conv_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 3840, AI_STATIC)
+
 /* Array#2 */
 AI_ARRAY_OBJ_DECLARE(
   _conv1_conv1_1_Relu_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 3840, AI_STATIC)
+
 /* Array#3 */
 AI_ARRAY_OBJ_DECLARE(
   _conv1_conv1_2_MaxPool_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 960, AI_STATIC)
+
 /* Array#4 */
 AI_ARRAY_OBJ_DECLARE(
   _conv2_conv2_0_Conv_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 3840, AI_STATIC)
+
 /* Array#5 */
 AI_ARRAY_OBJ_DECLARE(
   _conv2_conv2_1_Relu_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 3840, AI_STATIC)
+
 /* Array#6 */
 AI_ARRAY_OBJ_DECLARE(
   _conv2_conv2_2_MaxPool_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 896, AI_STATIC)
+
 /* Array#7 */
 AI_ARRAY_OBJ_DECLARE(
   _flatten_Flatten_output_0_to_chlast_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 896, AI_STATIC)
+
 /* Array#8 */
 AI_ARRAY_OBJ_DECLARE(
   _fc1_fc1_0_Gemm_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 40, AI_STATIC)
+
 /* Array#9 */
 AI_ARRAY_OBJ_DECLARE(
   _fc1_fc1_1_Relu_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 40, AI_STATIC)
+
 /* Array#10 */
 AI_ARRAY_OBJ_DECLARE(
   _fc2_fc2_0_Gemm_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 32, AI_STATIC)
+
 /* Array#11 */
 AI_ARRAY_OBJ_DECLARE(
   _fc2_fc2_1_Relu_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 32, AI_STATIC)
+
 /* Array#12 */
 AI_ARRAY_OBJ_DECLARE(
   _fc3_fc3_0_Gemm_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 8, AI_STATIC)
+
 /* Array#13 */
 AI_ARRAY_OBJ_DECLARE(
   _fc3_fc3_1_Relu_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 8, AI_STATIC)
+
 /* Array#14 */
 AI_ARRAY_OBJ_DECLARE(
   _fc4_Gemm_output_0_output_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 4, AI_STATIC)
+
 /* Array#15 */
 AI_ARRAY_OBJ_DECLARE(
   output_output_array, AI_ARRAY_FORMAT_FLOAT|AI_FMT_FLAG_IS_IO,
   NULL, NULL, 4, AI_STATIC)
+
 /* Array#16 */
 AI_ARRAY_OBJ_DECLARE(
   _conv1_conv1_0_Conv_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 36, AI_STATIC)
+
 /* Array#17 */
 AI_ARRAY_OBJ_DECLARE(
   _conv1_conv1_0_Conv_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 4, AI_STATIC)
+
 /* Array#18 */
 AI_ARRAY_OBJ_DECLARE(
   _conv2_conv2_0_Conv_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 576, AI_STATIC)
+
 /* Array#19 */
 AI_ARRAY_OBJ_DECLARE(
   _conv2_conv2_0_Conv_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 16, AI_STATIC)
+
 /* Array#20 */
 AI_ARRAY_OBJ_DECLARE(
   _fc1_fc1_0_Gemm_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 35840, AI_STATIC)
+
 /* Array#21 */
 AI_ARRAY_OBJ_DECLARE(
   _fc1_fc1_0_Gemm_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 40, AI_STATIC)
+
 /* Array#22 */
 AI_ARRAY_OBJ_DECLARE(
   _fc2_fc2_0_Gemm_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 1280, AI_STATIC)
+
 /* Array#23 */
 AI_ARRAY_OBJ_DECLARE(
   _fc2_fc2_0_Gemm_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 32, AI_STATIC)
+
 /* Array#24 */
 AI_ARRAY_OBJ_DECLARE(
   _fc3_fc3_0_Gemm_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 256, AI_STATIC)
+
 /* Array#25 */
 AI_ARRAY_OBJ_DECLARE(
   _fc3_fc3_0_Gemm_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 8, AI_STATIC)
+
 /* Array#26 */
 AI_ARRAY_OBJ_DECLARE(
   _fc4_Gemm_output_0_weights_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 32, AI_STATIC)
+
 /* Array#27 */
 AI_ARRAY_OBJ_DECLARE(
   _fc4_Gemm_output_0_bias_array, AI_ARRAY_FORMAT_FLOAT,
   NULL, NULL, 4, AI_STATIC)
+
+/* Array#28 */
+AI_ARRAY_OBJ_DECLARE(
+  _conv1_conv1_0_Conv_output_0_scratch0_array, AI_ARRAY_FORMAT_FLOAT,
+  NULL, NULL, 9, AI_STATIC)
+
+/* Array#29 */
+AI_ARRAY_OBJ_DECLARE(
+  _conv2_conv2_0_Conv_output_0_scratch0_array, AI_ARRAY_FORMAT_FLOAT,
+  NULL, NULL, 36, AI_STATIC)
+
 /**  Tensor declarations section  *********************************************/
 /* Tensor #0 */
 AI_TENSOR_OBJ_DECLARE(
@@ -372,6 +410,20 @@ AI_TENSOR_OBJ_DECLARE(
   AI_SHAPE_INIT(4, 1, 4, 1, 1), AI_STRIDE_INIT(4, 4, 4, 16, 16),
   1, &_fc4_Gemm_output_0_bias_array, NULL)
 
+/* Tensor #29 */
+AI_TENSOR_OBJ_DECLARE(
+  _conv1_conv1_0_Conv_output_0_scratch0, AI_STATIC,
+  29, 0x0,
+  AI_SHAPE_INIT(4, 1, 1, 3, 3), AI_STRIDE_INIT(4, 4, 4, 4, 12),
+  1, &_conv1_conv1_0_Conv_output_0_scratch0_array, NULL)
+
+/* Tensor #30 */
+AI_TENSOR_OBJ_DECLARE(
+  _conv2_conv2_0_Conv_output_0_scratch0, AI_STATIC,
+  30, 0x0,
+  AI_SHAPE_INIT(4, 1, 4, 3, 3), AI_STRIDE_INIT(4, 4, 4, 16, 48),
+  1, &_conv2_conv2_0_Conv_output_0_scratch0_array, NULL)
+
 
 
 /**  Layer declarations section  **********************************************/
@@ -567,7 +619,7 @@ AI_TENSOR_CHAIN_OBJ_DECLARE(
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &_conv1_conv1_2_MaxPool_output_0_output),
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &_conv2_conv2_0_Conv_output_0_output),
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 3, &_conv2_conv2_0_Conv_output_0_weights, &_conv2_conv2_0_Conv_output_0_bias, NULL),
-  AI_TENSOR_LIST_OBJ_EMPTY
+  AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 2, &_conv2_conv2_0_Conv_output_0_scratch0, NULL)
 )
 
 AI_LAYER_OBJ_DECLARE(
@@ -580,7 +632,7 @@ AI_LAYER_OBJ_DECLARE(
   .filter_stride = AI_SHAPE_2D_INIT(1, 1), 
   .dilation = AI_SHAPE_2D_INIT(1, 1), 
   .filter_pad = AI_SHAPE_INIT(4, 1, 1, 1, 1), 
-  .in_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_VALID, 
+  .in_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_SAME, 
   .out_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_VALID, 
 )
 
@@ -625,7 +677,7 @@ AI_TENSOR_CHAIN_OBJ_DECLARE(
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &input_output),
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 1, &_conv1_conv1_0_Conv_output_0_output),
   AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 3, &_conv1_conv1_0_Conv_output_0_weights, &_conv1_conv1_0_Conv_output_0_bias, NULL),
-  AI_TENSOR_LIST_OBJ_EMPTY
+  AI_TENSOR_LIST_OBJ_INIT(AI_FLAG_NONE, 2, &_conv1_conv1_0_Conv_output_0_scratch0, NULL)
 )
 
 AI_LAYER_OBJ_DECLARE(
@@ -638,7 +690,7 @@ AI_LAYER_OBJ_DECLARE(
   .filter_stride = AI_SHAPE_2D_INIT(1, 1), 
   .dilation = AI_SHAPE_2D_INIT(1, 1), 
   .filter_pad = AI_SHAPE_INIT(4, 1, 1, 1, 1), 
-  .in_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_VALID, 
+  .in_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_SAME, 
   .out_ch_format = AI_LAYER_FORMAT_CHANNEL_LAST_VALID, 
 )
 
@@ -651,11 +703,11 @@ AI_NETWORK_OBJ_DECLARE(
     AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 152496, 1, 1),
     152496, NULL, NULL),
   AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 19200, 1, 1),
-    19200, NULL, NULL),
+    AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 19344, 1, 1),
+    19344, NULL, NULL),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_IN_NUM, &input_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_OUT_NUM, &output_output),
-  &_conv1_conv1_0_Conv_output_0_layer, 0, NULL)
+  &_conv1_conv1_0_Conv_output_0_layer, 0x8817c493, NULL)
 
 #else
 
@@ -670,14 +722,15 @@ AI_NETWORK_OBJ_DECLARE(
   AI_BUFFER_ARRAY_OBJ_INIT_STATIC(
   	AI_FLAG_NONE, 1,
     AI_BUFFER_INIT(AI_FLAG_NONE,  AI_BUFFER_FORMAT_U8,
-      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 19200, 1, 1),
-      19200, NULL, NULL)
+      AI_BUFFER_SHAPE_INIT(AI_SHAPE_BCWH, 4, 1, 19344, 1, 1),
+      19344, NULL, NULL)
   ),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_IN_NUM, &input_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_AUDIO_CLASSIFIER_OUT_NUM, &output_output),
-  &_conv1_conv1_0_Conv_output_0_layer, 0, NULL)
+  &_conv1_conv1_0_Conv_output_0_layer, 0x8817c493, NULL)
 
 #endif	/*(AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)*/
+
 
 
 /******************************************************************************/
@@ -692,57 +745,46 @@ ai_bool audio_classifier_configure_activations(
     
     input_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     input_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
-    _conv1_conv1_0_Conv_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    _conv1_conv1_0_Conv_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    
-    _conv1_conv1_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    _conv1_conv1_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    
+    _conv1_conv1_0_Conv_output_0_scratch0_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
+    _conv1_conv1_0_Conv_output_0_scratch0_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
+    _conv1_conv1_0_Conv_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3876);
+    _conv1_conv1_0_Conv_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3876);
+    _conv1_conv1_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3876);
+    _conv1_conv1_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3876);
     _conv1_conv1_2_MaxPool_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _conv1_conv1_2_MaxPool_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
-    _conv2_conv2_0_Conv_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    _conv2_conv2_0_Conv_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    
-    _conv2_conv2_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    _conv2_conv2_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
-    
+    _conv2_conv2_0_Conv_output_0_scratch0_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
+    _conv2_conv2_0_Conv_output_0_scratch0_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3840);
+    _conv2_conv2_0_Conv_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3984);
+    _conv2_conv2_0_Conv_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3984);
+    _conv2_conv2_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3984);
+    _conv2_conv2_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3984);
     _conv2_conv2_2_MaxPool_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _conv2_conv2_2_MaxPool_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
     _flatten_Flatten_output_0_to_chlast_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 3584);
     _flatten_Flatten_output_0_to_chlast_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 3584);
-    
     _fc1_fc1_0_Gemm_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _fc1_fc1_0_Gemm_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
     _fc1_fc1_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 160);
     _fc1_fc1_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 160);
-    
     _fc2_fc2_0_Gemm_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _fc2_fc2_0_Gemm_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
     _fc2_fc2_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 128);
     _fc2_fc2_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 128);
-    
     _fc3_fc3_0_Gemm_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _fc3_fc3_0_Gemm_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
     _fc3_fc3_1_Relu_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 32);
     _fc3_fc3_1_Relu_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 32);
-    
     _fc4_Gemm_output_0_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 0);
     _fc4_Gemm_output_0_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 0);
-    
     output_output_array.data = AI_PTR(g_audio_classifier_activations_map[0] + 16);
     output_output_array.data_start = AI_PTR(g_audio_classifier_activations_map[0] + 16);
-    
     return true;
   }
   AI_ERROR_TRAP(net_ctx, INIT_FAILED, NETWORK_ACTIVATIONS);
   return false;
 }
+
 
 
 
@@ -759,51 +801,39 @@ ai_bool audio_classifier_configure_weights(
     _conv1_conv1_0_Conv_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _conv1_conv1_0_Conv_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 0);
     _conv1_conv1_0_Conv_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 0);
-    
     _conv1_conv1_0_Conv_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _conv1_conv1_0_Conv_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 144);
     _conv1_conv1_0_Conv_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 144);
-    
     _conv2_conv2_0_Conv_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _conv2_conv2_0_Conv_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 160);
     _conv2_conv2_0_Conv_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 160);
-    
     _conv2_conv2_0_Conv_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _conv2_conv2_0_Conv_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 2464);
     _conv2_conv2_0_Conv_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 2464);
-    
     _fc1_fc1_0_Gemm_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _fc1_fc1_0_Gemm_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 2528);
     _fc1_fc1_0_Gemm_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 2528);
-    
     _fc1_fc1_0_Gemm_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _fc1_fc1_0_Gemm_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 145888);
     _fc1_fc1_0_Gemm_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 145888);
-    
     _fc2_fc2_0_Gemm_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _fc2_fc2_0_Gemm_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 146048);
     _fc2_fc2_0_Gemm_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 146048);
-    
     _fc2_fc2_0_Gemm_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _fc2_fc2_0_Gemm_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 151168);
     _fc2_fc2_0_Gemm_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 151168);
-    
     _fc3_fc3_0_Gemm_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _fc3_fc3_0_Gemm_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 151296);
     _fc3_fc3_0_Gemm_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 151296);
-    
     _fc3_fc3_0_Gemm_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _fc3_fc3_0_Gemm_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 152320);
     _fc3_fc3_0_Gemm_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 152320);
-    
     _fc4_Gemm_output_0_weights_array.format |= AI_FMT_FLAG_CONST;
     _fc4_Gemm_output_0_weights_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 152352);
     _fc4_Gemm_output_0_weights_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 152352);
-    
     _fc4_Gemm_output_0_bias_array.format |= AI_FMT_FLAG_CONST;
     _fc4_Gemm_output_0_bias_array.data = AI_PTR(g_audio_classifier_weights_map[0] + 152480);
     _fc4_Gemm_output_0_bias_array.data_start = AI_PTR(g_audio_classifier_weights_map[0] + 152480);
-    
     return true;
   }
   AI_ERROR_TRAP(net_ctx, INIT_FAILED, NETWORK_WEIGHTS);
@@ -812,6 +842,7 @@ ai_bool audio_classifier_configure_weights(
 
 
 /**  PUBLIC APIs SECTION  *****************************************************/
+
 
 
 AI_DEPRECATED
@@ -849,7 +880,7 @@ ai_bool ai_audio_classifier_get_info(
       .params            = AI_STRUCT_INIT,
       .activations       = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x0,
+      .signature         = 0x8817c493,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;
@@ -859,6 +890,7 @@ ai_bool ai_audio_classifier_get_info(
   }
   return false;
 }
+
 
 
 AI_API_ENTRY
@@ -896,7 +928,7 @@ ai_bool ai_audio_classifier_get_report(
       .map_weights       = AI_STRUCT_INIT,
       .map_activations   = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x0,
+      .signature         = 0x8817c493,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;
@@ -907,11 +939,13 @@ ai_bool ai_audio_classifier_get_report(
   return false;
 }
 
+
 AI_API_ENTRY
 ai_error ai_audio_classifier_get_error(ai_handle network)
 {
   return ai_platform_network_get_error(network);
 }
+
 
 AI_API_ENTRY
 ai_error ai_audio_classifier_create(
@@ -919,63 +953,67 @@ ai_error ai_audio_classifier_create(
 {
   return ai_platform_network_create(
     network, network_config, 
-    &AI_NET_OBJ_INSTANCE,
+    AI_CONTEXT_OBJ(&AI_NET_OBJ_INSTANCE),
     AI_TOOLS_API_VERSION_MAJOR, AI_TOOLS_API_VERSION_MINOR, AI_TOOLS_API_VERSION_MICRO);
 }
+
 
 AI_API_ENTRY
 ai_error ai_audio_classifier_create_and_init(
   ai_handle* network, const ai_handle activations[], const ai_handle weights[])
 {
-    ai_error err;
-    ai_network_params params;
+  ai_error err;
+  ai_network_params params;
 
-    err = ai_audio_classifier_create(network, AI_AUDIO_CLASSIFIER_DATA_CONFIG);
-    if (err.type != AI_ERROR_NONE)
-        return err;
-    if (ai_audio_classifier_data_params_get(&params) != true) {
-        err = ai_audio_classifier_get_error(*network);
-        return err;
-    }
+  err = ai_audio_classifier_create(network, AI_AUDIO_CLASSIFIER_DATA_CONFIG);
+  if (err.type != AI_ERROR_NONE) {
+    return err;
+  }
+  
+  if (ai_audio_classifier_data_params_get(&params) != true) {
+    err = ai_audio_classifier_get_error(*network);
+    return err;
+  }
 #if defined(AI_AUDIO_CLASSIFIER_DATA_ACTIVATIONS_COUNT)
-    if (activations) {
-        /* set the addresses of the activations buffers */
-        for (int idx=0;idx<params.map_activations.size;idx++)
-            AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
-    }
+  /* set the addresses of the activations buffers */
+  for (ai_u16 idx=0; activations && idx<params.map_activations.size; idx++) {
+    AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_activations, idx, activations[idx]);
+  }
 #endif
 #if defined(AI_AUDIO_CLASSIFIER_DATA_WEIGHTS_COUNT)
-    if (weights) {
-        /* set the addresses of the weight buffers */
-        for (int idx=0;idx<params.map_weights.size;idx++)
-            AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
-    }
+  /* set the addresses of the weight buffers */
+  for (ai_u16 idx=0; weights && idx<params.map_weights.size; idx++) {
+    AI_BUFFER_ARRAY_ITEM_SET_ADDRESS(&params.map_weights, idx, weights[idx]);
+  }
 #endif
-    if (ai_audio_classifier_init(*network, &params) != true) {
-        err = ai_audio_classifier_get_error(*network);
-    }
-    return err;
+  if (ai_audio_classifier_init(*network, &params) != true) {
+    err = ai_audio_classifier_get_error(*network);
+  }
+  return err;
 }
+
 
 AI_API_ENTRY
 ai_buffer* ai_audio_classifier_inputs_get(ai_handle network, ai_u16 *n_buffer)
 {
   if (network == AI_HANDLE_NULL) {
     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
-    ((ai_network *)network)->magic = AI_MAGIC_CONTEXT_TOKEN;
+    AI_NETWORK_OBJ(network)->magic = AI_MAGIC_CONTEXT_TOKEN;
   }
   return ai_platform_inputs_get(network, n_buffer);
 }
+
 
 AI_API_ENTRY
 ai_buffer* ai_audio_classifier_outputs_get(ai_handle network, ai_u16 *n_buffer)
 {
   if (network == AI_HANDLE_NULL) {
     network = (ai_handle)&AI_NET_OBJ_INSTANCE;
-    ((ai_network *)network)->magic = AI_MAGIC_CONTEXT_TOKEN;
+    AI_NETWORK_OBJ(network)->magic = AI_MAGIC_CONTEXT_TOKEN;
   }
   return ai_platform_outputs_get(network, n_buffer);
 }
+
 
 AI_API_ENTRY
 ai_handle ai_audio_classifier_destroy(ai_handle network)
@@ -983,14 +1021,15 @@ ai_handle ai_audio_classifier_destroy(ai_handle network)
   return ai_platform_network_destroy(network);
 }
 
+
 AI_API_ENTRY
 ai_bool ai_audio_classifier_init(
   ai_handle network, const ai_network_params* params)
 {
-  ai_network* net_ctx = ai_platform_network_init(network, params);
-  if (!net_ctx) return false;
-
+  ai_network* net_ctx = AI_NETWORK_OBJ(ai_platform_network_init(network, params));
   ai_bool ok = true;
+
+  if (!net_ctx) return false;
   ok &= audio_classifier_configure_weights(net_ctx, params);
   ok &= audio_classifier_configure_activations(net_ctx, params);
 
@@ -1006,6 +1045,7 @@ ai_i32 ai_audio_classifier_run(
 {
   return ai_platform_network_process(network, input, output);
 }
+
 
 AI_API_ENTRY
 ai_i32 ai_audio_classifier_forward(ai_handle network, const ai_buffer* input)
