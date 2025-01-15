@@ -26,8 +26,8 @@ extern "C"
 /* Includes ------------------------------------------------------------------*/
 #include "ai_platform.h"
 
-  void MX_X_CUBE_AI_Init(void);
-  void MX_X_CUBE_AI_Process(float *data_in, float *data_out);
+  void MX_X_CUBE_AI_Init(float *data_in, float *data_out);
+  void MX_X_CUBE_AI_Process();
 /* USER CODE BEGIN includes */
 /* USER CODE END includes */
 #ifdef __cplusplus

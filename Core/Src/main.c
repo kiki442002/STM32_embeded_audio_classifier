@@ -37,6 +37,7 @@ typedef struct App_HandleTypeDef
 /* Variables ---------------------------------------------------------------------*/
 uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
 float32_t MelData[30 * 32];
+float32_t IA_OUTPUT[4];
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint8_t audio_rec_buffer_state;
@@ -69,7 +70,7 @@ int main(void)
   MX_RTC_Init();
   MX_USART1_UART_Init();
   MX_FATFS_Init();
-  MX_X_CUBE_AI_Init();
+  MX_X_CUBE_AI_Init(MelData, IA_OUTPUT);
   Feature_Export_Init();
   BSP_LED_Init(LED1);
 
@@ -129,8 +130,11 @@ int main(void)
 
   printf("\rHello, world!\n\r");
   HAL_Delay(1000);
+
+  // Show Interface
   print_Menu_Interface();
 
+  // Start Recording
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -150,34 +154,21 @@ int main(void)
 
   // OpenWavFile();
 
-  uint8_t res = FEATURE_EXPORT_PROGRESS;
+  uint8_t feature_export_status = FEATURE_EXPORT_PROGRESS;
 
   // Infinite Loop
   while (1)
   {
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      /* Copy half of the record buffer to the playback buffer */
-      if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
-      {
-        uint32_t start = HAL_GetTick();
-        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF);
-        printf("Time: %ld\r\n", HAL_GetTick() - start);
-      }
-      else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
-      {
-        uint32_t start = HAL_GetTick();
-        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL);
-        printf("Time: %ld\r\n", HAL_GetTick() - start);
-      }
+      feature_export_status = Feature_Export(MelData, (int16_t *)RecordBuffer, audio_rec_buffer_state);
     }
-    if (res == FEATURE_EXPORT_OK)
+    if (feature_export_status == FEATURE_EXPORT_OK)
     {
       BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
       // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-      WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
-      while (1)
-        ;
+      // WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      MX_X_CUBE_AI_Process();
     }
 
     // Wait next data

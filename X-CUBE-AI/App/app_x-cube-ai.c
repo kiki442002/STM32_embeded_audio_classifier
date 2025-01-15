@@ -127,35 +127,35 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
     ai_input = ai_audio_classifier_inputs_get(audio_classifier, NULL);
     ai_output = ai_audio_classifier_outputs_get(audio_classifier, NULL);
 
-#if defined(AI_AUDIO_CLASSIFIER_INPUTS_IN_ACTIVATIONS)
-    /*  In the case where "--allocate-inputs" option is used, memory buffer can be
-     *  used from the activations buffer. This is not mandatory.
-     */
+    // #if defined(AI_AUDIO_CLASSIFIER_INPUTS_IN_ACTIVATIONS)
+    //     /*  In the case where "--allocate-inputs" option is used, memory buffer can be
+    //      *  used from the activations buffer. This is not mandatory.
+    //      */
+    //     for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_IN_NUM; idx++)
+    //     {
+    //       data_ins[idx] = ai_input[idx].data;
+    //     }
+    // #else
     for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_IN_NUM; idx++)
     {
-      data_ins[idx] = ai_input[idx].data;
+      ai_input[idx].data = data_ins[idx];
     }
-#else
-  for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_IN_NUM; idx++)
-  {
-    ai_input[idx].data = data_ins[idx];
-  }
-#endif
+    // #endif
 
-#if defined(AI_AUDIO_CLASSIFIER_OUTPUTS_IN_ACTIVATIONS)
-    /*  In the case where "--allocate-outputs" option is used, memory buffer can be
-     *  used from the activations buffer. This is no mandatory.
-     */
+    // #if defined(AI_AUDIO_CLASSIFIER_OUTPUTS_IN_ACTIVATIONS)
+    //     /*  In the case where "--allocate-outputs" option is used, memory buffer can be
+    //      *  used from the activations buffer. This is no mandatory.
+    //      */
+    //     for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_OUT_NUM; idx++)
+    //     {
+    //       data_outs[idx] = ai_output[idx].data;
+    //     }
+    // #else
     for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_OUT_NUM; idx++)
     {
-      data_outs[idx] = ai_output[idx].data;
+      ai_output[idx].data = data_outs[idx];
     }
-#else
-  for (int idx = 0; idx < AI_AUDIO_CLASSIFIER_OUT_NUM; idx++)
-  {
-    ai_output[idx].data = data_outs[idx];
-  }
-#endif
+    // #endif
 
     return 0;
   }
@@ -210,8 +210,10 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
 
   /* Entry points --------------------------------------------------------------*/
 
-  void MX_X_CUBE_AI_Init(void)
+  void MX_X_CUBE_AI_Init(float *data_in, float *data_out)
   {
+    data_ins[0] = (ai_i8 *)data_in;
+    data_outs[0] = (ai_i8 *)data_out;
     /* USER CODE BEGIN 5 */
     printf("\r\nTEMPLATE - initialization\r\n");
 
@@ -219,7 +221,7 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
     /* USER CODE END 5 */
   }
 
-  void MX_X_CUBE_AI_Process(float *data_in, float *data_out)
+  void MX_X_CUBE_AI_Process()
   {
     /* USER CODE BEGIN 6 */
     int res = -1;
@@ -232,17 +234,7 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
 
       do
       {
-        /* 1 - acquire and pre-process input data */
-        res = acquire_and_process_data(data_ins, data_in);
-        /* 2 - process the data - call inference engine */
-        if (res == 0)
-          res = ai_run();
-        /* 3- post-process the predictions */
-        if (res == 0)
-          res = post_process(data_outs);
-        while (1)
-        {
-        }
+        res = ai_run();
       } while (res == 0);
     }
 
