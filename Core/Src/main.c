@@ -108,6 +108,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+  uint8_t lcd_status = LCD_OK;
   /* USER CODE END 1 */
 
   /* Enable the CPU Cache */
@@ -138,6 +139,7 @@ int main(void)
   MX_CRC_Init();
   MX_RTC_Init();
   MX_USART1_UART_Init();
+  MX_FATFS_Init();
   MX_X_CUBE_AI_Init();
   /* USER CODE BEGIN 2 */
 
@@ -239,9 +241,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 
-    MX_X_CUBE_AI_Process();
     /* USER CODE BEGIN 3 */
     /* 1st or 2nd half of the record buffer ready for being copied
     to the playbakc buffer */
