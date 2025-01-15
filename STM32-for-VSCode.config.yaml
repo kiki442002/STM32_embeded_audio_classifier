@@ -87,6 +87,8 @@ includeDirectories:
   - X-CUBE-AI/Inc/**
   - Middlewares/ST/AI/Inc/**
   - Drivers/BSP/**
+  - Drivers/STM32F7xx_HAL_Driver/Inc/**
+  - FATFS/App/**
 
 
 # Files that should be included in the compilation.
@@ -99,6 +101,8 @@ sourceFiles:
   - Core/Src/**
   - Core/Lib/**
   - Drivers/BSP/**
+  - Drivers/STM32F7xx_HAL_Driver/Src/**
+  - FATFS/App/**
   #- Drivers/CMSIS/DSP/Source/**
 
 
