@@ -212,6 +212,8 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Include \
 -IDrivers/STM32F7xx_HAL_Driver/Inc \
 -IDrivers/STM32F7xx_HAL_Driver/Inc/Legacy \
+-IFATFS/App \
+-IFATFS/Target \
 -IMiddlewares/ST/AI/Inc \
 -IX-CUBE-AI \
 -IX-CUBE-AI/App
