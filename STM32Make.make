@@ -215,6 +215,7 @@ C_INCLUDES =  \
 -IFATFS/App \
 -IFATFS/Target \
 -IMiddlewares/ST/AI/Inc \
+-IMiddlewares/Third_Party/FatFs/src \
 -IX-CUBE-AI \
 -IX-CUBE-AI/App
 
