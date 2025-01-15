@@ -23,7 +23,8 @@
 #define __MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -35,25 +36,27 @@ extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-/* USER CODE END Includes */
+    /* USER CODE END Includes */
 
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
+    /* Exported types ------------------------------------------------------------*/
+    /* USER CODE BEGIN ET */
 
-/* USER CODE END ET */
+    /* USER CODE END ET */
 
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
+    /* Exported constants --------------------------------------------------------*/
+    /* USER CODE BEGIN EC */
 
-/* USER CODE END EC */
+    /* USER CODE END EC */
 
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
+    /* Exported macro ------------------------------------------------------------*/
+    /* USER CODE BEGIN EM */
 
-/* USER CODE END EM */
+    /* USER CODE END EM */
 
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
+    /* Exported functions prototypes ---------------------------------------------*/
+    void Error_Handler(void);
+    void SystemClock_Config(void);
+    void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 
 /* USER CODE BEGIN EFP */
 
@@ -374,7 +377,16 @@ void Error_Handler(void);
 #define STEREO_RECORD_BUFFER_SIZE 4096
 #define MONO_RECORD_BUFFER_SIZE STEREO_RECORD_BUFFER_SIZE / 2
 #define FFT_BUFFER_SIZE MONO_RECORD_BUFFER_SIZE / 2
-/* USER CODE END Private defines */
+
+    /* USER CODE END Private defines */
+    typedef enum
+    {
+        BUFFER_OFFSET_NONE = 0,
+        BUFFER_OFFSET_HALF = 1,
+        BUFFER_OFFSET_FULL = 2,
+    } BUFFER_StateTypeDef;
+
+    extern uint8_t audio_rec_buffer_state;
 
 #ifdef __cplusplus
 }

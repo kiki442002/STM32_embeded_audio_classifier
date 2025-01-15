@@ -97,11 +97,6 @@ void MX_FATFS_Init(void)
 
   /*## FatFS: Link the SD driver ###########################*/
   retSD = FATFS_LinkDriver(&SD_Driver, SDPath);
-  // printf("\rFATFS Link Driver: %d\n\r", retSD);
-  /* USER CODE BEGIN Init */
-  /* additional user code for init */
-  // WriteToSDCard();
-  /* USER CODE END Init */
 }
 
 /**
@@ -127,10 +122,8 @@ void WriteToSDCard()
   retSD = f_mount(&SDFatFS, SDPath, 1);
   if (retSD != FR_OK)
   {
-    // Erreur lors du montage du système de fichiers
-
     // Affiche le code d'erreur
-    printf("Error mounting file system %d %d\n\r", retSD, SDFatFS.fsize);
+    printf("Error mounting file system %d %ld\n\r", retSD, SDFatFS.fsize);
     return;
   }
 
@@ -193,7 +186,6 @@ FRESULT WriteBufferFile_F32(float *pIn, uint32_t size, char *filename)
     {
       res = f_printf(&SDFile, "%d.%06d\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
     }
-    // res = f_printf(&SDFile, "%d.%06d\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)));
     if (res < 0 || res == 255)
     {
       printf("Erreur lors de l'écriture des données: %d\n", res);
@@ -260,14 +252,12 @@ FRESULT OpenWavFile(uint8_t type)
   res = f_mount(&SDFatFS, SDPath, 1);
   if (res != FR_OK)
   {
-    // printf("Erreur lors du montage du système de fichiers: %d\n\r", res);
     return res;
   }
 
   res = GenerateUniqueFilename(filename);
   if (res != FR_OK)
   {
-    // printf("Erreur lors de l'ouverture du fichier: %d\n", res);
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
     return res;
   }
@@ -276,7 +266,6 @@ FRESULT OpenWavFile(uint8_t type)
   res = f_open(&file, filename, FA_CREATE_ALWAYS | FA_WRITE);
   if (res != FR_OK)
   {
-    // printf("Erreur lors de l'ouverture du fichier: %d\n", res);
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
     return res;
   }
@@ -288,7 +277,6 @@ FRESULT OpenWavFile(uint8_t type)
     res = f_write(&file, &headerStereo, sizeof(WAVHeader), &bytesWritten);
   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
   {
-    // printf("Erreur lors de l'écriture de l'en-tête WAV: %d\n", res);
     f_close(&file);
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
     return res;
@@ -305,7 +293,6 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
   res = f_write(&file, audioData, dataSize, &bytesWritten);
   if (res != FR_OK || bytesWritten != dataSize)
   {
-    // printf("Erreur lors de l'écriture des données audio: %d\n", res);
     f_close(&file);
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
     return res;
@@ -315,7 +302,6 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
 
   if (finalize)
   {
-    // printf("Finalisation du fichier WAV\n\r");
     //  Calculer les nouvelles valeurs de chunkSize et dataSize
     uint32_t chunkSize = 36 + totalDataSize;
     uint32_t dataSize = totalDataSize;
@@ -325,7 +311,6 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
     res = f_write(&file, &chunkSize, sizeof(chunkSize), &bytesWritten);
     if (res != FR_OK || bytesWritten != sizeof(chunkSize))
     {
-      // printf("Erreur lors de l'écriture de chunkSize: %d\n\r", res);
       return res;
     }
 
@@ -334,7 +319,6 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
     res = f_write(&file, &dataSize, sizeof(dataSize), &bytesWritten);
     if (res != FR_OK || bytesWritten != sizeof(dataSize))
     {
-      // printf("Erreur lors de l'écriture de dataSize: %d\n\r", res);
       return res;
     }
     // Fermer le fichier
@@ -342,25 +326,21 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
     fileOpened = 0;
     totalDataSize = 0;
-
-    // printf("Fichier WAV écrit avec succès\n\r");
-    return res;
   }
+  return res;
 }
+
 FRESULT GenerateUniqueFilename(char *filename)
 {
   FRESULT res = FR_OK;
   DIR dir;
   FILINFO fno;
   int maxNumber = 0;
-  char baseName[] = "samp_";
-  char extension[] = ".wav";
 
   // Ouvrir le répertoire racine
   res = f_opendir(&dir, "/");
   if (res != FR_OK)
   {
-    // printf("repetoire status: %d\n\r", res);
     return res;
   }
 
@@ -375,7 +355,6 @@ FRESULT GenerateUniqueFilename(char *filename)
     }
     if (res != FR_OK)
     {
-      // printf("Erreur lors de la lecture du répertoire: %d\n\r", res);
       f_closedir(&dir);
       return res;
     }
@@ -389,6 +368,5 @@ FRESULT GenerateUniqueFilename(char *filename)
   // Générer le prochain nom de fichier unique
   snprintf(filename, MAX_FILENAME_LENGTH, "%s%03d%s", "samp_", maxNumber, ".wav");
   return res;
-  // printf("Filename: %s\n\r", filename);
 }
 /* USER CODE END Application */

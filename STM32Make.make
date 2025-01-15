@@ -77,6 +77,7 @@ endif
 C_SOURCES =  \
 Core/Src/crc.c \
 Core/Src/filtrage.c \
+Core/Src/hal_system.c \
 Core/Src/main.c \
 Core/Src/rtc.c \
 Core/Src/screen.c \

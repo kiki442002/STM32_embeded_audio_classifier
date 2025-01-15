@@ -123,6 +123,8 @@ EndDependencies */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f769i_discovery_audio.h"
+#include "stm32f769i_discovery_lcd.h"
+#include "main.h"
 
 /** @addtogroup BSP
  * @{
@@ -1619,36 +1621,19 @@ void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
   BSP_AUDIO_IN_TransferComplete_CallBack();
 }
 
-/**
- * @brief  User callback when record buffer is filled.
- * @retval None
- */
-__weak void BSP_AUDIO_IN_TransferComplete_CallBack(void)
+void BSP_AUDIO_IN_TransferComplete_CallBack(void)
 {
-  /* This function should be implemented by the user application.
-     It is called into this driver when the current buffer is filled
-     to prepare the next buffer pointer and its size. */
+  audio_rec_buffer_state = BUFFER_OFFSET_FULL;
 }
-
-/**
- * @brief  Manages the DMA Half Transfer complete event.
- * @retval None
- */
-__weak void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
+void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
 {
-  /* This function should be implemented by the user application.
-     It is called into this driver when the current buffer is filled
-     to prepare the next buffer pointer and its size. */
+  audio_rec_buffer_state = BUFFER_OFFSET_HALF;
 }
-
-/**
- * @brief  Audio IN Error callback function.
- * @retval None
- */
-__weak void BSP_AUDIO_IN_Error_CallBack(void)
+void BSP_AUDIO_IN_Error_CallBack(void)
 {
-  /* This function is called when an Interrupt due to transfer error on or peripheral
-     error occurs. */
+  BSP_LCD_SetTextColor(LCD_COLOR_RED);
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN", CENTER_MODE);
+  Error_Handler();
 }
 
 /**
