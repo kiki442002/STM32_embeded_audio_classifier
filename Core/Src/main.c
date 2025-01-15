@@ -47,7 +47,6 @@
 /* USER CODE BEGIN PTD */
 
 #define TIME_TO_RECORD 157 // 5 seconds
-extern UART_HandleTypeDef huart1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
