@@ -34,8 +34,6 @@
 #include "audio_classifier.h"
 #include "audio_classifier_data.h"
 
-== == ==
-    =
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
@@ -43,14 +41,13 @@
 #include "filtrage.h"
 #include "screen.h"
 #include "touchscreen.h"
-        >>>>>>> filtrage_feature
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
 #define TIME_TO_RECORD 157 // 5 seconds
-        extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -138,7 +135,6 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
   MX_CRC_Init();
   MX_RTC_Init();
   MX_USART1_UART_Init();

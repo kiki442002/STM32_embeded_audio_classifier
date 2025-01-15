@@ -253,39 +253,7 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
     }
     /* USER CODE END 6 */
   }
-  {
-    /* USER CODE BEGIN 6 */
-    int res = -1;
 
-    printf("TEMPLATE - run - main loop\r\n");
-
-    if (audio_classifier)
-    {
-      printf("TEMPLATE - run - main loop - OK\r\n");
-
-      do
-      {
-        /* 1 - acquire and pre-process input data */
-        res = acquire_and_process_data(data_ins);
-        /* 2 - process the data - call inference engine */
-        if (res == 0)
-          res = ai_run();
-        /* 3- post-process the predictions */
-        if (res == 0)
-          res = post_process(data_outs);
-        while (1)
-        {
-        }
-      } while (res == 0);
-    }
-
-    if (res)
-    {
-      ai_error err = {AI_ERROR_INVALID_STATE, AI_ERROR_CODE_NETWORK};
-      ai_log_err(err, "Process has FAILED");
-    }
-    /* USER CODE END 6 */
-  }
 #ifdef __cplusplus
 }
 #endif

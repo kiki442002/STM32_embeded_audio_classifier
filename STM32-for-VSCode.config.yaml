@@ -86,6 +86,7 @@ includeDirectories:
   - Drivers/CMSIS/DSP/Include/**
   - X-CUBE-AI/Inc/**
   - Middlewares/ST/AI/Inc/**
+  - Drivers/BSP/**
 
 
 # Files that should be included in the compilation.
@@ -97,6 +98,7 @@ sourceFiles:
   - Src/**
   - Core/Src/**
   - Core/Lib/**
+  - Drivers/BSP/**
   #- Drivers/CMSIS/DSP/Source/**
 
 
