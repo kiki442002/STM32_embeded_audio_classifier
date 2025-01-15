@@ -92,7 +92,6 @@ includeDirectories:
   - FATFS/Target/**
   - Middlewares/Third_Party/FatFs/src/**
 
-
 # Files that should be included in the compilation.
 # If a CubeMX makefile is present it will automatically include the  c and cpp/cxx files from that makefile.
 # Glob patterns (https://www.wikiwand.com/en/Glob_(programming)) can be used.
@@ -103,11 +102,11 @@ sourceFiles:
   - Core/Src/**
   - Core/Lib/**
   - Drivers/BSP/**
-  - Drivers/STM32F7xx_HAL_Driver/Src/**
   - FATFS/App/**
   - FATFS/Target/**
   - Drivers/CMSIS/DSP/Source/**
   - Middlewares/Third_Party/FatFs/src/**
+ 
 
 # When no makefile is present it will show a warning pop-up.
 # However when compilation without the CubeMX Makefile is desired, this can be turned of.

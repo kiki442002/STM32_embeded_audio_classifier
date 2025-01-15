@@ -263,7 +263,7 @@ int main(void)
     if (res == FEATURE_EXPORT_OK)
     {
       BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
-      // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+      BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
       WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
       while (1)
         ;

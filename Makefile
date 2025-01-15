@@ -89,7 +89,41 @@ X-CUBE-AI/App/lc_print.c \
 X-CUBE-AI/App/audio_classifier.c \
 X-CUBE-AI/App/audio_classifier_data.c \
 X-CUBE-AI/App/audio_classifier_data_params.c \
-X-CUBE-AI/App/app_x-cube-ai.c
+X-CUBE-AI/App/app_x-cube-ai.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_ltdc_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dsi.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dfsdm.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rcc_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_flash_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_gpio.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_pwr_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_cortex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_i2c_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_exti.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_crc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_crc_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_dma2d.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_fmc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sdram.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_qspi.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rtc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_rtc_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sai.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sai_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_ll_sdmmc.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_sd.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_tim_ex.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart.c \
+Drivers/STM32F7xx_HAL_Driver/Src/stm32f7xx_hal_uart_ex.c 
 
 
 
