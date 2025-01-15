@@ -1,21 +1,21 @@
 /**
-  ******************************************************************************
-  * @file    stm32f769i_discovery_ts.c
-  * @author  MCD Application Team
-  * @brief   This file provides a set of functions needed to manage the Touch
-  *          Screen on STM32F769I-DISCOVERY discovery board.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    stm32f769i_discovery_ts.c
+ * @author  MCD Application Team
+ * @brief   This file provides a set of functions needed to manage the Touch
+ *          Screen on STM32F769I-DISCOVERY discovery board.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2016 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 
 /* File Info : -----------------------------------------------------------------
                                    User NOTES
@@ -59,92 +59,90 @@ EndDependencies */
 #include "stm32f769i_discovery_ts.h"
 
 /** @addtogroup BSP
-  * @{
-  */
+ * @{
+ */
 
 /** @addtogroup STM32F769I_DISCOVERY
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS STM32F769I_DISCOVERY TS
-  * @{
-  */
+ * @{
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Types_Definitions TS Private Types Definitions
-  * @{
-  */
+ * @{
+ */
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Defines TS Private Types Defines
-  * @{
-  */
+ * @{
+ */
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Macros TS Private Macros
-  * @{
-  */
+ * @{
+ */
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Imported_Variables TS Imported Variables
-  * @{
-  */
-  /**
-    * @}
-    */
+ * @{
+ */
+/**
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Variables TS Private Variables
-  * @{
-  */
+ * @{
+ */
 static TS_DrvTypeDef *ts_driver;
-static uint8_t  ts_orientation;
-uint8_t  I2C_Address = 0;
+static uint8_t ts_orientation;
+uint8_t I2C_Address = 0;
 
 /* Table for touchscreen event information display on LCD : table indexed on enum @ref TS_TouchEventTypeDef information */
-char * ts_event_string_tab[TOUCH_EVENT_NB_MAX] = { "None",
-                                                   "Press down",
-                                                   "Lift up",
-                                                   "Contact"
-                                                  };
+char *ts_event_string_tab[TOUCH_EVENT_NB_MAX] = {"None",
+                                                 "Press down",
+                                                 "Lift up",
+                                                 "Contact"};
 
 /* Table for touchscreen gesture Id information display on LCD : table indexed on enum @ref TS_GestureIdTypeDef information */
-char * ts_gesture_id_string_tab[GEST_ID_NB_MAX] = { "None",
-                                                    "Move Up",
-                                                    "Move Right",
-                                                    "Move Down",
-                                                    "Move Left",
-                                                    "Zoom In",
-                                                    "Zoom Out"
-                                                  };
+char *ts_gesture_id_string_tab[GEST_ID_NB_MAX] = {"None",
+                                                  "Move Up",
+                                                  "Move Right",
+                                                  "Move Down",
+                                                  "Move Left",
+                                                  "Zoom In",
+                                                  "Zoom Out"};
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Function_Prototypes TS Private Function Prototypes
-  * @{
-  */
+ * @{
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /** @defgroup STM32F769I_DISCOVERY_TS_Public_Functions TS Public Functions
-  * @{
-  */
+ * @{
+ */
 
 /**
-  * @brief  Initializes and configures the touch screen functionalities and
-  *         configures all necessary hardware resources (GPIOs, I2C, clocks..).
-  * @param  ts_SizeX : Maximum X size of the TS area on LCD
-  * @param  ts_SizeY : Maximum Y size of the TS area on LCD
-  * @retval TS_OK if all initializations are OK. Other value if error.
-  */
+ * @brief  Initializes and configures the touch screen functionalities and
+ *         configures all necessary hardware resources (GPIOs, I2C, clocks..).
+ * @param  ts_SizeX : Maximum X size of the TS area on LCD
+ * @param  ts_SizeY : Maximum Y size of the TS area on LCD
+ * @retval TS_OK if all initializations are OK. Other value if error.
+ */
 uint8_t BSP_TS_Init(uint16_t ts_SizeX, uint16_t ts_SizeY)
 {
   uint8_t ts_status = TS_OK;
@@ -157,34 +155,34 @@ uint8_t BSP_TS_Init(uint16_t ts_SizeX, uint16_t ts_SizeY)
   ft6x06_ts_drv.Init(I2C_Address);
 
   ts_id1 = ft6x06_ts_drv.ReadID(TS_I2C_ADDRESS);
-  if(ts_id1 != FT6206_ID_VALUE)
+  if (ts_id1 != FT6206_ID_VALUE)
   {
     ts_id2 = ft6x06_ts_drv.ReadID(TS_I2C_ADDRESS_A02);
-    I2C_Address    = TS_I2C_ADDRESS_A02;    
+    I2C_Address = TS_I2C_ADDRESS_A02;
   }
   else
   {
-    I2C_Address    = TS_I2C_ADDRESS;    
+    I2C_Address = TS_I2C_ADDRESS;
   }
-  
+
   /* Scan FT6xx6 TouchScreen IC controller ID register by I2C Read       */
   /* Verify this is a FT6206 or FT6336G, otherwise this is an error case */
-  if((ts_id1 == FT6206_ID_VALUE) || (ts_id2 == FT6206_ID_VALUE))
+  if ((ts_id1 == FT6206_ID_VALUE) || (ts_id2 == FT6206_ID_VALUE))
   {
     /* Found FT6206 : Initialize the TS driver structure */
     ts_driver = &ft6x06_ts_drv;
 
     /* Get LCD chosen orientation */
-    if(ts_SizeX < ts_SizeY)
+    if (ts_SizeX < ts_SizeY)
     {
-      ts_orientation = TS_SWAP_NONE;                
+      ts_orientation = TS_SWAP_NONE;
     }
     else
     {
-      ts_orientation = TS_SWAP_XY | TS_SWAP_Y;                 
+      ts_orientation = TS_SWAP_XY | TS_SWAP_Y;
     }
 
-    if(ts_status == TS_OK)
+    if (ts_status == TS_OK)
     {
       /* Software reset the TouchScreen */
       ts_driver->Reset(I2C_Address);
@@ -203,9 +201,9 @@ uint8_t BSP_TS_Init(uint16_t ts_SizeX, uint16_t ts_SizeY)
 }
 
 /**
-  * @brief  Configures and enables the touch screen interrupts.
-  * @retval TS_OK if all initializations are OK. Other value if error.
-  */
+ * @brief  Configures and enables the touch screen interrupts.
+ * @retval TS_OK if all initializations are OK. Other value if error.
+ */
 uint8_t BSP_TS_ITConfig(void)
 {
   uint8_t ts_status = TS_OK;
@@ -236,10 +234,10 @@ uint8_t BSP_TS_ITConfig(void)
 }
 
 /**
-  * @brief  Returns status and positions of the touch screen.
-  * @param  TS_State: Pointer to touch screen current state structure
-  * @retval TS_OK if all initializations are OK. Other value if error.
-  */
+ * @brief  Returns status and positions of the touch screen.
+ * @param  TS_State: Pointer to touch screen current state structure
+ * @retval TS_OK if all initializations are OK. Other value if error.
+ */
 uint8_t BSP_TS_GetState(TS_StateTypeDef *TS_State)
 {
   static uint32_t _x[TS_MAX_NB_TOUCH] = {0, 0};
@@ -259,39 +257,38 @@ uint8_t BSP_TS_GetState(TS_StateTypeDef *TS_State)
 
   /* Check and update the number of touches active detected */
   TS_State->touchDetected = ts_driver->DetectTouch(I2C_Address);
-  if(TS_State->touchDetected)
+  if (TS_State->touchDetected)
   {
-    for(index=0; index < TS_State->touchDetected; index++)
+    for (index = 0; index < TS_State->touchDetected; index++)
     {
       /* Get each touch coordinates */
       ts_driver->GetXY(I2C_Address, &(Raw_x[index]), &(Raw_y[index]));
 
-      if(ts_orientation & TS_SWAP_XY)
+      if (ts_orientation & TS_SWAP_XY)
       {
         tmp = Raw_x[index];
-        Raw_x[index] = Raw_y[index]; 
+        Raw_x[index] = Raw_y[index];
         Raw_y[index] = tmp;
       }
-      
-      if(ts_orientation & TS_SWAP_X)
+
+      if (ts_orientation & TS_SWAP_X)
       {
         Raw_x[index] = FT_6206_MAX_WIDTH - 1 - Raw_x[index];
       }
 
-      if(ts_orientation & TS_SWAP_Y)
+      if (ts_orientation & TS_SWAP_Y)
       {
         Raw_y[index] = FT_6206_MAX_HEIGHT - 1 - Raw_y[index];
       }
-            
-      xDiff = Raw_x[index] > _x[index]? (Raw_x[index] - _x[index]): (_x[index] - Raw_x[index]);
-      yDiff = Raw_y[index] > _y[index]? (Raw_y[index] - _y[index]): (_y[index] - Raw_y[index]);
+
+      xDiff = Raw_x[index] > _x[index] ? (Raw_x[index] - _x[index]) : (_x[index] - Raw_x[index]);
+      yDiff = Raw_y[index] > _y[index] ? (Raw_y[index] - _y[index]) : (_y[index] - Raw_y[index]);
 
       if ((xDiff + yDiff) > 5)
       {
         _x[index] = Raw_x[index];
         _y[index] = Raw_y[index];
       }
-
 
       TS_State->touchX[index] = _x[index];
       TS_State->touchY[index] = _y[index];
@@ -303,26 +300,26 @@ uint8_t BSP_TS_GetState(TS_StateTypeDef *TS_State)
 
       /* Update TS_State structure */
       TS_State->touchWeight[index] = weight;
-      TS_State->touchArea[index]   = area;
+      TS_State->touchArea[index] = area;
 
       /* Remap touch event */
-      switch(event)
+      switch (event)
       {
-        case FT6206_TOUCH_EVT_FLAG_PRESS_DOWN  :
-          TS_State->touchEventId[index] = TOUCH_EVENT_PRESS_DOWN;
-          break;
-        case FT6206_TOUCH_EVT_FLAG_LIFT_UP :
-          TS_State->touchEventId[index] = TOUCH_EVENT_LIFT_UP;
-          break;
-        case FT6206_TOUCH_EVT_FLAG_CONTACT :
-          TS_State->touchEventId[index] = TOUCH_EVENT_CONTACT;
-          break;
-        case FT6206_TOUCH_EVT_FLAG_NO_EVENT :
-          TS_State->touchEventId[index] = TOUCH_EVENT_NO_EVT;
-          break;
-        default :
-          ts_status = TS_ERROR;
-          break;
+      case FT6206_TOUCH_EVT_FLAG_PRESS_DOWN:
+        TS_State->touchEventId[index] = TOUCH_EVENT_PRESS_DOWN;
+        break;
+      case FT6206_TOUCH_EVT_FLAG_LIFT_UP:
+        TS_State->touchEventId[index] = TOUCH_EVENT_LIFT_UP;
+        break;
+      case FT6206_TOUCH_EVT_FLAG_CONTACT:
+        TS_State->touchEventId[index] = TOUCH_EVENT_CONTACT;
+        break;
+      case FT6206_TOUCH_EVT_FLAG_NO_EVENT:
+        TS_State->touchEventId[index] = TOUCH_EVENT_NO_EVT;
+        break;
+      default:
+        ts_status = TS_ERROR;
+        break;
       } /* of switch(event) */
 
 #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
@@ -341,63 +338,62 @@ uint8_t BSP_TS_GetState(TS_StateTypeDef *TS_State)
 
 #if (TS_MULTI_TOUCH_SUPPORTED == 1)
 /**
-  * @brief  Update gesture Id following a touch detected.
-  * @param  TS_State: Pointer to touch screen current state structure
-  * @retval TS_OK if all initializations are OK. Other value if error.
-  */
+ * @brief  Update gesture Id following a touch detected.
+ * @param  TS_State: Pointer to touch screen current state structure
+ * @retval TS_OK if all initializations are OK. Other value if error.
+ */
 uint8_t BSP_TS_Get_GestureId(TS_StateTypeDef *TS_State)
 {
   uint32_t gestureId = 0;
-  uint8_t  ts_status = TS_OK;
+  uint8_t ts_status = TS_OK;
 
   /* Get gesture Id */
   ft6x06_TS_GetGestureID(I2C_Address, &gestureId);
 
   /* Remap gesture Id to a TS_GestureIdTypeDef value */
-  switch(gestureId)
+  switch (gestureId)
   {
-    case FT6206_GEST_ID_NO_GESTURE :
-      TS_State->gestureId = GEST_ID_NO_GESTURE;
-      break;
-    case FT6206_GEST_ID_MOVE_UP :
-      TS_State->gestureId = GEST_ID_MOVE_UP;
-      break;
-    case FT6206_GEST_ID_MOVE_RIGHT :
-      TS_State->gestureId = GEST_ID_MOVE_RIGHT;
-      break;
-    case FT6206_GEST_ID_MOVE_DOWN :
-      TS_State->gestureId = GEST_ID_MOVE_DOWN;
-      break;
-    case FT6206_GEST_ID_MOVE_LEFT :
-      TS_State->gestureId = GEST_ID_MOVE_LEFT;
-      break;
-    case FT6206_GEST_ID_ZOOM_IN :
-      TS_State->gestureId = GEST_ID_ZOOM_IN;
-      break;
-    case FT6206_GEST_ID_ZOOM_OUT :
-      TS_State->gestureId = GEST_ID_ZOOM_OUT;
-      break;
-    default :
-      ts_status = TS_ERROR;
-      break;
+  case FT6206_GEST_ID_NO_GESTURE:
+    TS_State->gestureId = GEST_ID_NO_GESTURE;
+    break;
+  case FT6206_GEST_ID_MOVE_UP:
+    TS_State->gestureId = GEST_ID_MOVE_UP;
+    break;
+  case FT6206_GEST_ID_MOVE_RIGHT:
+    TS_State->gestureId = GEST_ID_MOVE_RIGHT;
+    break;
+  case FT6206_GEST_ID_MOVE_DOWN:
+    TS_State->gestureId = GEST_ID_MOVE_DOWN;
+    break;
+  case FT6206_GEST_ID_MOVE_LEFT:
+    TS_State->gestureId = GEST_ID_MOVE_LEFT;
+    break;
+  case FT6206_GEST_ID_ZOOM_IN:
+    TS_State->gestureId = GEST_ID_ZOOM_IN;
+    break;
+  case FT6206_GEST_ID_ZOOM_OUT:
+    TS_State->gestureId = GEST_ID_ZOOM_OUT;
+    break;
+  default:
+    ts_status = TS_ERROR;
+    break;
   } /* of switch(gestureId) */
 
-  return(ts_status);
+  return (ts_status);
 }
 #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
 
-
 /** @defgroup STM32F769I_DISCOVERY_TS_Private_Functions TS Private Functions
-  * @{
-  */
+ * @{
+ */
 
 #if (TS_MULTI_TOUCH_SUPPORTED == 1)
 /**
-  * @brief  Function used to reset all touch data before a new acquisition
-  *         of touch information.
-  * @param  TS_State: Pointer to touch screen current state structure
-  * @retval TS_OK if OK, TE_ERROR if problem found.
-  */
+ * @brief  Function used to reset all touch data before a new acquisition
+ *         of touch information.
+ * @param  TS_State: Pointer to touch screen current state structure
+ * @retval TS_OK if OK, TE_ERROR if problem found.
+ */
 uint8_t BSP_TS_ResetTouchData(TS_StateTypeDef *TS_State)
 {
   uint8_t ts_status = TS_ERROR;
@@ -408,13 +404,13 @@ uint8_t BSP_TS_ResetTouchData(TS_StateTypeDef *TS_State)
     TS_State->gestureId = GEST_ID_NO_GESTURE;
     TS_State->touchDetected = 0;
 
-    for(index = 0; index < TS_MAX_NB_TOUCH; index++)
+    for (index = 0; index < TS_MAX_NB_TOUCH; index++)
     {
-      TS_State->touchX[index]       = 0;
-      TS_State->touchY[index]       = 0;
-      TS_State->touchArea[index]    = 0;
+      TS_State->touchX[index] = 0;
+      TS_State->touchY[index] = 0;
+      TS_State->touchArea[index] = 0;
       TS_State->touchEventId[index] = TOUCH_EVENT_NO_EVT;
-      TS_State->touchWeight[index]  = 0;
+      TS_State->touchWeight[index] = 0;
     }
 
     ts_status = TS_OK;
@@ -426,41 +422,40 @@ uint8_t BSP_TS_ResetTouchData(TS_StateTypeDef *TS_State)
 #endif /* TS_MULTI_TOUCH_SUPPORTED == 1 */
 
 /**
-  * @brief  Initializes the TS_INT pin MSP.
-  * @retval None
-  */
+ * @brief  Initializes the TS_INT pin MSP.
+ * @retval None
+ */
 __weak void BSP_TS_INT_MspInit(void)
 {
-  GPIO_InitTypeDef  gpio_init_structure;
+  GPIO_InitTypeDef gpio_init_structure;
 
   TS_INT_GPIO_CLK_ENABLE();
 
   /* GPIO configuration in input for TouchScreen interrupt signal on TS_INT pin */
-  gpio_init_structure.Pin       = TS_INT_PIN;
+  gpio_init_structure.Pin = TS_INT_PIN;
 
-  gpio_init_structure.Mode      = GPIO_MODE_INPUT;
-  gpio_init_structure.Pull      = GPIO_PULLUP;
-  gpio_init_structure.Speed     = GPIO_SPEED_HIGH;
+  gpio_init_structure.Mode = GPIO_MODE_INPUT;
+  gpio_init_structure.Pull = GPIO_PULLUP;
+  gpio_init_structure.Speed = GPIO_SPEED_HIGH;
   HAL_GPIO_Init(TS_INT_GPIO_PORT, &gpio_init_structure);
 }
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
+ * @}
+ */
 
 /**
-  * @}
-  */
-
+ * @}
+ */

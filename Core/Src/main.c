@@ -18,14 +18,23 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+<<<<<<< HEAD
 #include "crc.h"
 #include "rtc.h"
 #include "gpio.h"
 #include "app_x-cube-ai.h"
+    == == ==
+    =
+#include "fatfs.h"
+#include "quadspi.h"
+#include "rtc.h"
+#include "sdmmc.h"
+        >>>>>>> filtrage_feature
 #include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+<<<<<<< HEAD
 #include <stdio.h>
 #include <string.h>
 #include "ai_datatypes_defines.h"
@@ -33,13 +42,23 @@
 #include "audio_classifier.h"
 #include "audio_classifier_data.h"
 
+        == == ==
+    =
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
+#include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
+#include "filtrage.h"
+#include "screen.h"
+#include "touchscreen.h"
+        >>>>>>> filtrage_feature
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
 #define TIME_TO_RECORD 157 // 5 seconds
-extern UART_HandleTypeDef huart1;
+    extern UART_HandleTypeDef huart1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -49,11 +68,35 @@ extern UART_HandleTypeDef huart1;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+typedef enum
+{
+  BUFFER_OFFSET_NONE = 0,
+  BUFFER_OFFSET_HALF = 1,
+  BUFFER_OFFSET_FULL = 2,
+} BUFFER_StateTypeDef;
+
+typedef struct App_HandleTypeDef
+{
+  uint8_t IA_activation;
+  uint8_t record_activation;
+  uint8_t play_activation;
+  uint8_t output_activation;
+  uint8_t luminosity;
+  uint8_t volume;
+} App_HandleTypeDef;
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+
+uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
+float32_t MelData[30 * 32];
+
+int32_t Scratch[SCRATCH_BUFF_SIZE];
+uint32_t audio_rec_buffer_state;
+App_HandleTypeDef hApp;
 
 /* USER CODE END PV */
 
@@ -110,6 +153,98 @@ int main(void)
   MX_X_CUBE_AI_Init();
   /* USER CODE BEGIN 2 */
 
+  Feature_Export_Init();
+
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                            Configuration de l'écran                            ||
+  // ! ||--------------------------------------------------------------------------------||
+  lcd_status = BSP_LCD_Init();
+  while (lcd_status != LCD_OK)
+    ;
+  BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
+  BSP_LCD_Clear(LCD_COLOR_WHITE);
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
+
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                          Configuration du touch screen                         ||
+  // ! ||--------------------------------------------------------------------------------||
+  if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS Init", CENTER_MODE);
+    Error_Handler();
+  }
+  if (BSP_TS_ITConfig() != TS_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: TS IT Config", CENTER_MODE);
+    Error_Handler();
+  }
+
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                                Configuration LED                               ||
+  // ! ||--------------------------------------------------------------------------------||
+  BSP_LED_Init(LED1);
+
+  printf("\rHello, world!\n\r");
+  HAL_Delay(1000);
+  print_Menu_Interface();
+
+  // ! ||--------------------------------------------------------------------------------||
+  // ! ||                               Configuration Audio                              ||
+  // ! ||--------------------------------------------------------------------------------||
+  if (BSP_AUDIO_IN_Init(BSP_AUDIO_FREQUENCY_16K, DEFAULT_AUDIO_IN_BIT_RESOLUTION, DEFAULT_AUDIO_IN_CHANNEL_NBR) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN initialization failed", CENTER_MODE);
+    Error_Handler();
+  }
+
+  if (BSP_AUDIO_IN_AllocScratch(Scratch, SCRATCH_BUFF_SIZE) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN Scratch", CENTER_MODE);
+    Error_Handler();
+  }
+
+  if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO IN RECORD", CENTER_MODE);
+    Error_Handler();
+  }
+
+  audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+
+  HAL_Delay(2);
+
+  /* Initialize the audio device*/
+  if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
+                         100,
+                         BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT INIT", CENTER_MODE);
+    Error_Handler();
+  }
+
+  BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+
+  /* Play the recorded buffer */
+  BSP_AUDIO_OUT_Play((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE * 2);
+
+  /* Audio device is initialized only once */
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
+
+  // OpenWavFile();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -120,9 +255,38 @@ int main(void)
 
     MX_X_CUBE_AI_Process();
     /* USER CODE BEGIN 3 */
+    /* 1st or 2nd half of the record buffer ready for being copied
+    to the playbakc buffer */
+    if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
+    {
+      /* Copy half of the record buffer to the playback buffer */
+      if (audio_rec_buffer_state == BUFFER_OFFSET_HALF)
+      {
+        uint32_t start = HAL_GetTick();
+        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF);
+        printf("Time: %ld\r\n", HAL_GetTick() - start);
+      }
+      else /* if(audio_rec_buffer_state == BUFFER_OFFSET_FULL)*/
+      {
+        uint32_t start = HAL_GetTick();
+        res = Feature_Export(MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL);
+        printf("Time: %ld\r\n", HAL_GetTick() - start);
+      }
+    }
+    if (res == FEATURE_EXPORT_OK)
+    {
+      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
+      // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+      WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      while (1)
+        ;
+    }
+
+    /* Wait for next data */
+    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   }
-  /* USER CODE END 3 */
 }
+/* USER CODE END 3 */
 
 /**
  * @brief System Clock Configuration
