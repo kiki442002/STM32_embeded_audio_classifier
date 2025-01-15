@@ -76,14 +76,10 @@ endif
 # C sources
 C_SOURCES =  \
 Core/Src/crc.c \
-Core/Src/gpio.c \
-Core/Src/main.c \
-Core/Src/rtc.c \
 Core/Src/filtrage.c \
 Core/Src/main.c \
 Core/Src/rtc.c \
 Core/Src/screen.c \
-Core/Src/sdmmc.c \
 Core/Src/stm32f7xx_hal_msp.c \
 Core/Src/stm32f7xx_hal_timebase_tim.c \
 Core/Src/stm32f7xx_it.c \

@@ -18,23 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-<<<<<<< HEAD
 #include "crc.h"
 #include "rtc.h"
-#include "gpio.h"
 #include "app_x-cube-ai.h"
-    == == ==
-    =
 #include "fatfs.h"
-#include "quadspi.h"
 #include "rtc.h"
-#include "sdmmc.h"
-        >>>>>>> filtrage_feature
 #include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-<<<<<<< HEAD
 #include <stdio.h>
 #include <string.h>
 #include "ai_datatypes_defines.h"
@@ -42,7 +34,7 @@
 #include "audio_classifier.h"
 #include "audio_classifier_data.h"
 
-        == == ==
+== == ==
     =
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
@@ -58,7 +50,7 @@
 /* USER CODE BEGIN PTD */
 
 #define TIME_TO_RECORD 157 // 5 seconds
-    extern UART_HandleTypeDef huart1;
+        extern UART_HandleTypeDef huart1;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
