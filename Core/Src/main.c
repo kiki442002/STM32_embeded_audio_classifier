@@ -236,7 +236,7 @@ int main(void)
   // OpenWavFile();
 
   /* USER CODE END 2 */
-
+  uint8_t res = FEATURE_EXPORT_PROGRESS;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
