@@ -87,7 +87,6 @@ uint8_t FFT_init(uint32_t size)
     {
         return FILTER_CALCULATION_ERROR;
     }
-    OpenWavFile(MONO_WAV);
     return FILTER_CALCULATION_OK;
 }
 
@@ -225,7 +224,7 @@ uint8_t DMA_Config(void)
     return FILTER_CALCULATION_OK;
 }
 
-uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
+uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8_t audio_record)
 {
     if (bufferState == BUFFER_HALF)
     {
@@ -244,9 +243,13 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
-            WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
-            wav_indice = 0;
+            if (audio_record == AUDIO_RECORD)
+            {
+                OpenWavFile(MONO_WAV);
+                arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
+                WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
+                wav_indice = 0;
+            }
             return FEATURE_EXPORT_OK;
         }
 
@@ -260,7 +263,8 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         buffer_run = BUFFER_HALF_NONE;
         mel_indice++;
-        arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
+        if (audio_record == AUDIO_RECORD)
+            arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
     else if (bufferState == BUFFER_FULL)
     {
@@ -277,9 +281,13 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
-            WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
-            wav_indice = 0;
+            if (audio_record == AUDIO_RECORD)
+            {
+                OpenWavFile(MONO_WAV);
+                arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
+                WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
+                wav_indice = 0;
+            }
             return FEATURE_EXPORT_OK;
         }
 
@@ -292,7 +300,8 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState)
         MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         mel_indice++;
-        arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
+        if (audio_record == AUDIO_RECORD)
+            arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
 
     return FEATURE_EXPORT_PROGRESS;

@@ -232,10 +232,8 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
     {
       printf("TEMPLATE - run - main loop - OK\r\n");
 
-      do
-      {
-        res = ai_run();
-      } while (res == 0);
+      res = ai_run();
+      printf("TEMPLATE - run - main loop - res = %d\r\n", res);
     }
 
     if (res)

@@ -21,6 +21,9 @@
 #define FEATURE_EXPORT_OK ((uint8_t)2)
 #define FEATURE_EXPORT_ERROR ((uint8_t)0)
 
+#define AUDIO_RECORD ((uint8_t)1)
+#define AUDIO_NO_RECORD ((uint8_t)0)
+
 #define PSD_init(size) FFT_init(size)
 
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size);
@@ -32,5 +35,5 @@ uint8_t DSE_Calculation(float32_t *pOut, float32_t *pIn);
 void print_mel_filters(float32_t *pOut, int n_mels);
 uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn);
 uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size);
-uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState);
+uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8_t audio_record);
 uint8_t Feature_Export_Init();

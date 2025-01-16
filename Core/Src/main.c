@@ -32,16 +32,19 @@ typedef struct App_HandleTypeDef
   uint8_t luminosity;
   uint8_t volume;
 } App_HandleTypeDef;
+
 /* END Structure -----------------------------------------------------------------*/
 
 /* Variables ---------------------------------------------------------------------*/
-uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
+uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE] = {0};
 float32_t MelData[30 * 32];
 float32_t IA_OUTPUT[4];
+const char *labels[4] = {"Pluie", "Pas", "Vent", "Voiture"};
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint8_t audio_rec_buffer_state;
 App_HandleTypeDef hApp;
+
 /* END Variables -----------------------------------------------------------------*/
 
 /* Private function prototypes ---------------------------------------------------*/
@@ -52,6 +55,12 @@ int main(void)
 {
 
   uint8_t lcd_status = LCD_OK;
+  hApp.luminosity = 100;
+  hApp.volume = 100;
+  hApp.IA_activation = IA_DESACTIVATE;
+  hApp.record_activation = RECORD_DESACTIVATE;
+  hApp.play_activation = PLAY_DESACTIVATE;
+  hApp.output_activation = OUTPUT_DESACTIVATE;
 
   /* Enable Cache ------------------------------------------------------------*/
   SCB_EnableICache();
@@ -134,7 +143,13 @@ int main(void)
   // Show Interface
   print_Menu_Interface();
 
+  // Usefull variables
+  uint8_t feature_export_status = FEATURE_EXPORT_PROGRESS;
+  audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+
   // Start Recording
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -143,25 +158,26 @@ int main(void)
     Error_Handler();
   }
 
-  audio_rec_buffer_state = BUFFER_OFFSET_NONE;
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
-
-  HAL_Delay(2);
+  // Wait first data
+  while (audio_rec_buffer_state == BUFFER_OFFSET_NONE)
+    ;
 
   /* Play the recorded buffer */
-  BSP_AUDIO_OUT_Play((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE * 2);
+  if (BSP_AUDIO_OUT_Play((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE * 2) != AUDIO_OK)
+  {
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    BSP_LCD_Clear(LCD_COLOR_WHITE);
+    BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT PLAY", CENTER_MODE);
+    Error_Handler();
+  }
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
-
-  // OpenWavFile();
-
-  uint8_t feature_export_status = FEATURE_EXPORT_PROGRESS;
 
   // Infinite Loop
   while (1)
   {
     if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
     {
-      feature_export_status = Feature_Export(MelData, (int16_t *)RecordBuffer, audio_rec_buffer_state);
+      feature_export_status = Feature_Export(MelData, (int16_t *)RecordBuffer, audio_rec_buffer_state, AUDIO_NO_RECORD);
     }
     if (feature_export_status == FEATURE_EXPORT_OK)
     {
@@ -169,6 +185,13 @@ int main(void)
       // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
       // WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
       MX_X_CUBE_AI_Process();
+      for (int i = 0; i < 4; i++)
+      {
+        printf("IA_OUTPUT[%d] = %d\n\r", i, (int)(IA_OUTPUT[i] * 100));
+      }
+      printf("Next\n\r");
+      while (1)
+        ;
     }
 
     // Wait next data
