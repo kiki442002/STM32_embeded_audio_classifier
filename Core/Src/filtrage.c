@@ -297,14 +297,29 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
         FFT_Calculation(tmp_buf_2, tmp_buf_1);
         DSE_Calculation(tmp_buf_1, tmp_buf_2);
-        MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
-        ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        MEL_Calculation(tmp_buf_2, tmp_buf_1);
+        ZScore_Calculation(tmp_buf_2, N_MELS);
+        transpose_matrix(tmp_buf_2, pOut, 32, 30);
+        // MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+        // ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         mel_indice++;
         if (audio_record == AUDIO_RECORD)
             arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
 
     return FEATURE_EXPORT_PROGRESS;
+}
+
+// Fonction pour transposer une matrice de 32 lignes par 30 colonnes
+void transpose_matrix(float *input, float *output, uint8_t rows, uint8_t cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            output[j * rows + i] = input[i * cols + j];
+        }
+    }
 }
 
 uint8_t Feature_Export_Init()

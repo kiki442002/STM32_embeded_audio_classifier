@@ -149,7 +149,6 @@ int main(void)
 
   // Start Recording
   BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
-
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -187,7 +186,7 @@ int main(void)
       MX_X_CUBE_AI_Process();
       for (int i = 0; i < 4; i++)
       {
-        printf("IA_OUTPUT[%d] = %d\n\r", i, (int)(IA_OUTPUT[i] * 100));
+        printf("IA_OUTPUT[%d] = %d.%02d\n\r", i, (int)(IA_OUTPUT[i] * 100), ((int)(IA_OUTPUT[i] * 10000) % 100));
       }
       printf("Next\n\r");
       while (1)
