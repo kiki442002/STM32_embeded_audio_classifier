@@ -125,6 +125,7 @@ EndDependencies */
 #include "stm32f769i_discovery_audio.h"
 #include "stm32f769i_discovery_lcd.h"
 #include "main.h"
+#include "filtrage.h"
 
 /** @addtogroup BSP
  * @{
@@ -1621,14 +1622,20 @@ void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
   BSP_AUDIO_IN_TransferComplete_CallBack();
 }
 
+int i = 0;
 void BSP_AUDIO_IN_TransferComplete_CallBack(void)
 {
+  if (feature_export_status == FEATURE_EXPORT_PROGRESS)
+    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL, AUDIO_NO_RECORD);
   audio_rec_buffer_state = BUFFER_OFFSET_FULL;
 }
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
 {
+  if (feature_export_status == FEATURE_EXPORT_PROGRESS)
+    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF, AUDIO_NO_RECORD);
   audio_rec_buffer_state = BUFFER_OFFSET_HALF;
 }
+
 void BSP_AUDIO_IN_Error_CallBack(void)
 {
   BSP_LCD_SetTextColor(LCD_COLOR_RED);

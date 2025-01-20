@@ -69,6 +69,7 @@ void Error_Handler(void)
 {
 
     /* User can add his own implementation to report the HAL error return state */
+    printf("Error_Handler\n\r");
     __disable_irq();
     while (1)
     {

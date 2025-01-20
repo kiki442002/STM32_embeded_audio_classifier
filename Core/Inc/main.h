@@ -36,6 +36,7 @@ extern "C"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "arm_math.h"
     /* USER CODE END Includes */
 
     /* Exported types ------------------------------------------------------------*/
@@ -387,6 +388,10 @@ extern "C"
     } BUFFER_StateTypeDef;
 
     extern uint8_t audio_rec_buffer_state;
+    extern volatile uint8_t feature_export_status;
+    extern volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
+    extern volatile float32_t MelData[30 * 32];
+
 
 #ifdef __cplusplus
 }

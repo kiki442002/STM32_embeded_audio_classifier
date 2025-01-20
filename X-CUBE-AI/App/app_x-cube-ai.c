@@ -226,14 +226,10 @@ ai_i8 *data_outs[AI_AUDIO_CLASSIFIER_OUT_NUM] = {
     /* USER CODE BEGIN 6 */
     int res = -1;
 
-    printf("TEMPLATE - run - main loop\r\n");
-
     if (audio_classifier)
     {
-      printf("TEMPLATE - run - main loop - OK\r\n");
 
       res = ai_run();
-      printf("TEMPLATE - run - main loop - res = %d\r\n", res);
     }
 
     if (res)

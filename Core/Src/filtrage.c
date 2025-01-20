@@ -230,7 +230,8 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
     {
         if (buffer_run != BUFFER_HALF_FIRST)
         {
-            cReadIndex = 3 * FILTRAGE_SIZE;
+            cReadIndex = 3072;
+            // printf("1 %ld\n\r", cReadIndex);
             arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
             Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
@@ -250,10 +251,12 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
                 WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
                 wav_indice = 0;
             }
+            buffer_run = BUFFER_HALF_FIRST;
             return FEATURE_EXPORT_OK;
         }
 
         cReadIndex = 0;
+        // printf("2 %ld\n\r", cReadIndex);
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
@@ -268,7 +271,8 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
     }
     else if (bufferState == BUFFER_FULL)
     {
-        cReadIndex = FILTRAGE_SIZE;
+        cReadIndex = 1024;
+        // printf("3 %ld\n\r", cReadIndex);
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
@@ -288,20 +292,19 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
                 WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
                 wav_indice = 0;
             }
+            buffer_run = BUFFER_HALF_FIRST;
             return FEATURE_EXPORT_OK;
         }
 
-        cReadIndex = 2 * FILTRAGE_SIZE;
+        cReadIndex = 2048;
+        // printf("4 %ld\n\r", cReadIndex);
         arm_circularRead_q15(pIn, STEREO_RECORD_BUFFER_SIZE, &cReadIndex, 2, rawPCMdata, &distIndex, FILTRAGE_SIZE, 1, FILTRAGE_SIZE);
 
         Hanning_window(tmp_buf_1, rawPCMdata, FILTRAGE_SIZE, MONO);
         FFT_Calculation(tmp_buf_2, tmp_buf_1);
         DSE_Calculation(tmp_buf_1, tmp_buf_2);
-        MEL_Calculation(tmp_buf_2, tmp_buf_1);
-        ZScore_Calculation(tmp_buf_2, N_MELS);
-        transpose_matrix(tmp_buf_2, pOut, 32, 30);
-        // MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
-        // ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
+        MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
+        ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         mel_indice++;
         if (audio_record == AUDIO_RECORD)
             arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
@@ -330,4 +333,21 @@ uint8_t Feature_Export_Init()
         return ret;
     }
     return FFT_init(FILTRAGE_SIZE);
+}
+
+max_output max(float32_t *pIn, uint32_t size)
+{
+    max_output max;
+    max.max = pIn[0];
+    max.arg = 0;
+
+    for (int i = 1; i < size; i++)
+    {
+        if (pIn[i] > max.max)
+        {
+            max.max = pIn[i];
+            max.arg = i;
+        }
+    }
+    return max;
 }

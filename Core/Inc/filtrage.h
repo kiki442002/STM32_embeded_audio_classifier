@@ -26,6 +26,12 @@
 
 #define PSD_init(size) FFT_init(size)
 
+typedef struct
+{
+    float32_t max;
+    uint32_t arg;
+} max_output;
+
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size);
 uint8_t Hamming_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type);
 uint8_t Hanning_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type);
@@ -37,3 +43,5 @@ uint8_t MEL_Calculation(float32_t *pOut, float32_t *pIn);
 uint8_t ZScore_Calculation(float32_t *pIn, uint32_t size);
 uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8_t audio_record);
 uint8_t Feature_Export_Init();
+void transpose_matrix(float *input, float *output, uint8_t rows, uint8_t cols);
+max_output max(float32_t *pIn, uint32_t size);

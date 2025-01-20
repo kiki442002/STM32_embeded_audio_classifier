@@ -36,14 +36,16 @@ typedef struct App_HandleTypeDef
 /* END Structure -----------------------------------------------------------------*/
 
 /* Variables ---------------------------------------------------------------------*/
-uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE] = {0};
-float32_t MelData[30 * 32];
-float32_t IA_OUTPUT[4];
+volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE] = {0};
+volatile float32_t MelData[30 * 32] = {0};
+float32_t ia_input[32 * 30];
+float32_t ia_output[4];
 const char *labels[4] = {"Pluie", "Pas", "Vent", "Voiture"};
 
 int32_t Scratch[SCRATCH_BUFF_SIZE];
 uint8_t audio_rec_buffer_state;
 App_HandleTypeDef hApp;
+volatile uint8_t feature_export_status = FEATURE_EXPORT_PROGRESS;
 
 /* END Variables -----------------------------------------------------------------*/
 
@@ -79,7 +81,7 @@ int main(void)
   MX_RTC_Init();
   MX_USART1_UART_Init();
   MX_FATFS_Init();
-  MX_X_CUBE_AI_Init(MelData, IA_OUTPUT);
+  MX_X_CUBE_AI_Init(ia_input, ia_output);
   Feature_Export_Init();
   BSP_LED_Init(LED1);
 
@@ -144,7 +146,6 @@ int main(void)
   print_Menu_Interface();
 
   // Usefull variables
-  uint8_t feature_export_status = FEATURE_EXPORT_PROGRESS;
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
 
   // Start Recording
@@ -169,31 +170,32 @@ int main(void)
     BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT PLAY", CENTER_MODE);
     Error_Handler();
   }
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
 
+  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
   // Infinite Loop
   while (1)
   {
-    if (audio_rec_buffer_state != BUFFER_OFFSET_NONE)
-    {
-      feature_export_status = Feature_Export(MelData, (int16_t *)RecordBuffer, audio_rec_buffer_state, AUDIO_NO_RECORD);
-    }
     if (feature_export_status == FEATURE_EXPORT_OK)
     {
-      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
-      // BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-      // WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
+      //  BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
+      //  WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
+      transpose_matrix((float32_t *)MelData, ia_input, 32, 30);
+      // WriteBufferFile_F32(ia_input, 30 * 32, "data_in.txt");
       MX_X_CUBE_AI_Process();
-      for (int i = 0; i < 4; i++)
-      {
-        printf("IA_OUTPUT[%d] = %d.%02d\n\r", i, (int)(IA_OUTPUT[i] * 100), ((int)(IA_OUTPUT[i] * 10000) % 100));
-      }
-      printf("Next\n\r");
-      while (1)
+      // for (int i = 0; i < 4; i++)
+      // {
+      //   printf("IA_OUTPUT[%d] = %d.%02d\n\r", i, (int)(ia_output[i] * 100), ((int)(ia_output[i] * 10000) % 100));
+      // }
+      // printf("Next\n\r");
+      char tmp_msg[30];
+      max_output max_val = max(ia_output, 4);
+      sprintf(tmp_msg, "%s : %d.%02d", labels[max_val.arg], (int)(max_val.max * 100), ((int)(max_val.max * 10000) % 100));
+      // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 65, (uint8_t *)tmp_msg, CENTER_MODE);
+      printf("%s\n\r", tmp_msg);
+      while (audio_rec_buffer_state != BUFFER_OFFSET_FULL)
         ;
+      feature_export_status = FEATURE_EXPORT_PROGRESS;
     }
-
-    // Wait next data
-    audio_rec_buffer_state = BUFFER_OFFSET_NONE;
   }
 }
