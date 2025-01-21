@@ -21,7 +21,7 @@ void print_Menu_Interface(void)
     BSP_LCD_DrawRect(START_X + 2 + SPACE_BETWEEN_BUTTONS, START_Y + 2, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DrawRect(START_X + 3 + SPACE_BETWEEN_BUTTONS, START_Y + 3, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DisplayStringAt(START_X + SPACE_BETWEEN_BUTTONS - 2, START_Y + BUTTON_WIDTH_HEIGHT + 20, (uint8_t *)"Audio Out", LEFT_MODE);
-    Draw_Output_Button();
+    Draw_Output_Button(LCD_COLOR_WHITE);
 
     // Troisième fonctionnalité
     BSP_LCD_DrawRect(START_X + SPACE_BETWEEN_BUTTONS * 2, START_Y, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
@@ -29,7 +29,7 @@ void print_Menu_Interface(void)
     BSP_LCD_DrawRect(START_X + 2 + SPACE_BETWEEN_BUTTONS * 2, START_Y + 2, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DrawRect(START_X + 3 + SPACE_BETWEEN_BUTTONS * 2, START_Y + 3, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DisplayStringAt(START_X + SPACE_BETWEEN_BUTTONS * 2 + 20, START_Y + BUTTON_WIDTH_HEIGHT + 20, (uint8_t *)"Record", LEFT_MODE);
-    Draw_SD_Button();
+    Draw_SD_Button(LCD_COLOR_WHITE);
 
     // Quatrième fonctionnalité
     BSP_LCD_DrawRect(START_X + SPACE_BETWEEN_BUTTONS * 3, START_Y, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
@@ -37,7 +37,7 @@ void print_Menu_Interface(void)
     BSP_LCD_DrawRect(START_X + 2 + SPACE_BETWEEN_BUTTONS * 3, START_Y + 2, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DrawRect(START_X + 3 + SPACE_BETWEEN_BUTTONS * 3, START_Y + 3, BUTTON_WIDTH_HEIGHT, BUTTON_WIDTH_HEIGHT);
     BSP_LCD_DisplayStringAt(START_X + SPACE_BETWEEN_BUTTONS * 3 + 60, START_Y + BUTTON_WIDTH_HEIGHT + 20, (uint8_t *)"AI", LEFT_MODE);
-    Draw_AI_Button();
+    Draw_AI_Button(LCD_COLOR_WHITE);
 
     // Ligne pour Luminosité
     BSP_LCD_DrawRect(20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
@@ -71,22 +71,21 @@ void Draw_Pause_Button(void)
 }
 #define OFFSET_LEFT -3 // Définir un décalage vers la gauche
 
-void Draw_Output_Button(void)
+void Draw_Output_Button(uint32_t color)
 {
-    // Définir la couleur du texte en blanc et dessiner un rectangle de base pour le bouton
-    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-    BSP_LCD_DrawRect(START_X + 20 - OFFSET_LEFT, START_Y + 20, BUTTON_WIDTH_HEIGHT - 40, BUTTON_WIDTH_HEIGHT - 40);
+    BSP_LCD_SetTextColor(color);
+    BSP_LCD_FillRect(START_X + 4 + SPACE_BETWEEN_BUTTONS, START_Y + 4, BUTTON_WIDTH_HEIGHT - 4, BUTTON_WIDTH_HEIGHT - 4);
 
     // Dessiner le cercle principal plus petit et plus épais
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
     BSP_LCD_FillCircle(START_X + SPACE_BETWEEN_BUTTONS + BUTTON_WIDTH_HEIGHT / 2 - OFFSET_LEFT, START_Y + BUTTON_WIDTH_HEIGHT / 2, BUTTON_WIDTH_HEIGHT / 2 - 25);
 
-    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_SetTextColor(color);
     BSP_LCD_FillCircle(START_X + SPACE_BETWEEN_BUTTONS + BUTTON_WIDTH_HEIGHT / 2 - OFFSET_LEFT, START_Y + BUTTON_WIDTH_HEIGHT / 2, BUTTON_WIDTH_HEIGHT / 2 - 35);
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 
     // Masquer la moitié inférieure du cercle avec un rectangle blanc
-    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_SetTextColor(color);
     BSP_LCD_FillRect(START_X + SPACE_BETWEEN_BUTTONS - OFFSET_LEFT + 5, START_Y + BUTTON_WIDTH_HEIGHT / 2, BUTTON_WIDTH_HEIGHT - 20, BUTTON_WIDTH_HEIGHT / 2);
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 
@@ -97,8 +96,11 @@ void Draw_Output_Button(void)
     BSP_LCD_FillRect(START_X + SPACE_BETWEEN_BUTTONS + BUTTON_WIDTH_HEIGHT - 20 - OFFSET_LEFT - 15, START_Y + BUTTON_WIDTH_HEIGHT / 2 - 12, 15, 30);
 }
 
-void Draw_SD_Button(void)
+void Draw_SD_Button(uint32_t color)
 {
+    BSP_LCD_SetTextColor(color);
+    BSP_LCD_FillRect(START_X + 4 + SPACE_BETWEEN_BUTTONS * 2, START_Y + 4, BUTTON_WIDTH_HEIGHT - 4, BUTTON_WIDTH_HEIGHT - 4);
+
     // Définir la couleur de remplissage
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 
@@ -106,12 +108,12 @@ void Draw_SD_Button(void)
     BSP_LCD_FillRect(START_X + SPACE_BETWEEN_BUTTONS * 2 + 40, START_Y + 28, 65, 90);
 
     // Dessiner un rectangle plein pour le troisième bouton
-    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_SetTextColor(color);
     FillTriangle(START_X + SPACE_BETWEEN_BUTTONS * 2 + 110, START_X + SPACE_BETWEEN_BUTTONS * 2 + 110, START_X + SPACE_BETWEEN_BUTTONS * 2 + 80, START_Y + 20, START_Y + 50, START_Y + 20);
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 }
 
-void Draw_AI_Button(void)
+void Draw_AI_Button(uint32_t color)
 {
     // Définir les coordonnées de base pour le troisième bouton
     int x = START_X + SPACE_BETWEEN_BUTTONS * 3;
@@ -120,6 +122,9 @@ void Draw_AI_Button(void)
     // Ajuster les coordonnées pour centrer le logo
     int center_x = x + BUTTON_WIDTH_HEIGHT / 2;
     int center_y = y + BUTTON_WIDTH_HEIGHT / 2;
+
+    BSP_LCD_SetTextColor(color);
+    BSP_LCD_FillRect(START_X + 4 + SPACE_BETWEEN_BUTTONS * 3, START_Y + 4, BUTTON_WIDTH_HEIGHT - 4, BUTTON_WIDTH_HEIGHT - 4);
 
     // Définir la couleur de remplissage
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);

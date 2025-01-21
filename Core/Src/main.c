@@ -20,20 +20,8 @@
 #include "filtrage.h"
 #include "screen.h"
 #include "touchscreen.h"
+
 /* END Includes -------------------------------------------------------------------*/
-
-/* Structure ----------------------------------------------------------------------*/
-typedef struct App_HandleTypeDef
-{
-  uint8_t IA_activation;
-  uint8_t record_activation;
-  uint8_t play_activation;
-  uint8_t output_activation;
-  uint8_t luminosity;
-  uint8_t volume;
-} App_HandleTypeDef;
-
-/* END Structure -----------------------------------------------------------------*/
 
 /* Variables ---------------------------------------------------------------------*/
 volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE] = {0};
@@ -59,7 +47,7 @@ int main(void)
   uint8_t lcd_status = LCD_OK;
   hApp.luminosity = 100;
   hApp.volume = 100;
-  hApp.IA_activation = IA_DESACTIVATE;
+  hApp.IA_activation = IA_ACTIVATE;
   hApp.record_activation = RECORD_DESACTIVATE;
   hApp.play_activation = PLAY_DESACTIVATE;
   hApp.output_activation = OUTPUT_DESACTIVATE;
@@ -144,12 +132,14 @@ int main(void)
 
   // Show Interface
   print_Menu_Interface();
-
+  Draw_Output_Button(LCD_COLOR_GRAY);
+  Draw_SD_Button(LCD_COLOR_GRAY);
+  Draw_AI_Button(LCD_COLOR_GRAY);
   // Usefull variables
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
 
   // Start Recording
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
+  // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -171,11 +161,11 @@ int main(void)
     Error_Handler();
   }
 
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
-  // Infinite Loop
+  // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
+  //  Infinite Loop
   while (1)
   {
-    if (feature_export_status == FEATURE_EXPORT_OK)
+    if (feature_export_status == FEATURE_EXPORT_OK && hApp.IA_activation == IA_ACTIVATE)
     {
       // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
       //  BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
@@ -187,14 +177,11 @@ int main(void)
       // {
       //   printf("IA_OUTPUT[%d] = %d.%02d\n\r", i, (int)(ia_output[i] * 100), ((int)(ia_output[i] * 10000) % 100));
       // }
-      // printf("Next\n\r");
       char tmp_msg[30];
       max_output max_val = max(ia_output, 4);
-      sprintf(tmp_msg, "%s : %d.%02d", labels[max_val.arg], (int)(max_val.max * 100), ((int)(max_val.max * 10000) % 100));
-      // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 65, (uint8_t *)tmp_msg, CENTER_MODE);
-      printf("%s\n\r", tmp_msg);
-      while (audio_rec_buffer_state != BUFFER_OFFSET_FULL)
-        ;
+      sprintf(tmp_msg, "      %s : %d.%02d %%       ", labels[max_val.arg], (int)(max_val.max * 100), ((int)(max_val.max * 10000) % 100));
+      BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 65, (uint8_t *)tmp_msg, CENTER_MODE);
+      // printf("%s\n\r", tmp_msg);
       feature_export_status = FEATURE_EXPORT_PROGRESS;
     }
   }

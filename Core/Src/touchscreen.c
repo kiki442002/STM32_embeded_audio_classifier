@@ -6,9 +6,10 @@ void touchscreen_Handle(void)
     BSP_TS_GetState(&TS_State);
     if (TS_State.touchDetected)
     {
+        printf("Touch Detected\n");
         if (TS_State.touchX[0] < 100 && TS_State.touchY[0] < 100)
         {
-            BSP_LED_Toggle(LED1);
+            printf("Button 1 pressed\n");
         }
     }
 }

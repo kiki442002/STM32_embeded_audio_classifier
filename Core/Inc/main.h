@@ -379,6 +379,19 @@ extern "C"
 #define MONO_RECORD_BUFFER_SIZE STEREO_RECORD_BUFFER_SIZE / 2
 #define FFT_BUFFER_SIZE MONO_RECORD_BUFFER_SIZE / 2
 
+#define IA_ACTIVATE (uint8_t)1
+#define IA_DESACTIVATE (uint8_t)0
+#define RECORD_ACTIVATE (uint8_t)1
+#define RECORD_DESACTIVATE (uint8_t)0
+#define PLAY_ACTIVATE (uint8_t)1
+#define PLAY_DESACTIVATE (uint8_t)0
+#define OUTPUT_ACTIVATE (uint8_t)1
+#define OUTPUT_DESACTIVATE (uint8_t)0
+#define LUMINOSITY_MAX (uint8_t)100
+#define LUMINOSITY_MIN (uint8_t)10
+#define VOLUME_MAX (uint8_t)100
+#define VOLUME_MIN (uint8_t)0
+
     /* USER CODE END Private defines */
     typedef enum
     {
@@ -387,11 +400,24 @@ extern "C"
         BUFFER_OFFSET_FULL = 2,
     } BUFFER_StateTypeDef;
 
+    /* Structure ----------------------------------------------------------------------*/
+    typedef struct App_HandleTypeDef
+    {
+        uint8_t IA_activation;
+        uint8_t record_activation;
+        uint8_t play_activation;
+        uint8_t output_activation;
+        uint8_t luminosity;
+        uint8_t volume;
+    } App_HandleTypeDef;
+    extern App_HandleTypeDef hApp;
+
+    /* END Structure -----------------------------------------------------------------*/
+
     extern uint8_t audio_rec_buffer_state;
     extern volatile uint8_t feature_export_status;
     extern volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
     extern volatile float32_t MelData[30 * 32];
-
 
 #ifdef __cplusplus
 }

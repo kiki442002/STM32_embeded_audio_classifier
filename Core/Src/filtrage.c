@@ -313,6 +313,13 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
     return FEATURE_EXPORT_PROGRESS;
 }
 
+void Feature_Export_Reset()
+{
+    buffer_run = BUFFER_HALF_FIRST;
+    mel_indice = 0;
+    wav_indice = 0;
+}
+
 // Fonction pour transposer une matrice de 32 lignes par 30 colonnes
 void transpose_matrix(float *input, float *output, uint8_t rows, uint8_t cols)
 {
