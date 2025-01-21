@@ -189,3 +189,11 @@ int main(void)
     }
   }
 }
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == TS_INT_PIN)
+  {
+    touchscreen_Handle();
+  }
+}
