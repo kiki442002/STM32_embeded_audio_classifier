@@ -47,7 +47,7 @@ int main(void)
   uint8_t lcd_status = LCD_OK;
   hApp.luminosity = 100;
   hApp.volume = 100;
-  hApp.IA_activation = IA_ACTIVATE;
+  hApp.IA_activation = IA_DESACTIVATE;
   hApp.record_activation = RECORD_DESACTIVATE;
   hApp.play_activation = PLAY_DESACTIVATE;
   hApp.output_activation = OUTPUT_DESACTIVATE;
@@ -148,6 +148,7 @@ int main(void)
     Error_Handler();
   }
 
+  BSP_AUDIO_OUT_SetMute(AUDIO_MUTE_ON);
   // Wait first data
   while (audio_rec_buffer_state == BUFFER_OFFSET_NONE)
     ;
@@ -160,6 +161,8 @@ int main(void)
     BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Error: AUDIO OUT PLAY", CENTER_MODE);
     Error_Handler();
   }
+  BSP_AUDIO_IN_Pause();
+  BSP_AUDIO_OUT_Pause();
 
   // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
   //  Infinite Loop
