@@ -1,0 +1,1155 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"arm_fir_fast_q31.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c"
+  19              		.section	.text.arm_fir_fast_q31,"ax",%progbits
+  20              		.align	1
+  21              		.global	arm_fir_fast_q31
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	arm_fir_fast_q31:
+  27              	.LVL0:
+  28              	.LFB135:
+   1:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** /* ----------------------------------------------------------------------
+   2:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Project:      CMSIS DSP Library
+   3:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Title:        arm_fir_fast_q31.c
+   4:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Description:  Processing function for the Q31 Fast FIR filter
+   5:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+   6:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * $Date:        27. January 2017
+   7:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * $Revision:    V.1.5.1
+   8:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+   9:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Target Processor: Cortex-M cores
+  10:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * -------------------------------------------------------------------- */
+  11:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** /*
+  12:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Copyright (C) 2010-2017 ARM Limited or its affiliates. All rights reserved.
+  13:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  14:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * SPDX-License-Identifier: Apache-2.0
+  15:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  16:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  17:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * not use this file except in compliance with the License.
+  18:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * You may obtain a copy of the License at
+  19:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  20:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * www.apache.org/licenses/LICENSE-2.0
+  21:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  22:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Unless required by applicable law or agreed to in writing, software
+  23:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  24:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  25:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * See the License for the specific language governing permissions and
+  26:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * limitations under the License.
+  27:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  */
+  28:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  29:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** #include "arm_math.h"
+  30:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 2
+
+
+  31:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** /**
+  32:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @ingroup groupFilters
+  33:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  */
+  34:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  35:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** /**
+  36:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @addtogroup FIR
+  37:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @{
+  38:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  */
+  39:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  40:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** /**
+  41:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @param[in] *S points to an instance of the Q31 structure.
+  42:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @param[in] *pSrc points to the block of input data.
+  43:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @param[out] *pDst points to the block output data.
+  44:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @param[in] blockSize number of samples to process per call.
+  45:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * @return none.
+  46:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  47:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * <b>Scaling and Overflow Behavior:</b>
+  48:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  49:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * \par
+  50:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * This function is optimized for speed at the expense of fixed-point precision and overflow protec
+  51:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * The result of each 1.31 x 1.31 multiplication is truncated to 2.30 format.
+  52:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * These intermediate results are added to a 2.30 accumulator.
+  53:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Finally, the accumulator is saturated and converted to a 1.31 result.
+  54:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * The fast version has the same overflow behavior as the standard version and provides less precis
+  55:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * In order to avoid overflows completely the input signal must be scaled down by log2(numTaps) bit
+  56:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  *
+  57:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * \par
+  58:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Refer to the function <code>arm_fir_q31()</code> for a slower implementation of this function wh
+  59:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  * Use the function <code>arm_fir_init_q31()</code> to initialize the filter structure.
+  60:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****  */
+  61:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  62:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** IAR_ONLY_LOW_OPTIMIZATION_ENTER
+  63:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** void arm_fir_fast_q31(
+  64:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   const arm_fir_instance_q31 * S,
+  65:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t * pSrc,
+  66:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t * pDst,
+  67:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   uint32_t blockSize)
+  68:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** {
+  29              		.loc 1 68 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 64
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 68 1 is_stmt 0 view .LVU1
+  34 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  35              		.cfi_def_cfa_offset 36
+  36              		.cfi_offset 4, -36
+  37              		.cfi_offset 5, -32
+  38              		.cfi_offset 6, -28
+  39              		.cfi_offset 7, -24
+  40              		.cfi_offset 8, -20
+  41              		.cfi_offset 9, -16
+  42              		.cfi_offset 10, -12
+  43              		.cfi_offset 11, -8
+  44              		.cfi_offset 14, -4
+  45 0004 91B0     		sub	sp, sp, #68
+  46              		.cfi_def_cfa_offset 104
+  47 0006 0646     		mov	r6, r0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 3
+
+
+  48 0008 1546     		mov	r5, r2
+  49 000a 1A46     		mov	r2, r3
+  50              	.LVL1:
+  69:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t *pState = S->pState;                     /* State pointer */
+  51              		.loc 1 69 3 is_stmt 1 view .LVU2
+  52              		.loc 1 69 10 is_stmt 0 view .LVU3
+  53 000c 4368     		ldr	r3, [r0, #4]
+  54              	.LVL2:
+  70:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t *pCoeffs = S->pCoeffs;                   /* Coefficient pointer */
+  55              		.loc 1 70 3 is_stmt 1 view .LVU4
+  56              		.loc 1 70 10 is_stmt 0 view .LVU5
+  57 000e 8068     		ldr	r0, [r0, #8]
+  58              	.LVL3:
+  59              		.loc 1 70 10 view .LVU6
+  60 0010 0890     		str	r0, [sp, #32]
+  61              	.LVL4:
+  71:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t *pStateCurnt;                            /* Points to the current sample of the state */
+  62              		.loc 1 71 3 is_stmt 1 view .LVU7
+  72:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t x0, x1, x2, x3;                          /* Temporary variables to hold state */
+  63              		.loc 1 72 3 view .LVU8
+  73:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t c0;                                      /* Temporary variable to hold coefficient value */
+  64              		.loc 1 73 3 view .LVU9
+  74:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t *px;                                     /* Temporary pointer for state */
+  65              		.loc 1 74 3 view .LVU10
+  75:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t *pb;                                     /* Temporary pointer for coefficient buffer */
+  66              		.loc 1 75 3 view .LVU11
+  76:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   q31_t acc0, acc1, acc2, acc3;                  /* Accumulators */
+  67              		.loc 1 76 3 view .LVU12
+  77:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   uint32_t numTaps = S->numTaps;                 /* Number of filter coefficients in the filter */
+  68              		.loc 1 77 3 view .LVU13
+  69              		.loc 1 77 23 is_stmt 0 view .LVU14
+  70 0012 3088     		ldrh	r0, [r6]
+  71              	.LVL5:
+  72              		.loc 1 77 23 view .LVU15
+  73 0014 0790     		str	r0, [sp, #28]
+  74              	.LVL6:
+  78:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   uint32_t i, tapCnt, blkCnt;                    /* Loop counters */
+  75              		.loc 1 78 3 is_stmt 1 view .LVU16
+  79:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  80:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* S->pState points to buffer which contains previous frame (numTaps - 1) samples */
+  81:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* pStateCurnt points to the location where the new input data should be written */
+  82:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   pStateCurnt = &(S->pState[(numTaps - 1U)]);
+  76              		.loc 1 82 3 view .LVU17
+  77              		.loc 1 82 28 is_stmt 0 view .LVU18
+  78 0016 6FF04048 		mvn	r8, #-1073741824
+  79 001a 8044     		add	r8, r8, r0
+  80              		.loc 1 82 15 view .LVU19
+  81 001c 03EB8808 		add	r8, r3, r8, lsl #2
+  82              	.LVL7:
+  83:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  84:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* Apply loop unrolling and compute 4 output values simultaneously.
+  85:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    * The variables acc0 ... acc3 hold output values that are being computed:
+  86:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    *
+  87:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    *    acc0 =  b[numTaps-1] * x[n-numTaps-1] + b[numTaps-2] * x[n-numTaps-2] + b[numTaps-3] * x[n-
+  88:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    *    acc1 =  b[numTaps-1] * x[n-numTaps] +   b[numTaps-2] * x[n-numTaps-1] + b[numTaps-3] * x[n-
+  89:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    *    acc2 =  b[numTaps-1] * x[n-numTaps+1] + b[numTaps-2] * x[n-numTaps] +   b[numTaps-3] * x[n-
+  90:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    *    acc3 =  b[numTaps-1] * x[n-numTaps+2] + b[numTaps-2] * x[n-numTaps+1] + b[numTaps-3] * x[n-
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 4
+
+
+  91:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    */
+  92:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   blkCnt = blockSize >> 2;
+  83              		.loc 1 92 3 is_stmt 1 view .LVU20
+  84              		.loc 1 92 10 is_stmt 0 view .LVU21
+  85 0020 9008     		lsrs	r0, r2, #2
+  86              	.LVL8:
+  87              		.loc 1 92 10 view .LVU22
+  88 0022 0690     		str	r0, [sp, #24]
+  89              	.LVL9:
+  93:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+  94:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+  95:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    ** a second loop below computes the remaining 1 to 3 samples. */
+  96:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   while (blkCnt > 0U)
+  90              		.loc 1 96 3 is_stmt 1 view .LVU23
+  91 0024 0E96     		str	r6, [sp, #56]
+  92 0026 1E46     		mov	r6, r3
+  93              	.LVL10:
+  94              		.loc 1 96 3 is_stmt 0 view .LVU24
+  95 0028 2C46     		mov	r4, r5
+  96 002a 0F92     		str	r2, [sp, #60]
+  97              		.loc 1 96 9 view .LVU25
+  98 002c 76E1     		b	.L2
+  99              	.LVL11:
+ 100              	.L4:
+  97:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+  98:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Copy four new input samples into the state buffer */
+  99:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 100:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 101:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 103:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 104:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Set all accumulators to zero */
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc0 = 0;
+ 106:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc1 = 0;
+ 107:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc2 = 0;
+ 108:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc3 = 0;
+ 109:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 110:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Initialize state pointer */
+ 111:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     px = pState;
+ 112:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 113:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Initialize coefficient pointer */
+ 114:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     pb = pCoeffs;
+ 115:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 116:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Read the first three samples from the state buffer:
+ 117:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****      *  x[n-numTaps], x[n-numTaps-1], x[n-numTaps-2] */
+ 118:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x0 = *(px++);
+ 119:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x1 = *(px++);
+ 120:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x2 = *(px++);
+ 121:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 122:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Loop unrolling.  Process 4 taps at a time. */
+ 123:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     tapCnt = numTaps >> 2;
+ 124:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = tapCnt;
+ 125:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 126:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     while (i > 0U)
+ 127:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 128:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read the b[numTaps] coefficient */
+ 129:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       c0 = *pb;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 5
+
+
+ 101              		.loc 1 129 7 is_stmt 1 view .LVU26
+ 102              		.loc 1 129 10 is_stmt 0 view .LVU27
+ 103 002e 3468     		ldr	r4, [r6]
+ 104              	.LVL12:
+ 130:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 131:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read x[n-numTaps-3] sample */
+ 132:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x3 = *px;
+ 105              		.loc 1 132 7 is_stmt 1 view .LVU28
+ 106              		.loc 1 132 10 is_stmt 0 view .LVU29
+ 107 0030 019B     		ldr	r3, [sp, #4]
+ 108              	.LVL13:
+ 109              		.loc 1 132 10 view .LVU30
+ 110 0032 1868     		ldr	r0, [r3]
+ 111              	.LVL14:
+ 133:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 134:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* acc0 +=  b[numTaps] * x[n-numTaps] */
+ 135:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, x0, c0);
+ 112              		.loc 1 135 7 is_stmt 1 view .LVU31
+ 113 0034 0023     		movs	r3, #0
+ 114 0036 4FEAE279 		asr	r9, r2, #31
+ 115 003a 4FEAE47E 		asr	lr, r4, #31
+ 116 003e 02FB0EF7 		mul	r7, r2, lr
+ 117 0042 04FB0977 		mla	r7, r4, r9, r7
+ 118 0046 A2FB0429 		umull	r2, r9, r2, r4
+ 119              	.LVL15:
+ 120              		.loc 1 135 7 is_stmt 0 view .LVU32
+ 121 004a B944     		add	r9, r9, r7
+ 122 004c 9A18     		adds	r2, r3, r2
+ 123 004e 12F10042 		adds	r2, r2, #-2147483648
+ 124 0052 4BEB0907 		adc	r7, fp, r9
+ 125 0056 0497     		str	r7, [sp, #16]
+ 126              	.LVL16:
+ 136:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 137:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* acc1 +=  b[numTaps] * x[n-numTaps-1] */
+ 138:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc1, x1, c0);
+ 127              		.loc 1 138 7 is_stmt 1 view .LVU33
+ 128 0058 4FEAE57A 		asr	r10, r5, #31
+ 129 005c 04FB0AF9 		mul	r9, r4, r10
+ 130 0060 05FB0E99 		mla	r9, r5, lr, r9
+ 131 0064 A4FB0527 		umull	r2, r7, r4, r5
+ 132 0068 4F44     		add	r7, r7, r9
+ 133 006a 9A18     		adds	r2, r3, r2
+ 134 006c 12F10042 		adds	r2, r2, #-2147483648
+ 135 0070 029A     		ldr	r2, [sp, #8]
+ 136 0072 42EB0702 		adc	r2, r2, r7
+ 137 0076 0292     		str	r2, [sp, #8]
+ 138              	.LVL17:
+ 139:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 140:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* acc2 +=  b[numTaps] * x[n-numTaps-2] */
+ 141:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc2, x2, c0);
+ 139              		.loc 1 141 7 view .LVU34
+ 140 0078 4FEAE179 		asr	r9, r1, #31
+ 141 007c 04FB09FB 		mul	fp, r4, r9
+ 142 0080 01FB0EBB 		mla	fp, r1, lr, fp
+ 143 0084 A4FB0127 		umull	r2, r7, r4, r1
+ 144 0088 5F44     		add	r7, r7, fp
+ 145 008a 9A18     		adds	r2, r3, r2
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 6
+
+
+ 146 008c 12F10042 		adds	r2, r2, #-2147483648
+ 147 0090 4CEB0707 		adc	r7, ip, r7
+ 148              	.LVL18:
+ 142:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 143:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* acc3 +=  b[numTaps] * x[n-numTaps-3] */
+ 144:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc3, x3, c0);
+ 149              		.loc 1 144 7 view .LVU35
+ 150 0094 4FEAE07C 		asr	ip, r0, #31
+ 151 0098 04FB0CF2 		mul	r2, r4, ip
+ 152 009c 00FB0E22 		mla	r2, r0, lr, r2
+ 153 00a0 A4FB004E 		umull	r4, lr, r4, r0
+ 154              	.LVL19:
+ 155              		.loc 1 144 7 is_stmt 0 view .LVU36
+ 156 00a4 9644     		add	lr, lr, r2
+ 157 00a6 1C19     		adds	r4, r3, r4
+ 158 00a8 14F10044 		adds	r4, r4, #-2147483648
+ 159 00ac 48EB0E08 		adc	r8, r8, lr
+ 160              	.LVL20:
+ 145:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 146:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read the b[numTaps-1] coefficient */
+ 147:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       c0 = *(pb + 1U);
+ 161              		.loc 1 147 7 is_stmt 1 view .LVU37
+ 162              		.loc 1 147 10 is_stmt 0 view .LVU38
+ 163 00b0 7468     		ldr	r4, [r6, #4]
+ 164              	.LVL21:
+ 148:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 149:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read x[n-numTaps-4] sample */
+ 150:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x0 = *(px + 1U);
+ 165              		.loc 1 150 7 is_stmt 1 view .LVU39
+ 166              		.loc 1 150 10 is_stmt 0 view .LVU40
+ 167 00b2 019A     		ldr	r2, [sp, #4]
+ 168 00b4 5268     		ldr	r2, [r2, #4]
+ 169              	.LVL22:
+ 151:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 152:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Perform the multiply-accumulates */
+ 153:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, x1, c0);
+ 170              		.loc 1 153 7 is_stmt 1 view .LVU41
+ 171 00b6 4FEAE47E 		asr	lr, r4, #31
+ 172 00ba 05FB0EFB 		mul	fp, r5, lr
+ 173 00be 04FB0ABA 		mla	r10, r4, r10, fp
+ 174 00c2 A5FB045B 		umull	r5, fp, r5, r4
+ 175              	.LVL23:
+ 176              		.loc 1 153 7 is_stmt 0 view .LVU42
+ 177 00c6 D344     		add	fp, fp, r10
+ 178 00c8 5D19     		adds	r5, r3, r5
+ 179 00ca 15F10045 		adds	r5, r5, #-2147483648
+ 180 00ce 049D     		ldr	r5, [sp, #16]
+ 181 00d0 4BEB0505 		adc	r5, fp, r5
+ 182 00d4 0495     		str	r5, [sp, #16]
+ 154:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc1, x2, c0);
+ 183              		.loc 1 154 7 is_stmt 1 view .LVU43
+ 184 00d6 01FB0EFB 		mul	fp, r1, lr
+ 185 00da 04FB09BB 		mla	fp, r4, r9, fp
+ 186 00de A1FB045A 		umull	r5, r10, r1, r4
+ 187 00e2 DA44     		add	r10, r10, fp
+ 188 00e4 5D19     		adds	r5, r3, r5
+ 189 00e6 15F10045 		adds	r5, r5, #-2147483648
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 7
+
+
+ 190 00ea 029D     		ldr	r5, [sp, #8]
+ 191 00ec 4AEB0505 		adc	r5, r10, r5
+ 192 00f0 0295     		str	r5, [sp, #8]
+ 155:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc2, x3, c0);
+ 193              		.loc 1 155 7 view .LVU44
+ 194 00f2 00FB0EFB 		mul	fp, r0, lr
+ 195 00f6 04FB0CBB 		mla	fp, r4, ip, fp
+ 196 00fa A0FB045A 		umull	r5, r10, r0, r4
+ 197 00fe DA44     		add	r10, r10, fp
+ 198 0100 5D19     		adds	r5, r3, r5
+ 199 0102 15F10045 		adds	r5, r5, #-2147483648
+ 200 0106 4AEB070A 		adc	r10, r10, r7
+ 156:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc3, x0, c0);
+ 201              		.loc 1 156 7 view .LVU45
+ 202 010a D717     		asrs	r7, r2, #31
+ 203 010c 04FB07F5 		mul	r5, r4, r7
+ 204 0110 02FB0E55 		mla	r5, r2, lr, r5
+ 205 0114 A4FB024E 		umull	r4, lr, r4, r2
+ 206              	.LVL24:
+ 207              		.loc 1 156 7 is_stmt 0 view .LVU46
+ 208 0118 AE44     		add	lr, lr, r5
+ 209 011a 1C19     		adds	r4, r3, r4
+ 210 011c 14F10044 		adds	r4, r4, #-2147483648
+ 211 0120 4EEB080B 		adc	fp, lr, r8
+ 157:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 158:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read the b[numTaps-2] coefficient */
+ 159:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       c0 = *(pb + 2U);
+ 212              		.loc 1 159 7 is_stmt 1 view .LVU47
+ 213              		.loc 1 159 10 is_stmt 0 view .LVU48
+ 214 0124 B468     		ldr	r4, [r6, #8]
+ 215              	.LVL25:
+ 160:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 161:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read x[n-numTaps-5] sample */
+ 162:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x1 = *(px + 2U);
+ 216              		.loc 1 162 7 is_stmt 1 view .LVU49
+ 217              		.loc 1 162 10 is_stmt 0 view .LVU50
+ 218 0126 019D     		ldr	r5, [sp, #4]
+ 219 0128 AD68     		ldr	r5, [r5, #8]
+ 220              	.LVL26:
+ 163:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 164:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Perform the multiply-accumulates */
+ 165:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, x2, c0);
+ 221              		.loc 1 165 7 is_stmt 1 view .LVU51
+ 222 012a 4FEAE47E 		asr	lr, r4, #31
+ 223 012e 01FB0EF8 		mul	r8, r1, lr
+ 224 0132 04FB0988 		mla	r8, r4, r9, r8
+ 225 0136 A1FB0419 		umull	r1, r9, r1, r4
+ 226              	.LVL27:
+ 227              		.loc 1 165 7 is_stmt 0 view .LVU52
+ 228 013a C144     		add	r9, r9, r8
+ 229 013c 5918     		adds	r1, r3, r1
+ 230 013e 11F10041 		adds	r1, r1, #-2147483648
+ 231 0142 0499     		ldr	r1, [sp, #16]
+ 232 0144 49EB0101 		adc	r1, r9, r1
+ 233 0148 0491     		str	r1, [sp, #16]
+ 166:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc1, x3, c0);
+ 234              		.loc 1 166 7 is_stmt 1 view .LVU53
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 8
+
+
+ 235 014a 00FB0EF9 		mul	r9, r0, lr
+ 236 014e 04FB0C99 		mla	r9, r4, ip, r9
+ 237 0152 A0FB0418 		umull	r1, r8, r0, r4
+ 238 0156 C844     		add	r8, r8, r9
+ 239 0158 5918     		adds	r1, r3, r1
+ 240 015a 11F10041 		adds	r1, r1, #-2147483648
+ 241 015e 0299     		ldr	r1, [sp, #8]
+ 242 0160 48EB0101 		adc	r1, r8, r1
+ 243 0164 0291     		str	r1, [sp, #8]
+ 167:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc2, x0, c0);
+ 244              		.loc 1 167 7 view .LVU54
+ 245 0166 02FB0EF9 		mul	r9, r2, lr
+ 246 016a 04FB0799 		mla	r9, r4, r7, r9
+ 247 016e A2FB0418 		umull	r1, r8, r2, r4
+ 248 0172 C844     		add	r8, r8, r9
+ 249 0174 5918     		adds	r1, r3, r1
+ 250 0176 11F10041 		adds	r1, r1, #-2147483648
+ 251 017a 48EB0A0A 		adc	r10, r8, r10
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc3, x1, c0);
+ 252              		.loc 1 168 7 view .LVU55
+ 253 017e 4FEAE578 		asr	r8, r5, #31
+ 254 0182 04FB08F1 		mul	r1, r4, r8
+ 255 0186 05FB0E11 		mla	r1, r5, lr, r1
+ 256 018a A4FB054E 		umull	r4, lr, r4, r5
+ 257              	.LVL28:
+ 258              		.loc 1 168 7 is_stmt 0 view .LVU56
+ 259 018e 8E44     		add	lr, lr, r1
+ 260 0190 1C19     		adds	r4, r3, r4
+ 261 0192 14F10044 		adds	r4, r4, #-2147483648
+ 262 0196 4EEB0B04 		adc	r4, lr, fp
+ 263 019a 0594     		str	r4, [sp, #20]
+ 169:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 170:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read the b[numTaps-3] coefficients */
+ 171:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       c0 = *(pb + 3U);
+ 264              		.loc 1 171 7 is_stmt 1 view .LVU57
+ 265              		.loc 1 171 10 is_stmt 0 view .LVU58
+ 266 019c F468     		ldr	r4, [r6, #12]
+ 267              	.LVL29:
+ 172:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 173:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read x[n-numTaps-6] sample */
+ 174:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x2 = *(px + 3U);
+ 268              		.loc 1 174 7 is_stmt 1 view .LVU59
+ 269              		.loc 1 174 10 is_stmt 0 view .LVU60
+ 270 019e 0199     		ldr	r1, [sp, #4]
+ 271 01a0 C968     		ldr	r1, [r1, #12]
+ 272              	.LVL30:
+ 175:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 176:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Perform the multiply-accumulates */
+ 177:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, x3, c0);
+ 273              		.loc 1 177 7 is_stmt 1 view .LVU61
+ 274 01a2 4FEAE47E 		asr	lr, r4, #31
+ 275 01a6 00FB0EF9 		mul	r9, r0, lr
+ 276 01aa 04FB0C9C 		mla	ip, r4, ip, r9
+ 277 01ae A0FB040B 		umull	r0, fp, r0, r4
+ 278              	.LVL31:
+ 279              		.loc 1 177 7 is_stmt 0 view .LVU62
+ 280 01b2 E344     		add	fp, fp, ip
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 9
+
+
+ 281 01b4 1818     		adds	r0, r3, r0
+ 282 01b6 10F10040 		adds	r0, r0, #-2147483648
+ 283 01ba 0498     		ldr	r0, [sp, #16]
+ 284 01bc 4BEB000B 		adc	fp, fp, r0
+ 285              	.LVL32:
+ 178:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc1, x0, c0);
+ 286              		.loc 1 178 7 is_stmt 1 view .LVU63
+ 287 01c0 02FB0EFC 		mul	ip, r2, lr
+ 288              	.LVL33:
+ 289              		.loc 1 178 7 is_stmt 0 view .LVU64
+ 290 01c4 04FB07CC 		mla	ip, r4, r7, ip
+ 291 01c8 A2FB0407 		umull	r0, r7, r2, r4
+ 292              	.LVL34:
+ 293              		.loc 1 178 7 view .LVU65
+ 294 01cc 6744     		add	r7, r7, ip
+ 295 01ce 1818     		adds	r0, r3, r0
+ 296              	.LVL35:
+ 297              		.loc 1 178 7 view .LVU66
+ 298 01d0 10F10040 		adds	r0, r0, #-2147483648
+ 299 01d4 0298     		ldr	r0, [sp, #8]
+ 300 01d6 47EB0000 		adc	r0, r7, r0
+ 301 01da 0290     		str	r0, [sp, #8]
+ 179:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc2, x1, c0);
+ 302              		.loc 1 179 7 is_stmt 1 view .LVU67
+ 303 01dc 05FB0EFC 		mul	ip, r5, lr
+ 304 01e0 04FB08CC 		mla	ip, r4, r8, ip
+ 305 01e4 A5FB0407 		umull	r0, r7, r5, r4
+ 306 01e8 6744     		add	r7, r7, ip
+ 307 01ea 1818     		adds	r0, r3, r0
+ 308              		.loc 1 179 7 is_stmt 0 view .LVU68
+ 309 01ec 10F10040 		adds	r0, r0, #-2147483648
+ 310 01f0 47EB0A0C 		adc	ip, r7, r10
+ 311              	.LVL36:
+ 180:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc3, x2, c0);
+ 312              		.loc 1 180 7 is_stmt 1 view .LVU69
+ 313 01f4 4FEAE178 		asr	r8, r1, #31
+ 314 01f8 04FB08F8 		mul	r8, r4, r8
+ 315 01fc 01FB0E88 		mla	r8, r1, lr, r8
+ 316 0200 A4FB0140 		umull	r4, r0, r4, r1
+ 317              	.LVL37:
+ 318              		.loc 1 180 7 is_stmt 0 view .LVU70
+ 319 0204 8044     		add	r8, r8, r0
+ 320 0206 1B19     		adds	r3, r3, r4
+ 321              	.LVL38:
+ 322              		.loc 1 180 7 view .LVU71
+ 323 0208 13F10043 		adds	r3, r3, #-2147483648
+ 324 020c 059C     		ldr	r4, [sp, #20]
+ 325 020e 48EB0408 		adc	r8, r8, r4
+ 326              	.LVL39:
+ 181:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 182:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* update coefficient pointer */
+ 183:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       pb += 4U;
+ 327              		.loc 1 183 7 is_stmt 1 view .LVU72
+ 328              		.loc 1 183 10 is_stmt 0 view .LVU73
+ 329 0212 1036     		adds	r6, r6, #16
+ 330              	.LVL40:
+ 184:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       px += 4U;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 10
+
+
+ 331              		.loc 1 184 7 is_stmt 1 view .LVU74
+ 332              		.loc 1 184 10 is_stmt 0 view .LVU75
+ 333 0214 019B     		ldr	r3, [sp, #4]
+ 334 0216 1033     		adds	r3, r3, #16
+ 335 0218 0193     		str	r3, [sp, #4]
+ 336              	.LVL41:
+ 185:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 186:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Decrement the loop counter */
+ 187:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       i--;
+ 337              		.loc 1 187 7 is_stmt 1 view .LVU76
+ 338              		.loc 1 187 8 is_stmt 0 view .LVU77
+ 339 021a 039B     		ldr	r3, [sp, #12]
+ 340              	.LVL42:
+ 341              		.loc 1 187 8 view .LVU78
+ 342 021c 013B     		subs	r3, r3, #1
+ 343 021e 0393     		str	r3, [sp, #12]
+ 344              	.LVL43:
+ 345              	.L3:
+ 126:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 346              		.loc 1 126 14 is_stmt 1 view .LVU79
+ 347 0220 039B     		ldr	r3, [sp, #12]
+ 348 0222 002B     		cmp	r3, #0
+ 349 0224 7FF403AF 		bne	.L4
+ 188:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     }
+ 189:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 190:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* If the filter length is not a multiple of 4, compute the remaining filter taps */
+ 191:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 192:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = numTaps - (tapCnt * 4U);
+ 350              		.loc 1 192 7 is_stmt 0 view .LVU80
+ 351 0228 2F46     		mov	r7, r5
+ 352 022a 8946     		mov	r9, r1
+ 353 022c 3146     		mov	r1, r6
+ 354              	.LVL44:
+ 355              		.loc 1 192 7 view .LVU81
+ 356 022e 099E     		ldr	r6, [sp, #36]
+ 357              	.LVL45:
+ 358              		.loc 1 192 7 view .LVU82
+ 359 0230 E246     		mov	r10, ip
+ 360 0232 DDF828E0 		ldr	lr, [sp, #40]
+ 361 0236 DDF82CC0 		ldr	ip, [sp, #44]
+ 362              	.LVL46:
+ 363              		.loc 1 192 7 view .LVU83
+ 364 023a 0C98     		ldr	r0, [sp, #48]
+ 365 023c 0D9C     		ldr	r4, [sp, #52]
+ 366              		.loc 1 192 5 is_stmt 1 view .LVU84
+ 367              		.loc 1 192 7 is_stmt 0 view .LVU85
+ 368 023e 079B     		ldr	r3, [sp, #28]
+ 369 0240 A3EB8005 		sub	r5, r3, r0, lsl #2
+ 370              	.LVL47:
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     while (i > 0U)
+ 371              		.loc 1 193 5 is_stmt 1 view .LVU86
+ 372 0244 0396     		str	r6, [sp, #12]
+ 373 0246 3846     		mov	r0, r7
+ 374 0248 019B     		ldr	r3, [sp, #4]
+ 375 024a CDF810E0 		str	lr, [sp, #16]
+ 376 024e CDF814C0 		str	ip, [sp, #20]
+ 377 0252 0994     		str	r4, [sp, #36]
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 11
+
+
+ 378              	.LVL48:
+ 379              		.loc 1 193 11 is_stmt 0 view .LVU87
+ 380 0254 47E0     		b	.L5
+ 381              	.LVL49:
+ 382              	.L6:
+ 194:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 195:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Read coefficients */
+ 196:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       c0 = *(pb++);
+ 383              		.loc 1 196 7 is_stmt 1 view .LVU88
+ 384              		.loc 1 196 10 is_stmt 0 view .LVU89
+ 385 0256 0C46     		mov	r4, r1
+ 386 0258 54F8041B 		ldr	r1, [r4], #4
+ 387              	.LVL50:
+ 388              		.loc 1 196 10 view .LVU90
+ 389 025c 0194     		str	r4, [sp, #4]
+ 390              	.LVL51:
+ 197:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 198:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Fetch 1 state variable */
+ 199:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x3 = *(px++);
+ 391              		.loc 1 199 7 is_stmt 1 view .LVU91
+ 392              		.loc 1 199 16 is_stmt 0 view .LVU92
+ 393 025e 1F46     		mov	r7, r3
+ 394              	.LVL52:
+ 395              		.loc 1 199 10 view .LVU93
+ 396 0260 57F8044B 		ldr	r4, [r7], #4
+ 397              	.LVL53:
+ 200:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 201:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Perform the multiply-accumulates */
+ 202:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, x0, c0);
+ 398              		.loc 1 202 7 is_stmt 1 view .LVU94
+ 399 0264 0023     		movs	r3, #0
+ 400 0266 4FEAE27E 		asr	lr, r2, #31
+ 401 026a CE17     		asrs	r6, r1, #31
+ 402 026c 02FB06FC 		mul	ip, r2, r6
+ 403 0270 01FB0ECC 		mla	ip, r1, lr, ip
+ 404 0274 A2FB012E 		umull	r2, lr, r2, r1
+ 405              	.LVL54:
+ 406              		.loc 1 202 7 is_stmt 0 view .LVU95
+ 407 0278 E644     		add	lr, lr, ip
+ 408 027a 9A18     		adds	r2, r3, r2
+ 409 027c 12F10042 		adds	r2, r2, #-2147483648
+ 410 0280 4BEB0E0B 		adc	fp, fp, lr
+ 411              	.LVL55:
+ 203:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc1, x1, c0);
+ 412              		.loc 1 203 7 is_stmt 1 view .LVU96
+ 413 0284 4FEAE07C 		asr	ip, r0, #31
+ 414 0288 01FB0CFC 		mul	ip, r1, ip
+ 415 028c 00FB06CC 		mla	ip, r0, r6, ip
+ 416 0290 A1FB002E 		umull	r2, lr, r1, r0
+ 417 0294 E644     		add	lr, lr, ip
+ 418 0296 9A18     		adds	r2, r3, r2
+ 419 0298 12F10042 		adds	r2, r2, #-2147483648
+ 420 029c 029A     		ldr	r2, [sp, #8]
+ 421 029e 42EB0E02 		adc	r2, r2, lr
+ 422 02a2 0292     		str	r2, [sp, #8]
+ 423              	.LVL56:
+ 204:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc2, x2, c0);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 12
+
+
+ 424              		.loc 1 204 7 view .LVU97
+ 425 02a4 4FEAE97C 		asr	ip, r9, #31
+ 426 02a8 01FB0CFC 		mul	ip, r1, ip
+ 427 02ac 09FB06CC 		mla	ip, r9, r6, ip
+ 428 02b0 A1FB092E 		umull	r2, lr, r1, r9
+ 429              		.loc 1 204 7 is_stmt 0 view .LVU98
+ 430 02b4 E644     		add	lr, lr, ip
+ 431 02b6 9A18     		adds	r2, r3, r2
+ 432              		.loc 1 204 7 view .LVU99
+ 433 02b8 12F10042 		adds	r2, r2, #-2147483648
+ 434 02bc 4AEB0E0A 		adc	r10, r10, lr
+ 435              	.LVL57:
+ 205:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc3, x3, c0);
+ 436              		.loc 1 205 7 is_stmt 1 view .LVU100
+ 437 02c0 E217     		asrs	r2, r4, #31
+ 438 02c2 01FB02F2 		mul	r2, r1, r2
+ 439 02c6 04FB0622 		mla	r2, r4, r6, r2
+ 440 02ca A1FB0416 		umull	r1, r6, r1, r4
+ 441              	.LVL58:
+ 442              		.loc 1 205 7 is_stmt 0 view .LVU101
+ 443 02ce 3244     		add	r2, r2, r6
+ 444 02d0 5B18     		adds	r3, r3, r1
+ 445              		.loc 1 205 7 view .LVU102
+ 446 02d2 13F10043 		adds	r3, r3, #-2147483648
+ 447 02d6 48EB0208 		adc	r8, r8, r2
+ 448              	.LVL59:
+ 206:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 207:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Reuse the present sample states for next sample */
+ 208:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x0 = x1;
+ 449              		.loc 1 208 7 is_stmt 1 view .LVU103
+ 209:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x1 = x2;
+ 450              		.loc 1 209 7 view .LVU104
+ 210:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x2 = x3;
+ 451              		.loc 1 210 7 view .LVU105
+ 211:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 212:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       /* Decrement the loop counter */
+ 213:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       i--;
+ 452              		.loc 1 213 7 view .LVU106
+ 453              		.loc 1 213 8 is_stmt 0 view .LVU107
+ 454 02da 013D     		subs	r5, r5, #1
+ 455              	.LVL60:
+ 196:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 456              		.loc 1 196 16 view .LVU108
+ 457 02dc 0199     		ldr	r1, [sp, #4]
+ 199:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 458              		.loc 1 199 16 view .LVU109
+ 459 02de 3B46     		mov	r3, r7
+ 208:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x1 = x2;
+ 460              		.loc 1 208 10 view .LVU110
+ 461 02e0 0246     		mov	r2, r0
+ 209:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       x2 = x3;
+ 462              		.loc 1 209 10 view .LVU111
+ 463 02e2 4846     		mov	r0, r9
+ 464              	.LVL61:
+ 210:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 465              		.loc 1 210 10 view .LVU112
+ 466 02e4 A146     		mov	r9, r4
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 13
+
+
+ 467              	.LVL62:
+ 468              	.L5:
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 469              		.loc 1 193 14 is_stmt 1 view .LVU113
+ 470 02e6 002D     		cmp	r5, #0
+ 471 02e8 B5D1     		bne	.L6
+ 214:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     }
+ 215:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 216:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Advance the state pointer by 4 to process the next group of 4 samples */
+ 217:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     pState = pState + 4;
+ 472              		.loc 1 217 12 is_stmt 0 view .LVU114
+ 473 02ea 039E     		ldr	r6, [sp, #12]
+ 474 02ec DDF810E0 		ldr	lr, [sp, #16]
+ 475 02f0 DDF814C0 		ldr	ip, [sp, #20]
+ 476 02f4 099C     		ldr	r4, [sp, #36]
+ 477              		.loc 1 217 5 is_stmt 1 view .LVU115
+ 478              		.loc 1 217 12 is_stmt 0 view .LVU116
+ 479 02f6 1036     		adds	r6, r6, #16
+ 480              	.LVL63:
+ 218:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 219:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* The results in the 4 accumulators are in 2.30 format.  Convert to 1.31
+ 220:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****      ** Then store the 4 outputs in the destination buffer. */
+ 221:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc0 << 1);
+ 481              		.loc 1 221 5 is_stmt 1 view .LVU117
+ 482              		.loc 1 221 15 is_stmt 0 view .LVU118
+ 483 02f8 4FEA4B02 		lsl	r2, fp, #1
+ 484              	.LVL64:
+ 485              		.loc 1 221 13 view .LVU119
+ 486 02fc 2260     		str	r2, [r4]
+ 222:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc1 << 1);
+ 487              		.loc 1 222 5 is_stmt 1 view .LVU120
+ 488              	.LVL65:
+ 489              		.loc 1 222 15 is_stmt 0 view .LVU121
+ 490 02fe 029B     		ldr	r3, [sp, #8]
+ 491              	.LVL66:
+ 492              		.loc 1 222 15 view .LVU122
+ 493 0300 5A00     		lsls	r2, r3, #1
+ 494              		.loc 1 222 13 view .LVU123
+ 495 0302 6260     		str	r2, [r4, #4]
+ 223:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc2 << 1);
+ 496              		.loc 1 223 5 is_stmt 1 view .LVU124
+ 497              	.LVL67:
+ 498              		.loc 1 223 15 is_stmt 0 view .LVU125
+ 499 0304 4FEA4A02 		lsl	r2, r10, #1
+ 500              		.loc 1 223 13 view .LVU126
+ 501 0308 A260     		str	r2, [r4, #8]
+ 224:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc3 << 1);
+ 502              		.loc 1 224 5 is_stmt 1 view .LVU127
+ 503              	.LVL68:
+ 504              		.loc 1 224 15 is_stmt 0 view .LVU128
+ 505 030a 4FEA4802 		lsl	r2, r8, #1
+ 506              		.loc 1 224 13 view .LVU129
+ 507 030e E260     		str	r2, [r4, #12]
+ 225:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 226:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Decrement the samples loop counter */
+ 227:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     blkCnt--;
+ 508              		.loc 1 227 5 is_stmt 1 view .LVU130
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 14
+
+
+ 509              		.loc 1 227 11 is_stmt 0 view .LVU131
+ 510 0310 069B     		ldr	r3, [sp, #24]
+ 511 0312 013B     		subs	r3, r3, #1
+ 512 0314 0693     		str	r3, [sp, #24]
+ 513              	.LVL69:
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 514              		.loc 1 102 17 view .LVU132
+ 515 0316 E046     		mov	r8, ip
+ 516              	.LVL70:
+ 224:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc3 << 1);
+ 517              		.loc 1 224 10 view .LVU133
+ 518 0318 1034     		adds	r4, r4, #16
+ 519              	.LVL71:
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 520              		.loc 1 102 27 view .LVU134
+ 521 031a 7146     		mov	r1, lr
+ 522              	.LVL72:
+ 523              	.L2:
+  96:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+ 524              		.loc 1 96 17 is_stmt 1 view .LVU135
+ 525 031c 069B     		ldr	r3, [sp, #24]
+ 526 031e 53B3     		cbz	r3, .L14
+  99:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 527              		.loc 1 99 5 view .LVU136
+ 528              	.LVL73:
+  99:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 529              		.loc 1 99 22 is_stmt 0 view .LVU137
+ 530 0320 0A68     		ldr	r2, [r1]
+  99:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 531              		.loc 1 99 20 view .LVU138
+ 532 0322 C8F80020 		str	r2, [r8]
+ 100:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 533              		.loc 1 100 5 is_stmt 1 view .LVU139
+ 534              	.LVL74:
+ 100:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 535              		.loc 1 100 22 is_stmt 0 view .LVU140
+ 536 0326 4A68     		ldr	r2, [r1, #4]
+ 100:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 537              		.loc 1 100 20 view .LVU141
+ 538 0328 C8F80420 		str	r2, [r8, #4]
+ 101:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 539              		.loc 1 101 5 is_stmt 1 view .LVU142
+ 540              	.LVL75:
+ 101:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 541              		.loc 1 101 22 is_stmt 0 view .LVU143
+ 542 032c 8A68     		ldr	r2, [r1, #8]
+ 101:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 543              		.loc 1 101 20 view .LVU144
+ 544 032e C8F80820 		str	r2, [r8, #8]
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 545              		.loc 1 102 5 is_stmt 1 view .LVU145
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 546              		.loc 1 102 27 is_stmt 0 view .LVU146
+ 547 0332 01F1100E 		add	lr, r1, #16
+ 548              	.LVL76:
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 549              		.loc 1 102 17 view .LVU147
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 15
+
+
+ 550 0336 08F1100C 		add	ip, r8, #16
+ 551              	.LVL77:
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 552              		.loc 1 102 22 view .LVU148
+ 553 033a CA68     		ldr	r2, [r1, #12]
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 554              		.loc 1 102 20 view .LVU149
+ 555 033c C8F80C20 		str	r2, [r8, #12]
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc1 = 0;
+ 556              		.loc 1 105 5 is_stmt 1 view .LVU150
+ 557              	.LVL78:
+ 106:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc2 = 0;
+ 558              		.loc 1 106 5 view .LVU151
+ 107:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc3 = 0;
+ 559              		.loc 1 107 5 view .LVU152
+ 108:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 560              		.loc 1 108 5 view .LVU153
+ 111:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 561              		.loc 1 111 5 view .LVU154
+ 114:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 562              		.loc 1 114 5 view .LVU155
+ 118:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x1 = *(px++);
+ 563              		.loc 1 118 5 view .LVU156
+ 118:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x1 = *(px++);
+ 564              		.loc 1 118 8 is_stmt 0 view .LVU157
+ 565 0340 3268     		ldr	r2, [r6]
+ 566              	.LVL79:
+ 119:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x2 = *(px++);
+ 567              		.loc 1 119 5 is_stmt 1 view .LVU158
+ 119:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     x2 = *(px++);
+ 568              		.loc 1 119 8 is_stmt 0 view .LVU159
+ 569 0342 7568     		ldr	r5, [r6, #4]
+ 570              	.LVL80:
+ 120:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 571              		.loc 1 120 5 is_stmt 1 view .LVU160
+ 120:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 572              		.loc 1 120 14 is_stmt 0 view .LVU161
+ 573 0344 06F10C03 		add	r3, r6, #12
+ 574 0348 0193     		str	r3, [sp, #4]
+ 575              	.LVL81:
+ 120:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 576              		.loc 1 120 8 view .LVU162
+ 577 034a D6F80890 		ldr	r9, [r6, #8]
+ 578              	.LVL82:
+ 123:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = tapCnt;
+ 579              		.loc 1 123 5 is_stmt 1 view .LVU163
+ 123:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = tapCnt;
+ 580              		.loc 1 123 12 is_stmt 0 view .LVU164
+ 581 034e 079B     		ldr	r3, [sp, #28]
+ 582              	.LVL83:
+ 123:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = tapCnt;
+ 583              		.loc 1 123 12 view .LVU165
+ 584 0350 9808     		lsrs	r0, r3, #2
+ 585              	.LVL84:
+ 124:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 586              		.loc 1 124 5 is_stmt 1 view .LVU166
+ 126:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 16
+
+
+ 587              		.loc 1 126 5 view .LVU167
+ 124:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 588              		.loc 1 124 7 is_stmt 0 view .LVU168
+ 589 0352 0390     		str	r0, [sp, #12]
+ 114:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 590              		.loc 1 114 8 view .LVU169
+ 591 0354 089B     		ldr	r3, [sp, #32]
+ 108:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 592              		.loc 1 108 10 view .LVU170
+ 593 0356 4FF00008 		mov	r8, #0
+ 106:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc2 = 0;
+ 594              		.loc 1 106 10 view .LVU171
+ 595 035a CDF80880 		str	r8, [sp, #8]
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc1 = 0;
+ 596              		.loc 1 105 10 view .LVU172
+ 597 035e C346     		mov	fp, r8
+ 598 0360 0996     		str	r6, [sp, #36]
+ 599 0362 4946     		mov	r1, r9
+ 600 0364 1E46     		mov	r6, r3
+ 601              	.LVL85:
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc1 = 0;
+ 602              		.loc 1 105 10 view .LVU173
+ 603 0366 CDF828E0 		str	lr, [sp, #40]
+ 604 036a CDF82CC0 		str	ip, [sp, #44]
+ 605 036e C446     		mov	ip, r8
+ 606              	.LVL86:
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc1 = 0;
+ 607              		.loc 1 105 10 view .LVU174
+ 608 0370 0C90     		str	r0, [sp, #48]
+ 609 0372 0D94     		str	r4, [sp, #52]
+ 126:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 610              		.loc 1 126 11 view .LVU175
+ 611 0374 54E7     		b	.L3
+ 612              	.LVL87:
+ 613              	.L14:
+ 228:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   }
+ 229:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 230:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 231:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+ 232:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    ** No loop unrolling is used. */
+ 233:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   blkCnt = blockSize % 4U;
+ 614              		.loc 1 233 10 view .LVU176
+ 615 0376 3346     		mov	r3, r6
+ 616              	.LVL88:
+ 617              		.loc 1 233 10 view .LVU177
+ 618 0378 0E9E     		ldr	r6, [sp, #56]
+ 619              	.LVL89:
+ 620              		.loc 1 233 10 view .LVU178
+ 621 037a 2546     		mov	r5, r4
+ 622 037c 0F9A     		ldr	r2, [sp, #60]
+ 623              		.loc 1 233 3 is_stmt 1 view .LVU179
+ 624              		.loc 1 233 10 is_stmt 0 view .LVU180
+ 625 037e 02F00304 		and	r4, r2, #3
+ 626              	.LVL90:
+ 234:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 235:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   while (blkCnt > 0U)
+ 627              		.loc 1 235 3 is_stmt 1 view .LVU181
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 17
+
+
+ 628              		.loc 1 235 9 is_stmt 0 view .LVU182
+ 629 0382 29E0     		b	.L8
+ 630              	.L10:
+ 236:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+ 237:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Copy one sample at a time into state buffer */
+ 238:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pSrc++;
+ 631              		.loc 1 238 5 is_stmt 1 view .LVU183
+ 632              	.LVL91:
+ 633              		.loc 1 238 22 is_stmt 0 view .LVU184
+ 634 0384 51F8042B 		ldr	r2, [r1], #4
+ 635              	.LVL92:
+ 636              		.loc 1 238 20 view .LVU185
+ 637 0388 48F8042B 		str	r2, [r8], #4
+ 638              	.LVL93:
+ 239:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 240:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Set the accumulator to zero */
+ 241:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     acc0 = 0;
+ 639              		.loc 1 241 5 is_stmt 1 view .LVU186
+ 242:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 243:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Initialize state pointer */
+ 244:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     px = pState;
+ 640              		.loc 1 244 5 view .LVU187
+ 245:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 246:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Initialize Coefficient pointer */
+ 247:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     pb = (pCoeffs);
+ 641              		.loc 1 247 5 view .LVU188
+ 248:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 249:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     i = numTaps;
+ 642              		.loc 1 249 5 view .LVU189
+ 643              		.loc 1 249 7 is_stmt 0 view .LVU190
+ 644 038c DDF81C90 		ldr	r9, [sp, #28]
+ 247:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 645              		.loc 1 247 8 view .LVU191
+ 646 0390 DDF820E0 		ldr	lr, [sp, #32]
+ 244:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 647              		.loc 1 244 8 view .LVU192
+ 648 0394 9C46     		mov	ip, r3
+ 241:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 649              		.loc 1 241 10 view .LVU193
+ 650 0396 4FF0000A 		mov	r10, #0
+ 651              	.LVL94:
+ 652              	.L9:
+ 250:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 251:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Perform the multiply-accumulates */
+ 252:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     do
+ 653              		.loc 1 252 5 is_stmt 1 view .LVU194
+ 253:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     {
+ 254:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       multAcc_32x32_keep32_R(acc0, (*px++), (*(pb++)));
+ 654              		.loc 1 254 7 view .LVU195
+ 655              		.loc 1 254 7 is_stmt 0 view .LVU196
+ 656 039a DCF80000 		ldr	r0, [ip]
+ 657 039e 0CF1040C 		add	ip, ip, #4
+ 658              	.LVL95:
+ 659              		.loc 1 254 7 view .LVU197
+ 660 03a2 4FEAE07B 		asr	fp, r0, #31
+ 661              		.loc 1 254 7 view .LVU198
+ 662 03a6 DEF80070 		ldr	r7, [lr]
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 18
+
+
+ 663 03aa 0EF1040E 		add	lr, lr, #4
+ 664              	.LVL96:
+ 665              		.loc 1 254 7 view .LVU199
+ 666 03ae FA17     		asrs	r2, r7, #31
+ 667 03b0 00FB02F2 		mul	r2, r0, r2
+ 668 03b4 07FB0B22 		mla	r2, r7, fp, r2
+ 669 03b8 A0FB0707 		umull	r0, r7, r0, r7
+ 670 03bc 3A44     		add	r2, r2, r7
+ 671 03be B0F1004F 		cmp	r0, #-2147483648
+ 672 03c2 4AEB0202 		adc	r2, r10, r2
+ 673 03c6 9246     		mov	r10, r2
+ 674              	.LVL97:
+ 255:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****       i--;
+ 675              		.loc 1 255 7 is_stmt 1 view .LVU200
+ 256:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     } while (i > 0U);
+ 676              		.loc 1 256 16 discriminator 1 view .LVU201
+ 677 03c8 B9F10109 		subs	r9, r9, #1
+ 678              	.LVL98:
+ 679              		.loc 1 256 16 is_stmt 0 discriminator 1 view .LVU202
+ 680 03cc E5D1     		bne	.L9
+ 257:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 258:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* The result is in 2.30 format.  Convert to 1.31
+ 259:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****      ** Then store the output in the destination buffer. */
+ 260:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pDst++ = (q31_t) (acc0 << 1);
+ 681              		.loc 1 260 5 is_stmt 1 view .LVU203
+ 682              	.LVL99:
+ 683              		.loc 1 260 15 is_stmt 0 view .LVU204
+ 684 03ce 5200     		lsls	r2, r2, #1
+ 685              	.LVL100:
+ 686              		.loc 1 260 13 view .LVU205
+ 687 03d0 45F8042B 		str	r2, [r5], #4
+ 688              	.LVL101:
+ 261:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 262:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Advance state pointer by 1 for the next sample */
+ 263:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     pState = pState + 1;
+ 689              		.loc 1 263 5 is_stmt 1 view .LVU206
+ 690              		.loc 1 263 12 is_stmt 0 view .LVU207
+ 691 03d4 0433     		adds	r3, r3, #4
+ 692              	.LVL102:
+ 264:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 265:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Decrement the samples loop counter */
+ 266:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     blkCnt--;
+ 693              		.loc 1 266 5 is_stmt 1 view .LVU208
+ 694              		.loc 1 266 11 is_stmt 0 view .LVU209
+ 695 03d6 013C     		subs	r4, r4, #1
+ 696              	.LVL103:
+ 697              	.L8:
+ 235:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+ 698              		.loc 1 235 17 is_stmt 1 view .LVU210
+ 699 03d8 002C     		cmp	r4, #0
+ 700 03da D3D1     		bne	.L10
+ 267:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   }
+ 268:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 269:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* Processing is complete.
+ 270:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    ** Now copy the last numTaps - 1 samples to the start of the state buffer.
+ 271:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****    ** This prepares the state buffer for the next function call. */
+ 272:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 19
+
+
+ 273:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* Points to the start of the state buffer */
+ 274:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   pStateCurnt = S->pState;
+ 701              		.loc 1 274 3 view .LVU211
+ 702              		.loc 1 274 15 is_stmt 0 view .LVU212
+ 703 03dc 7168     		ldr	r1, [r6, #4]
+ 704              	.LVL104:
+ 275:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 276:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* Calculate remaining number of copies */
+ 277:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   tapCnt = (numTaps - 1U);
+ 705              		.loc 1 277 3 is_stmt 1 view .LVU213
+ 706              		.loc 1 277 10 is_stmt 0 view .LVU214
+ 707 03de 079A     		ldr	r2, [sp, #28]
+ 708 03e0 013A     		subs	r2, r2, #1
+ 709              	.LVL105:
+ 278:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 279:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   /* Copy the remaining q31_t data */
+ 280:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   while (tapCnt > 0U)
+ 710              		.loc 1 280 3 is_stmt 1 view .LVU215
+ 711              		.loc 1 280 9 is_stmt 0 view .LVU216
+ 712 03e2 04E0     		b	.L11
+ 713              	.L12:
+ 281:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+ 282:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     *pStateCurnt++ = *pState++;
+ 714              		.loc 1 282 5 is_stmt 1 view .LVU217
+ 715              	.LVL106:
+ 716              		.loc 1 282 22 is_stmt 0 view .LVU218
+ 717 03e4 53F8040B 		ldr	r0, [r3], #4
+ 718              	.LVL107:
+ 719              		.loc 1 282 20 view .LVU219
+ 720 03e8 41F8040B 		str	r0, [r1], #4
+ 721              	.LVL108:
+ 283:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 284:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     /* Decrement the loop counter */
+ 285:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****     tapCnt--;
+ 722              		.loc 1 285 5 is_stmt 1 view .LVU220
+ 723              		.loc 1 285 11 is_stmt 0 view .LVU221
+ 724 03ec 013A     		subs	r2, r2, #1
+ 725              	.LVL109:
+ 726              	.L11:
+ 280:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   {
+ 727              		.loc 1 280 17 is_stmt 1 view .LVU222
+ 728 03ee 002A     		cmp	r2, #0
+ 729 03f0 F8D1     		bne	.L12
+ 286:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c ****   }
+ 287:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 288:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** 
+ 289:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_fast_q31.c **** }
+ 730              		.loc 1 289 1 is_stmt 0 view .LVU223
+ 731 03f2 11B0     		add	sp, sp, #68
+ 732              		.cfi_def_cfa_offset 36
+ 733              		@ sp needed
+ 734 03f4 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 735              		.loc 1 289 1 view .LVU224
+ 736              		.cfi_endproc
+ 737              	.LFE135:
+ 739              		.text
+ 740              	.Letext0:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 20
+
+
+ 741              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 742              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 743              		.file 4 "Drivers/CMSIS/DSP/Include/arm_math.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 arm_fir_fast_q31.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s:20     .text.arm_fir_fast_q31:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIZGPEL.s:26     .text.arm_fir_fast_q31:00000000 arm_fir_fast_q31
+
+NO UNDEFINED SYMBOLS

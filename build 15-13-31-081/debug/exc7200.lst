@@ -1,0 +1,640 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"exc7200.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/Components/exc7200/exc7200.c"
+  19              		.section	.text.exc7200_Reset,"ax",%progbits
+  20              		.align	1
+  21              		.global	exc7200_Reset
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	exc7200_Reset:
+  27              	.LVL0:
+  28              	.LFB1:
+   1:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+   2:Drivers/BSP/Components/exc7200/exc7200.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/exc7200/exc7200.c ****   * @file    exc7200.c
+   4:Drivers/BSP/Components/exc7200/exc7200.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief   This file provides a set of functions needed to manage the EXC7200
+   6:Drivers/BSP/Components/exc7200/exc7200.c ****   *          Touch-screen controller.
+   7:Drivers/BSP/Components/exc7200/exc7200.c ****   ******************************************************************************
+   8:Drivers/BSP/Components/exc7200/exc7200.c ****   * @attention
+   9:Drivers/BSP/Components/exc7200/exc7200.c ****   *
+  10:Drivers/BSP/Components/exc7200/exc7200.c ****   * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  11:Drivers/BSP/Components/exc7200/exc7200.c ****   *
+  12:Drivers/BSP/Components/exc7200/exc7200.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  13:Drivers/BSP/Components/exc7200/exc7200.c ****   * are permitted provided that the following conditions are met:
+  14:Drivers/BSP/Components/exc7200/exc7200.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  15:Drivers/BSP/Components/exc7200/exc7200.c ****   *      this list of conditions and the following disclaimer.
+  16:Drivers/BSP/Components/exc7200/exc7200.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  17:Drivers/BSP/Components/exc7200/exc7200.c ****   *      this list of conditions and the following disclaimer in the documentation
+  18:Drivers/BSP/Components/exc7200/exc7200.c ****   *      and/or other materials provided with the distribution.
+  19:Drivers/BSP/Components/exc7200/exc7200.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  20:Drivers/BSP/Components/exc7200/exc7200.c ****   *      may be used to endorse or promote products derived from this software
+  21:Drivers/BSP/Components/exc7200/exc7200.c ****   *      without specific prior written permission.
+  22:Drivers/BSP/Components/exc7200/exc7200.c ****   *
+  23:Drivers/BSP/Components/exc7200/exc7200.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  24:Drivers/BSP/Components/exc7200/exc7200.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  25:Drivers/BSP/Components/exc7200/exc7200.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  26:Drivers/BSP/Components/exc7200/exc7200.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  27:Drivers/BSP/Components/exc7200/exc7200.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  28:Drivers/BSP/Components/exc7200/exc7200.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  29:Drivers/BSP/Components/exc7200/exc7200.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  30:Drivers/BSP/Components/exc7200/exc7200.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 2
+
+
+  31:Drivers/BSP/Components/exc7200/exc7200.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  32:Drivers/BSP/Components/exc7200/exc7200.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  33:Drivers/BSP/Components/exc7200/exc7200.c ****   *
+  34:Drivers/BSP/Components/exc7200/exc7200.c ****   ******************************************************************************
+  35:Drivers/BSP/Components/exc7200/exc7200.c ****   */  
+  36:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  37:Drivers/BSP/Components/exc7200/exc7200.c **** /* Includes ------------------------------------------------------------------*/
+  38:Drivers/BSP/Components/exc7200/exc7200.c **** #include "exc7200.h"
+  39:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  40:Drivers/BSP/Components/exc7200/exc7200.c **** /** @addtogroup BSP
+  41:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  42:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+  43:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  44:Drivers/BSP/Components/exc7200/exc7200.c **** /** @addtogroup Component
+  45:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  46:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  47:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  48:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup EXC7200
+  49:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  50:Drivers/BSP/Components/exc7200/exc7200.c ****   */   
+  51:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  52:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private typedef -----------------------------------------------------------*/
+  53:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  54:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup EXC7200_Private_Types_Definitions
+  55:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  56:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  57:Drivers/BSP/Components/exc7200/exc7200.c ****  
+  58:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private define ------------------------------------------------------------*/
+  59:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  60:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup EXC7200_Private_Defines
+  61:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  62:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  63:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  64:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private macro -------------------------------------------------------------*/
+  65:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  66:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup EXC7200_Private_Macros
+  67:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  68:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  69:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  70:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private variables ---------------------------------------------------------*/
+  71:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  72:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup EXC7200_Private_Variables
+  73:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+  74:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  75:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  76:Drivers/BSP/Components/exc7200/exc7200.c **** /* Touch screen driver structure initialization */  
+  77:Drivers/BSP/Components/exc7200/exc7200.c **** TS_DrvTypeDef exc7200_ts_drv = 
+  78:Drivers/BSP/Components/exc7200/exc7200.c **** {
+  79:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_Init,
+  80:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_ReadID,
+  81:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_Reset,
+  82:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  83:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_Start,
+  84:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_DetectTouch,
+  85:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_GetXY,
+  86:Drivers/BSP/Components/exc7200/exc7200.c ****   
+  87:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_EnableIT,
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 3
+
+
+  88:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_ClearIT,
+  89:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_ITStatus,
+  90:Drivers/BSP/Components/exc7200/exc7200.c ****   exc7200_TS_DisableIT,
+  91:Drivers/BSP/Components/exc7200/exc7200.c **** };
+  92:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  93:Drivers/BSP/Components/exc7200/exc7200.c **** uint8_t aBufferTS[10];
+  94:Drivers/BSP/Components/exc7200/exc7200.c **** 
+  95:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+  96:Drivers/BSP/Components/exc7200/exc7200.c ****   * @}
+  97:Drivers/BSP/Components/exc7200/exc7200.c ****   */ 
+  98:Drivers/BSP/Components/exc7200/exc7200.c ****     
+  99:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private function prototypes -----------------------------------------------*/
+ 100:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 101:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup exc7200_Private_Function_Prototypes
+ 102:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+ 103:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 104:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 105:Drivers/BSP/Components/exc7200/exc7200.c **** /* Private functions ---------------------------------------------------------*/
+ 106:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 107:Drivers/BSP/Components/exc7200/exc7200.c **** /** @defgroup exc7200_Private_Functions
+ 108:Drivers/BSP/Components/exc7200/exc7200.c ****   * @{
+ 109:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 110:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 111:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 112:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Initialize the exc7200 and configure the needed hardware resources
+ 113:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 114:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None
+ 115:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 116:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_Init(uint16_t DeviceAddr)
+ 117:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 118:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Initialize IO BUS layer */
+ 119:Drivers/BSP/Components/exc7200/exc7200.c ****   IOE_Init(); 
+ 120:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 121:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 122:Drivers/BSP/Components/exc7200/exc7200.c ****  
+ 123:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 124:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Reset the exc7200 by Software.
+ 125:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.  
+ 126:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None
+ 127:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 128:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_Reset(uint16_t DeviceAddr)
+ 129:Drivers/BSP/Components/exc7200/exc7200.c **** {
+  29              		.loc 1 129 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ 130:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 131:Drivers/BSP/Components/exc7200/exc7200.c **** }
+  34              		.loc 1 131 1 view .LVU1
+  35 0000 7047     		bx	lr
+  36              		.cfi_endproc
+  37              	.LFE1:
+  39              		.section	.text.exc7200_ReadID,"ax",%progbits
+  40              		.align	1
+  41              		.global	exc7200_ReadID
+  42              		.syntax unified
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 4
+
+
+  43              		.thumb
+  44              		.thumb_func
+  46              	exc7200_ReadID:
+  47              	.LVL1:
+  48              	.LFB2:
+ 132:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 133:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 134:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Read the exc7200 IO Expander device ID.
+ 135:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.  
+ 136:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval The Device ID (two bytes).
+ 137:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 138:Drivers/BSP/Components/exc7200/exc7200.c **** uint16_t exc7200_ReadID(uint16_t DeviceAddr)
+ 139:Drivers/BSP/Components/exc7200/exc7200.c **** {
+  49              		.loc 1 139 1 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+ 140:Drivers/BSP/Components/exc7200/exc7200.c ****   return 0;
+  54              		.loc 1 140 3 view .LVU3
+ 141:Drivers/BSP/Components/exc7200/exc7200.c **** }
+  55              		.loc 1 141 1 is_stmt 0 view .LVU4
+  56 0000 0020     		movs	r0, #0
+  57              	.LVL2:
+  58              		.loc 1 141 1 view .LVU5
+  59 0002 7047     		bx	lr
+  60              		.cfi_endproc
+  61              	.LFE2:
+  63              		.section	.text.exc7200_TS_Start,"ax",%progbits
+  64              		.align	1
+  65              		.global	exc7200_TS_Start
+  66              		.syntax unified
+  67              		.thumb
+  68              		.thumb_func
+  70              	exc7200_TS_Start:
+  71              	.LVL3:
+  72              	.LFB3:
+ 142:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 143:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 144:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Configures the touch Screen Controller (Single point detection)
+ 145:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 146:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None.
+ 147:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 148:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_TS_Start(uint16_t DeviceAddr)
+ 149:Drivers/BSP/Components/exc7200/exc7200.c **** {
+  73              		.loc 1 149 1 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		@ link register save eliminated.
+ 150:Drivers/BSP/Components/exc7200/exc7200.c **** }
+  78              		.loc 1 150 1 view .LVU7
+  79 0000 7047     		bx	lr
+  80              		.cfi_endproc
+  81              	.LFE3:
+  83              		.section	.text.exc7200_TS_EnableIT,"ax",%progbits
+  84              		.align	1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 5
+
+
+  85              		.global	exc7200_TS_EnableIT
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	exc7200_TS_EnableIT:
+  91              	.LVL4:
+  92              	.LFB6:
+ 151:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 152:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 153:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Return if there is touch detected or not.
+ 154:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 155:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval Touch detected state.
+ 156:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 157:Drivers/BSP/Components/exc7200/exc7200.c **** uint8_t exc7200_TS_DetectTouch(uint16_t DeviceAddr)
+ 158:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 159:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Read TS data : Send I2C Slave address + 1 Bit0=1 for:read */
+ 160:Drivers/BSP/Components/exc7200/exc7200.c ****   IOE_ReadMultiple(DeviceAddr | 1, EXC7200_READ_CMD, aBufferTS, 10);  
+ 161:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 162:Drivers/BSP/Components/exc7200/exc7200.c ****   /* check for first byte */
+ 163:Drivers/BSP/Components/exc7200/exc7200.c ****   if (aBufferTS[1]==0x83)
+ 164:Drivers/BSP/Components/exc7200/exc7200.c ****   {	
+ 165:Drivers/BSP/Components/exc7200/exc7200.c ****     return 1;
+ 166:Drivers/BSP/Components/exc7200/exc7200.c ****   }
+ 167:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 168:Drivers/BSP/Components/exc7200/exc7200.c ****   return 0;
+ 169:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 170:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 171:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 172:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Get the touch screen X and Y positions values
+ 173:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 174:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  X: Pointer to X position value
+ 175:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  Y: Pointer to Y position value   
+ 176:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None.
+ 177:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 178:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_TS_GetXY(uint16_t DeviceAddr, uint16_t *X, uint16_t *Y)
+ 179:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 180:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Calculate positions */
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *X = (((aBufferTS[3]&0x00ff) << 4) | ((aBufferTS[2]&0x00f0) >> 4)) << 1;
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 183:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 184:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Dummy Read to deactivate read mode */
+ 185:Drivers/BSP/Components/exc7200/exc7200.c ****   IOE_ReadMultiple(DeviceAddr, EXC7200_READ_CMD, aBufferTS, 10);    
+ 186:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 187:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 188:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 189:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Configure the selected source to generate a global interrupt or not
+ 190:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.  
+ 191:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None
+ 192:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 193:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_TS_EnableIT(uint16_t DeviceAddr)
+ 194:Drivers/BSP/Components/exc7200/exc7200.c **** {  
+  93              		.loc 1 194 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              		@ link register save eliminated.
+ 195:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 6
+
+
+  98              		.loc 1 195 1 view .LVU9
+  99 0000 7047     		bx	lr
+ 100              		.cfi_endproc
+ 101              	.LFE6:
+ 103              		.section	.text.exc7200_TS_DisableIT,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	exc7200_TS_DisableIT
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	exc7200_TS_DisableIT:
+ 111              	.LVL5:
+ 112              	.LFB7:
+ 196:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 197:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 198:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Configure the selected source to generate a global interrupt or not
+ 199:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.    
+ 200:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None
+ 201:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 202:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_TS_DisableIT(uint16_t DeviceAddr)
+ 203:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 113              		.loc 1 203 1 view -0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 0
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+ 204:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 118              		.loc 1 204 1 view .LVU11
+ 119 0000 7047     		bx	lr
+ 120              		.cfi_endproc
+ 121              	.LFE7:
+ 123              		.section	.text.exc7200_TS_ITStatus,"ax",%progbits
+ 124              		.align	1
+ 125              		.global	exc7200_TS_ITStatus
+ 126              		.syntax unified
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	exc7200_TS_ITStatus:
+ 131              	.LVL6:
+ 132              	.LFB8:
+ 205:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 206:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 207:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Configure the selected source to generate a global interrupt or not
+ 208:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.    
+ 209:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval TS interrupts status
+ 210:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 211:Drivers/BSP/Components/exc7200/exc7200.c **** uint8_t exc7200_TS_ITStatus(uint16_t DeviceAddr)
+ 212:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 133              		.loc 1 212 1 view -0
+ 134              		.cfi_startproc
+ 135              		@ args = 0, pretend = 0, frame = 0
+ 136              		@ frame_needed = 0, uses_anonymous_args = 0
+ 137              		@ link register save eliminated.
+ 213:Drivers/BSP/Components/exc7200/exc7200.c ****   return 0;
+ 138              		.loc 1 213 3 view .LVU13
+ 214:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 139              		.loc 1 214 1 is_stmt 0 view .LVU14
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 7
+
+
+ 140 0000 0020     		movs	r0, #0
+ 141              	.LVL7:
+ 142              		.loc 1 214 1 view .LVU15
+ 143 0002 7047     		bx	lr
+ 144              		.cfi_endproc
+ 145              	.LFE8:
+ 147              		.section	.text.exc7200_TS_ClearIT,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	exc7200_TS_ClearIT
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ 154              	exc7200_TS_ClearIT:
+ 155              	.LVL8:
+ 156              	.LFB9:
+ 215:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 216:Drivers/BSP/Components/exc7200/exc7200.c **** /**
+ 217:Drivers/BSP/Components/exc7200/exc7200.c ****   * @brief  Configure the selected source to generate a global interrupt or not
+ 218:Drivers/BSP/Components/exc7200/exc7200.c ****   * @param  DeviceAddr: Device address on communication Bus.  
+ 219:Drivers/BSP/Components/exc7200/exc7200.c ****   * @retval None
+ 220:Drivers/BSP/Components/exc7200/exc7200.c ****   */
+ 221:Drivers/BSP/Components/exc7200/exc7200.c **** void exc7200_TS_ClearIT(uint16_t DeviceAddr)
+ 222:Drivers/BSP/Components/exc7200/exc7200.c **** {
+ 157              		.loc 1 222 1 is_stmt 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161              		@ link register save eliminated.
+ 223:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 162              		.loc 1 223 1 view .LVU17
+ 163 0000 7047     		bx	lr
+ 164              		.cfi_endproc
+ 165              	.LFE9:
+ 167              		.section	.text.exc7200_Init,"ax",%progbits
+ 168              		.align	1
+ 169              		.global	exc7200_Init
+ 170              		.syntax unified
+ 171              		.thumb
+ 172              		.thumb_func
+ 174              	exc7200_Init:
+ 175              	.LVL9:
+ 176              	.LFB0:
+ 117:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Initialize IO BUS layer */
+ 177              		.loc 1 117 1 view -0
+ 178              		.cfi_startproc
+ 179              		@ args = 0, pretend = 0, frame = 0
+ 180              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Initialize IO BUS layer */
+ 181              		.loc 1 117 1 is_stmt 0 view .LVU19
+ 182 0000 08B5     		push	{r3, lr}
+ 183              		.cfi_def_cfa_offset 8
+ 184              		.cfi_offset 3, -8
+ 185              		.cfi_offset 14, -4
+ 119:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 186              		.loc 1 119 3 is_stmt 1 view .LVU20
+ 187 0002 FFF7FEFF 		bl	IOE_Init
+ 188              	.LVL10:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 8
+
+
+ 121:Drivers/BSP/Components/exc7200/exc7200.c ****  
+ 189              		.loc 1 121 1 is_stmt 0 view .LVU21
+ 190 0006 08BD     		pop	{r3, pc}
+ 191              		.cfi_endproc
+ 192              	.LFE0:
+ 194              		.section	.text.exc7200_TS_DetectTouch,"ax",%progbits
+ 195              		.align	1
+ 196              		.global	exc7200_TS_DetectTouch
+ 197              		.syntax unified
+ 198              		.thumb
+ 199              		.thumb_func
+ 201              	exc7200_TS_DetectTouch:
+ 202              	.LVL11:
+ 203              	.LFB4:
+ 158:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Read TS data : Send I2C Slave address + 1 Bit0=1 for:read */
+ 204              		.loc 1 158 1 is_stmt 1 view -0
+ 205              		.cfi_startproc
+ 206              		@ args = 0, pretend = 0, frame = 0
+ 207              		@ frame_needed = 0, uses_anonymous_args = 0
+ 158:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Read TS data : Send I2C Slave address + 1 Bit0=1 for:read */
+ 208              		.loc 1 158 1 is_stmt 0 view .LVU23
+ 209 0000 10B5     		push	{r4, lr}
+ 210              		.cfi_def_cfa_offset 8
+ 211              		.cfi_offset 4, -8
+ 212              		.cfi_offset 14, -4
+ 160:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 213              		.loc 1 160 3 is_stmt 1 view .LVU24
+ 214 0002 084C     		ldr	r4, .L14
+ 215 0004 40F00100 		orr	r0, r0, #1
+ 216              	.LVL12:
+ 160:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 217              		.loc 1 160 3 is_stmt 0 view .LVU25
+ 218 0008 0A23     		movs	r3, #10
+ 219 000a 2246     		mov	r2, r4
+ 220 000c 0921     		movs	r1, #9
+ 221 000e C0B2     		uxtb	r0, r0
+ 222 0010 FFF7FEFF 		bl	IOE_ReadMultiple
+ 223              	.LVL13:
+ 163:Drivers/BSP/Components/exc7200/exc7200.c ****   {	
+ 224              		.loc 1 163 3 is_stmt 1 view .LVU26
+ 163:Drivers/BSP/Components/exc7200/exc7200.c ****   {	
+ 225              		.loc 1 163 16 is_stmt 0 view .LVU27
+ 226 0014 6378     		ldrb	r3, [r4, #1]	@ zero_extendqisi2
+ 163:Drivers/BSP/Components/exc7200/exc7200.c ****   {	
+ 227              		.loc 1 163 6 view .LVU28
+ 228 0016 832B     		cmp	r3, #131
+ 229 0018 01D0     		beq	.L12
+ 168:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 230              		.loc 1 168 10 view .LVU29
+ 231 001a 0020     		movs	r0, #0
+ 232              	.L11:
+ 169:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 233              		.loc 1 169 1 view .LVU30
+ 234 001c 10BD     		pop	{r4, pc}
+ 235              	.L12:
+ 165:Drivers/BSP/Components/exc7200/exc7200.c ****   }
+ 236              		.loc 1 165 12 view .LVU31
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 9
+
+
+ 237 001e 0120     		movs	r0, #1
+ 238 0020 FCE7     		b	.L11
+ 239              	.L15:
+ 240 0022 00BF     		.align	2
+ 241              	.L14:
+ 242 0024 00000000 		.word	aBufferTS
+ 243              		.cfi_endproc
+ 244              	.LFE4:
+ 246              		.section	.text.exc7200_TS_GetXY,"ax",%progbits
+ 247              		.align	1
+ 248              		.global	exc7200_TS_GetXY
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	exc7200_TS_GetXY:
+ 254              	.LVL14:
+ 255              	.LFB5:
+ 179:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Calculate positions */
+ 256              		.loc 1 179 1 is_stmt 1 view -0
+ 257              		.cfi_startproc
+ 258              		@ args = 0, pretend = 0, frame = 0
+ 259              		@ frame_needed = 0, uses_anonymous_args = 0
+ 179:Drivers/BSP/Components/exc7200/exc7200.c ****   /* Calculate positions */
+ 260              		.loc 1 179 1 is_stmt 0 view .LVU33
+ 261 0000 08B5     		push	{r3, lr}
+ 262              		.cfi_def_cfa_offset 8
+ 263              		.cfi_offset 3, -8
+ 264              		.cfi_offset 14, -4
+ 265 0002 9446     		mov	ip, r2
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 266              		.loc 1 181 3 is_stmt 1 view .LVU34
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 267              		.loc 1 181 20 is_stmt 0 view .LVU35
+ 268 0004 0B4A     		ldr	r2, .L18
+ 269              	.LVL15:
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 270              		.loc 1 181 20 view .LVU36
+ 271 0006 D378     		ldrb	r3, [r2, #3]	@ zero_extendqisi2
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 272              		.loc 1 181 51 view .LVU37
+ 273 0008 92F802E0 		ldrb	lr, [r2, #2]	@ zero_extendqisi2
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 274              		.loc 1 181 38 view .LVU38
+ 275 000c 1B01     		lsls	r3, r3, #4
+ 276 000e 43EA1E13 		orr	r3, r3, lr, lsr #4
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 277              		.loc 1 181 70 view .LVU39
+ 278 0012 5B00     		lsls	r3, r3, #1
+ 181:Drivers/BSP/Components/exc7200/exc7200.c ****   *Y = (((aBufferTS[5]&0x00ff) << 4) | ((aBufferTS[4]&0x00f0) >> 4)) << 1;
+ 279              		.loc 1 181 6 view .LVU40
+ 280 0014 0B80     		strh	r3, [r1]	@ movhi
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 281              		.loc 1 182 3 is_stmt 1 view .LVU41
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 282              		.loc 1 182 20 is_stmt 0 view .LVU42
+ 283 0016 5379     		ldrb	r3, [r2, #5]	@ zero_extendqisi2
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 10
+
+
+ 284              		.loc 1 182 51 view .LVU43
+ 285 0018 1179     		ldrb	r1, [r2, #4]	@ zero_extendqisi2
+ 286              	.LVL16:
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 287              		.loc 1 182 38 view .LVU44
+ 288 001a 1B01     		lsls	r3, r3, #4
+ 289 001c 43EA1113 		orr	r3, r3, r1, lsr #4
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 290              		.loc 1 182 70 view .LVU45
+ 291 0020 5B00     		lsls	r3, r3, #1
+ 182:Drivers/BSP/Components/exc7200/exc7200.c ****   
+ 292              		.loc 1 182 6 view .LVU46
+ 293 0022 ACF80030 		strh	r3, [ip]	@ movhi
+ 185:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 294              		.loc 1 185 3 is_stmt 1 view .LVU47
+ 295 0026 0A23     		movs	r3, #10
+ 296 0028 0921     		movs	r1, #9
+ 297 002a C0B2     		uxtb	r0, r0
+ 298              	.LVL17:
+ 185:Drivers/BSP/Components/exc7200/exc7200.c **** }
+ 299              		.loc 1 185 3 is_stmt 0 view .LVU48
+ 300 002c FFF7FEFF 		bl	IOE_ReadMultiple
+ 301              	.LVL18:
+ 186:Drivers/BSP/Components/exc7200/exc7200.c **** 
+ 302              		.loc 1 186 1 view .LVU49
+ 303 0030 08BD     		pop	{r3, pc}
+ 304              	.L19:
+ 305 0032 00BF     		.align	2
+ 306              	.L18:
+ 307 0034 00000000 		.word	aBufferTS
+ 308              		.cfi_endproc
+ 309              	.LFE5:
+ 311              		.global	aBufferTS
+ 312              		.section	.bss.aBufferTS,"aw",%nobits
+ 313              		.align	2
+ 316              	aBufferTS:
+ 317 0000 00000000 		.space	10
+ 317      00000000 
+ 317      0000
+ 318              		.global	exc7200_ts_drv
+ 319              		.section	.data.exc7200_ts_drv,"aw"
+ 320              		.align	2
+ 323              	exc7200_ts_drv:
+ 324 0000 00000000 		.word	exc7200_Init
+ 325 0004 00000000 		.word	exc7200_ReadID
+ 326 0008 00000000 		.word	exc7200_Reset
+ 327 000c 00000000 		.word	exc7200_TS_Start
+ 328 0010 00000000 		.word	exc7200_TS_DetectTouch
+ 329 0014 00000000 		.word	exc7200_TS_GetXY
+ 330 0018 00000000 		.word	exc7200_TS_EnableIT
+ 331 001c 00000000 		.word	exc7200_TS_ClearIT
+ 332 0020 00000000 		.word	exc7200_TS_ITStatus
+ 333 0024 00000000 		.word	exc7200_TS_DisableIT
+ 334              		.text
+ 335              	.Letext0:
+ 336              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 337              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 11
+
+
+ 338              		.file 4 "Drivers/BSP/Components/exc7200/../Common/ts.h"
+ 339              		.file 5 "Drivers/BSP/Components/exc7200/exc7200.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 exc7200.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:20     .text.exc7200_Reset:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:26     .text.exc7200_Reset:00000000 exc7200_Reset
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:40     .text.exc7200_ReadID:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:46     .text.exc7200_ReadID:00000000 exc7200_ReadID
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:64     .text.exc7200_TS_Start:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:70     .text.exc7200_TS_Start:00000000 exc7200_TS_Start
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:84     .text.exc7200_TS_EnableIT:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:90     .text.exc7200_TS_EnableIT:00000000 exc7200_TS_EnableIT
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:104    .text.exc7200_TS_DisableIT:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:110    .text.exc7200_TS_DisableIT:00000000 exc7200_TS_DisableIT
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:124    .text.exc7200_TS_ITStatus:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:130    .text.exc7200_TS_ITStatus:00000000 exc7200_TS_ITStatus
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:148    .text.exc7200_TS_ClearIT:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:154    .text.exc7200_TS_ClearIT:00000000 exc7200_TS_ClearIT
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:168    .text.exc7200_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:174    .text.exc7200_Init:00000000 exc7200_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:195    .text.exc7200_TS_DetectTouch:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:201    .text.exc7200_TS_DetectTouch:00000000 exc7200_TS_DetectTouch
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:242    .text.exc7200_TS_DetectTouch:00000024 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:316    .bss.aBufferTS:00000000 aBufferTS
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:247    .text.exc7200_TS_GetXY:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:253    .text.exc7200_TS_GetXY:00000000 exc7200_TS_GetXY
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:307    .text.exc7200_TS_GetXY:00000034 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:313    .bss.aBufferTS:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:323    .data.exc7200_ts_drv:00000000 exc7200_ts_drv
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3eNF8U.s:320    .data.exc7200_ts_drv:00000000 $d
+
+UNDEFINED SYMBOLS
+IOE_Init
+IOE_ReadMultiple

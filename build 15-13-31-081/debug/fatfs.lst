@@ -1,0 +1,2042 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"fatfs.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "FATFS/App/fatfs.c"
+  19              		.section	.rodata.MX_FATFS_Init.str1.4,"aMS",%progbits,1
+  20              		.align	2
+  21              	.LC0:
+  22 0000 0D457272 		.ascii	"\015Error initializing SD card\012\015\000"
+  22      6F722069 
+  22      6E697469 
+  22      616C697A 
+  22      696E6720 
+  23 001e 0000     		.align	2
+  24              	.LC1:
+  25 0020 0D534420 		.ascii	"\015SD card initialized\012\015\000"
+  25      63617264 
+  25      20696E69 
+  25      7469616C 
+  25      697A6564 
+  26              		.section	.text.MX_FATFS_Init,"ax",%progbits
+  27              		.align	1
+  28              		.global	MX_FATFS_Init
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	MX_FATFS_Init:
+  34              	.LFB144:
+   1:FATFS/App/fatfs.c **** /* USER CODE BEGIN Header */
+   2:FATFS/App/fatfs.c **** /**
+   3:FATFS/App/fatfs.c ****  ******************************************************************************
+   4:FATFS/App/fatfs.c ****  * @file   fatfs.c
+   5:FATFS/App/fatfs.c ****  * @brief  Code for fatfs applications
+   6:FATFS/App/fatfs.c ****  ******************************************************************************
+   7:FATFS/App/fatfs.c ****  * @attention
+   8:FATFS/App/fatfs.c ****  *
+   9:FATFS/App/fatfs.c ****  * Copyright (c) 2024 STMicroelectronics.
+  10:FATFS/App/fatfs.c ****  * All rights reserved.
+  11:FATFS/App/fatfs.c ****  *
+  12:FATFS/App/fatfs.c ****  * This software is licensed under terms that can be found in the LICENSE file
+  13:FATFS/App/fatfs.c ****  * in the root directory of this software component.
+  14:FATFS/App/fatfs.c ****  * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:FATFS/App/fatfs.c ****  *
+  16:FATFS/App/fatfs.c ****  ******************************************************************************
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 2
+
+
+  17:FATFS/App/fatfs.c ****  */
+  18:FATFS/App/fatfs.c **** /* USER CODE END Header */
+  19:FATFS/App/fatfs.c **** #include "fatfs.h"
+  20:FATFS/App/fatfs.c **** #include "main.h"
+  21:FATFS/App/fatfs.c **** 
+  22:FATFS/App/fatfs.c **** #define MAX_FILENAME_LENGTH 14
+  23:FATFS/App/fatfs.c **** 
+  24:FATFS/App/fatfs.c **** #pragma pack(push, 1)
+  25:FATFS/App/fatfs.c **** typedef struct
+  26:FATFS/App/fatfs.c **** {
+  27:FATFS/App/fatfs.c ****   char riff[4];           // "RIFF"
+  28:FATFS/App/fatfs.c ****   uint32_t chunkSize;     // Taille du fichier - 8
+  29:FATFS/App/fatfs.c ****   char wave[4];           // "WAVE"
+  30:FATFS/App/fatfs.c ****   char fmt[4];            // "fmt "
+  31:FATFS/App/fatfs.c ****   uint32_t subchunk1Size; // 16 for PCM
+  32:FATFS/App/fatfs.c ****   uint16_t audioFormat;   // PCM = 1
+  33:FATFS/App/fatfs.c ****   uint16_t numChannels;   // Nombre de canaux
+  34:FATFS/App/fatfs.c ****   uint32_t sampleRate;    // Taux d'échantillonnage
+  35:FATFS/App/fatfs.c ****   uint32_t byteRate;      // sampleRate * numChannels * bitsPerSample/8
+  36:FATFS/App/fatfs.c ****   uint16_t blockAlign;    // numChannels * bitsPerSample/8
+  37:FATFS/App/fatfs.c ****   uint16_t bitsPerSample; // Bits par échantillon
+  38:FATFS/App/fatfs.c ****   char data[4];           // "data"
+  39:FATFS/App/fatfs.c ****   uint32_t dataSize;      // Taille des données audio
+  40:FATFS/App/fatfs.c **** } WAVHeader;
+  41:FATFS/App/fatfs.c **** #pragma pack(pop)
+  42:FATFS/App/fatfs.c **** 
+  43:FATFS/App/fatfs.c **** uint8_t retSD;  /* Return value for SD */
+  44:FATFS/App/fatfs.c **** char SDPath[4]; /* SD logical drive path */
+  45:FATFS/App/fatfs.c **** FATFS SDFatFS;  /* File system object for SD logical drive */
+  46:FATFS/App/fatfs.c **** FIL SDFile;     /* File object for SD */
+  47:FATFS/App/fatfs.c **** 
+  48:FATFS/App/fatfs.c **** // Variables pour le fichier WAV
+  49:FATFS/App/fatfs.c **** FIL file;
+  50:FATFS/App/fatfs.c **** uint32_t totalDataSize = 0;
+  51:FATFS/App/fatfs.c **** uint8_t fileOpened = 0;
+  52:FATFS/App/fatfs.c **** char filename[] = "samp_001.wav";
+  53:FATFS/App/fatfs.c **** 
+  54:FATFS/App/fatfs.c **** WAVHeader headerStereo = {
+  55:FATFS/App/fatfs.c ****     .riff = "RIFF",
+  56:FATFS/App/fatfs.c ****     .chunkSize = 0, // Sera calculé plus tard
+  57:FATFS/App/fatfs.c ****     .wave = "WAVE",
+  58:FATFS/App/fatfs.c ****     .fmt = "fmt ",
+  59:FATFS/App/fatfs.c ****     .subchunk1Size = 16,
+  60:FATFS/App/fatfs.c ****     .audioFormat = 1,    // PCM
+  61:FATFS/App/fatfs.c ****     .numChannels = 2,    // Sera défini plus tard
+  62:FATFS/App/fatfs.c ****     .sampleRate = 16000, // Sera défini plus tard
+  63:FATFS/App/fatfs.c ****     .byteRate = 64000,   // Sera calculé plus tard
+  64:FATFS/App/fatfs.c ****     .blockAlign = 4,     // Sera calculé plus tard
+  65:FATFS/App/fatfs.c ****     .bitsPerSample = 16, // Sera défini plus tard
+  66:FATFS/App/fatfs.c ****     .data = "data",
+  67:FATFS/App/fatfs.c ****     .dataSize = 0 // Sera défini plus tard
+  68:FATFS/App/fatfs.c **** };
+  69:FATFS/App/fatfs.c **** 
+  70:FATFS/App/fatfs.c **** WAVHeader headerMono = {
+  71:FATFS/App/fatfs.c ****     .riff = "RIFF",
+  72:FATFS/App/fatfs.c ****     .chunkSize = 0, // Sera calculé plus tard
+  73:FATFS/App/fatfs.c ****     .wave = "WAVE",
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 3
+
+
+  74:FATFS/App/fatfs.c ****     .fmt = "fmt ",
+  75:FATFS/App/fatfs.c ****     .subchunk1Size = 16,
+  76:FATFS/App/fatfs.c ****     .audioFormat = 1,    // PCM
+  77:FATFS/App/fatfs.c ****     .numChannels = 1,    // Sera défini plus tard
+  78:FATFS/App/fatfs.c ****     .sampleRate = 16000, // Sera défini plus tard
+  79:FATFS/App/fatfs.c ****     .byteRate = 32000,   // Sera calculé plus tard
+  80:FATFS/App/fatfs.c ****     .blockAlign = 2,     // Sera calculé plus tard
+  81:FATFS/App/fatfs.c ****     .bitsPerSample = 16, // Sera défini plus tard
+  82:FATFS/App/fatfs.c ****     .data = "data",
+  83:FATFS/App/fatfs.c ****     .dataSize = 0 // Sera défini plus tard
+  84:FATFS/App/fatfs.c **** };
+  85:FATFS/App/fatfs.c **** 
+  86:FATFS/App/fatfs.c **** /* USER CODE BEGIN Variables */
+  87:FATFS/App/fatfs.c **** 
+  88:FATFS/App/fatfs.c **** /* USER CODE END Variables */
+  89:FATFS/App/fatfs.c **** 
+  90:FATFS/App/fatfs.c **** void MX_FATFS_Init(void)
+  91:FATFS/App/fatfs.c **** {
+  35              		.loc 1 91 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  39 0000 08B5     		push	{r3, lr}
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 3, -8
+  42              		.cfi_offset 14, -4
+  92:FATFS/App/fatfs.c ****   if (BSP_SD_Init() == MSD_ERROR)
+  43              		.loc 1 92 3 view .LVU1
+  44              		.loc 1 92 7 is_stmt 0 view .LVU2
+  45 0002 FFF7FEFF 		bl	BSP_SD_Init
+  46              	.LVL0:
+  47              		.loc 1 92 6 discriminator 1 view .LVU3
+  48 0006 0128     		cmp	r0, #1
+  49 0008 09D0     		beq	.L4
+  50              	.L2:
+  93:FATFS/App/fatfs.c ****   {
+  94:FATFS/App/fatfs.c ****     printf("\rError initializing SD card\n\r");
+  95:FATFS/App/fatfs.c ****   }
+  96:FATFS/App/fatfs.c ****   printf("\rSD card initialized\n\r");
+  51              		.loc 1 96 3 is_stmt 1 view .LVU4
+  52 000a 0748     		ldr	r0, .L5
+  53 000c FFF7FEFF 		bl	printf
+  54              	.LVL1:
+  97:FATFS/App/fatfs.c **** 
+  98:FATFS/App/fatfs.c ****   /*## FatFS: Link the SD driver ###########################*/
+  99:FATFS/App/fatfs.c ****   retSD = FATFS_LinkDriver(&SD_Driver, SDPath);
+  55              		.loc 1 99 3 view .LVU5
+  56              		.loc 1 99 11 is_stmt 0 view .LVU6
+  57 0010 0649     		ldr	r1, .L5+4
+  58 0012 0748     		ldr	r0, .L5+8
+  59 0014 FFF7FEFF 		bl	FATFS_LinkDriver
+  60              	.LVL2:
+  61              		.loc 1 99 9 discriminator 1 view .LVU7
+  62 0018 064B     		ldr	r3, .L5+12
+  63 001a 1870     		strb	r0, [r3]
+ 100:FATFS/App/fatfs.c **** }
+  64              		.loc 1 100 1 view .LVU8
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 4
+
+
+  65 001c 08BD     		pop	{r3, pc}
+  66              	.L4:
+  94:FATFS/App/fatfs.c ****   }
+  67              		.loc 1 94 5 is_stmt 1 view .LVU9
+  68 001e 0648     		ldr	r0, .L5+16
+  69 0020 FFF7FEFF 		bl	printf
+  70              	.LVL3:
+  71 0024 F1E7     		b	.L2
+  72              	.L6:
+  73 0026 00BF     		.align	2
+  74              	.L5:
+  75 0028 20000000 		.word	.LC1
+  76 002c 00000000 		.word	SDPath
+  77 0030 00000000 		.word	SD_Driver
+  78 0034 00000000 		.word	retSD
+  79 0038 00000000 		.word	.LC0
+  80              		.cfi_endproc
+  81              	.LFE144:
+  83              		.section	.text.get_fattime,"ax",%progbits
+  84              		.align	1
+  85              		.global	get_fattime
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	get_fattime:
+  91              	.LFB145:
+ 101:FATFS/App/fatfs.c **** 
+ 102:FATFS/App/fatfs.c **** /**
+ 103:FATFS/App/fatfs.c ****  * @brief  Gets Time from RTC
+ 104:FATFS/App/fatfs.c ****  * @param  None
+ 105:FATFS/App/fatfs.c ****  * @retval Time in DWORD
+ 106:FATFS/App/fatfs.c ****  */
+ 107:FATFS/App/fatfs.c **** DWORD get_fattime(void)
+ 108:FATFS/App/fatfs.c **** {
+  92              		.loc 1 108 1 view -0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+ 109:FATFS/App/fatfs.c ****   /* USER CODE BEGIN get_fattime */
+ 110:FATFS/App/fatfs.c ****   return 0;
+  97              		.loc 1 110 3 view .LVU11
+ 111:FATFS/App/fatfs.c ****   /* USER CODE END get_fattime */
+ 112:FATFS/App/fatfs.c **** }
+  98              		.loc 1 112 1 is_stmt 0 view .LVU12
+  99 0000 0020     		movs	r0, #0
+ 100 0002 7047     		bx	lr
+ 101              		.cfi_endproc
+ 102              	.LFE145:
+ 104              		.section	.rodata.WriteToSDCard.str1.4,"aMS",%progbits,1
+ 105              		.align	2
+ 106              	.LC2:
+ 107 0000 57726974 		.ascii	"Writing to file\012\015\000"
+ 107      696E6720 
+ 107      746F2066 
+ 107      696C650A 
+ 107      0D00
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 5
+
+
+ 108 0012 0000     		.align	2
+ 109              	.LC3:
+ 110 0014 4572726F 		.ascii	"Error mounting file system %d %ld\012\015\000"
+ 110      72206D6F 
+ 110      756E7469 
+ 110      6E672066 
+ 110      696C6520 
+ 111              		.align	2
+ 112              	.LC4:
+ 113 0038 74657374 		.ascii	"test.txt\000"
+ 113      2E747874 
+ 113      00
+ 114 0041 000000   		.align	2
+ 115              	.LC5:
+ 116 0044 4572726F 		.ascii	"Error opening file %d\012\015\000"
+ 116      72206F70 
+ 116      656E696E 
+ 116      67206669 
+ 116      6C652025 
+ 117              		.align	2
+ 118              	.LC6:
+ 119 005c 48656C6C 		.ascii	"Hello, SD Card!\000"
+ 119      6F2C2053 
+ 119      44204361 
+ 119      72642100 
+ 120              		.align	2
+ 121              	.LC7:
+ 122 006c 4572726F 		.ascii	"Error writing to file %d\012\015\000"
+ 122      72207772 
+ 122      6974696E 
+ 122      6720746F 
+ 122      2066696C 
+ 123 0087 00       		.align	2
+ 124              	.LC8:
+ 125 0088 44617461 		.ascii	"Data written to file\000"
+ 125      20777269 
+ 125      7474656E 
+ 125      20746F20 
+ 125      66696C65 
+ 126              		.section	.text.WriteToSDCard,"ax",%progbits
+ 127              		.align	1
+ 128              		.global	WriteToSDCard
+ 129              		.syntax unified
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	WriteToSDCard:
+ 134              	.LFB146:
+ 113:FATFS/App/fatfs.c **** 
+ 114:FATFS/App/fatfs.c **** /* USER CODE BEGIN Application */
+ 115:FATFS/App/fatfs.c **** void WriteToSDCard()
+ 116:FATFS/App/fatfs.c **** {
+ 135              		.loc 1 116 1 is_stmt 1 view -0
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 8
+ 138              		@ frame_needed = 0, uses_anonymous_args = 0
+ 139 0000 10B5     		push	{r4, lr}
+ 140              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 6
+
+
+ 141              		.cfi_offset 4, -8
+ 142              		.cfi_offset 14, -4
+ 143 0002 82B0     		sub	sp, sp, #8
+ 144              		.cfi_def_cfa_offset 16
+ 117:FATFS/App/fatfs.c ****   FRESULT res;                          // Variable pour stocker les résultats des fonctions FATFS
+ 145              		.loc 1 117 3 view .LVU14
+ 118:FATFS/App/fatfs.c ****   UINT bytesWritten;                    // Variable pour stocker le nombre de bytes écrits
+ 146              		.loc 1 118 3 view .LVU15
+ 119:FATFS/App/fatfs.c ****   const char *data = "Hello, SD Card!"; // Données à écrire
+ 147              		.loc 1 119 3 view .LVU16
+ 148              	.LVL4:
+ 120:FATFS/App/fatfs.c ****   printf("Writing to file\n\r");
+ 149              		.loc 1 120 3 view .LVU17
+ 150 0004 2348     		ldr	r0, .L18
+ 151 0006 FFF7FEFF 		bl	printf
+ 152              	.LVL5:
+ 121:FATFS/App/fatfs.c ****   // Initialiser le système de fichiers
+ 122:FATFS/App/fatfs.c ****   retSD = f_mount(&SDFatFS, SDPath, 1);
+ 153              		.loc 1 122 3 view .LVU18
+ 154              		.loc 1 122 11 is_stmt 0 view .LVU19
+ 155 000a 0122     		movs	r2, #1
+ 156 000c 2249     		ldr	r1, .L18+4
+ 157 000e 2348     		ldr	r0, .L18+8
+ 158 0010 FFF7FEFF 		bl	f_mount
+ 159              	.LVL6:
+ 160              		.loc 1 122 9 discriminator 1 view .LVU20
+ 161 0014 224B     		ldr	r3, .L18+12
+ 162 0016 1870     		strb	r0, [r3]
+ 123:FATFS/App/fatfs.c ****   if (retSD != FR_OK)
+ 163              		.loc 1 123 3 is_stmt 1 view .LVU21
+ 164              		.loc 1 123 6 is_stmt 0 view .LVU22
+ 165 0018 F0B9     		cbnz	r0, .L16
+ 124:FATFS/App/fatfs.c ****   {
+ 125:FATFS/App/fatfs.c ****     // Affiche le code d'erreur
+ 126:FATFS/App/fatfs.c ****     printf("Error mounting file system %d %ld\n\r", retSD, SDFatFS.fsize);
+ 127:FATFS/App/fatfs.c ****     return;
+ 128:FATFS/App/fatfs.c ****   }
+ 129:FATFS/App/fatfs.c **** 
+ 130:FATFS/App/fatfs.c ****   // Ouvrir un fichier pour écrire (créer un nouveau fichier ou écraser un fichier existant)
+ 131:FATFS/App/fatfs.c ****   res = f_open(&SDFile, "test.txt", FA_CREATE_ALWAYS | FA_WRITE);
+ 166              		.loc 1 131 3 is_stmt 1 view .LVU23
+ 167              		.loc 1 131 9 is_stmt 0 view .LVU24
+ 168 001a 0A22     		movs	r2, #10
+ 169 001c 2149     		ldr	r1, .L18+16
+ 170 001e 2248     		ldr	r0, .L18+20
+ 171 0020 FFF7FEFF 		bl	f_open
+ 172              	.LVL7:
+ 132:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 173              		.loc 1 132 3 is_stmt 1 view .LVU25
+ 174              		.loc 1 132 6 is_stmt 0 view .LVU26
+ 175 0024 0446     		mov	r4, r0
+ 176 0026 F8B9     		cbnz	r0, .L17
+ 133:FATFS/App/fatfs.c ****   {
+ 134:FATFS/App/fatfs.c ****     // Erreur lors de l'ouverture du fichier
+ 135:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 136:FATFS/App/fatfs.c ****     printf("Error opening file %d\n\r", res);
+ 137:FATFS/App/fatfs.c ****     return;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 7
+
+
+ 138:FATFS/App/fatfs.c ****   }
+ 139:FATFS/App/fatfs.c **** 
+ 140:FATFS/App/fatfs.c ****   // Écrire des données dans le fichier
+ 141:FATFS/App/fatfs.c ****   res = f_write(&SDFile, data, strlen(data), &bytesWritten);
+ 177              		.loc 1 141 3 is_stmt 1 view .LVU27
+ 178              		.loc 1 141 9 is_stmt 0 discriminator 1 view .LVU28
+ 179 0028 01AB     		add	r3, sp, #4
+ 180 002a 0F22     		movs	r2, #15
+ 181 002c 1F49     		ldr	r1, .L18+24
+ 182 002e 1E48     		ldr	r0, .L18+20
+ 183              	.LVL8:
+ 184              		.loc 1 141 9 discriminator 1 view .LVU29
+ 185 0030 FFF7FEFF 		bl	f_write
+ 186              	.LVL9:
+ 142:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != strlen(data))
+ 187              		.loc 1 142 3 is_stmt 1 view .LVU30
+ 188              		.loc 1 142 6 is_stmt 0 view .LVU31
+ 189 0034 0446     		mov	r4, r0
+ 190 0036 10B9     		cbnz	r0, .L12
+ 191              		.loc 1 142 36 discriminator 1 view .LVU32
+ 192 0038 019B     		ldr	r3, [sp, #4]
+ 193              		.loc 1 142 20 discriminator 1 view .LVU33
+ 194 003a 0F2B     		cmp	r3, #15
+ 195 003c 1ED0     		beq	.L13
+ 196              	.L12:
+ 143:FATFS/App/fatfs.c ****   {
+ 144:FATFS/App/fatfs.c ****     // Erreur lors de l'écriture des données
+ 145:FATFS/App/fatfs.c ****     f_close(&SDFile);      // Fermer le fichier
+ 197              		.loc 1 145 5 is_stmt 1 view .LVU34
+ 198 003e 1A48     		ldr	r0, .L18+20
+ 199              	.LVL10:
+ 200              		.loc 1 145 5 is_stmt 0 view .LVU35
+ 201 0040 FFF7FEFF 		bl	f_close
+ 202              	.LVL11:
+ 146:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 203              		.loc 1 146 5 is_stmt 1 view .LVU36
+ 204 0044 0122     		movs	r2, #1
+ 205 0046 1449     		ldr	r1, .L18+4
+ 206 0048 0020     		movs	r0, #0
+ 207 004a FFF7FEFF 		bl	f_mount
+ 208              	.LVL12:
+ 147:FATFS/App/fatfs.c ****     printf("Error writing to file %d\n\r", res);
+ 209              		.loc 1 147 5 view .LVU37
+ 210 004e 2146     		mov	r1, r4
+ 211 0050 1748     		ldr	r0, .L18+28
+ 212 0052 FFF7FEFF 		bl	printf
+ 213              	.LVL13:
+ 148:FATFS/App/fatfs.c ****     return;
+ 214              		.loc 1 148 5 view .LVU38
+ 215 0056 05E0     		b	.L8
+ 216              	.LVL14:
+ 217              	.L16:
+ 126:FATFS/App/fatfs.c ****     return;
+ 218              		.loc 1 126 5 view .LVU39
+ 219 0058 104B     		ldr	r3, .L18+8
+ 220 005a 9A69     		ldr	r2, [r3, #24]
+ 221 005c 0146     		mov	r1, r0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 8
+
+
+ 222 005e 1548     		ldr	r0, .L18+32
+ 223 0060 FFF7FEFF 		bl	printf
+ 224              	.LVL15:
+ 127:FATFS/App/fatfs.c ****   }
+ 225              		.loc 1 127 5 view .LVU40
+ 226              	.L8:
+ 149:FATFS/App/fatfs.c ****   }
+ 150:FATFS/App/fatfs.c **** 
+ 151:FATFS/App/fatfs.c ****   // Fermer le fichier
+ 152:FATFS/App/fatfs.c ****   f_close(&SDFile);
+ 153:FATFS/App/fatfs.c **** 
+ 154:FATFS/App/fatfs.c ****   // Démonter le système de fichiers
+ 155:FATFS/App/fatfs.c ****   f_mount(0, SDPath, 1);
+ 156:FATFS/App/fatfs.c ****   printf("Data written to file\n");
+ 157:FATFS/App/fatfs.c **** }
+ 227              		.loc 1 157 1 is_stmt 0 view .LVU41
+ 228 0064 02B0     		add	sp, sp, #8
+ 229              		.cfi_remember_state
+ 230              		.cfi_def_cfa_offset 8
+ 231              		@ sp needed
+ 232 0066 10BD     		pop	{r4, pc}
+ 233              	.LVL16:
+ 234              	.L17:
+ 235              		.cfi_restore_state
+ 135:FATFS/App/fatfs.c ****     printf("Error opening file %d\n\r", res);
+ 236              		.loc 1 135 5 is_stmt 1 view .LVU42
+ 237 0068 0122     		movs	r2, #1
+ 238 006a 0B49     		ldr	r1, .L18+4
+ 239 006c 0020     		movs	r0, #0
+ 240              	.LVL17:
+ 135:FATFS/App/fatfs.c ****     printf("Error opening file %d\n\r", res);
+ 241              		.loc 1 135 5 is_stmt 0 view .LVU43
+ 242 006e FFF7FEFF 		bl	f_mount
+ 243              	.LVL18:
+ 136:FATFS/App/fatfs.c ****     return;
+ 244              		.loc 1 136 5 is_stmt 1 view .LVU44
+ 245 0072 2146     		mov	r1, r4
+ 246 0074 1048     		ldr	r0, .L18+36
+ 247 0076 FFF7FEFF 		bl	printf
+ 248              	.LVL19:
+ 137:FATFS/App/fatfs.c ****   }
+ 249              		.loc 1 137 5 view .LVU45
+ 250 007a F3E7     		b	.L8
+ 251              	.LVL20:
+ 252              	.L13:
+ 152:FATFS/App/fatfs.c **** 
+ 253              		.loc 1 152 3 view .LVU46
+ 254 007c 0A48     		ldr	r0, .L18+20
+ 255              	.LVL21:
+ 152:FATFS/App/fatfs.c **** 
+ 256              		.loc 1 152 3 is_stmt 0 view .LVU47
+ 257 007e FFF7FEFF 		bl	f_close
+ 258              	.LVL22:
+ 155:FATFS/App/fatfs.c ****   printf("Data written to file\n");
+ 259              		.loc 1 155 3 is_stmt 1 view .LVU48
+ 260 0082 0122     		movs	r2, #1
+ 261 0084 0449     		ldr	r1, .L18+4
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 9
+
+
+ 262 0086 0020     		movs	r0, #0
+ 263 0088 FFF7FEFF 		bl	f_mount
+ 264              	.LVL23:
+ 156:FATFS/App/fatfs.c **** }
+ 265              		.loc 1 156 3 view .LVU49
+ 266 008c 0B48     		ldr	r0, .L18+40
+ 267 008e FFF7FEFF 		bl	puts
+ 268              	.LVL24:
+ 269 0092 E7E7     		b	.L8
+ 270              	.L19:
+ 271              		.align	2
+ 272              	.L18:
+ 273 0094 00000000 		.word	.LC2
+ 274 0098 00000000 		.word	SDPath
+ 275 009c 00000000 		.word	SDFatFS
+ 276 00a0 00000000 		.word	retSD
+ 277 00a4 38000000 		.word	.LC4
+ 278 00a8 00000000 		.word	SDFile
+ 279 00ac 5C000000 		.word	.LC6
+ 280 00b0 6C000000 		.word	.LC7
+ 281 00b4 14000000 		.word	.LC3
+ 282 00b8 44000000 		.word	.LC5
+ 283 00bc 88000000 		.word	.LC8
+ 284              		.cfi_endproc
+ 285              	.LFE146:
+ 287              		.section	.rodata.WriteBufferFile_F32.str1.4,"aMS",%progbits,1
+ 288              		.align	2
+ 289              	.LC9:
+ 290 0000 2D25642E 		.ascii	"-%d.%06d\012\000"
+ 290      25303664 
+ 290      0A00
+ 291 000a 0000     		.align	2
+ 292              	.LC10:
+ 293 000c 25642E25 		.ascii	"%d.%06d\012\000"
+ 293      3036640A 
+ 293      00
+ 294 0015 000000   		.align	2
+ 295              	.LC11:
+ 296 0018 45727265 		.ascii	"Erreur lors de l'\303\251criture des donn\303\251es"
+ 296      7572206C 
+ 296      6F727320 
+ 296      6465206C 
+ 296      27C3A963 
+ 297 003f 3A202564 		.ascii	": %d\012\000"
+ 297      0A00
+ 298 0045 000000   		.align	2
+ 299              	.LC12:
+ 300 0048 44617461 		.ascii	"Data written to file\015\000"
+ 300      20777269 
+ 300      7474656E 
+ 300      20746F20 
+ 300      66696C65 
+ 301              		.section	.text.WriteBufferFile_F32,"ax",%progbits
+ 302              		.align	1
+ 303              		.global	WriteBufferFile_F32
+ 304              		.syntax unified
+ 305              		.thumb
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 10
+
+
+ 306              		.thumb_func
+ 308              	WriteBufferFile_F32:
+ 309              	.LVL25:
+ 310              	.LFB147:
+ 158:FATFS/App/fatfs.c **** 
+ 159:FATFS/App/fatfs.c **** FRESULT WriteBufferFile_F32(float *pIn, uint32_t size, char *filename)
+ 160:FATFS/App/fatfs.c **** {
+ 311              		.loc 1 160 1 view -0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 0, uses_anonymous_args = 0
+ 315              		.loc 1 160 1 is_stmt 0 view .LVU51
+ 316 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 317              		.cfi_def_cfa_offset 24
+ 318              		.cfi_offset 3, -24
+ 319              		.cfi_offset 4, -20
+ 320              		.cfi_offset 5, -16
+ 321              		.cfi_offset 6, -12
+ 322              		.cfi_offset 7, -8
+ 323              		.cfi_offset 14, -4
+ 324 0002 0746     		mov	r7, r0
+ 325 0004 0E46     		mov	r6, r1
+ 326 0006 1446     		mov	r4, r2
+ 161:FATFS/App/fatfs.c ****   FRESULT res = FR_OK; // Variable pour stocker les résultats des fonctions FATFS
+ 327              		.loc 1 161 3 is_stmt 1 view .LVU52
+ 328              	.LVL26:
+ 162:FATFS/App/fatfs.c **** 
+ 163:FATFS/App/fatfs.c ****   retSD = f_mount(&SDFatFS, SDPath, 1);
+ 329              		.loc 1 163 3 view .LVU53
+ 330              		.loc 1 163 11 is_stmt 0 view .LVU54
+ 331 0008 0122     		movs	r2, #1
+ 332              	.LVL27:
+ 333              		.loc 1 163 11 view .LVU55
+ 334 000a 3A49     		ldr	r1, .L36
+ 335              	.LVL28:
+ 336              		.loc 1 163 11 view .LVU56
+ 337 000c 3A48     		ldr	r0, .L36+4
+ 338              	.LVL29:
+ 339              		.loc 1 163 11 view .LVU57
+ 340 000e FFF7FEFF 		bl	f_mount
+ 341              	.LVL30:
+ 342 0012 0546     		mov	r5, r0
+ 343              		.loc 1 163 9 discriminator 1 view .LVU58
+ 344 0014 394B     		ldr	r3, .L36+8
+ 345 0016 1870     		strb	r0, [r3]
+ 164:FATFS/App/fatfs.c ****   if (retSD != FR_OK)
+ 346              		.loc 1 164 3 is_stmt 1 view .LVU59
+ 347              		.loc 1 164 6 is_stmt 0 view .LVU60
+ 348 0018 08B1     		cbz	r0, .L32
+ 349              	.LVL31:
+ 350              	.L21:
+ 165:FATFS/App/fatfs.c ****   {
+ 166:FATFS/App/fatfs.c ****     return retSD;
+ 167:FATFS/App/fatfs.c ****   }
+ 168:FATFS/App/fatfs.c **** 
+ 169:FATFS/App/fatfs.c ****   res = f_open(&SDFile, filename, FA_CREATE_ALWAYS | FA_WRITE);
+ 170:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 11
+
+
+ 171:FATFS/App/fatfs.c ****   {
+ 172:FATFS/App/fatfs.c ****     // Erreur lors de l'ouverture du fichier
+ 173:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 174:FATFS/App/fatfs.c ****     return res;
+ 175:FATFS/App/fatfs.c ****   }
+ 176:FATFS/App/fatfs.c **** 
+ 177:FATFS/App/fatfs.c ****   // Écrire les données en format texte avec une valeur par ligne
+ 178:FATFS/App/fatfs.c ****   for (uint32_t i = 0; i < size; i++)
+ 179:FATFS/App/fatfs.c ****   {
+ 180:FATFS/App/fatfs.c ****     // Convertir la valeur flottante en chaîne de caractères
+ 181:FATFS/App/fatfs.c ****     if (pIn[i] < 0)
+ 182:FATFS/App/fatfs.c ****     {
+ 183:FATFS/App/fatfs.c ****       res = f_printf(&SDFile, "-%d.%06d\n", (int)abs(pIn[i]), abs((int)((pIn[i] - (int)pIn[i]) * 10
+ 184:FATFS/App/fatfs.c ****     }
+ 185:FATFS/App/fatfs.c ****     else
+ 186:FATFS/App/fatfs.c ****     {
+ 187:FATFS/App/fatfs.c ****       res = f_printf(&SDFile, "%d.%06d\n", (int)pIn[i], abs((int)((pIn[i] - (int)pIn[i]) * 1000000)
+ 188:FATFS/App/fatfs.c ****     }
+ 189:FATFS/App/fatfs.c ****     if (res < 0 || res == 255)
+ 190:FATFS/App/fatfs.c ****     {
+ 191:FATFS/App/fatfs.c ****       printf("Erreur lors de l'écriture des données: %d\n", res);
+ 192:FATFS/App/fatfs.c ****       f_close(&SDFile);      // Fermer le fichier
+ 193:FATFS/App/fatfs.c ****       f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 194:FATFS/App/fatfs.c ****       return FR_DENIED;
+ 195:FATFS/App/fatfs.c ****     }
+ 196:FATFS/App/fatfs.c ****   }
+ 197:FATFS/App/fatfs.c ****   // Fermer le fichier
+ 198:FATFS/App/fatfs.c ****   f_close(&SDFile);
+ 199:FATFS/App/fatfs.c **** 
+ 200:FATFS/App/fatfs.c ****   // Démonter le système de fichiers
+ 201:FATFS/App/fatfs.c ****   f_mount(0, SDPath, 1);
+ 202:FATFS/App/fatfs.c ****   printf("Data written to file\r\n");
+ 203:FATFS/App/fatfs.c ****   return FR_OK;
+ 204:FATFS/App/fatfs.c **** }
+ 351              		.loc 1 204 1 view .LVU61
+ 352 001a 2846     		mov	r0, r5
+ 353 001c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 354              	.LVL32:
+ 355              	.L32:
+ 169:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 356              		.loc 1 169 3 is_stmt 1 view .LVU62
+ 169:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 357              		.loc 1 169 9 is_stmt 0 view .LVU63
+ 358 001e 0A22     		movs	r2, #10
+ 359 0020 2146     		mov	r1, r4
+ 360 0022 3748     		ldr	r0, .L36+12
+ 361 0024 FFF7FEFF 		bl	f_open
+ 362              	.LVL33:
+ 170:FATFS/App/fatfs.c ****   {
+ 363              		.loc 1 170 3 is_stmt 1 view .LVU64
+ 170:FATFS/App/fatfs.c ****   {
+ 364              		.loc 1 170 6 is_stmt 0 view .LVU65
+ 365 0028 0546     		mov	r5, r0
+ 366 002a 08B9     		cbnz	r0, .L33
+ 367              	.LBB2:
+ 178:FATFS/App/fatfs.c ****   {
+ 368              		.loc 1 178 17 view .LVU66
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 12
+
+
+ 369 002c 0024     		movs	r4, #0
+ 370              	.LVL34:
+ 178:FATFS/App/fatfs.c ****   {
+ 371              		.loc 1 178 17 view .LVU67
+ 372 002e 20E0     		b	.L22
+ 373              	.LVL35:
+ 374              	.L33:
+ 178:FATFS/App/fatfs.c ****   {
+ 375              		.loc 1 178 17 view .LVU68
+ 376              	.LBE2:
+ 173:FATFS/App/fatfs.c ****     return res;
+ 377              		.loc 1 173 5 is_stmt 1 view .LVU69
+ 378 0030 0122     		movs	r2, #1
+ 379 0032 3049     		ldr	r1, .L36
+ 380 0034 0020     		movs	r0, #0
+ 381              	.LVL36:
+ 173:FATFS/App/fatfs.c ****     return res;
+ 382              		.loc 1 173 5 is_stmt 0 view .LVU70
+ 383 0036 FFF7FEFF 		bl	f_mount
+ 384              	.LVL37:
+ 174:FATFS/App/fatfs.c ****   }
+ 385              		.loc 1 174 5 is_stmt 1 view .LVU71
+ 174:FATFS/App/fatfs.c ****   }
+ 386              		.loc 1 174 12 is_stmt 0 view .LVU72
+ 387 003a EEE7     		b	.L21
+ 388              	.LVL38:
+ 389              	.L30:
+ 390              	.LBB3:
+ 187:FATFS/App/fatfs.c ****     }
+ 391              		.loc 1 187 7 is_stmt 1 view .LVU73
+ 187:FATFS/App/fatfs.c ****     }
+ 392              		.loc 1 187 13 is_stmt 0 view .LVU74
+ 393 003c BDEEE77A 		vcvt.s32.f32	s14, s15
+ 187:FATFS/App/fatfs.c ****     }
+ 394              		.loc 1 187 75 view .LVU75
+ 395 0040 F8EEC76A 		vcvt.f32.s32	s13, s14
+ 396 0044 77EEE67A 		vsub.f32	s15, s15, s13
+ 187:FATFS/App/fatfs.c ****     }
+ 397              		.loc 1 187 90 view .LVU76
+ 398 0048 DFED2E6A 		vldr.32	s13, .L36+16
+ 399 004c 67EEA67A 		vmul.f32	s15, s15, s13
+ 187:FATFS/App/fatfs.c ****     }
+ 400              		.loc 1 187 61 view .LVU77
+ 401 0050 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 402 0054 17EE903A 		vmov	r3, s15	@ int
+ 187:FATFS/App/fatfs.c ****     }
+ 403              		.loc 1 187 13 view .LVU78
+ 404 0058 002B     		cmp	r3, #0
+ 405 005a B8BF     		it	lt
+ 406 005c 5B42     		rsblt	r3, r3, #0
+ 407 005e 17EE102A 		vmov	r2, s14	@ int
+ 408 0062 2949     		ldr	r1, .L36+20
+ 409 0064 2648     		ldr	r0, .L36+12
+ 410              	.LVL39:
+ 187:FATFS/App/fatfs.c ****     }
+ 411              		.loc 1 187 13 view .LVU79
+ 412 0066 FFF7FEFF 		bl	f_printf
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 13
+
+
+ 413              	.LVL40:
+ 187:FATFS/App/fatfs.c ****     }
+ 414              		.loc 1 187 11 discriminator 1 view .LVU80
+ 415 006a C0B2     		uxtb	r0, r0
+ 416              	.LVL41:
+ 417              	.L25:
+ 189:FATFS/App/fatfs.c ****     {
+ 418              		.loc 1 189 5 is_stmt 1 view .LVU81
+ 189:FATFS/App/fatfs.c ****     {
+ 419              		.loc 1 189 8 is_stmt 0 view .LVU82
+ 420 006c FF28     		cmp	r0, #255
+ 421 006e 27D0     		beq	.L34
+ 178:FATFS/App/fatfs.c ****   {
+ 422              		.loc 1 178 35 is_stmt 1 discriminator 2 view .LVU83
+ 423 0070 0134     		adds	r4, r4, #1
+ 424              	.LVL42:
+ 425              	.L22:
+ 178:FATFS/App/fatfs.c ****   {
+ 426              		.loc 1 178 26 discriminator 1 view .LVU84
+ 427 0072 B442     		cmp	r4, r6
+ 428 0074 32D2     		bcs	.L35
+ 181:FATFS/App/fatfs.c ****     {
+ 429              		.loc 1 181 5 view .LVU85
+ 181:FATFS/App/fatfs.c ****     {
+ 430              		.loc 1 181 12 is_stmt 0 view .LVU86
+ 431 0076 07EB8403 		add	r3, r7, r4, lsl #2
+ 432 007a D3ED007A 		vldr.32	s15, [r3]
+ 181:FATFS/App/fatfs.c ****     {
+ 433              		.loc 1 181 8 view .LVU87
+ 434 007e F5EEC07A 		vcmpe.f32	s15, #0
+ 435 0082 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 436 0086 D9D5     		bpl	.L30
+ 183:FATFS/App/fatfs.c ****     }
+ 437              		.loc 1 183 7 is_stmt 1 view .LVU88
+ 183:FATFS/App/fatfs.c ****     }
+ 438              		.loc 1 183 13 is_stmt 0 view .LVU89
+ 439 0088 BDEEE77A 		vcvt.s32.f32	s14, s15
+ 183:FATFS/App/fatfs.c ****     }
+ 440              		.loc 1 183 81 view .LVU90
+ 441 008c F8EEC76A 		vcvt.f32.s32	s13, s14
+ 442 0090 77EEE67A 		vsub.f32	s15, s15, s13
+ 183:FATFS/App/fatfs.c ****     }
+ 443              		.loc 1 183 96 view .LVU91
+ 444 0094 DFED1B6A 		vldr.32	s13, .L36+16
+ 445 0098 67EEA67A 		vmul.f32	s15, s15, s13
+ 183:FATFS/App/fatfs.c ****     }
+ 446              		.loc 1 183 67 view .LVU92
+ 447 009c FDEEE77A 		vcvt.s32.f32	s15, s15
+ 448 00a0 17EE903A 		vmov	r3, s15	@ int
+ 183:FATFS/App/fatfs.c ****     }
+ 449              		.loc 1 183 13 view .LVU93
+ 450 00a4 002B     		cmp	r3, #0
+ 451 00a6 B8BF     		it	lt
+ 452 00a8 5B42     		rsblt	r3, r3, #0
+ 453 00aa 17EE102A 		vmov	r2, s14	@ int
+ 454 00ae 002A     		cmp	r2, #0
+ 455 00b0 B8BF     		it	lt
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 14
+
+
+ 456 00b2 5242     		rsblt	r2, r2, #0
+ 457 00b4 1549     		ldr	r1, .L36+24
+ 458 00b6 1248     		ldr	r0, .L36+12
+ 459              	.LVL43:
+ 183:FATFS/App/fatfs.c ****     }
+ 460              		.loc 1 183 13 view .LVU94
+ 461 00b8 FFF7FEFF 		bl	f_printf
+ 462              	.LVL44:
+ 183:FATFS/App/fatfs.c ****     }
+ 463              		.loc 1 183 11 discriminator 1 view .LVU95
+ 464 00bc C0B2     		uxtb	r0, r0
+ 465              	.LVL45:
+ 183:FATFS/App/fatfs.c ****     }
+ 466              		.loc 1 183 11 discriminator 1 view .LVU96
+ 467 00be D5E7     		b	.L25
+ 468              	.L34:
+ 191:FATFS/App/fatfs.c ****       f_close(&SDFile);      // Fermer le fichier
+ 469              		.loc 1 191 7 is_stmt 1 view .LVU97
+ 470 00c0 0146     		mov	r1, r0
+ 471 00c2 1348     		ldr	r0, .L36+28
+ 472              	.LVL46:
+ 191:FATFS/App/fatfs.c ****       f_close(&SDFile);      // Fermer le fichier
+ 473              		.loc 1 191 7 is_stmt 0 view .LVU98
+ 474 00c4 FFF7FEFF 		bl	printf
+ 475              	.LVL47:
+ 192:FATFS/App/fatfs.c ****       f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 476              		.loc 1 192 7 is_stmt 1 view .LVU99
+ 477 00c8 0D48     		ldr	r0, .L36+12
+ 478 00ca FFF7FEFF 		bl	f_close
+ 479              	.LVL48:
+ 193:FATFS/App/fatfs.c ****       return FR_DENIED;
+ 480              		.loc 1 193 7 view .LVU100
+ 481 00ce 0122     		movs	r2, #1
+ 482 00d0 0849     		ldr	r1, .L36
+ 483 00d2 0020     		movs	r0, #0
+ 484 00d4 FFF7FEFF 		bl	f_mount
+ 485              	.LVL49:
+ 194:FATFS/App/fatfs.c ****     }
+ 486              		.loc 1 194 7 view .LVU101
+ 194:FATFS/App/fatfs.c ****     }
+ 487              		.loc 1 194 14 is_stmt 0 view .LVU102
+ 488 00d8 0725     		movs	r5, #7
+ 489 00da 9EE7     		b	.L21
+ 490              	.LVL50:
+ 491              	.L35:
+ 194:FATFS/App/fatfs.c ****     }
+ 492              		.loc 1 194 14 view .LVU103
+ 493              	.LBE3:
+ 198:FATFS/App/fatfs.c **** 
+ 494              		.loc 1 198 3 is_stmt 1 view .LVU104
+ 495 00dc 0848     		ldr	r0, .L36+12
+ 496              	.LVL51:
+ 198:FATFS/App/fatfs.c **** 
+ 497              		.loc 1 198 3 is_stmt 0 view .LVU105
+ 498 00de FFF7FEFF 		bl	f_close
+ 499              	.LVL52:
+ 201:FATFS/App/fatfs.c ****   printf("Data written to file\r\n");
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 15
+
+
+ 500              		.loc 1 201 3 is_stmt 1 view .LVU106
+ 501 00e2 0122     		movs	r2, #1
+ 502 00e4 0349     		ldr	r1, .L36
+ 503 00e6 0020     		movs	r0, #0
+ 504 00e8 FFF7FEFF 		bl	f_mount
+ 505              	.LVL53:
+ 202:FATFS/App/fatfs.c ****   return FR_OK;
+ 506              		.loc 1 202 3 view .LVU107
+ 507 00ec 0948     		ldr	r0, .L36+32
+ 508 00ee FFF7FEFF 		bl	puts
+ 509              	.LVL54:
+ 203:FATFS/App/fatfs.c **** }
+ 510              		.loc 1 203 3 view .LVU108
+ 203:FATFS/App/fatfs.c **** }
+ 511              		.loc 1 203 10 is_stmt 0 view .LVU109
+ 512 00f2 92E7     		b	.L21
+ 513              	.L37:
+ 514              		.align	2
+ 515              	.L36:
+ 516 00f4 00000000 		.word	SDPath
+ 517 00f8 00000000 		.word	SDFatFS
+ 518 00fc 00000000 		.word	retSD
+ 519 0100 00000000 		.word	SDFile
+ 520 0104 00247449 		.word	1232348160
+ 521 0108 0C000000 		.word	.LC10
+ 522 010c 00000000 		.word	.LC9
+ 523 0110 18000000 		.word	.LC11
+ 524 0114 48000000 		.word	.LC12
+ 525              		.cfi_endproc
+ 526              	.LFE147:
+ 528              		.section	.rodata.WriteBufferFile_INT16.str1.4,"aMS",%progbits,1
+ 529              		.align	2
+ 530              	.LC13:
+ 531 0000 25640D0A 		.ascii	"%d\015\012\000"
+ 531      00
+ 532              		.section	.text.WriteBufferFile_INT16,"ax",%progbits
+ 533              		.align	1
+ 534              		.global	WriteBufferFile_INT16
+ 535              		.syntax unified
+ 536              		.thumb
+ 537              		.thumb_func
+ 539              	WriteBufferFile_INT16:
+ 540              	.LVL55:
+ 541              	.LFB148:
+ 205:FATFS/App/fatfs.c **** 
+ 206:FATFS/App/fatfs.c **** FRESULT WriteBufferFile_INT16(int16_t *pIn, uint32_t size, char *filename)
+ 207:FATFS/App/fatfs.c **** {
+ 542              		.loc 1 207 1 is_stmt 1 view -0
+ 543              		.cfi_startproc
+ 544              		@ args = 0, pretend = 0, frame = 0
+ 545              		@ frame_needed = 0, uses_anonymous_args = 0
+ 546              		.loc 1 207 1 is_stmt 0 view .LVU111
+ 547 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 548              		.cfi_def_cfa_offset 24
+ 549              		.cfi_offset 3, -24
+ 550              		.cfi_offset 4, -20
+ 551              		.cfi_offset 5, -16
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 16
+
+
+ 552              		.cfi_offset 6, -12
+ 553              		.cfi_offset 7, -8
+ 554              		.cfi_offset 14, -4
+ 555 0002 0746     		mov	r7, r0
+ 556 0004 0E46     		mov	r6, r1
+ 557 0006 1446     		mov	r4, r2
+ 208:FATFS/App/fatfs.c ****   FRESULT res = FR_OK; // Variable pour stocker les résultats des fonctions FATFS
+ 558              		.loc 1 208 3 is_stmt 1 view .LVU112
+ 559              	.LVL56:
+ 209:FATFS/App/fatfs.c **** 
+ 210:FATFS/App/fatfs.c ****   retSD = f_mount(&SDFatFS, SDPath, 1);
+ 560              		.loc 1 210 3 view .LVU113
+ 561              		.loc 1 210 11 is_stmt 0 view .LVU114
+ 562 0008 0122     		movs	r2, #1
+ 563              	.LVL57:
+ 564              		.loc 1 210 11 view .LVU115
+ 565 000a 1F49     		ldr	r1, .L49
+ 566              	.LVL58:
+ 567              		.loc 1 210 11 view .LVU116
+ 568 000c 1F48     		ldr	r0, .L49+4
+ 569              	.LVL59:
+ 570              		.loc 1 210 11 view .LVU117
+ 571 000e FFF7FEFF 		bl	f_mount
+ 572              	.LVL60:
+ 573 0012 0546     		mov	r5, r0
+ 574              		.loc 1 210 9 discriminator 1 view .LVU118
+ 575 0014 1E4B     		ldr	r3, .L49+8
+ 576 0016 1870     		strb	r0, [r3]
+ 211:FATFS/App/fatfs.c ****   if (retSD != FR_OK)
+ 577              		.loc 1 211 3 is_stmt 1 view .LVU119
+ 578              		.loc 1 211 6 is_stmt 0 view .LVU120
+ 579 0018 08B1     		cbz	r0, .L45
+ 580              	.LVL61:
+ 581              	.L39:
+ 212:FATFS/App/fatfs.c ****   {
+ 213:FATFS/App/fatfs.c ****     return retSD;
+ 214:FATFS/App/fatfs.c ****   }
+ 215:FATFS/App/fatfs.c **** 
+ 216:FATFS/App/fatfs.c ****   res = f_open(&SDFile, filename, FA_CREATE_ALWAYS | FA_WRITE);
+ 217:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 218:FATFS/App/fatfs.c ****   {
+ 219:FATFS/App/fatfs.c ****     // Erreur lors de l'ouverture du fichier
+ 220:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 221:FATFS/App/fatfs.c ****     return res;
+ 222:FATFS/App/fatfs.c ****   }
+ 223:FATFS/App/fatfs.c **** 
+ 224:FATFS/App/fatfs.c ****   // Écrire les données en format texte avec une valeur par ligne
+ 225:FATFS/App/fatfs.c ****   for (uint32_t i = 0; i < size; i++)
+ 226:FATFS/App/fatfs.c ****   {
+ 227:FATFS/App/fatfs.c ****     // Convertir la valeur flottante en chaîne de caractères
+ 228:FATFS/App/fatfs.c ****     res = f_printf(&SDFile, "%d\r\n", pIn[i]);
+ 229:FATFS/App/fatfs.c ****     if (res < 0 || res == 255)
+ 230:FATFS/App/fatfs.c ****     {
+ 231:FATFS/App/fatfs.c ****       printf("Erreur lors de l'écriture des données: %d\n", res);
+ 232:FATFS/App/fatfs.c ****       f_close(&SDFile);      // Fermer le fichier
+ 233:FATFS/App/fatfs.c ****       f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 234:FATFS/App/fatfs.c ****       return FR_DENIED;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 17
+
+
+ 235:FATFS/App/fatfs.c ****     }
+ 236:FATFS/App/fatfs.c ****   }
+ 237:FATFS/App/fatfs.c ****   // Fermer le fichier
+ 238:FATFS/App/fatfs.c ****   f_close(&SDFile);
+ 239:FATFS/App/fatfs.c **** 
+ 240:FATFS/App/fatfs.c ****   // Démonter le système de fichiers
+ 241:FATFS/App/fatfs.c ****   f_mount(0, SDPath, 1);
+ 242:FATFS/App/fatfs.c ****   printf("Data written to file\r\n");
+ 243:FATFS/App/fatfs.c ****   return FR_OK;
+ 244:FATFS/App/fatfs.c **** }
+ 582              		.loc 1 244 1 view .LVU121
+ 583 001a 2846     		mov	r0, r5
+ 584 001c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 585              	.LVL62:
+ 586              	.L45:
+ 216:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 587              		.loc 1 216 3 is_stmt 1 view .LVU122
+ 216:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 588              		.loc 1 216 9 is_stmt 0 view .LVU123
+ 589 001e 0A22     		movs	r2, #10
+ 590 0020 2146     		mov	r1, r4
+ 591 0022 1C48     		ldr	r0, .L49+12
+ 592 0024 FFF7FEFF 		bl	f_open
+ 593              	.LVL63:
+ 217:FATFS/App/fatfs.c ****   {
+ 594              		.loc 1 217 3 is_stmt 1 view .LVU124
+ 217:FATFS/App/fatfs.c ****   {
+ 595              		.loc 1 217 6 is_stmt 0 view .LVU125
+ 596 0028 0546     		mov	r5, r0
+ 597 002a 68B9     		cbnz	r0, .L46
+ 598              	.LBB4:
+ 225:FATFS/App/fatfs.c ****   {
+ 599              		.loc 1 225 17 view .LVU126
+ 600 002c 0024     		movs	r4, #0
+ 601              	.LVL64:
+ 602              	.L40:
+ 225:FATFS/App/fatfs.c ****   {
+ 603              		.loc 1 225 26 is_stmt 1 discriminator 1 view .LVU127
+ 604 002e B442     		cmp	r4, r6
+ 605 0030 1ED2     		bcs	.L47
+ 228:FATFS/App/fatfs.c ****     if (res < 0 || res == 255)
+ 606              		.loc 1 228 5 view .LVU128
+ 228:FATFS/App/fatfs.c ****     if (res < 0 || res == 255)
+ 607              		.loc 1 228 11 is_stmt 0 view .LVU129
+ 608 0032 37F91420 		ldrsh	r2, [r7, r4, lsl #1]
+ 609 0036 1849     		ldr	r1, .L49+16
+ 610 0038 1648     		ldr	r0, .L49+12
+ 611 003a FFF7FEFF 		bl	f_printf
+ 612              	.LVL65:
+ 228:FATFS/App/fatfs.c ****     if (res < 0 || res == 255)
+ 613              		.loc 1 228 9 discriminator 1 view .LVU130
+ 614 003e C3B2     		uxtb	r3, r0
+ 615              	.LVL66:
+ 229:FATFS/App/fatfs.c ****     {
+ 616              		.loc 1 229 5 is_stmt 1 view .LVU131
+ 229:FATFS/App/fatfs.c ****     {
+ 617              		.loc 1 229 8 is_stmt 0 view .LVU132
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 18
+
+
+ 618 0040 FF2B     		cmp	r3, #255
+ 619 0042 07D0     		beq	.L48
+ 225:FATFS/App/fatfs.c ****   {
+ 620              		.loc 1 225 35 is_stmt 1 discriminator 2 view .LVU133
+ 621 0044 0134     		adds	r4, r4, #1
+ 622              	.LVL67:
+ 225:FATFS/App/fatfs.c ****   {
+ 623              		.loc 1 225 35 is_stmt 0 discriminator 2 view .LVU134
+ 624 0046 F2E7     		b	.L40
+ 625              	.LVL68:
+ 626              	.L46:
+ 225:FATFS/App/fatfs.c ****   {
+ 627              		.loc 1 225 35 discriminator 2 view .LVU135
+ 628              	.LBE4:
+ 220:FATFS/App/fatfs.c ****     return res;
+ 629              		.loc 1 220 5 is_stmt 1 view .LVU136
+ 630 0048 0122     		movs	r2, #1
+ 631 004a 0F49     		ldr	r1, .L49
+ 632 004c 0020     		movs	r0, #0
+ 633              	.LVL69:
+ 220:FATFS/App/fatfs.c ****     return res;
+ 634              		.loc 1 220 5 is_stmt 0 view .LVU137
+ 635 004e FFF7FEFF 		bl	f_mount
+ 636              	.LVL70:
+ 221:FATFS/App/fatfs.c ****   }
+ 637              		.loc 1 221 5 is_stmt 1 view .LVU138
+ 221:FATFS/App/fatfs.c ****   }
+ 638              		.loc 1 221 12 is_stmt 0 view .LVU139
+ 639 0052 E2E7     		b	.L39
+ 640              	.LVL71:
+ 641              	.L48:
+ 642              	.LBB5:
+ 231:FATFS/App/fatfs.c ****       f_close(&SDFile);      // Fermer le fichier
+ 643              		.loc 1 231 7 is_stmt 1 view .LVU140
+ 644 0054 1946     		mov	r1, r3
+ 645 0056 1148     		ldr	r0, .L49+20
+ 646 0058 FFF7FEFF 		bl	printf
+ 647              	.LVL72:
+ 232:FATFS/App/fatfs.c ****       f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 648              		.loc 1 232 7 view .LVU141
+ 649 005c 0D48     		ldr	r0, .L49+12
+ 650 005e FFF7FEFF 		bl	f_close
+ 651              	.LVL73:
+ 233:FATFS/App/fatfs.c ****       return FR_DENIED;
+ 652              		.loc 1 233 7 view .LVU142
+ 653 0062 0122     		movs	r2, #1
+ 654 0064 0849     		ldr	r1, .L49
+ 655 0066 0020     		movs	r0, #0
+ 656 0068 FFF7FEFF 		bl	f_mount
+ 657              	.LVL74:
+ 234:FATFS/App/fatfs.c ****     }
+ 658              		.loc 1 234 7 view .LVU143
+ 234:FATFS/App/fatfs.c ****     }
+ 659              		.loc 1 234 14 is_stmt 0 view .LVU144
+ 660 006c 0725     		movs	r5, #7
+ 661 006e D4E7     		b	.L39
+ 662              	.LVL75:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 19
+
+
+ 663              	.L47:
+ 234:FATFS/App/fatfs.c ****     }
+ 664              		.loc 1 234 14 view .LVU145
+ 665              	.LBE5:
+ 238:FATFS/App/fatfs.c **** 
+ 666              		.loc 1 238 3 is_stmt 1 view .LVU146
+ 667 0070 0848     		ldr	r0, .L49+12
+ 668 0072 FFF7FEFF 		bl	f_close
+ 669              	.LVL76:
+ 241:FATFS/App/fatfs.c ****   printf("Data written to file\r\n");
+ 670              		.loc 1 241 3 view .LVU147
+ 671 0076 0122     		movs	r2, #1
+ 672 0078 0349     		ldr	r1, .L49
+ 673 007a 0020     		movs	r0, #0
+ 674 007c FFF7FEFF 		bl	f_mount
+ 675              	.LVL77:
+ 242:FATFS/App/fatfs.c ****   return FR_OK;
+ 676              		.loc 1 242 3 view .LVU148
+ 677 0080 0748     		ldr	r0, .L49+24
+ 678 0082 FFF7FEFF 		bl	puts
+ 679              	.LVL78:
+ 243:FATFS/App/fatfs.c **** }
+ 680              		.loc 1 243 3 view .LVU149
+ 243:FATFS/App/fatfs.c **** }
+ 681              		.loc 1 243 10 is_stmt 0 view .LVU150
+ 682 0086 C8E7     		b	.L39
+ 683              	.L50:
+ 684              		.align	2
+ 685              	.L49:
+ 686 0088 00000000 		.word	SDPath
+ 687 008c 00000000 		.word	SDFatFS
+ 688 0090 00000000 		.word	retSD
+ 689 0094 00000000 		.word	SDFile
+ 690 0098 00000000 		.word	.LC13
+ 691 009c 18000000 		.word	.LC11
+ 692 00a0 48000000 		.word	.LC12
+ 693              		.cfi_endproc
+ 694              	.LFE148:
+ 696              		.section	.text.WriteWAVFile,"ax",%progbits
+ 697              		.align	1
+ 698              		.global	WriteWAVFile
+ 699              		.syntax unified
+ 700              		.thumb
+ 701              		.thumb_func
+ 703              	WriteWAVFile:
+ 704              	.LVL79:
+ 705              	.LFB150:
+ 245:FATFS/App/fatfs.c **** 
+ 246:FATFS/App/fatfs.c **** FRESULT OpenWavFile(uint8_t type)
+ 247:FATFS/App/fatfs.c **** {
+ 248:FATFS/App/fatfs.c ****   FRESULT res = FR_OK;
+ 249:FATFS/App/fatfs.c ****   UINT bytesWritten;
+ 250:FATFS/App/fatfs.c ****   // GenerateUniqueFilename(filename);
+ 251:FATFS/App/fatfs.c ****   //  Initialiser le système de fichiers
+ 252:FATFS/App/fatfs.c ****   res = f_mount(&SDFatFS, SDPath, 1);
+ 253:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 254:FATFS/App/fatfs.c ****   {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 20
+
+
+ 255:FATFS/App/fatfs.c ****     return res;
+ 256:FATFS/App/fatfs.c ****   }
+ 257:FATFS/App/fatfs.c **** 
+ 258:FATFS/App/fatfs.c ****   res = GenerateUniqueFilename(filename);
+ 259:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 260:FATFS/App/fatfs.c ****   {
+ 261:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 262:FATFS/App/fatfs.c ****     return res;
+ 263:FATFS/App/fatfs.c ****   }
+ 264:FATFS/App/fatfs.c **** 
+ 265:FATFS/App/fatfs.c ****   // Ouvrir un fichier pour écrire
+ 266:FATFS/App/fatfs.c ****   res = f_open(&file, filename, FA_CREATE_ALWAYS | FA_WRITE);
+ 267:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 268:FATFS/App/fatfs.c ****   {
+ 269:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 270:FATFS/App/fatfs.c ****     return res;
+ 271:FATFS/App/fatfs.c ****   }
+ 272:FATFS/App/fatfs.c **** 
+ 273:FATFS/App/fatfs.c ****   // Écrire un en-tête vide pour réserver de l'espace
+ 274:FATFS/App/fatfs.c ****   if (type == MONO_WAV)
+ 275:FATFS/App/fatfs.c ****     res = f_write(&file, &headerMono, sizeof(WAVHeader), &bytesWritten);
+ 276:FATFS/App/fatfs.c ****   else
+ 277:FATFS/App/fatfs.c ****     res = f_write(&file, &headerStereo, sizeof(WAVHeader), &bytesWritten);
+ 278:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
+ 279:FATFS/App/fatfs.c ****   {
+ 280:FATFS/App/fatfs.c ****     f_close(&file);
+ 281:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 282:FATFS/App/fatfs.c ****     return res;
+ 283:FATFS/App/fatfs.c ****   }
+ 284:FATFS/App/fatfs.c ****   return res;
+ 285:FATFS/App/fatfs.c **** }
+ 286:FATFS/App/fatfs.c **** FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize)
+ 287:FATFS/App/fatfs.c **** {
+ 706              		.loc 1 287 1 is_stmt 1 view -0
+ 707              		.cfi_startproc
+ 708              		@ args = 0, pretend = 0, frame = 16
+ 709              		@ frame_needed = 0, uses_anonymous_args = 0
+ 710              		.loc 1 287 1 is_stmt 0 view .LVU152
+ 711 0000 70B5     		push	{r4, r5, r6, lr}
+ 712              		.cfi_def_cfa_offset 16
+ 713              		.cfi_offset 4, -16
+ 714              		.cfi_offset 5, -12
+ 715              		.cfi_offset 6, -8
+ 716              		.cfi_offset 14, -4
+ 717 0002 84B0     		sub	sp, sp, #16
+ 718              		.cfi_def_cfa_offset 32
+ 719 0004 0C46     		mov	r4, r1
+ 720 0006 1646     		mov	r6, r2
+ 288:FATFS/App/fatfs.c **** 
+ 289:FATFS/App/fatfs.c ****   FRESULT res = FR_OK;
+ 721              		.loc 1 289 3 is_stmt 1 view .LVU153
+ 722              	.LVL80:
+ 290:FATFS/App/fatfs.c ****   UINT bytesWritten;
+ 723              		.loc 1 290 3 view .LVU154
+ 291:FATFS/App/fatfs.c **** 
+ 292:FATFS/App/fatfs.c ****   // Écrire les données audio
+ 293:FATFS/App/fatfs.c ****   res = f_write(&file, audioData, dataSize, &bytesWritten);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 21
+
+
+ 724              		.loc 1 293 3 view .LVU155
+ 725              		.loc 1 293 9 is_stmt 0 view .LVU156
+ 726 0008 03AB     		add	r3, sp, #12
+ 727 000a 0A46     		mov	r2, r1
+ 728              	.LVL81:
+ 729              		.loc 1 293 9 view .LVU157
+ 730 000c 0146     		mov	r1, r0
+ 731              	.LVL82:
+ 732              		.loc 1 293 9 view .LVU158
+ 733 000e 2648     		ldr	r0, .L57
+ 734              	.LVL83:
+ 735              		.loc 1 293 9 view .LVU159
+ 736 0010 FFF7FEFF 		bl	f_write
+ 737              	.LVL84:
+ 294:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != dataSize)
+ 738              		.loc 1 294 3 is_stmt 1 view .LVU160
+ 739              		.loc 1 294 6 is_stmt 0 view .LVU161
+ 740 0014 0546     		mov	r5, r0
+ 741 0016 10B9     		cbnz	r0, .L52
+ 742              		.loc 1 294 36 discriminator 1 view .LVU162
+ 743 0018 039B     		ldr	r3, [sp, #12]
+ 744              		.loc 1 294 20 discriminator 1 view .LVU163
+ 745 001a A342     		cmp	r3, r4
+ 746 001c 0AD0     		beq	.L53
+ 747              	.L52:
+ 295:FATFS/App/fatfs.c ****   {
+ 296:FATFS/App/fatfs.c ****     f_close(&file);
+ 748              		.loc 1 296 5 is_stmt 1 view .LVU164
+ 749 001e 2248     		ldr	r0, .L57
+ 750              	.LVL85:
+ 751              		.loc 1 296 5 is_stmt 0 view .LVU165
+ 752 0020 FFF7FEFF 		bl	f_close
+ 753              	.LVL86:
+ 297:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 754              		.loc 1 297 5 is_stmt 1 view .LVU166
+ 755 0024 0122     		movs	r2, #1
+ 756 0026 2149     		ldr	r1, .L57+4
+ 757 0028 0020     		movs	r0, #0
+ 758 002a FFF7FEFF 		bl	f_mount
+ 759              	.LVL87:
+ 298:FATFS/App/fatfs.c ****     return res;
+ 760              		.loc 1 298 5 view .LVU167
+ 761              	.L54:
+ 299:FATFS/App/fatfs.c ****   }
+ 300:FATFS/App/fatfs.c **** 
+ 301:FATFS/App/fatfs.c ****   totalDataSize += dataSize;
+ 302:FATFS/App/fatfs.c **** 
+ 303:FATFS/App/fatfs.c ****   if (finalize)
+ 304:FATFS/App/fatfs.c ****   {
+ 305:FATFS/App/fatfs.c ****     //  Calculer les nouvelles valeurs de chunkSize et dataSize
+ 306:FATFS/App/fatfs.c ****     uint32_t chunkSize = 36 + totalDataSize;
+ 307:FATFS/App/fatfs.c ****     uint32_t dataSize = totalDataSize;
+ 308:FATFS/App/fatfs.c **** 
+ 309:FATFS/App/fatfs.c ****     // Déplacer le pointeur de fichier à la position de chunkSize
+ 310:FATFS/App/fatfs.c ****     f_lseek(&file, offsetof(WAVHeader, chunkSize));
+ 311:FATFS/App/fatfs.c ****     res = f_write(&file, &chunkSize, sizeof(chunkSize), &bytesWritten);
+ 312:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(chunkSize))
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 22
+
+
+ 313:FATFS/App/fatfs.c ****     {
+ 314:FATFS/App/fatfs.c ****       return res;
+ 315:FATFS/App/fatfs.c ****     }
+ 316:FATFS/App/fatfs.c **** 
+ 317:FATFS/App/fatfs.c ****     // Déplacer le pointeur de fichier à la position de dataSize
+ 318:FATFS/App/fatfs.c ****     f_lseek(&file, offsetof(WAVHeader, dataSize));
+ 319:FATFS/App/fatfs.c ****     res = f_write(&file, &dataSize, sizeof(dataSize), &bytesWritten);
+ 320:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(dataSize))
+ 321:FATFS/App/fatfs.c ****     {
+ 322:FATFS/App/fatfs.c ****       return res;
+ 323:FATFS/App/fatfs.c ****     }
+ 324:FATFS/App/fatfs.c ****     // Fermer le fichier
+ 325:FATFS/App/fatfs.c ****     f_close(&file);
+ 326:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 327:FATFS/App/fatfs.c ****     fileOpened = 0;
+ 328:FATFS/App/fatfs.c ****     totalDataSize = 0;
+ 329:FATFS/App/fatfs.c ****   }
+ 330:FATFS/App/fatfs.c ****   return res;
+ 331:FATFS/App/fatfs.c **** }
+ 762              		.loc 1 331 1 is_stmt 0 view .LVU168
+ 763 002e 2846     		mov	r0, r5
+ 764 0030 04B0     		add	sp, sp, #16
+ 765              		.cfi_remember_state
+ 766              		.cfi_def_cfa_offset 16
+ 767              		@ sp needed
+ 768 0032 70BD     		pop	{r4, r5, r6, pc}
+ 769              	.LVL88:
+ 770              	.L53:
+ 771              		.cfi_restore_state
+ 301:FATFS/App/fatfs.c **** 
+ 772              		.loc 1 301 3 is_stmt 1 view .LVU169
+ 301:FATFS/App/fatfs.c **** 
+ 773              		.loc 1 301 17 is_stmt 0 view .LVU170
+ 774 0034 1E4B     		ldr	r3, .L57+8
+ 775 0036 1A68     		ldr	r2, [r3]
+ 776 0038 1444     		add	r4, r4, r2
+ 777              	.LVL89:
+ 301:FATFS/App/fatfs.c **** 
+ 778              		.loc 1 301 17 view .LVU171
+ 779 003a 1C60     		str	r4, [r3]
+ 303:FATFS/App/fatfs.c ****   {
+ 780              		.loc 1 303 3 is_stmt 1 view .LVU172
+ 303:FATFS/App/fatfs.c ****   {
+ 781              		.loc 1 303 6 is_stmt 0 view .LVU173
+ 782 003c 002E     		cmp	r6, #0
+ 783 003e F6D0     		beq	.L54
+ 784              	.LBB6:
+ 306:FATFS/App/fatfs.c ****     uint32_t dataSize = totalDataSize;
+ 785              		.loc 1 306 5 is_stmt 1 view .LVU174
+ 306:FATFS/App/fatfs.c ****     uint32_t dataSize = totalDataSize;
+ 786              		.loc 1 306 29 is_stmt 0 view .LVU175
+ 787 0040 04F12403 		add	r3, r4, #36
+ 306:FATFS/App/fatfs.c ****     uint32_t dataSize = totalDataSize;
+ 788              		.loc 1 306 14 view .LVU176
+ 789 0044 0193     		str	r3, [sp, #4]
+ 307:FATFS/App/fatfs.c **** 
+ 790              		.loc 1 307 5 is_stmt 1 view .LVU177
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 23
+
+
+ 307:FATFS/App/fatfs.c **** 
+ 791              		.loc 1 307 14 is_stmt 0 view .LVU178
+ 792 0046 0294     		str	r4, [sp, #8]
+ 310:FATFS/App/fatfs.c ****     res = f_write(&file, &chunkSize, sizeof(chunkSize), &bytesWritten);
+ 793              		.loc 1 310 5 is_stmt 1 view .LVU179
+ 794 0048 174C     		ldr	r4, .L57
+ 795 004a 0421     		movs	r1, #4
+ 796 004c 2046     		mov	r0, r4
+ 797              	.LVL90:
+ 310:FATFS/App/fatfs.c ****     res = f_write(&file, &chunkSize, sizeof(chunkSize), &bytesWritten);
+ 798              		.loc 1 310 5 is_stmt 0 view .LVU180
+ 799 004e FFF7FEFF 		bl	f_lseek
+ 800              	.LVL91:
+ 311:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(chunkSize))
+ 801              		.loc 1 311 5 is_stmt 1 view .LVU181
+ 311:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(chunkSize))
+ 802              		.loc 1 311 11 is_stmt 0 view .LVU182
+ 803 0052 03AB     		add	r3, sp, #12
+ 804 0054 0422     		movs	r2, #4
+ 805 0056 0DEB0201 		add	r1, sp, r2
+ 806 005a 2046     		mov	r0, r4
+ 807 005c FFF7FEFF 		bl	f_write
+ 808              	.LVL92:
+ 312:FATFS/App/fatfs.c ****     {
+ 809              		.loc 1 312 5 is_stmt 1 view .LVU183
+ 312:FATFS/App/fatfs.c ****     {
+ 810              		.loc 1 312 8 is_stmt 0 view .LVU184
+ 811 0060 0546     		mov	r5, r0
+ 812 0062 0028     		cmp	r0, #0
+ 813 0064 E3D1     		bne	.L54
+ 312:FATFS/App/fatfs.c ****     {
+ 814              		.loc 1 312 38 discriminator 1 view .LVU185
+ 815 0066 039B     		ldr	r3, [sp, #12]
+ 312:FATFS/App/fatfs.c ****     {
+ 816              		.loc 1 312 22 discriminator 1 view .LVU186
+ 817 0068 042B     		cmp	r3, #4
+ 818 006a E0D1     		bne	.L54
+ 318:FATFS/App/fatfs.c ****     res = f_write(&file, &dataSize, sizeof(dataSize), &bytesWritten);
+ 819              		.loc 1 318 5 is_stmt 1 view .LVU187
+ 820 006c 2821     		movs	r1, #40
+ 821 006e 2046     		mov	r0, r4
+ 822              	.LVL93:
+ 318:FATFS/App/fatfs.c ****     res = f_write(&file, &dataSize, sizeof(dataSize), &bytesWritten);
+ 823              		.loc 1 318 5 is_stmt 0 view .LVU188
+ 824 0070 FFF7FEFF 		bl	f_lseek
+ 825              	.LVL94:
+ 319:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(dataSize))
+ 826              		.loc 1 319 5 is_stmt 1 view .LVU189
+ 319:FATFS/App/fatfs.c ****     if (res != FR_OK || bytesWritten != sizeof(dataSize))
+ 827              		.loc 1 319 11 is_stmt 0 view .LVU190
+ 828 0074 03AB     		add	r3, sp, #12
+ 829 0076 0422     		movs	r2, #4
+ 830 0078 02A9     		add	r1, sp, #8
+ 831 007a 2046     		mov	r0, r4
+ 832 007c FFF7FEFF 		bl	f_write
+ 833              	.LVL95:
+ 320:FATFS/App/fatfs.c ****     {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 24
+
+
+ 834              		.loc 1 320 5 is_stmt 1 view .LVU191
+ 320:FATFS/App/fatfs.c ****     {
+ 835              		.loc 1 320 8 is_stmt 0 view .LVU192
+ 836 0080 0546     		mov	r5, r0
+ 837 0082 0028     		cmp	r0, #0
+ 838 0084 D3D1     		bne	.L54
+ 320:FATFS/App/fatfs.c ****     {
+ 839              		.loc 1 320 38 discriminator 1 view .LVU193
+ 840 0086 039B     		ldr	r3, [sp, #12]
+ 320:FATFS/App/fatfs.c ****     {
+ 841              		.loc 1 320 22 discriminator 1 view .LVU194
+ 842 0088 042B     		cmp	r3, #4
+ 843 008a D0D1     		bne	.L54
+ 325:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 844              		.loc 1 325 5 is_stmt 1 view .LVU195
+ 845 008c 2046     		mov	r0, r4
+ 846              	.LVL96:
+ 325:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 847              		.loc 1 325 5 is_stmt 0 view .LVU196
+ 848 008e FFF7FEFF 		bl	f_close
+ 849              	.LVL97:
+ 326:FATFS/App/fatfs.c ****     fileOpened = 0;
+ 850              		.loc 1 326 5 is_stmt 1 view .LVU197
+ 851 0092 0122     		movs	r2, #1
+ 852 0094 0549     		ldr	r1, .L57+4
+ 853 0096 0020     		movs	r0, #0
+ 854 0098 FFF7FEFF 		bl	f_mount
+ 855              	.LVL98:
+ 327:FATFS/App/fatfs.c ****     totalDataSize = 0;
+ 856              		.loc 1 327 5 view .LVU198
+ 327:FATFS/App/fatfs.c ****     totalDataSize = 0;
+ 857              		.loc 1 327 16 is_stmt 0 view .LVU199
+ 858 009c 0023     		movs	r3, #0
+ 859 009e 054A     		ldr	r2, .L57+12
+ 860 00a0 1370     		strb	r3, [r2]
+ 328:FATFS/App/fatfs.c ****   }
+ 861              		.loc 1 328 5 is_stmt 1 view .LVU200
+ 328:FATFS/App/fatfs.c ****   }
+ 862              		.loc 1 328 19 is_stmt 0 view .LVU201
+ 863 00a2 034A     		ldr	r2, .L57+8
+ 864 00a4 1360     		str	r3, [r2]
+ 865 00a6 C2E7     		b	.L54
+ 866              	.L58:
+ 867              		.align	2
+ 868              	.L57:
+ 869 00a8 00000000 		.word	file
+ 870 00ac 00000000 		.word	SDPath
+ 871 00b0 00000000 		.word	totalDataSize
+ 872 00b4 00000000 		.word	fileOpened
+ 873              	.LBE6:
+ 874              		.cfi_endproc
+ 875              	.LFE150:
+ 877              		.section	.rodata.GenerateUniqueFilename.str1.4,"aMS",%progbits,1
+ 878              		.align	2
+ 879              	.LC14:
+ 880 0000 2F00     		.ascii	"/\000"
+ 881 0002 0000     		.align	2
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 25
+
+
+ 882              	.LC15:
+ 883 0004 73616D70 		.ascii	"samp_\000"
+ 883      5F00
+ 884 000a 0000     		.align	2
+ 885              	.LC16:
+ 886 000c 25732530 		.ascii	"%s%03d%s\000"
+ 886      33642573 
+ 886      00
+ 887 0015 000000   		.align	2
+ 888              	.LC17:
+ 889 0018 2E776176 		.ascii	".wav\000"
+ 889      00
+ 890              		.section	.text.GenerateUniqueFilename,"ax",%progbits
+ 891              		.align	1
+ 892              		.global	GenerateUniqueFilename
+ 893              		.syntax unified
+ 894              		.thumb
+ 895              		.thumb_func
+ 897              	GenerateUniqueFilename:
+ 898              	.LVL99:
+ 899              	.LFB151:
+ 332:FATFS/App/fatfs.c **** 
+ 333:FATFS/App/fatfs.c **** FRESULT GenerateUniqueFilename(char *filename)
+ 334:FATFS/App/fatfs.c **** {
+ 900              		.loc 1 334 1 is_stmt 1 view -0
+ 901              		.cfi_startproc
+ 902              		@ args = 0, pretend = 0, frame = 72
+ 903              		@ frame_needed = 0, uses_anonymous_args = 0
+ 904              		.loc 1 334 1 is_stmt 0 view .LVU203
+ 905 0000 70B5     		push	{r4, r5, r6, lr}
+ 906              		.cfi_def_cfa_offset 16
+ 907              		.cfi_offset 4, -16
+ 908              		.cfi_offset 5, -12
+ 909              		.cfi_offset 6, -8
+ 910              		.cfi_offset 14, -4
+ 911 0002 94B0     		sub	sp, sp, #80
+ 912              		.cfi_def_cfa_offset 96
+ 913 0004 0646     		mov	r6, r0
+ 335:FATFS/App/fatfs.c ****   FRESULT res = FR_OK;
+ 914              		.loc 1 335 3 is_stmt 1 view .LVU204
+ 915              	.LVL100:
+ 336:FATFS/App/fatfs.c ****   DIR dir;
+ 916              		.loc 1 336 3 view .LVU205
+ 337:FATFS/App/fatfs.c ****   FILINFO fno;
+ 917              		.loc 1 337 3 view .LVU206
+ 338:FATFS/App/fatfs.c ****   int maxNumber = 0;
+ 918              		.loc 1 338 3 view .LVU207
+ 339:FATFS/App/fatfs.c **** 
+ 340:FATFS/App/fatfs.c ****   // Ouvrir le répertoire racine
+ 341:FATFS/App/fatfs.c ****   res = f_opendir(&dir, "/");
+ 919              		.loc 1 341 3 view .LVU208
+ 920              		.loc 1 341 9 is_stmt 0 view .LVU209
+ 921 0006 1649     		ldr	r1, .L68
+ 922 0008 08A8     		add	r0, sp, #32
+ 923              	.LVL101:
+ 924              		.loc 1 341 9 view .LVU210
+ 925 000a FFF7FEFF 		bl	f_opendir
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 26
+
+
+ 926              	.LVL102:
+ 342:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 927              		.loc 1 342 3 is_stmt 1 view .LVU211
+ 928              		.loc 1 342 6 is_stmt 0 view .LVU212
+ 929 000e 0446     		mov	r4, r0
+ 930 0010 A8B9     		cbnz	r0, .L60
+ 338:FATFS/App/fatfs.c ****   int maxNumber = 0;
+ 931              		.loc 1 338 7 view .LVU213
+ 932 0012 0025     		movs	r5, #0
+ 933 0014 04E0     		b	.L63
+ 934              	.LVL103:
+ 935              	.L67:
+ 343:FATFS/App/fatfs.c ****   {
+ 344:FATFS/App/fatfs.c ****     return res;
+ 345:FATFS/App/fatfs.c ****   }
+ 346:FATFS/App/fatfs.c **** 
+ 347:FATFS/App/fatfs.c ****   // Parcourir les fichiers dans le répertoire
+ 348:FATFS/App/fatfs.c ****   while (1)
+ 349:FATFS/App/fatfs.c ****   {
+ 350:FATFS/App/fatfs.c **** 
+ 351:FATFS/App/fatfs.c ****     res = f_readdir(&dir, &fno);
+ 352:FATFS/App/fatfs.c ****     if (fno.fname[0] == 'S' && fno.fname[1] == 'A')
+ 353:FATFS/App/fatfs.c ****     {
+ 354:FATFS/App/fatfs.c ****       maxNumber++;
+ 936              		.loc 1 354 7 is_stmt 1 view .LVU214
+ 937              		.loc 1 354 16 is_stmt 0 view .LVU215
+ 938 0016 0135     		adds	r5, r5, #1
+ 939              	.LVL104:
+ 940              	.L61:
+ 355:FATFS/App/fatfs.c ****     }
+ 356:FATFS/App/fatfs.c ****     if (res != FR_OK)
+ 941              		.loc 1 356 5 is_stmt 1 view .LVU216
+ 942              		.loc 1 356 8 is_stmt 0 view .LVU217
+ 943 0018 74B9     		cbnz	r4, .L65
+ 357:FATFS/App/fatfs.c ****     {
+ 358:FATFS/App/fatfs.c ****       f_closedir(&dir);
+ 359:FATFS/App/fatfs.c ****       return res;
+ 360:FATFS/App/fatfs.c ****     }
+ 361:FATFS/App/fatfs.c ****     if (fno.fname[0] == 0)
+ 944              		.loc 1 361 5 is_stmt 1 view .LVU218
+ 945              		.loc 1 361 18 is_stmt 0 view .LVU219
+ 946 001a 9DF81130 		ldrb	r3, [sp, #17]	@ zero_extendqisi2
+ 947              		.loc 1 361 8 view .LVU220
+ 948 001e 8BB1     		cbz	r3, .L66
+ 949              	.LVL105:
+ 950              	.L63:
+ 348:FATFS/App/fatfs.c ****   {
+ 951              		.loc 1 348 3 is_stmt 1 view .LVU221
+ 351:FATFS/App/fatfs.c ****     if (fno.fname[0] == 'S' && fno.fname[1] == 'A')
+ 952              		.loc 1 351 5 view .LVU222
+ 351:FATFS/App/fatfs.c ****     if (fno.fname[0] == 'S' && fno.fname[1] == 'A')
+ 953              		.loc 1 351 11 is_stmt 0 view .LVU223
+ 954 0020 02A9     		add	r1, sp, #8
+ 955 0022 08A8     		add	r0, sp, #32
+ 956 0024 FFF7FEFF 		bl	f_readdir
+ 957              	.LVL106:
+ 958 0028 0446     		mov	r4, r0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 27
+
+
+ 959              	.LVL107:
+ 352:FATFS/App/fatfs.c ****     {
+ 960              		.loc 1 352 5 is_stmt 1 view .LVU224
+ 352:FATFS/App/fatfs.c ****     {
+ 961              		.loc 1 352 29 is_stmt 0 view .LVU225
+ 962 002a 0E4B     		ldr	r3, .L68+4
+ 963 002c 049A     		ldr	r2, [sp, #16]
+ 964 002e 1340     		ands	r3, r3, r2
+ 352:FATFS/App/fatfs.c ****     {
+ 965              		.loc 1 352 8 view .LVU226
+ 966 0030 0D4A     		ldr	r2, .L68+8
+ 967 0032 9342     		cmp	r3, r2
+ 968 0034 F0D1     		bne	.L61
+ 969 0036 EEE7     		b	.L67
+ 970              	.L65:
+ 358:FATFS/App/fatfs.c ****       return res;
+ 971              		.loc 1 358 7 is_stmt 1 view .LVU227
+ 972 0038 08A8     		add	r0, sp, #32
+ 973 003a FFF7FEFF 		bl	f_closedir
+ 974              	.LVL108:
+ 359:FATFS/App/fatfs.c ****     }
+ 975              		.loc 1 359 7 view .LVU228
+ 976              	.L60:
+ 362:FATFS/App/fatfs.c ****       break;
+ 363:FATFS/App/fatfs.c ****   }
+ 364:FATFS/App/fatfs.c **** 
+ 365:FATFS/App/fatfs.c ****   // Fermer le répertoire
+ 366:FATFS/App/fatfs.c ****   f_closedir(&dir);
+ 367:FATFS/App/fatfs.c **** 
+ 368:FATFS/App/fatfs.c ****   // Générer le prochain nom de fichier unique
+ 369:FATFS/App/fatfs.c ****   snprintf(filename, MAX_FILENAME_LENGTH, "%s%03d%s", "samp_", maxNumber, ".wav");
+ 370:FATFS/App/fatfs.c ****   return res;
+ 371:FATFS/App/fatfs.c **** }
+ 977              		.loc 1 371 1 is_stmt 0 view .LVU229
+ 978 003e 2046     		mov	r0, r4
+ 979 0040 14B0     		add	sp, sp, #80
+ 980              		.cfi_remember_state
+ 981              		.cfi_def_cfa_offset 16
+ 982              		@ sp needed
+ 983 0042 70BD     		pop	{r4, r5, r6, pc}
+ 984              	.LVL109:
+ 985              	.L66:
+ 986              		.cfi_restore_state
+ 366:FATFS/App/fatfs.c **** 
+ 987              		.loc 1 366 3 is_stmt 1 view .LVU230
+ 988 0044 08A8     		add	r0, sp, #32
+ 989 0046 FFF7FEFF 		bl	f_closedir
+ 990              	.LVL110:
+ 369:FATFS/App/fatfs.c ****   return res;
+ 991              		.loc 1 369 3 view .LVU231
+ 992 004a 084B     		ldr	r3, .L68+12
+ 993 004c 0193     		str	r3, [sp, #4]
+ 994 004e 0095     		str	r5, [sp]
+ 995 0050 074B     		ldr	r3, .L68+16
+ 996 0052 084A     		ldr	r2, .L68+20
+ 997 0054 0E21     		movs	r1, #14
+ 998 0056 3046     		mov	r0, r6
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 28
+
+
+ 999 0058 FFF7FEFF 		bl	snprintf
+ 1000              	.LVL111:
+ 370:FATFS/App/fatfs.c **** }
+ 1001              		.loc 1 370 3 view .LVU232
+ 370:FATFS/App/fatfs.c **** }
+ 1002              		.loc 1 370 10 is_stmt 0 view .LVU233
+ 1003 005c EFE7     		b	.L60
+ 1004              	.L69:
+ 1005 005e 00BF     		.align	2
+ 1006              	.L68:
+ 1007 0060 00000000 		.word	.LC14
+ 1008 0064 00FFFF00 		.word	16776960
+ 1009 0068 00534100 		.word	4281088
+ 1010 006c 18000000 		.word	.LC17
+ 1011 0070 04000000 		.word	.LC15
+ 1012 0074 0C000000 		.word	.LC16
+ 1013              		.cfi_endproc
+ 1014              	.LFE151:
+ 1016              		.section	.text.OpenWavFile,"ax",%progbits
+ 1017              		.align	1
+ 1018              		.global	OpenWavFile
+ 1019              		.syntax unified
+ 1020              		.thumb
+ 1021              		.thumb_func
+ 1023              	OpenWavFile:
+ 1024              	.LVL112:
+ 1025              	.LFB149:
+ 247:FATFS/App/fatfs.c ****   FRESULT res = FR_OK;
+ 1026              		.loc 1 247 1 is_stmt 1 view -0
+ 1027              		.cfi_startproc
+ 1028              		@ args = 0, pretend = 0, frame = 8
+ 1029              		@ frame_needed = 0, uses_anonymous_args = 0
+ 247:FATFS/App/fatfs.c ****   FRESULT res = FR_OK;
+ 1030              		.loc 1 247 1 is_stmt 0 view .LVU235
+ 1031 0000 30B5     		push	{r4, r5, lr}
+ 1032              		.cfi_def_cfa_offset 12
+ 1033              		.cfi_offset 4, -12
+ 1034              		.cfi_offset 5, -8
+ 1035              		.cfi_offset 14, -4
+ 1036 0002 83B0     		sub	sp, sp, #12
+ 1037              		.cfi_def_cfa_offset 24
+ 1038 0004 0546     		mov	r5, r0
+ 248:FATFS/App/fatfs.c ****   UINT bytesWritten;
+ 1039              		.loc 1 248 3 is_stmt 1 view .LVU236
+ 1040              	.LVL113:
+ 249:FATFS/App/fatfs.c ****   // GenerateUniqueFilename(filename);
+ 1041              		.loc 1 249 3 view .LVU237
+ 252:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1042              		.loc 1 252 3 view .LVU238
+ 252:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1043              		.loc 1 252 9 is_stmt 0 view .LVU239
+ 1044 0006 0122     		movs	r2, #1
+ 1045 0008 1F49     		ldr	r1, .L82
+ 1046 000a 2048     		ldr	r0, .L82+4
+ 1047              	.LVL114:
+ 252:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1048              		.loc 1 252 9 view .LVU240
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 29
+
+
+ 1049 000c FFF7FEFF 		bl	f_mount
+ 1050              	.LVL115:
+ 253:FATFS/App/fatfs.c ****   {
+ 1051              		.loc 1 253 3 is_stmt 1 view .LVU241
+ 253:FATFS/App/fatfs.c ****   {
+ 1052              		.loc 1 253 6 is_stmt 0 view .LVU242
+ 1053 0010 0446     		mov	r4, r0
+ 1054 0012 10B1     		cbz	r0, .L78
+ 1055              	.LVL116:
+ 1056              	.L71:
+ 285:FATFS/App/fatfs.c **** FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finalize)
+ 1057              		.loc 1 285 1 view .LVU243
+ 1058 0014 2046     		mov	r0, r4
+ 1059 0016 03B0     		add	sp, sp, #12
+ 1060              		.cfi_remember_state
+ 1061              		.cfi_def_cfa_offset 12
+ 1062              		@ sp needed
+ 1063 0018 30BD     		pop	{r4, r5, pc}
+ 1064              	.LVL117:
+ 1065              	.L78:
+ 1066              		.cfi_restore_state
+ 258:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1067              		.loc 1 258 3 is_stmt 1 view .LVU244
+ 258:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1068              		.loc 1 258 9 is_stmt 0 view .LVU245
+ 1069 001a 1D48     		ldr	r0, .L82+8
+ 1070              	.LVL118:
+ 258:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1071              		.loc 1 258 9 view .LVU246
+ 1072 001c FFF7FEFF 		bl	GenerateUniqueFilename
+ 1073              	.LVL119:
+ 259:FATFS/App/fatfs.c ****   {
+ 1074              		.loc 1 259 3 is_stmt 1 view .LVU247
+ 259:FATFS/App/fatfs.c ****   {
+ 1075              		.loc 1 259 6 is_stmt 0 view .LVU248
+ 1076 0020 0446     		mov	r4, r0
+ 1077 0022 E0B9     		cbnz	r0, .L79
+ 266:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1078              		.loc 1 266 3 is_stmt 1 view .LVU249
+ 266:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1079              		.loc 1 266 9 is_stmt 0 view .LVU250
+ 1080 0024 0A22     		movs	r2, #10
+ 1081 0026 1A49     		ldr	r1, .L82+8
+ 1082 0028 1A48     		ldr	r0, .L82+12
+ 1083              	.LVL120:
+ 266:FATFS/App/fatfs.c ****   if (res != FR_OK)
+ 1084              		.loc 1 266 9 view .LVU251
+ 1085 002a FFF7FEFF 		bl	f_open
+ 1086              	.LVL121:
+ 267:FATFS/App/fatfs.c ****   {
+ 1087              		.loc 1 267 3 is_stmt 1 view .LVU252
+ 267:FATFS/App/fatfs.c ****   {
+ 1088              		.loc 1 267 6 is_stmt 0 view .LVU253
+ 1089 002e 0446     		mov	r4, r0
+ 1090 0030 D8B9     		cbnz	r0, .L80
+ 274:FATFS/App/fatfs.c ****     res = f_write(&file, &headerMono, sizeof(WAVHeader), &bytesWritten);
+ 1091              		.loc 1 274 3 is_stmt 1 view .LVU254
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 30
+
+
+ 274:FATFS/App/fatfs.c ****     res = f_write(&file, &headerMono, sizeof(WAVHeader), &bytesWritten);
+ 1092              		.loc 1 274 6 is_stmt 0 view .LVU255
+ 1093 0032 012D     		cmp	r5, #1
+ 1094 0034 1FD0     		beq	.L81
+ 277:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
+ 1095              		.loc 1 277 5 is_stmt 1 view .LVU256
+ 277:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
+ 1096              		.loc 1 277 11 is_stmt 0 view .LVU257
+ 1097 0036 01AB     		add	r3, sp, #4
+ 1098 0038 2C22     		movs	r2, #44
+ 1099 003a 1749     		ldr	r1, .L82+16
+ 1100 003c 1548     		ldr	r0, .L82+12
+ 1101              	.LVL122:
+ 277:FATFS/App/fatfs.c ****   if (res != FR_OK || bytesWritten != sizeof(WAVHeader))
+ 1102              		.loc 1 277 11 view .LVU258
+ 1103 003e FFF7FEFF 		bl	f_write
+ 1104              	.LVL123:
+ 1105 0042 0446     		mov	r4, r0
+ 1106              	.LVL124:
+ 1107              	.L75:
+ 278:FATFS/App/fatfs.c ****   {
+ 1108              		.loc 1 278 3 is_stmt 1 view .LVU259
+ 278:FATFS/App/fatfs.c ****   {
+ 1109              		.loc 1 278 6 is_stmt 0 view .LVU260
+ 1110 0044 14B9     		cbnz	r4, .L76
+ 278:FATFS/App/fatfs.c ****   {
+ 1111              		.loc 1 278 36 discriminator 1 view .LVU261
+ 1112 0046 019B     		ldr	r3, [sp, #4]
+ 278:FATFS/App/fatfs.c ****   {
+ 1113              		.loc 1 278 20 discriminator 1 view .LVU262
+ 1114 0048 2C2B     		cmp	r3, #44
+ 1115 004a E3D0     		beq	.L71
+ 1116              	.L76:
+ 280:FATFS/App/fatfs.c ****     f_mount(0, SDPath, 1); // Démonter le système de fichiers
+ 1117              		.loc 1 280 5 is_stmt 1 view .LVU263
+ 1118 004c 1148     		ldr	r0, .L82+12
+ 1119 004e FFF7FEFF 		bl	f_close
+ 1120              	.LVL125:
+ 281:FATFS/App/fatfs.c ****     return res;
+ 1121              		.loc 1 281 5 view .LVU264
+ 1122 0052 0122     		movs	r2, #1
+ 1123 0054 0C49     		ldr	r1, .L82
+ 1124 0056 0020     		movs	r0, #0
+ 1125 0058 FFF7FEFF 		bl	f_mount
+ 1126              	.LVL126:
+ 282:FATFS/App/fatfs.c ****   }
+ 1127              		.loc 1 282 5 view .LVU265
+ 282:FATFS/App/fatfs.c ****   }
+ 1128              		.loc 1 282 12 is_stmt 0 view .LVU266
+ 1129 005c DAE7     		b	.L71
+ 1130              	.LVL127:
+ 1131              	.L79:
+ 261:FATFS/App/fatfs.c ****     return res;
+ 1132              		.loc 1 261 5 is_stmt 1 view .LVU267
+ 1133 005e 0122     		movs	r2, #1
+ 1134 0060 0949     		ldr	r1, .L82
+ 1135 0062 0020     		movs	r0, #0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 31
+
+
+ 1136              	.LVL128:
+ 261:FATFS/App/fatfs.c ****     return res;
+ 1137              		.loc 1 261 5 is_stmt 0 view .LVU268
+ 1138 0064 FFF7FEFF 		bl	f_mount
+ 1139              	.LVL129:
+ 262:FATFS/App/fatfs.c ****   }
+ 1140              		.loc 1 262 5 is_stmt 1 view .LVU269
+ 262:FATFS/App/fatfs.c ****   }
+ 1141              		.loc 1 262 12 is_stmt 0 view .LVU270
+ 1142 0068 D4E7     		b	.L71
+ 1143              	.LVL130:
+ 1144              	.L80:
+ 269:FATFS/App/fatfs.c ****     return res;
+ 1145              		.loc 1 269 5 is_stmt 1 view .LVU271
+ 1146 006a 0122     		movs	r2, #1
+ 1147 006c 0649     		ldr	r1, .L82
+ 1148 006e 0020     		movs	r0, #0
+ 1149              	.LVL131:
+ 269:FATFS/App/fatfs.c ****     return res;
+ 1150              		.loc 1 269 5 is_stmt 0 view .LVU272
+ 1151 0070 FFF7FEFF 		bl	f_mount
+ 1152              	.LVL132:
+ 270:FATFS/App/fatfs.c ****   }
+ 1153              		.loc 1 270 5 is_stmt 1 view .LVU273
+ 270:FATFS/App/fatfs.c ****   }
+ 1154              		.loc 1 270 12 is_stmt 0 view .LVU274
+ 1155 0074 CEE7     		b	.L71
+ 1156              	.LVL133:
+ 1157              	.L81:
+ 275:FATFS/App/fatfs.c ****   else
+ 1158              		.loc 1 275 5 is_stmt 1 view .LVU275
+ 275:FATFS/App/fatfs.c ****   else
+ 1159              		.loc 1 275 11 is_stmt 0 view .LVU276
+ 1160 0076 01AB     		add	r3, sp, #4
+ 1161 0078 2C22     		movs	r2, #44
+ 1162 007a 0849     		ldr	r1, .L82+20
+ 1163 007c 0548     		ldr	r0, .L82+12
+ 1164              	.LVL134:
+ 275:FATFS/App/fatfs.c ****   else
+ 1165              		.loc 1 275 11 view .LVU277
+ 1166 007e FFF7FEFF 		bl	f_write
+ 1167              	.LVL135:
+ 1168 0082 0446     		mov	r4, r0
+ 1169              	.LVL136:
+ 275:FATFS/App/fatfs.c ****   else
+ 1170              		.loc 1 275 11 view .LVU278
+ 1171 0084 DEE7     		b	.L75
+ 1172              	.L83:
+ 1173 0086 00BF     		.align	2
+ 1174              	.L82:
+ 1175 0088 00000000 		.word	SDPath
+ 1176 008c 00000000 		.word	SDFatFS
+ 1177 0090 00000000 		.word	filename
+ 1178 0094 00000000 		.word	file
+ 1179 0098 00000000 		.word	headerStereo
+ 1180 009c 00000000 		.word	headerMono
+ 1181              		.cfi_endproc
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 32
+
+
+ 1182              	.LFE149:
+ 1184              		.global	headerMono
+ 1185              		.section	.data.headerMono,"aw"
+ 1186              		.align	2
+ 1189              	headerMono:
+ 1190 0000 52494646 		.ascii	"RIFF"
+ 1191 0004 00000000 		.word	0
+ 1192 0008 57415645 		.ascii	"WAVE"
+ 1193 000c 666D7420 		.ascii	"fmt "
+ 1194 0010 10000000 		.word	16
+ 1195 0014 0100     		.short	1
+ 1196 0016 0100     		.short	1
+ 1197 0018 803E0000 		.word	16000
+ 1198 001c 007D0000 		.word	32000
+ 1199 0020 0200     		.short	2
+ 1200 0022 1000     		.short	16
+ 1201 0024 64617461 		.ascii	"data"
+ 1202 0028 00000000 		.word	0
+ 1203              		.global	headerStereo
+ 1204              		.section	.data.headerStereo,"aw"
+ 1205              		.align	2
+ 1208              	headerStereo:
+ 1209 0000 52494646 		.ascii	"RIFF"
+ 1210 0004 00000000 		.word	0
+ 1211 0008 57415645 		.ascii	"WAVE"
+ 1212 000c 666D7420 		.ascii	"fmt "
+ 1213 0010 10000000 		.word	16
+ 1214 0014 0100     		.short	1
+ 1215 0016 0200     		.short	2
+ 1216 0018 803E0000 		.word	16000
+ 1217 001c 00FA0000 		.word	64000
+ 1218 0020 0400     		.short	4
+ 1219 0022 1000     		.short	16
+ 1220 0024 64617461 		.ascii	"data"
+ 1221 0028 00000000 		.word	0
+ 1222              		.global	filename
+ 1223              		.section	.data.filename,"aw"
+ 1224              		.align	2
+ 1227              	filename:
+ 1228 0000 73616D70 		.ascii	"samp_001.wav\000"
+ 1228      5F303031 
+ 1228      2E776176 
+ 1228      00
+ 1229              		.global	fileOpened
+ 1230              		.section	.bss.fileOpened,"aw",%nobits
+ 1233              	fileOpened:
+ 1234 0000 00       		.space	1
+ 1235              		.global	totalDataSize
+ 1236              		.section	.bss.totalDataSize,"aw",%nobits
+ 1237              		.align	2
+ 1240              	totalDataSize:
+ 1241 0000 00000000 		.space	4
+ 1242              		.global	file
+ 1243              		.section	.bss.file,"aw",%nobits
+ 1244              		.align	2
+ 1247              	file:
+ 1248 0000 00000000 		.space	560
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 33
+
+
+ 1248      00000000 
+ 1248      00000000 
+ 1248      00000000 
+ 1248      00000000 
+ 1249              		.global	SDFile
+ 1250              		.section	.bss.SDFile,"aw",%nobits
+ 1251              		.align	2
+ 1254              	SDFile:
+ 1255 0000 00000000 		.space	560
+ 1255      00000000 
+ 1255      00000000 
+ 1255      00000000 
+ 1255      00000000 
+ 1256              		.global	SDFatFS
+ 1257              		.section	.bss.SDFatFS,"aw",%nobits
+ 1258              		.align	2
+ 1261              	SDFatFS:
+ 1262 0000 00000000 		.space	560
+ 1262      00000000 
+ 1262      00000000 
+ 1262      00000000 
+ 1262      00000000 
+ 1263              		.global	SDPath
+ 1264              		.section	.bss.SDPath,"aw",%nobits
+ 1265              		.align	2
+ 1268              	SDPath:
+ 1269 0000 00000000 		.space	4
+ 1270              		.global	retSD
+ 1271              		.section	.bss.retSD,"aw",%nobits
+ 1274              	retSD:
+ 1275 0000 00       		.space	1
+ 1276              		.text
+ 1277              	.Letext0:
+ 1278              		.file 2 "Middlewares/Third_Party/FatFs/src/integer.h"
+ 1279              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1280              		.file 4 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1281              		.file 5 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1282              		.file 6 "Middlewares/Third_Party/FatFs/src/ff.h"
+ 1283              		.file 7 "Middlewares/Third_Party/FatFs/src/diskio.h"
+ 1284              		.file 8 "Middlewares/Third_Party/FatFs/src/ff_gen_drv.h"
+ 1285              		.file 9 "FATFS/Target/sd_diskio.h"
+ 1286              		.file 10 "FATFS/App/fatfs.h"
+ 1287              		.file 11 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/
+ 1288              		.file 12 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/
+ 1289              		.file 13 "FATFS/Target/bsp_driver_sd.h"
+ 1290              		.file 14 "<built-in>"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 fatfs.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:20     .rodata.MX_FATFS_Init.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:27     .text.MX_FATFS_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:33     .text.MX_FATFS_Init:00000000 MX_FATFS_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:75     .text.MX_FATFS_Init:00000028 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1268   .bss.SDPath:00000000 SDPath
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1274   .bss.retSD:00000000 retSD
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:84     .text.get_fattime:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:90     .text.get_fattime:00000000 get_fattime
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:105    .rodata.WriteToSDCard.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:127    .text.WriteToSDCard:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:133    .text.WriteToSDCard:00000000 WriteToSDCard
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:273    .text.WriteToSDCard:00000094 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1261   .bss.SDFatFS:00000000 SDFatFS
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1254   .bss.SDFile:00000000 SDFile
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:288    .rodata.WriteBufferFile_F32.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:302    .text.WriteBufferFile_F32:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:308    .text.WriteBufferFile_F32:00000000 WriteBufferFile_F32
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:516    .text.WriteBufferFile_F32:000000f4 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:529    .rodata.WriteBufferFile_INT16.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:533    .text.WriteBufferFile_INT16:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:539    .text.WriteBufferFile_INT16:00000000 WriteBufferFile_INT16
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:686    .text.WriteBufferFile_INT16:00000088 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:697    .text.WriteWAVFile:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:703    .text.WriteWAVFile:00000000 WriteWAVFile
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:869    .text.WriteWAVFile:000000a8 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1247   .bss.file:00000000 file
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1240   .bss.totalDataSize:00000000 totalDataSize
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1233   .bss.fileOpened:00000000 fileOpened
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:878    .rodata.GenerateUniqueFilename.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:891    .text.GenerateUniqueFilename:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:897    .text.GenerateUniqueFilename:00000000 GenerateUniqueFilename
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1007   .text.GenerateUniqueFilename:00000060 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1017   .text.OpenWavFile:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1023   .text.OpenWavFile:00000000 OpenWavFile
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1175   .text.OpenWavFile:00000088 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1227   .data.filename:00000000 filename
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1208   .data.headerStereo:00000000 headerStereo
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1189   .data.headerMono:00000000 headerMono
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1186   .data.headerMono:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1205   .data.headerStereo:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1224   .data.filename:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1234   .bss.fileOpened:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1237   .bss.totalDataSize:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1244   .bss.file:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1251   .bss.SDFile:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1258   .bss.SDFatFS:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1265   .bss.SDPath:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s:1275   .bss.retSD:00000000 $d
+
+UNDEFINED SYMBOLS
+BSP_SD_Init
+printf
+FATFS_LinkDriver
+SD_Driver
+f_mount
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccaoDy3p.s 			page 35
+
+
+f_open
+f_write
+f_close
+puts
+f_printf
+f_lseek
+f_opendir
+f_readdir
+f_closedir
+snprintf

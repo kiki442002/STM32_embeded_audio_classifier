@@ -1,0 +1,319 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"arm_scale_f32.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c"
+  19              		.section	.text.arm_scale_f32,"ax",%progbits
+  20              		.align	1
+  21              		.global	arm_scale_f32
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	arm_scale_f32:
+  27              	.LVL0:
+  28              	.LFB135:
+   1:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /* ----------------------------------------------------------------------
+   2:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Project:      CMSIS DSP Library
+   3:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Title:        arm_scale_f32.c
+   4:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Description:  Multiplies a floating-point vector by a scalar
+   5:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+   6:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * $Date:        27. January 2017
+   7:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * $Revision:    V.1.5.1
+   8:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+   9:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Target Processor: Cortex-M cores
+  10:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * -------------------------------------------------------------------- */
+  11:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /*
+  12:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Copyright (C) 2010-2017 ARM Limited or its affiliates. All rights reserved.
+  13:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  14:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * SPDX-License-Identifier: Apache-2.0
+  15:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  16:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  17:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * not use this file except in compliance with the License.
+  18:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * You may obtain a copy of the License at
+  19:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  20:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * www.apache.org/licenses/LICENSE-2.0
+  21:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  22:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Unless required by applicable law or agreed to in writing, software
+  23:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  24:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  25:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * See the License for the specific language governing permissions and
+  26:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * limitations under the License.
+  27:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  */
+  28:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  29:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** #include "arm_math.h"
+  30:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 2
+
+
+  31:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /**
+  32:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @ingroup groupMath
+  33:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  */
+  34:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  35:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /**
+  36:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @defgroup scale Vector Scale
+  37:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  38:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * Multiply a vector by a scalar value.  For floating-point data, the algorithm used is:
+  39:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  40:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * <pre>
+  41:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *     pDst[n] = pSrc[n] * scale,   0 <= n < blockSize.
+  42:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * </pre>
+  43:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  44:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * In the fixed-point Q7, Q15, and Q31 functions, <code>scale</code> is represented by
+  45:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * a fractional multiplication <code>scaleFract</code> and an arithmetic shift <code>shift</code>.
+  46:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * The shift allows the gain of the scaling operation to exceed 1.0.
+  47:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * The algorithm used with fixed-point data is:
+  48:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  49:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * <pre>
+  50:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *     pDst[n] = (pSrc[n] * scaleFract) << shift,   0 <= n < blockSize.
+  51:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * </pre>
+  52:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  53:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * The overall scale factor applied to the fixed-point data is
+  54:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * <pre>
+  55:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *     scale = scaleFract * 2^shift.
+  56:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * </pre>
+  57:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  *
+  58:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * The functions support in-place computation allowing the source and destination
+  59:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * pointers to reference the same memory buffer.
+  60:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  */
+  61:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  62:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /**
+  63:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @addtogroup scale
+  64:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @{
+  65:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  */
+  66:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  67:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /**
+  68:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @brief Multiplies a floating-point vector by a scalar.
+  69:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @param[in]       *pSrc points to the input vector
+  70:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @param[in]       scale scale factor to be applied
+  71:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @param[out]      *pDst points to the output vector
+  72:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @param[in]       blockSize number of samples in the vector
+  73:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  * @return none.
+  74:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****  */
+  75:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  76:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  77:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** void arm_scale_f32(
+  78:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   float32_t * pSrc,
+  79:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   float32_t scale,
+  80:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   float32_t * pDst,
+  81:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   uint32_t blockSize)
+  82:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** {
+  29              		.loc 1 82 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 3
+
+
+  83:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   uint32_t blkCnt;                               /* loop counter */
+  34              		.loc 1 83 3 view .LVU1
+  84:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** #if defined (ARM_MATH_DSP)
+  85:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  86:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** /* Run the below code for Cortex-M4 and Cortex-M3 */
+  87:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   float32_t in1, in2, in3, in4;                  /* temporary variabels */
+  35              		.loc 1 87 3 view .LVU2
+  88:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  89:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   /*loop Unrolling */
+  90:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   blkCnt = blockSize >> 2U;
+  36              		.loc 1 90 3 view .LVU3
+  37              		.loc 1 90 10 is_stmt 0 view .LVU4
+  38 0000 9308     		lsrs	r3, r2, #2
+  39              	.LVL1:
+  91:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+  92:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   /* First part of the processing with loop unrolling.  Compute 4 outputs at a time.
+  93:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****    ** a second loop below computes the remaining 1 to 3 samples. */
+  94:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   while (blkCnt > 0U)
+  40              		.loc 1 94 3 is_stmt 1 view .LVU5
+  41              		.loc 1 94 9 is_stmt 0 view .LVU6
+  42 0002 1AE0     		b	.L2
+  43              	.L3:
+  95:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   {
+  96:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* C = A * scale */
+  97:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* Scale the input and then store the results in the destination buffer. */
+  98:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* read input samples from source */
+  99:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in1 = *pSrc;
+  44              		.loc 1 99 5 is_stmt 1 view .LVU7
+  45              		.loc 1 99 9 is_stmt 0 view .LVU8
+  46 0004 90ED006A 		vldr.32	s12, [r0]
+  47              	.LVL2:
+ 100:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in2 = *(pSrc + 1);
+  48              		.loc 1 100 5 is_stmt 1 view .LVU9
+  49              		.loc 1 100 9 is_stmt 0 view .LVU10
+  50 0008 D0ED016A 		vldr.32	s13, [r0, #4]
+  51              	.LVL3:
+ 101:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 102:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* multiply with scaling factor */
+ 103:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in1 = in1 * scale;
+  52              		.loc 1 103 5 is_stmt 1 view .LVU11
+  53              		.loc 1 103 9 is_stmt 0 view .LVU12
+  54 000c 20EE066A 		vmul.f32	s12, s0, s12
+  55              	.LVL4:
+ 104:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 105:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* read input sample from source */
+ 106:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in3 = *(pSrc + 2);
+  56              		.loc 1 106 5 is_stmt 1 view .LVU13
+  57              		.loc 1 106 9 is_stmt 0 view .LVU14
+  58 0010 90ED027A 		vldr.32	s14, [r0, #8]
+  59              	.LVL5:
+ 107:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 108:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* multiply with scaling factor */
+ 109:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in2 = in2 * scale;
+  60              		.loc 1 109 5 is_stmt 1 view .LVU15
+  61              		.loc 1 109 9 is_stmt 0 view .LVU16
+  62 0014 60EE266A 		vmul.f32	s13, s0, s13
+  63              	.LVL6:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 4
+
+
+ 110:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 111:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* read input sample from source */
+ 112:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in4 = *(pSrc + 3);
+  64              		.loc 1 112 5 is_stmt 1 view .LVU17
+  65              		.loc 1 112 9 is_stmt 0 view .LVU18
+  66 0018 D0ED037A 		vldr.32	s15, [r0, #12]
+  67              	.LVL7:
+ 113:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 114:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* multiply with scaling factor */
+ 115:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in3 = in3 * scale;
+  68              		.loc 1 115 5 is_stmt 1 view .LVU19
+  69              		.loc 1 115 9 is_stmt 0 view .LVU20
+  70 001c 20EE077A 		vmul.f32	s14, s0, s14
+  71              	.LVL8:
+ 116:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     in4 = in4 * scale;
+  72              		.loc 1 116 5 is_stmt 1 view .LVU21
+  73              		.loc 1 116 9 is_stmt 0 view .LVU22
+  74 0020 60EE277A 		vmul.f32	s15, s0, s15
+  75              	.LVL9:
+ 117:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* store the result to destination */
+ 118:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     *pDst = in1;
+  76              		.loc 1 118 5 is_stmt 1 view .LVU23
+  77              		.loc 1 118 11 is_stmt 0 view .LVU24
+  78 0024 81ED006A 		vstr.32	s12, [r1]
+ 119:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     *(pDst + 1) = in2;
+  79              		.loc 1 119 5 is_stmt 1 view .LVU25
+  80              		.loc 1 119 17 is_stmt 0 view .LVU26
+  81 0028 C1ED016A 		vstr.32	s13, [r1, #4]
+ 120:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     *(pDst + 2) = in3;
+  82              		.loc 1 120 5 is_stmt 1 view .LVU27
+  83              		.loc 1 120 17 is_stmt 0 view .LVU28
+  84 002c 81ED027A 		vstr.32	s14, [r1, #8]
+ 121:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     *(pDst + 3) = in4;
+  85              		.loc 1 121 5 is_stmt 1 view .LVU29
+  86              		.loc 1 121 17 is_stmt 0 view .LVU30
+  87 0030 C1ED037A 		vstr.32	s15, [r1, #12]
+ 122:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 123:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* update pointers to process next samples */
+ 124:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     pSrc += 4U;
+  88              		.loc 1 124 5 is_stmt 1 view .LVU31
+  89              		.loc 1 124 10 is_stmt 0 view .LVU32
+  90 0034 1030     		adds	r0, r0, #16
+  91              	.LVL10:
+ 125:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     pDst += 4U;
+  92              		.loc 1 125 5 is_stmt 1 view .LVU33
+  93              		.loc 1 125 10 is_stmt 0 view .LVU34
+  94 0036 1031     		adds	r1, r1, #16
+  95              	.LVL11:
+ 126:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 127:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* Decrement the loop counter */
+ 128:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     blkCnt--;
+  96              		.loc 1 128 5 is_stmt 1 view .LVU35
+  97              		.loc 1 128 11 is_stmt 0 view .LVU36
+  98 0038 013B     		subs	r3, r3, #1
+  99              	.LVL12:
+ 100              	.L2:
+  94:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 5
+
+
+ 101              		.loc 1 94 17 is_stmt 1 view .LVU37
+ 102 003a 002B     		cmp	r3, #0
+ 103 003c E2D1     		bne	.L3
+ 129:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   }
+ 130:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 131:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   /* If the blockSize is not a multiple of 4, compute any remaining output samples here.
+ 132:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****    ** No loop unrolling is used. */
+ 133:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   blkCnt = blockSize % 0x4U;
+ 104              		.loc 1 133 3 view .LVU38
+ 105              		.loc 1 133 10 is_stmt 0 view .LVU39
+ 106 003e 02F00302 		and	r2, r2, #3
+ 107              	.LVL13:
+ 134:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 135:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** #else
+ 136:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 137:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   /* Run the below code for Cortex-M0 */
+ 138:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 139:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   /* Initialize blkCnt with number of samples */
+ 140:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   blkCnt = blockSize;
+ 141:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 142:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** #endif /* #if defined (ARM_MATH_DSP) */
+ 143:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 144:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   while (blkCnt > 0U)
+ 108              		.loc 1 144 3 is_stmt 1 view .LVU40
+ 109              		.loc 1 144 9 is_stmt 0 view .LVU41
+ 110 0042 06E0     		b	.L4
+ 111              	.L5:
+ 145:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   {
+ 146:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* C = A * scale */
+ 147:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* Scale the input and then store the result in the destination buffer. */
+ 148:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     *pDst++ = (*pSrc++) * scale;
+ 112              		.loc 1 148 5 is_stmt 1 view .LVU42
+ 113              	.LVL14:
+ 114              		.loc 1 148 16 is_stmt 0 view .LVU43
+ 115 0044 F0EC017A 		vldmia.32	r0!, {s15}
+ 116              	.LVL15:
+ 117              		.loc 1 148 25 view .LVU44
+ 118 0048 67EE807A 		vmul.f32	s15, s15, s0
+ 119              		.loc 1 148 13 view .LVU45
+ 120 004c E1EC017A 		vstmia.32	r1!, {s15}
+ 121              	.LVL16:
+ 149:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** 
+ 150:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     /* Decrement the loop counter */
+ 151:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****     blkCnt--;
+ 122              		.loc 1 151 5 is_stmt 1 view .LVU46
+ 123              		.loc 1 151 11 is_stmt 0 view .LVU47
+ 124 0050 013A     		subs	r2, r2, #1
+ 125              	.LVL17:
+ 126              	.L4:
+ 144:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   {
+ 127              		.loc 1 144 17 is_stmt 1 view .LVU48
+ 128 0052 002A     		cmp	r2, #0
+ 129 0054 F6D1     		bne	.L5
+ 152:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c ****   }
+ 153:Drivers/CMSIS/DSP/Source/BasicMathFunctions/arm_scale_f32.c **** }
+ 130              		.loc 1 153 1 is_stmt 0 view .LVU49
+ 131 0056 7047     		bx	lr
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 6
+
+
+ 132              		.cfi_endproc
+ 133              	.LFE135:
+ 135              		.text
+ 136              	.Letext0:
+ 137              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 138              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 139              		.file 4 "Drivers/CMSIS/DSP/Include/arm_math.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 arm_scale_f32.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s:20     .text.arm_scale_f32:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3l9mU4.s:26     .text.arm_scale_f32:00000000 arm_scale_f32
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,2251 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"ov9655.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/Components/ov9655/ov9655.c"
+  19              		.section	.text.ov9655_ConvertValue,"ax",%progbits
+  20              		.align	1
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	ov9655_ConvertValue:
+  26              	.LVL0:
+  27              	.LFB3:
+   1:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+   2:Drivers/BSP/Components/ov9655/ov9655.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/ov9655/ov9655.c ****   * @file    ov9655.c
+   4:Drivers/BSP/Components/ov9655/ov9655.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief   This file provides the OV9655 camera driver
+   6:Drivers/BSP/Components/ov9655/ov9655.c ****   ******************************************************************************
+   7:Drivers/BSP/Components/ov9655/ov9655.c ****   * @attention
+   8:Drivers/BSP/Components/ov9655/ov9655.c ****   *
+   9:Drivers/BSP/Components/ov9655/ov9655.c ****   * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  10:Drivers/BSP/Components/ov9655/ov9655.c ****   *
+  11:Drivers/BSP/Components/ov9655/ov9655.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  12:Drivers/BSP/Components/ov9655/ov9655.c ****   * are permitted provided that the following conditions are met:
+  13:Drivers/BSP/Components/ov9655/ov9655.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  14:Drivers/BSP/Components/ov9655/ov9655.c ****   *      this list of conditions and the following disclaimer.
+  15:Drivers/BSP/Components/ov9655/ov9655.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  16:Drivers/BSP/Components/ov9655/ov9655.c ****   *      this list of conditions and the following disclaimer in the documentation
+  17:Drivers/BSP/Components/ov9655/ov9655.c ****   *      and/or other materials provided with the distribution.
+  18:Drivers/BSP/Components/ov9655/ov9655.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  19:Drivers/BSP/Components/ov9655/ov9655.c ****   *      may be used to endorse or promote products derived from this software
+  20:Drivers/BSP/Components/ov9655/ov9655.c ****   *      without specific prior written permission.
+  21:Drivers/BSP/Components/ov9655/ov9655.c ****   *
+  22:Drivers/BSP/Components/ov9655/ov9655.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Drivers/BSP/Components/ov9655/ov9655.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Drivers/BSP/Components/ov9655/ov9655.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  25:Drivers/BSP/Components/ov9655/ov9655.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  26:Drivers/BSP/Components/ov9655/ov9655.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  27:Drivers/BSP/Components/ov9655/ov9655.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  28:Drivers/BSP/Components/ov9655/ov9655.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  29:Drivers/BSP/Components/ov9655/ov9655.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  30:Drivers/BSP/Components/ov9655/ov9655.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  31:Drivers/BSP/Components/ov9655/ov9655.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 2
+
+
+  32:Drivers/BSP/Components/ov9655/ov9655.c ****   *
+  33:Drivers/BSP/Components/ov9655/ov9655.c ****   ******************************************************************************
+  34:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  35:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  36:Drivers/BSP/Components/ov9655/ov9655.c **** /* Includes ------------------------------------------------------------------*/
+  37:Drivers/BSP/Components/ov9655/ov9655.c **** #include "ov9655.h"
+  38:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  39:Drivers/BSP/Components/ov9655/ov9655.c **** /** @addtogroup BSP
+  40:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  41:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  42:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  43:Drivers/BSP/Components/ov9655/ov9655.c **** /** @addtogroup Components
+  44:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  45:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  46:Drivers/BSP/Components/ov9655/ov9655.c ****   
+  47:Drivers/BSP/Components/ov9655/ov9655.c **** /** @addtogroup OV9655
+  48:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief     This file provides a set of functions needed to drive the 
+  49:Drivers/BSP/Components/ov9655/ov9655.c ****   *            OV9655 Camera module.
+  50:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  51:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+  52:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  53:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_TypesDefinitions
+  54:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  55:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  56:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  57:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+  58:Drivers/BSP/Components/ov9655/ov9655.c ****   * @}
+  59:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  60:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  61:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_Defines
+  62:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  63:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+  64:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  65:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+  66:Drivers/BSP/Components/ov9655/ov9655.c ****   * @}
+  67:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  68:Drivers/BSP/Components/ov9655/ov9655.c ****   
+  69:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_Macros
+  70:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  71:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+  72:Drivers/BSP/Components/ov9655/ov9655.c ****      
+  73:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+  74:Drivers/BSP/Components/ov9655/ov9655.c ****   * @}
+  75:Drivers/BSP/Components/ov9655/ov9655.c ****   */  
+  76:Drivers/BSP/Components/ov9655/ov9655.c ****   
+  77:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_FunctionPrototypes
+  78:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  79:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+  80:Drivers/BSP/Components/ov9655/ov9655.c **** static uint64_t ov9655_ConvertValue(uint32_t feature, uint32_t value);
+  81:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+  82:Drivers/BSP/Components/ov9655/ov9655.c ****   * @}
+  83:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+  84:Drivers/BSP/Components/ov9655/ov9655.c ****   
+  85:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_Variables
+  86:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+  87:Drivers/BSP/Components/ov9655/ov9655.c ****   */        
+  88:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 3
+
+
+  89:Drivers/BSP/Components/ov9655/ov9655.c **** CAMERA_DrvTypeDef   ov9655_drv = 
+  90:Drivers/BSP/Components/ov9655/ov9655.c **** {
+  91:Drivers/BSP/Components/ov9655/ov9655.c ****   ov9655_Init,
+  92:Drivers/BSP/Components/ov9655/ov9655.c ****   ov9655_ReadID,  
+  93:Drivers/BSP/Components/ov9655/ov9655.c ****   ov9655_Config,
+  94:Drivers/BSP/Components/ov9655/ov9655.c **** };
+  95:Drivers/BSP/Components/ov9655/ov9655.c **** 
+  96:Drivers/BSP/Components/ov9655/ov9655.c **** /* Initialization sequence for VGA resolution (640x480)*/
+  97:Drivers/BSP/Components/ov9655/ov9655.c **** const unsigned char OV9655_VGA[][2]=
+  98:Drivers/BSP/Components/ov9655/ov9655.c **** {
+  99:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x00, 0x00},
+ 100:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x01, 0x80},   
+ 101:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x02, 0x80},   
+ 102:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb5, 0x00},   
+ 103:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x35, 0x00},   
+ 104:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa8, 0xc1},   
+ 105:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3a, 0xcc},   
+ 106:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3d, 0x99},   
+ 107:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x77, 0x02},   
+ 108:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x13, 0xe7},   
+ 109:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x26, 0x72},   
+ 110:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x27, 0x08},   
+ 111:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x28, 0x08},   
+ 112:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2c, 0x08},   
+ 113:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xab, 0x04},   
+ 114:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6e, 0x00},   
+ 115:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6d, 0x55},   
+ 116:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x00, 0x11},   
+ 117:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x10, 0x7b},   
+ 118:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbb, 0xae},   
+ 119:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x11, 0x03},   
+ 120:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x72, 0x00},   
+ 121:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3e, 0x0c},   
+ 122:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x74, 0x3a},   
+ 123:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x76, 0x01},   
+ 124:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x75, 0x35},   
+ 125:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x73, 0x00},   
+ 126:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc7, 0x80},   
+ 127:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x62, 0x00},   
+ 128:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x63, 0x00},   
+ 129:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x64, 0x02},   
+ 130:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x65, 0x20},   
+ 131:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x66, 0x01},   
+ 132:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc3, 0x4e},   
+ 133:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x33, 0x00},   
+ 134:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa4, 0x50},   
+ 135:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaa, 0x92},   
+ 136:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc2, 0x01},   
+ 137:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc1, 0xc8},   
+ 138:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1e, 0x04},   
+ 139:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa9, 0xef},   
+ 140:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0e, 0x61},   
+ 141:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x39, 0x57},   
+ 142:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0f, 0x48},
+ 143:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x24, 0x3c},   
+ 144:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x25, 0x36},   
+ 145:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x12, 0x63},   
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 4
+
+
+ 146:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x03, 0x12},   
+ 147:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x32, 0xff},   
+ 148:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x17, 0x16},   
+ 149:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x18, 0x02},   
+ 150:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x19, 0x01},   
+ 151:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1a, 0x3d},   
+ 152:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x36, 0xfa},   
+ 153:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x69, 0x0a},   
+ 154:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8c, 0x8d},   
+ 155:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc0, 0xaa},   
+ 156:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x40, 0xd0},   
+ 157:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x43, 0x14},   
+ 158:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x44, 0xf0},   
+ 159:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x45, 0x46},   
+ 160:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x46, 0x62},   
+ 161:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x47, 0x2a},   
+ 162:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x48, 0x3c},   
+ 163:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x59, 0x85},   
+ 164:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5a, 0xa9},   
+ 165:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5b, 0x64},   
+ 166:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5c, 0x84},   
+ 167:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5d, 0x53},   
+ 168:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5e, 0x0e},   
+ 169:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6c, 0x0c},   
+ 170:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc6, 0x85},   
+ 171:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcb, 0xf0},   
+ 172:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcc, 0xd8},   
+ 173:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x71, 0x78},   
+ 174:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa5, 0x68},   
+ 175:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6f, 0x9e},   
+ 176:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x42, 0xc0},   
+ 177:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3f, 0x82},   
+ 178:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8a, 0x23},   
+ 179:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x14, 0x3a},   
+ 180:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3b, 0xcc},   
+ 181:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x34, 0x3d},   
+ 182:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x41, 0x40},   
+ 183:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc9, 0xe0},   
+ 184:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xca, 0xe8},   
+ 185:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcd, 0x93},   
+ 186:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7a, 0x20},   
+ 187:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7b, 0x1c},   
+ 188:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7c, 0x28},   
+ 189:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7d, 0x3c},   
+ 190:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7e, 0x5a},   
+ 191:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7f, 0x68},   
+ 192:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x80, 0x76},   
+ 193:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x81, 0x80},   
+ 194:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x82, 0x88},   
+ 195:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x83, 0x8f},   
+ 196:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x84, 0x96},   
+ 197:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x85, 0xa3},   
+ 198:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x86, 0xaf},   
+ 199:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x87, 0xc4},   
+ 200:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x88, 0xd7},   
+ 201:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x89, 0xe8},   
+ 202:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4f, 0x98},   
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 5
+
+
+ 203:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x50, 0x98},   
+ 204:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x51, 0x00},   
+ 205:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x52, 0x28},   
+ 206:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x53, 0x70},   
+ 207:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x54, 0x98},   
+ 208:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x58, 0x1a},   
+ 209:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6b, 0x5a},   
+ 210:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x90, 0x92},   
+ 211:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x91, 0x92},   
+ 212:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9f, 0x90},   
+ 213:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa0, 0x90},   
+ 214:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x16, 0x24},   
+ 215:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2a, 0x00},   
+ 216:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2b, 0x00},   
+ 217:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xac, 0x80},   
+ 218:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xad, 0x80},   
+ 219:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xae, 0x80},   
+ 220:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaf, 0x80},   
+ 221:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb2, 0xf2},   
+ 222:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb3, 0x20},   
+ 223:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb4, 0x20},   
+ 224:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb6, 0xaf},   
+ 225:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x29, 0x15},   
+ 226:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9d, 0x02},   
+ 227:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9e, 0x02},   
+ 228:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9e, 0x02},   
+ 229:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x04, 0x03},   
+ 230:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x05, 0x2e},   
+ 231:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x06, 0x2e},   
+ 232:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x07, 0x2e},   
+ 233:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x08, 0x2e},   
+ 234:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2f, 0x2e},   
+ 235:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4a, 0xe9},   
+ 236:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4b, 0xdd},   
+ 237:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4c, 0xdd},   
+ 238:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4d, 0xdd},   
+ 239:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4e, 0xdd},   
+ 240:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x70, 0x06},   
+ 241:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa6, 0x40},   
+ 242:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbc, 0x02},   
+ 243:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbd, 0x01},   
+ 244:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbe, 0x02},   
+ 245:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbf, 0x01},
+ 246:Drivers/BSP/Components/ov9655/ov9655.c **** };
+ 247:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 248:Drivers/BSP/Components/ov9655/ov9655.c **** /* Initialization sequence for QVGA resolution (320x240) */
+ 249:Drivers/BSP/Components/ov9655/ov9655.c **** const unsigned char OV9655_QVGA[][2]=
+ 250:Drivers/BSP/Components/ov9655/ov9655.c **** {
+ 251:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x00, 0x00},
+ 252:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x01, 0x80},
+ 253:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x02, 0x80},
+ 254:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x03, 0x02},
+ 255:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x04, 0x03},
+ 256:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x09, 0x01},
+ 257:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0b, 0x57},
+ 258:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0e, 0x61},
+ 259:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0f, 0x40},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 6
+
+
+ 260:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x11, 0x01},
+ 261:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x12, 0x62},
+ 262:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x13, 0xc7},
+ 263:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x14, 0x3a},
+ 264:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x16, 0x24},
+ 265:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x17, 0x18},
+ 266:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x18, 0x04},
+ 267:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x19, 0x01},
+ 268:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1a, 0x81},
+ 269:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1e, 0x00},
+ 270:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x24, 0x3c},
+ 271:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x25, 0x36},
+ 272:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x26, 0x72},
+ 273:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x27, 0x08},
+ 274:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x28, 0x08},
+ 275:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x29, 0x15},
+ 276:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2a, 0x00},
+ 277:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2b, 0x00},
+ 278:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2c, 0x08},
+ 279:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x32, 0x12},
+ 280:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x33, 0x00},
+ 281:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x34, 0x3f},
+ 282:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x35, 0x00},
+ 283:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x36, 0x3a},
+ 284:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x38, 0x72},
+ 285:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x39, 0x57},
+ 286:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3a, 0xcc},
+ 287:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3b, 0x04},
+ 288:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3d, 0x99},
+ 289:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3e, 0x02},
+ 290:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3f, 0xc1},
+ 291:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x40, 0xc0},
+ 292:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x41, 0x41},
+ 293:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x42, 0xc0},
+ 294:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x43, 0x0a},
+ 295:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x44, 0xf0},
+ 296:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x45, 0x46},
+ 297:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x46, 0x62},
+ 298:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x47, 0x2a},
+ 299:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x48, 0x3c},
+ 300:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4a, 0xfc},
+ 301:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4b, 0xfc},
+ 302:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4c, 0x7f},
+ 303:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4d, 0x7f},
+ 304:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4e, 0x7f},
+ 305:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4f, 0x98},
+ 306:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x50, 0x98},
+ 307:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x51, 0x00},
+ 308:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x52, 0x28},
+ 309:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x53, 0x70},
+ 310:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x54, 0x98},
+ 311:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x58, 0x1a},
+ 312:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x59, 0x85},
+ 313:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5a, 0xa9},
+ 314:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5b, 0x64},
+ 315:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5c, 0x84},
+ 316:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5d, 0x53},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 7
+
+
+ 317:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5e, 0x0e},
+ 318:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5f, 0xf0},
+ 319:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x60, 0xf0},
+ 320:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x61, 0xf0},
+ 321:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x62, 0x00},
+ 322:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x63, 0x00},
+ 323:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x64, 0x02},
+ 324:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x65, 0x20},
+ 325:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x66, 0x00},
+ 326:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x69, 0x0a},
+ 327:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6b, 0x5a},
+ 328:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6c, 0x04},
+ 329:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6d, 0x55},
+ 330:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6e, 0x00},
+ 331:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6f, 0x9d},
+ 332:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x70, 0x21},
+ 333:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x71, 0x78},
+ 334:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x72, 0x11},
+ 335:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x73, 0x01},
+ 336:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x74, 0x10},
+ 337:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x75, 0x10},
+ 338:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x76, 0x01},
+ 339:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x77, 0x02},
+ 340:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7A, 0x12},
+ 341:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7B, 0x08},
+ 342:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7C, 0x16},
+ 343:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7D, 0x30},
+ 344:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7E, 0x5e},
+ 345:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7F, 0x72},
+ 346:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x80, 0x82},
+ 347:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x81, 0x8e},
+ 348:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x82, 0x9a},
+ 349:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x83, 0xa4},
+ 350:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x84, 0xac},
+ 351:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x85, 0xb8},
+ 352:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x86, 0xc3},
+ 353:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x87, 0xd6},
+ 354:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x88, 0xe6},
+ 355:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x89, 0xf2},
+ 356:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8a, 0x24},
+ 357:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8c, 0x80},
+ 358:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x90, 0x7d},
+ 359:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x91, 0x7b},
+ 360:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9d, 0x02},
+ 361:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9e, 0x02},
+ 362:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9f, 0x7a},
+ 363:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa0, 0x79},
+ 364:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa1, 0x40},
+ 365:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa4, 0x50},
+ 366:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa5, 0x68},
+ 367:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa6, 0x4a},
+ 368:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa8, 0xc1},
+ 369:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa9, 0xef},
+ 370:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaa, 0x92},
+ 371:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xab, 0x04},
+ 372:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xac, 0x80},
+ 373:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xad, 0x80},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 8
+
+
+ 374:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xae, 0x80},
+ 375:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaf, 0x80},
+ 376:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb2, 0xf2},
+ 377:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb3, 0x20},
+ 378:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb4, 0x20},
+ 379:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb5, 0x00},
+ 380:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb6, 0xaf},
+ 381:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb6, 0xaf},
+ 382:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbb, 0xae},
+ 383:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbc, 0x7f},
+ 384:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbd, 0x7f},
+ 385:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbe, 0x7f},
+ 386:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbf, 0x7f},
+ 387:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbf, 0x7f},
+ 388:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc0, 0xaa},
+ 389:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc1, 0xc0},
+ 390:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc2, 0x01},
+ 391:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc3, 0x4e},
+ 392:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc6, 0x05},
+ 393:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc7, 0x81},
+ 394:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc9, 0xe0},
+ 395:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xca, 0xe8},
+ 396:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcb, 0xf0},
+ 397:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcc, 0xd8},
+ 398:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcd, 0x93},
+ 399:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x12, 0x63},
+ 400:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x40, 0x10},
+ 401:Drivers/BSP/Components/ov9655/ov9655.c **** };
+ 402:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 403:Drivers/BSP/Components/ov9655/ov9655.c **** /* Initialization sequence for QQVGA resolution (160x120) */
+ 404:Drivers/BSP/Components/ov9655/ov9655.c **** const char OV9655_QQVGA[][2]=
+ 405:Drivers/BSP/Components/ov9655/ov9655.c **** {
+ 406:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x00, 0x00},
+ 407:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x01, 0x80},
+ 408:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x02, 0x80},
+ 409:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x03, 0x02},
+ 410:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x04, 0x03},
+ 411:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x09, 0x01},
+ 412:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0b, 0x57},
+ 413:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0e, 0x61},
+ 414:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x0f, 0x40},
+ 415:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x11, 0x01},
+ 416:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x12, 0x62},
+ 417:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x13, 0xc7},
+ 418:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x14, 0x3a},
+ 419:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x16, 0x24},
+ 420:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x17, 0x18},
+ 421:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x18, 0x04},
+ 422:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x19, 0x01},
+ 423:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1a, 0x81},
+ 424:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x1e, 0x00},
+ 425:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x24, 0x3c},
+ 426:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x25, 0x36},
+ 427:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x26, 0x72},
+ 428:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x27, 0x08},
+ 429:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x28, 0x08},
+ 430:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x29, 0x15},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 9
+
+
+ 431:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2a, 0x00},
+ 432:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2b, 0x00},
+ 433:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x2c, 0x08},
+ 434:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x32, 0xa4},
+ 435:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x33, 0x00},
+ 436:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x34, 0x3f},
+ 437:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x35, 0x00},
+ 438:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x36, 0x3a},
+ 439:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x38, 0x72},
+ 440:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x39, 0x57},
+ 441:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3a, 0xcc},
+ 442:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3b, 0x04},
+ 443:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3d, 0x99},
+ 444:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3e, 0x0e},
+ 445:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x3f, 0xc1},
+ 446:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x40, 0xc0},
+ 447:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x41, 0x41},
+ 448:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x42, 0xc0},
+ 449:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x43, 0x0a},
+ 450:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x44, 0xf0},
+ 451:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x45, 0x46},
+ 452:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x46, 0x62},
+ 453:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x47, 0x2a},
+ 454:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x48, 0x3c},
+ 455:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4a, 0xfc},
+ 456:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4b, 0xfc},
+ 457:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4c, 0x7f},
+ 458:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4d, 0x7f},
+ 459:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4e, 0x7f},
+ 460:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x4f, 0x98},
+ 461:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x50, 0x98},
+ 462:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x51, 0x00},
+ 463:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x52, 0x28},
+ 464:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x53, 0x70},
+ 465:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x54, 0x98},
+ 466:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x58, 0x1a},
+ 467:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x59, 0x85},
+ 468:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5a, 0xa9},
+ 469:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5b, 0x64},
+ 470:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5c, 0x84},
+ 471:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5d, 0x53},
+ 472:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5e, 0x0e},
+ 473:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x5f, 0xf0},
+ 474:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x60, 0xf0},
+ 475:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x61, 0xf0},
+ 476:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x62, 0x00},
+ 477:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x63, 0x00},
+ 478:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x64, 0x02},
+ 479:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x65, 0x20},
+ 480:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x66, 0x00},
+ 481:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x69, 0x0a},
+ 482:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6b, 0x5a},
+ 483:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6c, 0x04},
+ 484:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6d, 0x55},
+ 485:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6e, 0x00},
+ 486:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x6f, 0x9d},
+ 487:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x70, 0x21},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 10
+
+
+ 488:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x71, 0x78},
+ 489:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x72, 0x22},
+ 490:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x73, 0x02},
+ 491:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x74, 0x10},
+ 492:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x75, 0x10},
+ 493:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x76, 0x01},
+ 494:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x77, 0x02},
+ 495:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7A, 0x12},
+ 496:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7B, 0x08},
+ 497:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7C, 0x16},
+ 498:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7D, 0x30},
+ 499:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7E, 0x5e},
+ 500:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x7F, 0x72},
+ 501:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x80, 0x82},
+ 502:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x81, 0x8e},
+ 503:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x82, 0x9a},
+ 504:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x83, 0xa4},
+ 505:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x84, 0xac},
+ 506:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x85, 0xb8},
+ 507:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x86, 0xc3},
+ 508:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x87, 0xd6},
+ 509:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x88, 0xe6},
+ 510:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x89, 0xf2},
+ 511:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8a, 0x24},
+ 512:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x8c, 0x80},
+ 513:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x90, 0x7d},
+ 514:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x91, 0x7b},
+ 515:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9d, 0x02},
+ 516:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9e, 0x02},
+ 517:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x9f, 0x7a},
+ 518:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa0, 0x79},
+ 519:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa1, 0x40},
+ 520:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa4, 0x50},
+ 521:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa5, 0x68},
+ 522:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa6, 0x4a},
+ 523:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa8, 0xc1},
+ 524:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xa9, 0xef},
+ 525:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaa, 0x92},
+ 526:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xab, 0x04},
+ 527:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xac, 0x80},
+ 528:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xad, 0x80},
+ 529:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xae, 0x80},
+ 530:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xaf, 0x80},
+ 531:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb2, 0xf2},
+ 532:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb3, 0x20},
+ 533:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb4, 0x20},
+ 534:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb5, 0x00},
+ 535:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb6, 0xaf},
+ 536:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xb6, 0xaf},
+ 537:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbb, 0xae},
+ 538:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbc, 0x7f},
+ 539:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbd, 0x7f},
+ 540:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbe, 0x7f},
+ 541:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbf, 0x7f},
+ 542:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xbf, 0x7f},
+ 543:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc0, 0xaa},
+ 544:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc1, 0xc0},
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 11
+
+
+ 545:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc2, 0x01},
+ 546:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc3, 0x4e},
+ 547:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc6, 0x05},
+ 548:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc7, 0x82},
+ 549:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xc9, 0xe0},
+ 550:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xca, 0xe8},
+ 551:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcb, 0xf0},
+ 552:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcc, 0xd8},
+ 553:Drivers/BSP/Components/ov9655/ov9655.c ****   {0xcd, 0x93},
+ 554:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x12, 0x63},
+ 555:Drivers/BSP/Components/ov9655/ov9655.c ****   {0x40, 0x10},
+ 556:Drivers/BSP/Components/ov9655/ov9655.c **** };
+ 557:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 558:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+ 559:Drivers/BSP/Components/ov9655/ov9655.c ****   * @}
+ 560:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+ 561:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 562:Drivers/BSP/Components/ov9655/ov9655.c **** /** @defgroup OV9655_Private_Functions
+ 563:Drivers/BSP/Components/ov9655/ov9655.c ****   * @{
+ 564:Drivers/BSP/Components/ov9655/ov9655.c ****   */ 
+ 565:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 566:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+ 567:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief  Initializes the OV9655 CAMERA component.
+ 568:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 569:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  resolution: Camera resolution
+ 570:Drivers/BSP/Components/ov9655/ov9655.c ****   * @retval None
+ 571:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+ 572:Drivers/BSP/Components/ov9655/ov9655.c **** void ov9655_Init(uint16_t DeviceAddr, uint32_t resolution)
+ 573:Drivers/BSP/Components/ov9655/ov9655.c **** {
+ 574:Drivers/BSP/Components/ov9655/ov9655.c ****   uint32_t index;
+ 575:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 576:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Initialize I2C */
+ 577:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_IO_Init();    
+ 578:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 579:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Prepare the camera to be configured by resetting all its registers */
+ 580:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_COM7, 0x80);
+ 581:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_Delay(200);
+ 582:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 583:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Initialize OV9655 */
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   switch (resolution)
+ 585:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 586:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_R160x120:
+ 587:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 588:Drivers/BSP/Components/ov9655/ov9655.c ****       for(index=0; index<(sizeof(OV9655_QQVGA)/2); index++)
+ 589:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 590:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_IO_Write(DeviceAddr, OV9655_QQVGA[index][0], OV9655_QQVGA[index][1]);
+ 591:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 592:Drivers/BSP/Components/ov9655/ov9655.c ****       } 
+ 593:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 594:Drivers/BSP/Components/ov9655/ov9655.c ****     }    
+ 595:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_R320x240:
+ 596:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 597:Drivers/BSP/Components/ov9655/ov9655.c ****       for(index=0; index<(sizeof(OV9655_QVGA)/2); index++)
+ 598:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 599:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_IO_Write(DeviceAddr, OV9655_QVGA[index][0], OV9655_QVGA[index][1]);
+ 600:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 601:Drivers/BSP/Components/ov9655/ov9655.c ****       } 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 12
+
+
+ 602:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 603:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 604:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_R480x272:
+ 605:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 606:Drivers/BSP/Components/ov9655/ov9655.c ****       /* Not supported resolution */
+ 607:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 608:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 609:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_R640x480:
+ 610:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 611:Drivers/BSP/Components/ov9655/ov9655.c ****       for(index=0; index<(sizeof(OV9655_VGA)/2); index++)
+ 612:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 613:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_IO_Write(DeviceAddr, OV9655_VGA[index][0], OV9655_VGA[index][1]);
+ 614:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 615:Drivers/BSP/Components/ov9655/ov9655.c ****       }
+ 616:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 617:Drivers/BSP/Components/ov9655/ov9655.c ****     }    
+ 618:Drivers/BSP/Components/ov9655/ov9655.c ****   default:
+ 619:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 620:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 621:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 622:Drivers/BSP/Components/ov9655/ov9655.c ****   }
+ 623:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 624:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 625:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+ 626:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief  Configures the OV9655 camera feature.
+ 627:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 628:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  feature: Camera feature to be configured
+ 629:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  value: Value to be configured
+ 630:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  brightness_value: Brightness value to be configured
+ 631:Drivers/BSP/Components/ov9655/ov9655.c ****   * @retval None
+ 632:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+ 633:Drivers/BSP/Components/ov9655/ov9655.c **** void ov9655_Config(uint16_t DeviceAddr, uint32_t feature, uint32_t value, uint32_t brightness_value
+ 634:Drivers/BSP/Components/ov9655/ov9655.c **** {
+ 635:Drivers/BSP/Components/ov9655/ov9655.c ****   uint8_t tslb, mtx1, mtx2, mtx3, mtx4, mtx5, mtx6;
+ 636:Drivers/BSP/Components/ov9655/ov9655.c ****   uint64_t value_tmp;
+ 637:Drivers/BSP/Components/ov9655/ov9655.c ****   uint32_t br_value;
+ 638:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 639:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Convert the input value into ov9655 parameters */
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   value_tmp = ov9655_ConvertValue(feature, value); 
+ 641:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ 642:Drivers/BSP/Components/ov9655/ov9655.c ****     
+ 643:Drivers/BSP/Components/ov9655/ov9655.c ****   switch(feature)
+ 644:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 645:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_CONTRAST_BRIGHTNESS:
+ 646:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 647:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_BRTN, br_value);
+ 648:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_CNST1, value_tmp);
+ 649:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 650:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 651:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_BLACK_WHITE:
+ 652:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_COLOR_EFFECT:
+ 653:Drivers/BSP/Components/ov9655/ov9655.c ****     {     
+ 654:Drivers/BSP/Components/ov9655/ov9655.c ****       tslb = (uint8_t)(value_tmp >> 48);
+ 655:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx1 = (uint8_t)(value_tmp >> 40);
+ 656:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx2 = (uint8_t)(value_tmp >> 32);
+ 657:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx3 = (uint8_t)(value_tmp >> 24);
+ 658:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx4 = (uint8_t)(value_tmp >> 16);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 13
+
+
+ 659:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx5 = (uint8_t)(value_tmp >> 8);
+ 660:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx6 = (uint8_t)(value_tmp);
+ 661:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_TSLB, tslb);
+ 662:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX1, mtx1);
+ 663:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX2, mtx2);
+ 664:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX3, mtx3);
+ 665:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX4, mtx4);
+ 666:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX5, mtx5);
+ 667:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX6, mtx6);
+ 668:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 669:Drivers/BSP/Components/ov9655/ov9655.c ****     }     
+ 670:Drivers/BSP/Components/ov9655/ov9655.c ****   default:
+ 671:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 672:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 673:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 674:Drivers/BSP/Components/ov9655/ov9655.c ****   }
+ 675:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 676:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 677:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+ 678:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief  Read the OV9655 Camera identity.
+ 679:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  DeviceAddr: Device address on communication Bus.
+ 680:Drivers/BSP/Components/ov9655/ov9655.c ****   * @retval the OV9655 ID
+ 681:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+ 682:Drivers/BSP/Components/ov9655/ov9655.c **** uint16_t ov9655_ReadID(uint16_t DeviceAddr)
+ 683:Drivers/BSP/Components/ov9655/ov9655.c **** {
+ 684:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Initialize I2C */
+ 685:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_IO_Init();
+ 686:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 687:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Get the camera ID */
+ 688:Drivers/BSP/Components/ov9655/ov9655.c ****   return (CAMERA_IO_Read(DeviceAddr, OV9655_SENSOR_PIDH));
+ 689:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 690:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 691:Drivers/BSP/Components/ov9655/ov9655.c **** /******************************************************************************
+ 692:Drivers/BSP/Components/ov9655/ov9655.c ****                             Static Functions
+ 693:Drivers/BSP/Components/ov9655/ov9655.c **** *******************************************************************************/
+ 694:Drivers/BSP/Components/ov9655/ov9655.c **** /**
+ 695:Drivers/BSP/Components/ov9655/ov9655.c ****   * @brief  Convert input values into ov9655 parameters.
+ 696:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  feature: Camera feature to be configured
+ 697:Drivers/BSP/Components/ov9655/ov9655.c ****   * @param  value: Value to be configured
+ 698:Drivers/BSP/Components/ov9655/ov9655.c ****   * @retval The converted value
+ 699:Drivers/BSP/Components/ov9655/ov9655.c ****   */
+ 700:Drivers/BSP/Components/ov9655/ov9655.c **** static uint64_t ov9655_ConvertValue(uint32_t feature, uint32_t value)
+ 701:Drivers/BSP/Components/ov9655/ov9655.c **** {
+  28              		.loc 1 701 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+ 702:Drivers/BSP/Components/ov9655/ov9655.c ****   uint64_t ret = 0;
+  33              		.loc 1 702 3 view .LVU1
+ 703:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 704:Drivers/BSP/Components/ov9655/ov9655.c ****   switch(feature)
+  34              		.loc 1 704 3 view .LVU2
+  35 0000 0128     		cmp	r0, #1
+  36 0002 05D0     		beq	.L2
+  37 0004 0328     		cmp	r0, #3
+  38 0006 40D0     		beq	.L3
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 14
+
+
+  39 0008 C0B1     		cbz	r0, .L4
+  40 000a 0020     		movs	r0, #0
+  41              	.LVL1:
+  42              		.loc 1 704 3 is_stmt 0 view .LVU3
+  43 000c 0021     		movs	r1, #0
+  44              	.LVL2:
+  45              		.loc 1 704 3 view .LVU4
+  46 000e 7047     		bx	lr
+  47              	.LVL3:
+  48              	.L2:
+ 705:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 706:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_BLACK_WHITE:
+ 707:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 708:Drivers/BSP/Components/ov9655/ov9655.c ****       switch(value)
+  49              		.loc 1 708 7 is_stmt 1 view .LVU5
+  50 0010 0329     		cmp	r1, #3
+  51 0012 0FD8     		bhi	.L6
+  52 0014 DFE801F0 		tbb	[pc, r1]
+  53              	.L8:
+  54 0018 02       		.byte	(.L10-.L8)/2
+  55 0019 50       		.byte	(.L27-.L8)/2
+  56 001a 06       		.byte	(.L9-.L8)/2
+  57 001b 0A       		.byte	(.L7-.L8)/2
+  58              		.p2align 1
+  59              	.L10:
+  60 001c 0020     		movs	r0, #0
+  61              	.LVL4:
+  62              		.loc 1 708 7 is_stmt 0 view .LVU6
+  63 001e 4FF44C01 		mov	r1, #13369344
+  64              	.LVL5:
+  65              		.loc 1 708 7 view .LVU7
+  66 0022 7047     		bx	lr
+  67              	.LVL6:
+  68              	.L9:
+ 709:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 710:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BLACK_WHITE_BW:
+ 711:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 712:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BLACK_WHITE_BW;
+ 713:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 714:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 715:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BLACK_WHITE_NEGATIVE:
+ 716:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 717:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BLACK_WHITE_NEGATIVE;
+ 718:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 719:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 720:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BLACK_WHITE_BW_NEGATIVE:
+ 721:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 722:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BLACK_WHITE_BW_NEGATIVE;
+  69              		.loc 1 722 11 is_stmt 1 view .LVU8
+ 723:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  70              		.loc 1 723 11 view .LVU9
+ 722:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  71              		.loc 1 722 15 is_stmt 0 view .LVU10
+  72 0024 0020     		movs	r0, #0
+  73              	.LVL7:
+ 722:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  74              		.loc 1 722 15 view .LVU11
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 15
+
+
+  75 0026 4FF46C01 		mov	r1, #15466496
+  76              	.LVL8:
+  77              		.loc 1 723 11 view .LVU12
+  78 002a 7047     		bx	lr
+  79              	.LVL9:
+  80              	.L7:
+ 724:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 725:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BLACK_WHITE_NORMAL:
+ 726:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 727:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BLACK_WHITE_NORMAL;
+  81              		.loc 1 727 11 is_stmt 1 view .LVU13
+ 728:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  82              		.loc 1 728 11 view .LVU14
+ 727:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  83              		.loc 1 727 15 is_stmt 0 view .LVU15
+  84 002c 48F28000 		movw	r0, #32896
+  85              	.LVL10:
+ 727:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  86              		.loc 1 727 15 view .LVU16
+  87 0030 2749     		ldr	r1, .L30
+  88              	.LVL11:
+  89              		.loc 1 728 11 view .LVU17
+  90 0032 7047     		bx	lr
+  91              	.LVL12:
+  92              	.L6:
+ 729:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 730:Drivers/BSP/Components/ov9655/ov9655.c ****       default:
+ 731:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 732:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BLACK_WHITE_NORMAL;
+  93              		.loc 1 732 11 is_stmt 1 view .LVU18
+ 733:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  94              		.loc 1 733 11 view .LVU19
+ 732:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  95              		.loc 1 732 15 is_stmt 0 view .LVU20
+  96 0034 48F28000 		movw	r0, #32896
+  97              	.LVL13:
+ 732:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+  98              		.loc 1 732 15 view .LVU21
+  99 0038 2549     		ldr	r1, .L30
+ 100              	.LVL14:
+ 101              		.loc 1 733 11 view .LVU22
+ 102 003a 7047     		bx	lr
+ 103              	.LVL15:
+ 104              	.L4:
+ 734:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 735:Drivers/BSP/Components/ov9655/ov9655.c ****       }
+ 736:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 737:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 738:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_CONTRAST_BRIGHTNESS:
+ 739:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 740:Drivers/BSP/Components/ov9655/ov9655.c ****       switch(value)
+ 105              		.loc 1 740 7 is_stmt 1 view .LVU23
+ 106 003c 0929     		cmp	r1, #9
+ 107 003e 21D8     		bhi	.L11
+ 108 0040 DFE801F0 		tbb	[pc, r1]
+ 109              	.L13:
+ 110 0044 05       		.byte	(.L21-.L13)/2
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 16
+
+
+ 111 0045 3E       		.byte	(.L28-.L13)/2
+ 112 0046 08       		.byte	(.L20-.L13)/2
+ 113 0047 0B       		.byte	(.L19-.L13)/2
+ 114 0048 0E       		.byte	(.L18-.L13)/2
+ 115 0049 11       		.byte	(.L17-.L13)/2
+ 116 004a 14       		.byte	(.L16-.L13)/2
+ 117 004b 17       		.byte	(.L15-.L13)/2
+ 118 004c 1A       		.byte	(.L14-.L13)/2
+ 119 004d 1D       		.byte	(.L12-.L13)/2
+ 120              		.p2align 1
+ 121              	.L21:
+ 122 004e B020     		movs	r0, #176
+ 123              	.LVL16:
+ 124              		.loc 1 740 7 is_stmt 0 view .LVU24
+ 125 0050 0021     		movs	r1, #0
+ 126              	.LVL17:
+ 127              		.loc 1 740 7 view .LVU25
+ 128 0052 7047     		bx	lr
+ 129              	.LVL18:
+ 130              	.L20:
+ 741:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 742:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BRIGHTNESS_LEVEL0:
+ 743:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 744:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BRIGHTNESS_LEVEL0;
+ 745:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 746:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 747:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BRIGHTNESS_LEVEL1:
+ 748:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 749:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BRIGHTNESS_LEVEL1;
+ 750:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 751:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 752:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BRIGHTNESS_LEVEL2:
+ 753:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 754:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BRIGHTNESS_LEVEL2;
+ 131              		.loc 1 754 11 is_stmt 1 view .LVU26
+ 755:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 132              		.loc 1 755 11 view .LVU27
+ 754:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 133              		.loc 1 754 15 is_stmt 0 view .LVU28
+ 134 0054 0020     		movs	r0, #0
+ 135              	.LVL19:
+ 754:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 136              		.loc 1 754 15 view .LVU29
+ 137 0056 0021     		movs	r1, #0
+ 138              	.LVL20:
+ 139              		.loc 1 755 11 view .LVU30
+ 140 0058 7047     		bx	lr
+ 141              	.LVL21:
+ 142              	.L19:
+ 756:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 757:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BRIGHTNESS_LEVEL3:
+ 758:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 759:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BRIGHTNESS_LEVEL3;
+ 143              		.loc 1 759 11 is_stmt 1 view .LVU31
+ 760:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 144              		.loc 1 760 11 view .LVU32
+ 759:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 17
+
+
+ 145              		.loc 1 759 15 is_stmt 0 view .LVU33
+ 146 005a 1820     		movs	r0, #24
+ 147              	.LVL22:
+ 759:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 148              		.loc 1 759 15 view .LVU34
+ 149 005c 0021     		movs	r1, #0
+ 150              	.LVL23:
+ 151              		.loc 1 760 11 view .LVU35
+ 152 005e 7047     		bx	lr
+ 153              	.LVL24:
+ 154              	.L18:
+ 761:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 762:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_BRIGHTNESS_LEVEL4:
+ 763:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 764:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_BRIGHTNESS_LEVEL4;
+ 155              		.loc 1 764 11 is_stmt 1 view .LVU36
+ 765:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 156              		.loc 1 765 11 view .LVU37
+ 764:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 157              		.loc 1 764 15 is_stmt 0 view .LVU38
+ 158 0060 3020     		movs	r0, #48
+ 159              	.LVL25:
+ 764:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 160              		.loc 1 764 15 view .LVU39
+ 161 0062 0021     		movs	r1, #0
+ 162              	.LVL26:
+ 163              		.loc 1 765 11 view .LVU40
+ 164 0064 7047     		bx	lr
+ 165              	.LVL27:
+ 166              	.L17:
+ 766:Drivers/BSP/Components/ov9655/ov9655.c ****         }        
+ 767:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_CONTRAST_LEVEL0:
+ 768:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 769:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL0;
+ 167              		.loc 1 769 11 is_stmt 1 view .LVU41
+ 770:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 168              		.loc 1 770 11 view .LVU42
+ 769:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 169              		.loc 1 769 15 is_stmt 0 view .LVU43
+ 170 0066 3020     		movs	r0, #48
+ 171              	.LVL28:
+ 769:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 172              		.loc 1 769 15 view .LVU44
+ 173 0068 0021     		movs	r1, #0
+ 174              	.LVL29:
+ 175              		.loc 1 770 11 view .LVU45
+ 176 006a 7047     		bx	lr
+ 177              	.LVL30:
+ 178              	.L16:
+ 771:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 772:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_CONTRAST_LEVEL1:
+ 773:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 774:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL1;
+ 179              		.loc 1 774 11 is_stmt 1 view .LVU46
+ 775:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 180              		.loc 1 775 11 view .LVU47
+ 774:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 18
+
+
+ 181              		.loc 1 774 15 is_stmt 0 view .LVU48
+ 182 006c 3820     		movs	r0, #56
+ 183              	.LVL31:
+ 774:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 184              		.loc 1 774 15 view .LVU49
+ 185 006e 0021     		movs	r1, #0
+ 186              	.LVL32:
+ 187              		.loc 1 775 11 view .LVU50
+ 188 0070 7047     		bx	lr
+ 189              	.LVL33:
+ 190              	.L15:
+ 776:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 777:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_CONTRAST_LEVEL2:
+ 778:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 779:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL2;
+ 191              		.loc 1 779 11 is_stmt 1 view .LVU51
+ 780:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 192              		.loc 1 780 11 view .LVU52
+ 779:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 193              		.loc 1 779 15 is_stmt 0 view .LVU53
+ 194 0072 4020     		movs	r0, #64
+ 195              	.LVL34:
+ 779:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 196              		.loc 1 779 15 view .LVU54
+ 197 0074 0021     		movs	r1, #0
+ 198              	.LVL35:
+ 199              		.loc 1 780 11 view .LVU55
+ 200 0076 7047     		bx	lr
+ 201              	.LVL36:
+ 202              	.L14:
+ 781:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 782:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_CONTRAST_LEVEL3:
+ 783:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 784:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL3;
+ 203              		.loc 1 784 11 is_stmt 1 view .LVU56
+ 785:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 204              		.loc 1 785 11 view .LVU57
+ 784:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 205              		.loc 1 784 15 is_stmt 0 view .LVU58
+ 206 0078 5020     		movs	r0, #80
+ 207              	.LVL37:
+ 784:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 208              		.loc 1 784 15 view .LVU59
+ 209 007a 0021     		movs	r1, #0
+ 210              	.LVL38:
+ 211              		.loc 1 785 11 view .LVU60
+ 212 007c 7047     		bx	lr
+ 213              	.LVL39:
+ 214              	.L12:
+ 786:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 787:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_CONTRAST_LEVEL4:
+ 788:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 789:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL4;
+ 215              		.loc 1 789 11 is_stmt 1 view .LVU61
+ 790:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 216              		.loc 1 790 11 view .LVU62
+ 789:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 19
+
+
+ 217              		.loc 1 789 15 is_stmt 0 view .LVU63
+ 218 007e 6020     		movs	r0, #96
+ 219              	.LVL40:
+ 789:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 220              		.loc 1 789 15 view .LVU64
+ 221 0080 0021     		movs	r1, #0
+ 222              	.LVL41:
+ 223              		.loc 1 790 11 view .LVU65
+ 224 0082 7047     		bx	lr
+ 225              	.LVL42:
+ 226              	.L11:
+ 791:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 792:Drivers/BSP/Components/ov9655/ov9655.c ****       default:
+ 793:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 794:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_CONTRAST_LEVEL0;
+ 227              		.loc 1 794 11 is_stmt 1 view .LVU66
+ 795:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 228              		.loc 1 795 11 view .LVU67
+ 794:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 229              		.loc 1 794 15 is_stmt 0 view .LVU68
+ 230 0084 3020     		movs	r0, #48
+ 231              	.LVL43:
+ 794:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 232              		.loc 1 794 15 view .LVU69
+ 233 0086 0021     		movs	r1, #0
+ 234              	.LVL44:
+ 235              		.loc 1 795 11 view .LVU70
+ 236 0088 7047     		bx	lr
+ 237              	.LVL45:
+ 238              	.L3:
+ 796:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 797:Drivers/BSP/Components/ov9655/ov9655.c ****       }
+ 798:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 799:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 800:Drivers/BSP/Components/ov9655/ov9655.c ****   case CAMERA_COLOR_EFFECT:
+ 801:Drivers/BSP/Components/ov9655/ov9655.c ****     {
+ 802:Drivers/BSP/Components/ov9655/ov9655.c ****       switch(value)
+ 239              		.loc 1 802 7 is_stmt 1 view .LVU71
+ 240 008a 0139     		subs	r1, r1, #1
+ 241              	.LVL46:
+ 242              		.loc 1 802 7 is_stmt 0 view .LVU72
+ 243 008c 0329     		cmp	r1, #3
+ 244 008e 0FD8     		bhi	.L22
+ 245 0090 DFE801F0 		tbb	[pc, r1]
+ 246              	.L24:
+ 247 0094 19       		.byte	(.L29-.L24)/2
+ 248 0095 06       		.byte	(.L26-.L24)/2
+ 249 0096 0B       		.byte	(.L25-.L24)/2
+ 250 0097 02       		.byte	(.L23-.L24)/2
+ 251              		.p2align 1
+ 252              	.L23:
+ 253 0098 0E48     		ldr	r0, .L30+4
+ 254              	.LVL47:
+ 255              		.loc 1 802 7 view .LVU73
+ 256 009a 4FF44C01 		mov	r1, #13369344
+ 257              	.LVL48:
+ 258              		.loc 1 802 7 view .LVU74
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 20
+
+
+ 259 009e 7047     		bx	lr
+ 260              	.LVL49:
+ 261              	.L26:
+ 803:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 804:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_COLOR_EFFECT_ANTIQUE:
+ 805:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 806:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_COLOR_EFFECT_ANTIQUE;
+ 807:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 808:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 809:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_COLOR_EFFECT_BLUE:
+ 810:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 811:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_COLOR_EFFECT_BLUE;
+ 812:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 813:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 814:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_COLOR_EFFECT_GREEN:
+ 815:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 816:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_COLOR_EFFECT_GREEN;
+ 262              		.loc 1 816 11 is_stmt 1 view .LVU75
+ 817:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 263              		.loc 1 817 11 view .LVU76
+ 816:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 264              		.loc 1 816 15 is_stmt 0 view .LVU77
+ 265 00a0 4FF40040 		mov	r0, #32768
+ 266              	.LVL50:
+ 816:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 267              		.loc 1 816 15 view .LVU78
+ 268 00a4 4FF44C01 		mov	r1, #13369344
+ 269              		.loc 1 817 11 view .LVU79
+ 270 00a8 7047     		bx	lr
+ 271              	.LVL51:
+ 272              	.L25:
+ 818:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 819:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_COLOR_EFFECT_RED:
+ 820:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 821:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_COLOR_EFFECT_RED;
+ 273              		.loc 1 821 11 is_stmt 1 view .LVU80
+ 822:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 274              		.loc 1 822 11 view .LVU81
+ 821:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 275              		.loc 1 821 15 is_stmt 0 view .LVU82
+ 276 00aa 0020     		movs	r0, #0
+ 277              	.LVL52:
+ 821:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 278              		.loc 1 821 15 view .LVU83
+ 279 00ac 0A49     		ldr	r1, .L30+8
+ 280              		.loc 1 822 11 view .LVU84
+ 281 00ae 7047     		bx	lr
+ 282              	.LVL53:
+ 283              	.L22:
+ 823:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 824:Drivers/BSP/Components/ov9655/ov9655.c ****       case CAMERA_COLOR_EFFECT_NONE:
+ 825:Drivers/BSP/Components/ov9655/ov9655.c ****       default:
+ 826:Drivers/BSP/Components/ov9655/ov9655.c ****         {
+ 827:Drivers/BSP/Components/ov9655/ov9655.c ****           ret =  OV9655_COLOR_EFFECT_NONE;
+ 284              		.loc 1 827 11 is_stmt 1 view .LVU85
+ 828:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 285              		.loc 1 828 11 view .LVU86
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 21
+
+
+ 827:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 286              		.loc 1 827 15 is_stmt 0 view .LVU87
+ 287 00b0 48F28000 		movw	r0, #32896
+ 288              	.LVL54:
+ 827:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 289              		.loc 1 827 15 view .LVU88
+ 290 00b4 0649     		ldr	r1, .L30
+ 291              		.loc 1 828 11 view .LVU89
+ 292 00b6 7047     		bx	lr
+ 293              	.LVL55:
+ 294              	.L27:
+ 717:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 295              		.loc 1 717 15 view .LVU90
+ 296 00b8 48F28000 		movw	r0, #32896
+ 297              	.LVL56:
+ 717:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 298              		.loc 1 717 15 view .LVU91
+ 299 00bc 0749     		ldr	r1, .L30+12
+ 300              	.LVL57:
+ 717:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 301              		.loc 1 717 15 view .LVU92
+ 302 00be 7047     		bx	lr
+ 303              	.LVL58:
+ 304              	.L28:
+ 749:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 305              		.loc 1 749 15 view .LVU93
+ 306 00c0 9820     		movs	r0, #152
+ 307              	.LVL59:
+ 749:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 308              		.loc 1 749 15 view .LVU94
+ 309 00c2 0021     		movs	r1, #0
+ 310              	.LVL60:
+ 749:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 311              		.loc 1 749 15 view .LVU95
+ 312 00c4 7047     		bx	lr
+ 313              	.LVL61:
+ 314              	.L29:
+ 811:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 315              		.loc 1 811 15 view .LVU96
+ 316 00c6 6020     		movs	r0, #96
+ 317              	.LVL62:
+ 811:Drivers/BSP/Components/ov9655/ov9655.c ****           break;
+ 318              		.loc 1 811 15 view .LVU97
+ 319 00c8 4FF44C01 		mov	r1, #13369344
+ 320              	.LVL63:
+ 829:Drivers/BSP/Components/ov9655/ov9655.c ****         }
+ 830:Drivers/BSP/Components/ov9655/ov9655.c ****       }
+ 831:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 832:Drivers/BSP/Components/ov9655/ov9655.c ****     default:
+ 833:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 834:Drivers/BSP/Components/ov9655/ov9655.c ****         ret = 0;
+ 835:Drivers/BSP/Components/ov9655/ov9655.c ****         break;
+ 836:Drivers/BSP/Components/ov9655/ov9655.c ****       }    
+ 837:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 838:Drivers/BSP/Components/ov9655/ov9655.c ****   }
+ 839:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 840:Drivers/BSP/Components/ov9655/ov9655.c ****   return ret;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 22
+
+
+ 321              		.loc 1 840 3 is_stmt 1 view .LVU98
+ 841:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 322              		.loc 1 841 1 is_stmt 0 view .LVU99
+ 323 00cc 7047     		bx	lr
+ 324              	.L31:
+ 325 00ce 00BF     		.align	2
+ 326              	.L30:
+ 327 00d0 8080CC00 		.word	13402240
+ 328 00d4 0000F020 		.word	552599552
+ 329 00d8 0060CC00 		.word	13393920
+ 330 00dc 8080EC00 		.word	15499392
+ 331              		.cfi_endproc
+ 332              	.LFE3:
+ 334              		.section	.text.ov9655_Config,"ax",%progbits
+ 335              		.align	1
+ 336              		.global	ov9655_Config
+ 337              		.syntax unified
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	ov9655_Config:
+ 342              	.LVL64:
+ 343              	.LFB1:
+ 634:Drivers/BSP/Components/ov9655/ov9655.c ****   uint8_t tslb, mtx1, mtx2, mtx3, mtx4, mtx5, mtx6;
+ 344              		.loc 1 634 1 is_stmt 1 view -0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 634:Drivers/BSP/Components/ov9655/ov9655.c ****   uint8_t tslb, mtx1, mtx2, mtx3, mtx4, mtx5, mtx6;
+ 348              		.loc 1 634 1 is_stmt 0 view .LVU101
+ 349 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 350              		.cfi_def_cfa_offset 40
+ 351              		.cfi_offset 3, -40
+ 352              		.cfi_offset 4, -36
+ 353              		.cfi_offset 5, -32
+ 354              		.cfi_offset 6, -28
+ 355              		.cfi_offset 7, -24
+ 356              		.cfi_offset 8, -20
+ 357              		.cfi_offset 9, -16
+ 358              		.cfi_offset 10, -12
+ 359              		.cfi_offset 11, -8
+ 360              		.cfi_offset 14, -4
+ 361 0004 0446     		mov	r4, r0
+ 362 0006 0D46     		mov	r5, r1
+ 363 0008 9846     		mov	r8, r3
+ 635:Drivers/BSP/Components/ov9655/ov9655.c ****   uint64_t value_tmp;
+ 364              		.loc 1 635 3 is_stmt 1 view .LVU102
+ 636:Drivers/BSP/Components/ov9655/ov9655.c ****   uint32_t br_value;
+ 365              		.loc 1 636 3 view .LVU103
+ 637:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 366              		.loc 1 637 3 view .LVU104
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ 367              		.loc 1 640 3 view .LVU105
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ 368              		.loc 1 640 15 is_stmt 0 view .LVU106
+ 369 000a 1146     		mov	r1, r2
+ 370              	.LVL65:
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 23
+
+
+ 371              		.loc 1 640 15 view .LVU107
+ 372 000c 2846     		mov	r0, r5
+ 373              	.LVL66:
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ 374              		.loc 1 640 15 view .LVU108
+ 375 000e FFF7FEFF 		bl	ov9655_ConvertValue
+ 376              	.LVL67:
+ 640:Drivers/BSP/Components/ov9655/ov9655.c ****   br_value = (uint32_t)ov9655_ConvertValue(CAMERA_CONTRAST_BRIGHTNESS, brightness_value);
+ 377              		.loc 1 640 15 view .LVU109
+ 378 0012 0646     		mov	r6, r0
+ 379 0014 0F46     		mov	r7, r1
+ 380              	.LVL68:
+ 641:Drivers/BSP/Components/ov9655/ov9655.c ****     
+ 381              		.loc 1 641 3 is_stmt 1 view .LVU110
+ 641:Drivers/BSP/Components/ov9655/ov9655.c ****     
+ 382              		.loc 1 641 24 is_stmt 0 view .LVU111
+ 383 0016 4146     		mov	r1, r8
+ 384              	.LVL69:
+ 641:Drivers/BSP/Components/ov9655/ov9655.c ****     
+ 385              		.loc 1 641 24 view .LVU112
+ 386 0018 0020     		movs	r0, #0
+ 387              	.LVL70:
+ 641:Drivers/BSP/Components/ov9655/ov9655.c ****     
+ 388              		.loc 1 641 24 view .LVU113
+ 389 001a FFF7FEFF 		bl	ov9655_ConvertValue
+ 390              	.LVL71:
+ 643:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 391              		.loc 1 643 3 is_stmt 1 view .LVU114
+ 392 001e 012D     		cmp	r5, #1
+ 393 0020 0FD0     		beq	.L33
+ 394 0022 032D     		cmp	r5, #3
+ 395 0024 0DD0     		beq	.L33
+ 396 0026 55B9     		cbnz	r5, .L32
+ 647:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_CNST1, value_tmp);
+ 397              		.loc 1 647 7 view .LVU115
+ 398 0028 E4B2     		uxtb	r4, r4
+ 399              	.LVL72:
+ 647:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_CNST1, value_tmp);
+ 400              		.loc 1 647 7 is_stmt 0 view .LVU116
+ 401 002a C2B2     		uxtb	r2, r0
+ 402 002c 5521     		movs	r1, #85
+ 403 002e 2046     		mov	r0, r4
+ 404              	.LVL73:
+ 647:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_CNST1, value_tmp);
+ 405              		.loc 1 647 7 view .LVU117
+ 406 0030 FFF7FEFF 		bl	CAMERA_IO_Write
+ 407              	.LVL74:
+ 648:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 408              		.loc 1 648 7 is_stmt 1 view .LVU118
+ 409 0034 F2B2     		uxtb	r2, r6
+ 410 0036 5621     		movs	r1, #86
+ 411 0038 2046     		mov	r0, r4
+ 412 003a FFF7FEFF 		bl	CAMERA_IO_Write
+ 413              	.LVL75:
+ 649:Drivers/BSP/Components/ov9655/ov9655.c ****     }
+ 414              		.loc 1 649 7 view .LVU119
+ 415              	.L32:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 24
+
+
+ 675:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 416              		.loc 1 675 1 is_stmt 0 view .LVU120
+ 417 003e BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 418              	.LVL76:
+ 419              	.L33:
+ 654:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx1 = (uint8_t)(value_tmp >> 40);
+ 420              		.loc 1 654 7 is_stmt 1 view .LVU121
+ 655:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx2 = (uint8_t)(value_tmp >> 32);
+ 421              		.loc 1 655 7 view .LVU122
+ 655:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx2 = (uint8_t)(value_tmp >> 32);
+ 422              		.loc 1 655 12 is_stmt 0 view .LVU123
+ 423 0042 C7F3072B 		ubfx	fp, r7, #8, #8
+ 424              	.LVL77:
+ 656:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx3 = (uint8_t)(value_tmp >> 24);
+ 425              		.loc 1 656 7 is_stmt 1 view .LVU124
+ 656:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx3 = (uint8_t)(value_tmp >> 24);
+ 426              		.loc 1 656 12 is_stmt 0 view .LVU125
+ 427 0046 5FFA87FA 		uxtb	r10, r7
+ 428              	.LVL78:
+ 657:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx4 = (uint8_t)(value_tmp >> 16);
+ 429              		.loc 1 657 7 is_stmt 1 view .LVU126
+ 657:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx4 = (uint8_t)(value_tmp >> 16);
+ 430              		.loc 1 657 12 is_stmt 0 view .LVU127
+ 431 004a 4FEA1669 		lsr	r9, r6, #24
+ 432              	.LVL79:
+ 658:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx5 = (uint8_t)(value_tmp >> 8);
+ 433              		.loc 1 658 7 is_stmt 1 view .LVU128
+ 658:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx5 = (uint8_t)(value_tmp >> 8);
+ 434              		.loc 1 658 12 is_stmt 0 view .LVU129
+ 435 004e C6F30748 		ubfx	r8, r6, #16, #8
+ 436              	.LVL80:
+ 659:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx6 = (uint8_t)(value_tmp);
+ 437              		.loc 1 659 7 is_stmt 1 view .LVU130
+ 659:Drivers/BSP/Components/ov9655/ov9655.c ****       mtx6 = (uint8_t)(value_tmp);
+ 438              		.loc 1 659 12 is_stmt 0 view .LVU131
+ 439 0052 C6F30725 		ubfx	r5, r6, #8, #8
+ 440              	.LVL81:
+ 660:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_TSLB, tslb);
+ 441              		.loc 1 660 7 is_stmt 1 view .LVU132
+ 660:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_TSLB, tslb);
+ 442              		.loc 1 660 12 is_stmt 0 view .LVU133
+ 443 0056 F6B2     		uxtb	r6, r6
+ 444              	.LVL82:
+ 661:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX1, mtx1);
+ 445              		.loc 1 661 7 is_stmt 1 view .LVU134
+ 446 0058 E4B2     		uxtb	r4, r4
+ 447 005a C7F30742 		ubfx	r2, r7, #16, #8
+ 448 005e 3A21     		movs	r1, #58
+ 449 0060 2046     		mov	r0, r4
+ 450              	.LVL83:
+ 661:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX1, mtx1);
+ 451              		.loc 1 661 7 is_stmt 0 view .LVU135
+ 452 0062 FFF7FEFF 		bl	CAMERA_IO_Write
+ 453              	.LVL84:
+ 662:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX2, mtx2);
+ 454              		.loc 1 662 7 is_stmt 1 view .LVU136
+ 455 0066 5A46     		mov	r2, fp
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 25
+
+
+ 456 0068 4F21     		movs	r1, #79
+ 457 006a 2046     		mov	r0, r4
+ 458 006c FFF7FEFF 		bl	CAMERA_IO_Write
+ 459              	.LVL85:
+ 663:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX3, mtx3);
+ 460              		.loc 1 663 7 view .LVU137
+ 461 0070 5246     		mov	r2, r10
+ 462 0072 5021     		movs	r1, #80
+ 463 0074 2046     		mov	r0, r4
+ 464 0076 FFF7FEFF 		bl	CAMERA_IO_Write
+ 465              	.LVL86:
+ 664:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX4, mtx4);
+ 466              		.loc 1 664 7 view .LVU138
+ 467 007a 4A46     		mov	r2, r9
+ 468 007c 5121     		movs	r1, #81
+ 469 007e 2046     		mov	r0, r4
+ 470 0080 FFF7FEFF 		bl	CAMERA_IO_Write
+ 471              	.LVL87:
+ 665:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX5, mtx5);
+ 472              		.loc 1 665 7 view .LVU139
+ 473 0084 4246     		mov	r2, r8
+ 474 0086 5221     		movs	r1, #82
+ 475 0088 2046     		mov	r0, r4
+ 476 008a FFF7FEFF 		bl	CAMERA_IO_Write
+ 477              	.LVL88:
+ 666:Drivers/BSP/Components/ov9655/ov9655.c ****       CAMERA_IO_Write(DeviceAddr, OV9655_SENSOR_MTX6, mtx6);
+ 478              		.loc 1 666 7 view .LVU140
+ 479 008e 2A46     		mov	r2, r5
+ 480 0090 5321     		movs	r1, #83
+ 481 0092 2046     		mov	r0, r4
+ 482 0094 FFF7FEFF 		bl	CAMERA_IO_Write
+ 483              	.LVL89:
+ 667:Drivers/BSP/Components/ov9655/ov9655.c ****       break;
+ 484              		.loc 1 667 7 view .LVU141
+ 485 0098 3246     		mov	r2, r6
+ 486 009a 5421     		movs	r1, #84
+ 487 009c 2046     		mov	r0, r4
+ 488 009e FFF7FEFF 		bl	CAMERA_IO_Write
+ 489              	.LVL90:
+ 668:Drivers/BSP/Components/ov9655/ov9655.c ****     }     
+ 490              		.loc 1 668 7 view .LVU142
+ 675:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 491              		.loc 1 675 1 is_stmt 0 view .LVU143
+ 492 00a2 CCE7     		b	.L32
+ 493              		.cfi_endproc
+ 494              	.LFE1:
+ 496              		.section	.text.ov9655_Init,"ax",%progbits
+ 497              		.align	1
+ 498              		.global	ov9655_Init
+ 499              		.syntax unified
+ 500              		.thumb
+ 501              		.thumb_func
+ 503              	ov9655_Init:
+ 504              	.LVL91:
+ 505              	.LFB0:
+ 573:Drivers/BSP/Components/ov9655/ov9655.c ****   uint32_t index;
+ 506              		.loc 1 573 1 is_stmt 1 view -0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 26
+
+
+ 507              		.cfi_startproc
+ 508              		@ args = 0, pretend = 0, frame = 0
+ 509              		@ frame_needed = 0, uses_anonymous_args = 0
+ 573:Drivers/BSP/Components/ov9655/ov9655.c ****   uint32_t index;
+ 510              		.loc 1 573 1 is_stmt 0 view .LVU145
+ 511 0000 38B5     		push	{r3, r4, r5, lr}
+ 512              		.cfi_def_cfa_offset 16
+ 513              		.cfi_offset 3, -16
+ 514              		.cfi_offset 4, -12
+ 515              		.cfi_offset 5, -8
+ 516              		.cfi_offset 14, -4
+ 517 0002 0546     		mov	r5, r0
+ 518 0004 0C46     		mov	r4, r1
+ 574:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 519              		.loc 1 574 3 is_stmt 1 view .LVU146
+ 577:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 520              		.loc 1 577 3 view .LVU147
+ 521 0006 FFF7FEFF 		bl	CAMERA_IO_Init
+ 522              	.LVL92:
+ 580:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_Delay(200);
+ 523              		.loc 1 580 3 view .LVU148
+ 524 000a EDB2     		uxtb	r5, r5
+ 525              	.LVL93:
+ 580:Drivers/BSP/Components/ov9655/ov9655.c ****   CAMERA_Delay(200);
+ 526              		.loc 1 580 3 is_stmt 0 view .LVU149
+ 527 000c 8022     		movs	r2, #128
+ 528 000e 1221     		movs	r1, #18
+ 529 0010 2846     		mov	r0, r5
+ 530 0012 FFF7FEFF 		bl	CAMERA_IO_Write
+ 531              	.LVL94:
+ 581:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 532              		.loc 1 581 3 is_stmt 1 view .LVU150
+ 533 0016 C820     		movs	r0, #200
+ 534 0018 FFF7FEFF 		bl	CAMERA_Delay
+ 535              	.LVL95:
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 536              		.loc 1 584 3 view .LVU151
+ 537 001c 012C     		cmp	r4, #1
+ 538 001e 23D0     		beq	.L44
+ 539 0020 032C     		cmp	r4, #3
+ 540 0022 33D0     		beq	.L45
+ 541 0024 6CB1     		cbz	r4, .L39
+ 542              	.LVL96:
+ 543              	.L36:
+ 623:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 544              		.loc 1 623 1 is_stmt 0 view .LVU152
+ 545 0026 38BD     		pop	{r3, r4, r5, pc}
+ 546              	.LVL97:
+ 547              	.L41:
+ 590:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 548              		.loc 1 590 9 is_stmt 1 view .LVU153
+ 590:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 549              		.loc 1 590 56 is_stmt 0 view .LVU154
+ 550 0028 194B     		ldr	r3, .L47
+ 590:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 551              		.loc 1 590 80 view .LVU155
+ 552 002a 03EB4402 		add	r2, r3, r4, lsl #1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 27
+
+
+ 590:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 553              		.loc 1 590 9 view .LVU156
+ 554 002e 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 555 0030 13F81410 		ldrb	r1, [r3, r4, lsl #1]	@ zero_extendqisi2
+ 556 0034 2846     		mov	r0, r5
+ 557 0036 FFF7FEFF 		bl	CAMERA_IO_Write
+ 558              	.LVL98:
+ 591:Drivers/BSP/Components/ov9655/ov9655.c ****       } 
+ 559              		.loc 1 591 9 is_stmt 1 view .LVU157
+ 560 003a 0220     		movs	r0, #2
+ 561 003c FFF7FEFF 		bl	CAMERA_Delay
+ 562              	.LVL99:
+ 588:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 563              		.loc 1 588 57 discriminator 3 view .LVU158
+ 564 0040 0134     		adds	r4, r4, #1
+ 565              	.LVL100:
+ 566              	.L39:
+ 588:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 567              		.loc 1 588 25 discriminator 1 view .LVU159
+ 568 0042 952C     		cmp	r4, #149
+ 569 0044 F0D9     		bls	.L41
+ 570 0046 EEE7     		b	.L36
+ 571              	.L42:
+ 599:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 572              		.loc 1 599 9 view .LVU160
+ 599:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 573              		.loc 1 599 55 is_stmt 0 view .LVU161
+ 574 0048 124B     		ldr	r3, .L47+4
+ 599:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 575              		.loc 1 599 78 view .LVU162
+ 576 004a 03EB4402 		add	r2, r3, r4, lsl #1
+ 599:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 577              		.loc 1 599 9 view .LVU163
+ 578 004e 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 579 0050 13F81410 		ldrb	r1, [r3, r4, lsl #1]	@ zero_extendqisi2
+ 580 0054 2846     		mov	r0, r5
+ 581 0056 FFF7FEFF 		bl	CAMERA_IO_Write
+ 582              	.LVL101:
+ 600:Drivers/BSP/Components/ov9655/ov9655.c ****       } 
+ 583              		.loc 1 600 9 is_stmt 1 view .LVU164
+ 584 005a 0220     		movs	r0, #2
+ 585 005c FFF7FEFF 		bl	CAMERA_Delay
+ 586              	.LVL102:
+ 597:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 587              		.loc 1 597 56 discriminator 3 view .LVU165
+ 588 0060 0134     		adds	r4, r4, #1
+ 589              	.LVL103:
+ 590              	.L37:
+ 597:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 591              		.loc 1 597 25 discriminator 1 view .LVU166
+ 592 0062 952C     		cmp	r4, #149
+ 593 0064 F0D9     		bls	.L42
+ 594 0066 DEE7     		b	.L36
+ 595              	.LVL104:
+ 596              	.L44:
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 597              		.loc 1 584 3 is_stmt 0 view .LVU167
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 28
+
+
+ 598 0068 0024     		movs	r4, #0
+ 599              	.LVL105:
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 600              		.loc 1 584 3 view .LVU168
+ 601 006a FAE7     		b	.L37
+ 602              	.LVL106:
+ 603              	.L43:
+ 613:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 604              		.loc 1 613 9 is_stmt 1 view .LVU169
+ 613:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 605              		.loc 1 613 54 is_stmt 0 view .LVU170
+ 606 006c 0A4B     		ldr	r3, .L47+8
+ 613:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 607              		.loc 1 613 76 view .LVU171
+ 608 006e 03EB4402 		add	r2, r3, r4, lsl #1
+ 613:Drivers/BSP/Components/ov9655/ov9655.c ****         CAMERA_Delay(2);
+ 609              		.loc 1 613 9 view .LVU172
+ 610 0072 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 611 0074 13F81410 		ldrb	r1, [r3, r4, lsl #1]	@ zero_extendqisi2
+ 612 0078 2846     		mov	r0, r5
+ 613 007a FFF7FEFF 		bl	CAMERA_IO_Write
+ 614              	.LVL107:
+ 614:Drivers/BSP/Components/ov9655/ov9655.c ****       }
+ 615              		.loc 1 614 9 is_stmt 1 view .LVU173
+ 616 007e 0220     		movs	r0, #2
+ 617 0080 FFF7FEFF 		bl	CAMERA_Delay
+ 618              	.LVL108:
+ 611:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 619              		.loc 1 611 55 discriminator 3 view .LVU174
+ 620 0084 0134     		adds	r4, r4, #1
+ 621              	.LVL109:
+ 622              	.L38:
+ 611:Drivers/BSP/Components/ov9655/ov9655.c ****       {
+ 623              		.loc 1 611 25 discriminator 1 view .LVU175
+ 624 0086 922C     		cmp	r4, #146
+ 625 0088 F0D9     		bls	.L43
+ 626 008a CCE7     		b	.L36
+ 627              	.LVL110:
+ 628              	.L45:
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 629              		.loc 1 584 3 is_stmt 0 view .LVU176
+ 630 008c 0024     		movs	r4, #0
+ 631              	.LVL111:
+ 584:Drivers/BSP/Components/ov9655/ov9655.c ****   {
+ 632              		.loc 1 584 3 view .LVU177
+ 633 008e FAE7     		b	.L38
+ 634              	.L48:
+ 635              		.align	2
+ 636              	.L47:
+ 637 0090 00000000 		.word	OV9655_QQVGA
+ 638 0094 00000000 		.word	OV9655_QVGA
+ 639 0098 00000000 		.word	OV9655_VGA
+ 640              		.cfi_endproc
+ 641              	.LFE0:
+ 643              		.section	.text.ov9655_ReadID,"ax",%progbits
+ 644              		.align	1
+ 645              		.global	ov9655_ReadID
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 29
+
+
+ 646              		.syntax unified
+ 647              		.thumb
+ 648              		.thumb_func
+ 650              	ov9655_ReadID:
+ 651              	.LVL112:
+ 652              	.LFB2:
+ 683:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Initialize I2C */
+ 653              		.loc 1 683 1 is_stmt 1 view -0
+ 654              		.cfi_startproc
+ 655              		@ args = 0, pretend = 0, frame = 0
+ 656              		@ frame_needed = 0, uses_anonymous_args = 0
+ 683:Drivers/BSP/Components/ov9655/ov9655.c ****   /* Initialize I2C */
+ 657              		.loc 1 683 1 is_stmt 0 view .LVU179
+ 658 0000 10B5     		push	{r4, lr}
+ 659              		.cfi_def_cfa_offset 8
+ 660              		.cfi_offset 4, -8
+ 661              		.cfi_offset 14, -4
+ 662 0002 0446     		mov	r4, r0
+ 685:Drivers/BSP/Components/ov9655/ov9655.c ****   
+ 663              		.loc 1 685 3 is_stmt 1 view .LVU180
+ 664 0004 FFF7FEFF 		bl	CAMERA_IO_Init
+ 665              	.LVL113:
+ 688:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 666              		.loc 1 688 3 view .LVU181
+ 688:Drivers/BSP/Components/ov9655/ov9655.c **** }
+ 667              		.loc 1 688 11 is_stmt 0 view .LVU182
+ 668 0008 0A21     		movs	r1, #10
+ 669 000a E0B2     		uxtb	r0, r4
+ 670 000c FFF7FEFF 		bl	CAMERA_IO_Read
+ 671              	.LVL114:
+ 689:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 672              		.loc 1 689 1 view .LVU183
+ 673 0010 10BD     		pop	{r4, pc}
+ 689:Drivers/BSP/Components/ov9655/ov9655.c **** 
+ 674              		.loc 1 689 1 view .LVU184
+ 675              		.cfi_endproc
+ 676              	.LFE2:
+ 678              		.global	OV9655_QQVGA
+ 679              		.section	.rodata.OV9655_QQVGA,"a"
+ 680              		.align	2
+ 683              	OV9655_QQVGA:
+ 684 0000 0000     		.ascii	"\000\000"
+ 685 0002 0180     		.ascii	"\001\200"
+ 686 0004 0280     		.ascii	"\002\200"
+ 687 0006 0302     		.ascii	"\003\002"
+ 688 0008 0403     		.ascii	"\004\003"
+ 689 000a 0901     		.ascii	"\011\001"
+ 690 000c 0B57     		.ascii	"\013W"
+ 691 000e 0E61     		.ascii	"\016a"
+ 692 0010 0F40     		.ascii	"\017@"
+ 693 0012 1101     		.ascii	"\021\001"
+ 694 0014 1262     		.ascii	"\022b"
+ 695 0016 13C7     		.ascii	"\023\307"
+ 696 0018 143A     		.ascii	"\024:"
+ 697 001a 1624     		.ascii	"\026$"
+ 698 001c 1718     		.ascii	"\027\030"
+ 699 001e 1804     		.ascii	"\030\004"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 30
+
+
+ 700 0020 1901     		.ascii	"\031\001"
+ 701 0022 1A81     		.ascii	"\032\201"
+ 702 0024 1E00     		.ascii	"\036\000"
+ 703 0026 243C     		.ascii	"$<"
+ 704 0028 2536     		.ascii	"%6"
+ 705 002a 2672     		.ascii	"&r"
+ 706 002c 2708     		.ascii	"'\010"
+ 707 002e 2808     		.ascii	"(\010"
+ 708 0030 2915     		.ascii	")\025"
+ 709 0032 2A00     		.ascii	"*\000"
+ 710 0034 2B00     		.ascii	"+\000"
+ 711 0036 2C08     		.ascii	",\010"
+ 712 0038 32A4     		.ascii	"2\244"
+ 713 003a 3300     		.ascii	"3\000"
+ 714 003c 343F     		.ascii	"4?"
+ 715 003e 3500     		.ascii	"5\000"
+ 716 0040 363A     		.ascii	"6:"
+ 717 0042 3872     		.ascii	"8r"
+ 718 0044 3957     		.ascii	"9W"
+ 719 0046 3ACC     		.ascii	":\314"
+ 720 0048 3B04     		.ascii	";\004"
+ 721 004a 3D99     		.ascii	"=\231"
+ 722 004c 3E0E     		.ascii	">\016"
+ 723 004e 3FC1     		.ascii	"?\301"
+ 724 0050 40C0     		.ascii	"@\300"
+ 725 0052 4141     		.ascii	"AA"
+ 726 0054 42C0     		.ascii	"B\300"
+ 727 0056 430A     		.ascii	"C\012"
+ 728 0058 44F0     		.ascii	"D\360"
+ 729 005a 4546     		.ascii	"EF"
+ 730 005c 4662     		.ascii	"Fb"
+ 731 005e 472A     		.ascii	"G*"
+ 732 0060 483C     		.ascii	"H<"
+ 733 0062 4AFC     		.ascii	"J\374"
+ 734 0064 4BFC     		.ascii	"K\374"
+ 735 0066 4C7F     		.ascii	"L\177"
+ 736 0068 4D7F     		.ascii	"M\177"
+ 737 006a 4E7F     		.ascii	"N\177"
+ 738 006c 4F98     		.ascii	"O\230"
+ 739 006e 5098     		.ascii	"P\230"
+ 740 0070 5100     		.ascii	"Q\000"
+ 741 0072 5228     		.ascii	"R("
+ 742 0074 5370     		.ascii	"Sp"
+ 743 0076 5498     		.ascii	"T\230"
+ 744 0078 581A     		.ascii	"X\032"
+ 745 007a 5985     		.ascii	"Y\205"
+ 746 007c 5AA9     		.ascii	"Z\251"
+ 747 007e 5B64     		.ascii	"[d"
+ 748 0080 5C84     		.ascii	"\\\204"
+ 749 0082 5D53     		.ascii	"]S"
+ 750 0084 5E0E     		.ascii	"^\016"
+ 751 0086 5FF0     		.ascii	"_\360"
+ 752 0088 60F0     		.ascii	"`\360"
+ 753 008a 61F0     		.ascii	"a\360"
+ 754 008c 6200     		.ascii	"b\000"
+ 755 008e 6300     		.ascii	"c\000"
+ 756 0090 6402     		.ascii	"d\002"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 31
+
+
+ 757 0092 6520     		.ascii	"e "
+ 758 0094 6600     		.ascii	"f\000"
+ 759 0096 690A     		.ascii	"i\012"
+ 760 0098 6B5A     		.ascii	"kZ"
+ 761 009a 6C04     		.ascii	"l\004"
+ 762 009c 6D55     		.ascii	"mU"
+ 763 009e 6E00     		.ascii	"n\000"
+ 764 00a0 6F9D     		.ascii	"o\235"
+ 765 00a2 7021     		.ascii	"p!"
+ 766 00a4 7178     		.ascii	"qx"
+ 767 00a6 7222     		.ascii	"r\""
+ 768 00a8 7302     		.ascii	"s\002"
+ 769 00aa 7410     		.ascii	"t\020"
+ 770 00ac 7510     		.ascii	"u\020"
+ 771 00ae 7601     		.ascii	"v\001"
+ 772 00b0 7702     		.ascii	"w\002"
+ 773 00b2 7A12     		.ascii	"z\022"
+ 774 00b4 7B08     		.ascii	"{\010"
+ 775 00b6 7C16     		.ascii	"|\026"
+ 776 00b8 7D30     		.ascii	"}0"
+ 777 00ba 7E5E     		.ascii	"~^"
+ 778 00bc 7F72     		.ascii	"\177r"
+ 779 00be 8082     		.ascii	"\200\202"
+ 780 00c0 818E     		.ascii	"\201\216"
+ 781 00c2 829A     		.ascii	"\202\232"
+ 782 00c4 83A4     		.ascii	"\203\244"
+ 783 00c6 84AC     		.ascii	"\204\254"
+ 784 00c8 85B8     		.ascii	"\205\270"
+ 785 00ca 86C3     		.ascii	"\206\303"
+ 786 00cc 87D6     		.ascii	"\207\326"
+ 787 00ce 88E6     		.ascii	"\210\346"
+ 788 00d0 89F2     		.ascii	"\211\362"
+ 789 00d2 8A24     		.ascii	"\212$"
+ 790 00d4 8C80     		.ascii	"\214\200"
+ 791 00d6 907D     		.ascii	"\220}"
+ 792 00d8 917B     		.ascii	"\221{"
+ 793 00da 9D02     		.ascii	"\235\002"
+ 794 00dc 9E02     		.ascii	"\236\002"
+ 795 00de 9F7A     		.ascii	"\237z"
+ 796 00e0 A079     		.ascii	"\240y"
+ 797 00e2 A140     		.ascii	"\241@"
+ 798 00e4 A450     		.ascii	"\244P"
+ 799 00e6 A568     		.ascii	"\245h"
+ 800 00e8 A64A     		.ascii	"\246J"
+ 801 00ea A8C1     		.ascii	"\250\301"
+ 802 00ec A9EF     		.ascii	"\251\357"
+ 803 00ee AA92     		.ascii	"\252\222"
+ 804 00f0 AB04     		.ascii	"\253\004"
+ 805 00f2 AC80     		.ascii	"\254\200"
+ 806 00f4 AD80     		.ascii	"\255\200"
+ 807 00f6 AE80     		.ascii	"\256\200"
+ 808 00f8 AF80     		.ascii	"\257\200"
+ 809 00fa B2F2     		.ascii	"\262\362"
+ 810 00fc B320     		.ascii	"\263 "
+ 811 00fe B420     		.ascii	"\264 "
+ 812 0100 B500     		.ascii	"\265\000"
+ 813 0102 B6AF     		.ascii	"\266\257"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 32
+
+
+ 814 0104 B6AF     		.ascii	"\266\257"
+ 815 0106 BBAE     		.ascii	"\273\256"
+ 816 0108 BC7F     		.ascii	"\274\177"
+ 817 010a BD7F     		.ascii	"\275\177"
+ 818 010c BE7F     		.ascii	"\276\177"
+ 819 010e BF7F     		.ascii	"\277\177"
+ 820 0110 BF7F     		.ascii	"\277\177"
+ 821 0112 C0AA     		.ascii	"\300\252"
+ 822 0114 C1C0     		.ascii	"\301\300"
+ 823 0116 C201     		.ascii	"\302\001"
+ 824 0118 C34E     		.ascii	"\303N"
+ 825 011a C605     		.ascii	"\306\005"
+ 826 011c C782     		.ascii	"\307\202"
+ 827 011e C9E0     		.ascii	"\311\340"
+ 828 0120 CAE8     		.ascii	"\312\350"
+ 829 0122 CBF0     		.ascii	"\313\360"
+ 830 0124 CCD8     		.ascii	"\314\330"
+ 831 0126 CD93     		.ascii	"\315\223"
+ 832 0128 1263     		.ascii	"\022c"
+ 833 012a 4010     		.ascii	"@\020"
+ 834              		.global	OV9655_QVGA
+ 835              		.section	.rodata.OV9655_QVGA,"a"
+ 836              		.align	2
+ 839              	OV9655_QVGA:
+ 840 0000 0000     		.ascii	"\000\000"
+ 841 0002 0180     		.ascii	"\001\200"
+ 842 0004 0280     		.ascii	"\002\200"
+ 843 0006 0302     		.ascii	"\003\002"
+ 844 0008 0403     		.ascii	"\004\003"
+ 845 000a 0901     		.ascii	"\011\001"
+ 846 000c 0B57     		.ascii	"\013W"
+ 847 000e 0E61     		.ascii	"\016a"
+ 848 0010 0F40     		.ascii	"\017@"
+ 849 0012 1101     		.ascii	"\021\001"
+ 850 0014 1262     		.ascii	"\022b"
+ 851 0016 13C7     		.ascii	"\023\307"
+ 852 0018 143A     		.ascii	"\024:"
+ 853 001a 1624     		.ascii	"\026$"
+ 854 001c 1718     		.ascii	"\027\030"
+ 855 001e 1804     		.ascii	"\030\004"
+ 856 0020 1901     		.ascii	"\031\001"
+ 857 0022 1A81     		.ascii	"\032\201"
+ 858 0024 1E00     		.ascii	"\036\000"
+ 859 0026 243C     		.ascii	"$<"
+ 860 0028 2536     		.ascii	"%6"
+ 861 002a 2672     		.ascii	"&r"
+ 862 002c 2708     		.ascii	"'\010"
+ 863 002e 2808     		.ascii	"(\010"
+ 864 0030 2915     		.ascii	")\025"
+ 865 0032 2A00     		.ascii	"*\000"
+ 866 0034 2B00     		.ascii	"+\000"
+ 867 0036 2C08     		.ascii	",\010"
+ 868 0038 3212     		.ascii	"2\022"
+ 869 003a 3300     		.ascii	"3\000"
+ 870 003c 343F     		.ascii	"4?"
+ 871 003e 3500     		.ascii	"5\000"
+ 872 0040 363A     		.ascii	"6:"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 33
+
+
+ 873 0042 3872     		.ascii	"8r"
+ 874 0044 3957     		.ascii	"9W"
+ 875 0046 3ACC     		.ascii	":\314"
+ 876 0048 3B04     		.ascii	";\004"
+ 877 004a 3D99     		.ascii	"=\231"
+ 878 004c 3E02     		.ascii	">\002"
+ 879 004e 3FC1     		.ascii	"?\301"
+ 880 0050 40C0     		.ascii	"@\300"
+ 881 0052 4141     		.ascii	"AA"
+ 882 0054 42C0     		.ascii	"B\300"
+ 883 0056 430A     		.ascii	"C\012"
+ 884 0058 44F0     		.ascii	"D\360"
+ 885 005a 4546     		.ascii	"EF"
+ 886 005c 4662     		.ascii	"Fb"
+ 887 005e 472A     		.ascii	"G*"
+ 888 0060 483C     		.ascii	"H<"
+ 889 0062 4AFC     		.ascii	"J\374"
+ 890 0064 4BFC     		.ascii	"K\374"
+ 891 0066 4C7F     		.ascii	"L\177"
+ 892 0068 4D7F     		.ascii	"M\177"
+ 893 006a 4E7F     		.ascii	"N\177"
+ 894 006c 4F98     		.ascii	"O\230"
+ 895 006e 5098     		.ascii	"P\230"
+ 896 0070 5100     		.ascii	"Q\000"
+ 897 0072 5228     		.ascii	"R("
+ 898 0074 5370     		.ascii	"Sp"
+ 899 0076 5498     		.ascii	"T\230"
+ 900 0078 581A     		.ascii	"X\032"
+ 901 007a 5985     		.ascii	"Y\205"
+ 902 007c 5AA9     		.ascii	"Z\251"
+ 903 007e 5B64     		.ascii	"[d"
+ 904 0080 5C84     		.ascii	"\\\204"
+ 905 0082 5D53     		.ascii	"]S"
+ 906 0084 5E0E     		.ascii	"^\016"
+ 907 0086 5FF0     		.ascii	"_\360"
+ 908 0088 60F0     		.ascii	"`\360"
+ 909 008a 61F0     		.ascii	"a\360"
+ 910 008c 6200     		.ascii	"b\000"
+ 911 008e 6300     		.ascii	"c\000"
+ 912 0090 6402     		.ascii	"d\002"
+ 913 0092 6520     		.ascii	"e "
+ 914 0094 6600     		.ascii	"f\000"
+ 915 0096 690A     		.ascii	"i\012"
+ 916 0098 6B5A     		.ascii	"kZ"
+ 917 009a 6C04     		.ascii	"l\004"
+ 918 009c 6D55     		.ascii	"mU"
+ 919 009e 6E00     		.ascii	"n\000"
+ 920 00a0 6F9D     		.ascii	"o\235"
+ 921 00a2 7021     		.ascii	"p!"
+ 922 00a4 7178     		.ascii	"qx"
+ 923 00a6 7211     		.ascii	"r\021"
+ 924 00a8 7301     		.ascii	"s\001"
+ 925 00aa 7410     		.ascii	"t\020"
+ 926 00ac 7510     		.ascii	"u\020"
+ 927 00ae 7601     		.ascii	"v\001"
+ 928 00b0 7702     		.ascii	"w\002"
+ 929 00b2 7A12     		.ascii	"z\022"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 34
+
+
+ 930 00b4 7B08     		.ascii	"{\010"
+ 931 00b6 7C16     		.ascii	"|\026"
+ 932 00b8 7D30     		.ascii	"}0"
+ 933 00ba 7E5E     		.ascii	"~^"
+ 934 00bc 7F72     		.ascii	"\177r"
+ 935 00be 8082     		.ascii	"\200\202"
+ 936 00c0 818E     		.ascii	"\201\216"
+ 937 00c2 829A     		.ascii	"\202\232"
+ 938 00c4 83A4     		.ascii	"\203\244"
+ 939 00c6 84AC     		.ascii	"\204\254"
+ 940 00c8 85B8     		.ascii	"\205\270"
+ 941 00ca 86C3     		.ascii	"\206\303"
+ 942 00cc 87D6     		.ascii	"\207\326"
+ 943 00ce 88E6     		.ascii	"\210\346"
+ 944 00d0 89F2     		.ascii	"\211\362"
+ 945 00d2 8A24     		.ascii	"\212$"
+ 946 00d4 8C80     		.ascii	"\214\200"
+ 947 00d6 907D     		.ascii	"\220}"
+ 948 00d8 917B     		.ascii	"\221{"
+ 949 00da 9D02     		.ascii	"\235\002"
+ 950 00dc 9E02     		.ascii	"\236\002"
+ 951 00de 9F7A     		.ascii	"\237z"
+ 952 00e0 A079     		.ascii	"\240y"
+ 953 00e2 A140     		.ascii	"\241@"
+ 954 00e4 A450     		.ascii	"\244P"
+ 955 00e6 A568     		.ascii	"\245h"
+ 956 00e8 A64A     		.ascii	"\246J"
+ 957 00ea A8C1     		.ascii	"\250\301"
+ 958 00ec A9EF     		.ascii	"\251\357"
+ 959 00ee AA92     		.ascii	"\252\222"
+ 960 00f0 AB04     		.ascii	"\253\004"
+ 961 00f2 AC80     		.ascii	"\254\200"
+ 962 00f4 AD80     		.ascii	"\255\200"
+ 963 00f6 AE80     		.ascii	"\256\200"
+ 964 00f8 AF80     		.ascii	"\257\200"
+ 965 00fa B2F2     		.ascii	"\262\362"
+ 966 00fc B320     		.ascii	"\263 "
+ 967 00fe B420     		.ascii	"\264 "
+ 968 0100 B500     		.ascii	"\265\000"
+ 969 0102 B6AF     		.ascii	"\266\257"
+ 970 0104 B6AF     		.ascii	"\266\257"
+ 971 0106 BBAE     		.ascii	"\273\256"
+ 972 0108 BC7F     		.ascii	"\274\177"
+ 973 010a BD7F     		.ascii	"\275\177"
+ 974 010c BE7F     		.ascii	"\276\177"
+ 975 010e BF7F     		.ascii	"\277\177"
+ 976 0110 BF7F     		.ascii	"\277\177"
+ 977 0112 C0AA     		.ascii	"\300\252"
+ 978 0114 C1C0     		.ascii	"\301\300"
+ 979 0116 C201     		.ascii	"\302\001"
+ 980 0118 C34E     		.ascii	"\303N"
+ 981 011a C605     		.ascii	"\306\005"
+ 982 011c C781     		.ascii	"\307\201"
+ 983 011e C9E0     		.ascii	"\311\340"
+ 984 0120 CAE8     		.ascii	"\312\350"
+ 985 0122 CBF0     		.ascii	"\313\360"
+ 986 0124 CCD8     		.ascii	"\314\330"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 35
+
+
+ 987 0126 CD93     		.ascii	"\315\223"
+ 988 0128 1263     		.ascii	"\022c"
+ 989 012a 4010     		.ascii	"@\020"
+ 990              		.global	OV9655_VGA
+ 991              		.section	.rodata.OV9655_VGA,"a"
+ 992              		.align	2
+ 995              	OV9655_VGA:
+ 996 0000 0000     		.ascii	"\000\000"
+ 997 0002 0180     		.ascii	"\001\200"
+ 998 0004 0280     		.ascii	"\002\200"
+ 999 0006 B500     		.ascii	"\265\000"
+ 1000 0008 3500     		.ascii	"5\000"
+ 1001 000a A8C1     		.ascii	"\250\301"
+ 1002 000c 3ACC     		.ascii	":\314"
+ 1003 000e 3D99     		.ascii	"=\231"
+ 1004 0010 7702     		.ascii	"w\002"
+ 1005 0012 13E7     		.ascii	"\023\347"
+ 1006 0014 2672     		.ascii	"&r"
+ 1007 0016 2708     		.ascii	"'\010"
+ 1008 0018 2808     		.ascii	"(\010"
+ 1009 001a 2C08     		.ascii	",\010"
+ 1010 001c AB04     		.ascii	"\253\004"
+ 1011 001e 6E00     		.ascii	"n\000"
+ 1012 0020 6D55     		.ascii	"mU"
+ 1013 0022 0011     		.ascii	"\000\021"
+ 1014 0024 107B     		.ascii	"\020{"
+ 1015 0026 BBAE     		.ascii	"\273\256"
+ 1016 0028 1103     		.ascii	"\021\003"
+ 1017 002a 7200     		.ascii	"r\000"
+ 1018 002c 3E0C     		.ascii	">\014"
+ 1019 002e 743A     		.ascii	"t:"
+ 1020 0030 7601     		.ascii	"v\001"
+ 1021 0032 7535     		.ascii	"u5"
+ 1022 0034 7300     		.ascii	"s\000"
+ 1023 0036 C780     		.ascii	"\307\200"
+ 1024 0038 6200     		.ascii	"b\000"
+ 1025 003a 6300     		.ascii	"c\000"
+ 1026 003c 6402     		.ascii	"d\002"
+ 1027 003e 6520     		.ascii	"e "
+ 1028 0040 6601     		.ascii	"f\001"
+ 1029 0042 C34E     		.ascii	"\303N"
+ 1030 0044 3300     		.ascii	"3\000"
+ 1031 0046 A450     		.ascii	"\244P"
+ 1032 0048 AA92     		.ascii	"\252\222"
+ 1033 004a C201     		.ascii	"\302\001"
+ 1034 004c C1C8     		.ascii	"\301\310"
+ 1035 004e 1E04     		.ascii	"\036\004"
+ 1036 0050 A9EF     		.ascii	"\251\357"
+ 1037 0052 0E61     		.ascii	"\016a"
+ 1038 0054 3957     		.ascii	"9W"
+ 1039 0056 0F48     		.ascii	"\017H"
+ 1040 0058 243C     		.ascii	"$<"
+ 1041 005a 2536     		.ascii	"%6"
+ 1042 005c 1263     		.ascii	"\022c"
+ 1043 005e 0312     		.ascii	"\003\022"
+ 1044 0060 32FF     		.ascii	"2\377"
+ 1045 0062 1716     		.ascii	"\027\026"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 36
+
+
+ 1046 0064 1802     		.ascii	"\030\002"
+ 1047 0066 1901     		.ascii	"\031\001"
+ 1048 0068 1A3D     		.ascii	"\032="
+ 1049 006a 36FA     		.ascii	"6\372"
+ 1050 006c 690A     		.ascii	"i\012"
+ 1051 006e 8C8D     		.ascii	"\214\215"
+ 1052 0070 C0AA     		.ascii	"\300\252"
+ 1053 0072 40D0     		.ascii	"@\320"
+ 1054 0074 4314     		.ascii	"C\024"
+ 1055 0076 44F0     		.ascii	"D\360"
+ 1056 0078 4546     		.ascii	"EF"
+ 1057 007a 4662     		.ascii	"Fb"
+ 1058 007c 472A     		.ascii	"G*"
+ 1059 007e 483C     		.ascii	"H<"
+ 1060 0080 5985     		.ascii	"Y\205"
+ 1061 0082 5AA9     		.ascii	"Z\251"
+ 1062 0084 5B64     		.ascii	"[d"
+ 1063 0086 5C84     		.ascii	"\\\204"
+ 1064 0088 5D53     		.ascii	"]S"
+ 1065 008a 5E0E     		.ascii	"^\016"
+ 1066 008c 6C0C     		.ascii	"l\014"
+ 1067 008e C685     		.ascii	"\306\205"
+ 1068 0090 CBF0     		.ascii	"\313\360"
+ 1069 0092 CCD8     		.ascii	"\314\330"
+ 1070 0094 7178     		.ascii	"qx"
+ 1071 0096 A568     		.ascii	"\245h"
+ 1072 0098 6F9E     		.ascii	"o\236"
+ 1073 009a 42C0     		.ascii	"B\300"
+ 1074 009c 3F82     		.ascii	"?\202"
+ 1075 009e 8A23     		.ascii	"\212#"
+ 1076 00a0 143A     		.ascii	"\024:"
+ 1077 00a2 3BCC     		.ascii	";\314"
+ 1078 00a4 343D     		.ascii	"4="
+ 1079 00a6 4140     		.ascii	"A@"
+ 1080 00a8 C9E0     		.ascii	"\311\340"
+ 1081 00aa CAE8     		.ascii	"\312\350"
+ 1082 00ac CD93     		.ascii	"\315\223"
+ 1083 00ae 7A20     		.ascii	"z "
+ 1084 00b0 7B1C     		.ascii	"{\034"
+ 1085 00b2 7C28     		.ascii	"|("
+ 1086 00b4 7D3C     		.ascii	"}<"
+ 1087 00b6 7E5A     		.ascii	"~Z"
+ 1088 00b8 7F68     		.ascii	"\177h"
+ 1089 00ba 8076     		.ascii	"\200v"
+ 1090 00bc 8180     		.ascii	"\201\200"
+ 1091 00be 8288     		.ascii	"\202\210"
+ 1092 00c0 838F     		.ascii	"\203\217"
+ 1093 00c2 8496     		.ascii	"\204\226"
+ 1094 00c4 85A3     		.ascii	"\205\243"
+ 1095 00c6 86AF     		.ascii	"\206\257"
+ 1096 00c8 87C4     		.ascii	"\207\304"
+ 1097 00ca 88D7     		.ascii	"\210\327"
+ 1098 00cc 89E8     		.ascii	"\211\350"
+ 1099 00ce 4F98     		.ascii	"O\230"
+ 1100 00d0 5098     		.ascii	"P\230"
+ 1101 00d2 5100     		.ascii	"Q\000"
+ 1102 00d4 5228     		.ascii	"R("
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 37
+
+
+ 1103 00d6 5370     		.ascii	"Sp"
+ 1104 00d8 5498     		.ascii	"T\230"
+ 1105 00da 581A     		.ascii	"X\032"
+ 1106 00dc 6B5A     		.ascii	"kZ"
+ 1107 00de 9092     		.ascii	"\220\222"
+ 1108 00e0 9192     		.ascii	"\221\222"
+ 1109 00e2 9F90     		.ascii	"\237\220"
+ 1110 00e4 A090     		.ascii	"\240\220"
+ 1111 00e6 1624     		.ascii	"\026$"
+ 1112 00e8 2A00     		.ascii	"*\000"
+ 1113 00ea 2B00     		.ascii	"+\000"
+ 1114 00ec AC80     		.ascii	"\254\200"
+ 1115 00ee AD80     		.ascii	"\255\200"
+ 1116 00f0 AE80     		.ascii	"\256\200"
+ 1117 00f2 AF80     		.ascii	"\257\200"
+ 1118 00f4 B2F2     		.ascii	"\262\362"
+ 1119 00f6 B320     		.ascii	"\263 "
+ 1120 00f8 B420     		.ascii	"\264 "
+ 1121 00fa B6AF     		.ascii	"\266\257"
+ 1122 00fc 2915     		.ascii	")\025"
+ 1123 00fe 9D02     		.ascii	"\235\002"
+ 1124 0100 9E02     		.ascii	"\236\002"
+ 1125 0102 9E02     		.ascii	"\236\002"
+ 1126 0104 0403     		.ascii	"\004\003"
+ 1127 0106 052E     		.ascii	"\005."
+ 1128 0108 062E     		.ascii	"\006."
+ 1129 010a 072E     		.ascii	"\007."
+ 1130 010c 082E     		.ascii	"\010."
+ 1131 010e 2F2E     		.ascii	"/."
+ 1132 0110 4AE9     		.ascii	"J\351"
+ 1133 0112 4BDD     		.ascii	"K\335"
+ 1134 0114 4CDD     		.ascii	"L\335"
+ 1135 0116 4DDD     		.ascii	"M\335"
+ 1136 0118 4EDD     		.ascii	"N\335"
+ 1137 011a 7006     		.ascii	"p\006"
+ 1138 011c A640     		.ascii	"\246@"
+ 1139 011e BC02     		.ascii	"\274\002"
+ 1140 0120 BD01     		.ascii	"\275\001"
+ 1141 0122 BE02     		.ascii	"\276\002"
+ 1142 0124 BF01     		.ascii	"\277\001"
+ 1143              		.global	ov9655_drv
+ 1144              		.section	.data.ov9655_drv,"aw"
+ 1145              		.align	2
+ 1148              	ov9655_drv:
+ 1149 0000 00000000 		.word	ov9655_Init
+ 1150 0004 00000000 		.word	ov9655_ReadID
+ 1151 0008 00000000 		.word	ov9655_Config
+ 1152              		.text
+ 1153              	.Letext0:
+ 1154              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1155              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1156              		.file 4 "Drivers/BSP/Components/ov9655/../Common/camera.h"
+ 1157              		.file 5 "Drivers/BSP/Components/ov9655/ov9655.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ov9655.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:20     .text.ov9655_ConvertValue:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:25     .text.ov9655_ConvertValue:00000000 ov9655_ConvertValue
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:54     .text.ov9655_ConvertValue:00000018 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:58     .text.ov9655_ConvertValue:0000001c $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:110    .text.ov9655_ConvertValue:00000044 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:120    .text.ov9655_ConvertValue:0000004e $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:247    .text.ov9655_ConvertValue:00000094 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:251    .text.ov9655_ConvertValue:00000098 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:327    .text.ov9655_ConvertValue:000000d0 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:335    .text.ov9655_Config:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:341    .text.ov9655_Config:00000000 ov9655_Config
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:497    .text.ov9655_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:503    .text.ov9655_Init:00000000 ov9655_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:637    .text.ov9655_Init:00000090 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:683    .rodata.OV9655_QQVGA:00000000 OV9655_QQVGA
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:839    .rodata.OV9655_QVGA:00000000 OV9655_QVGA
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:995    .rodata.OV9655_VGA:00000000 OV9655_VGA
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:644    .text.ov9655_ReadID:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:650    .text.ov9655_ReadID:00000000 ov9655_ReadID
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:680    .rodata.OV9655_QQVGA:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:836    .rodata.OV9655_QVGA:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:992    .rodata.OV9655_VGA:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:1148   .data.ov9655_drv:00000000 ov9655_drv
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccn612Ws.s:1145   .data.ov9655_drv:00000000 $d
+
+UNDEFINED SYMBOLS
+CAMERA_IO_Write
+CAMERA_IO_Init
+CAMERA_Delay
+CAMERA_IO_Read

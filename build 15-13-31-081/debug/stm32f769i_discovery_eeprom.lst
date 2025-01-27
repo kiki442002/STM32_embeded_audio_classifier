@@ -1,0 +1,1365 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"stm32f769i_discovery_eeprom.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c"
+  19              		.section	.text.BSP_EEPROM_Init,"ax",%progbits
+  20              		.align	1
+  21              		.global	BSP_EEPROM_Init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	BSP_EEPROM_Init:
+  27              	.LFB141:
+   1:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+   2:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   ******************************************************************************
+   3:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @file    stm32f769i_discovery_eeprom.c
+   4:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief   This file provides a set of functions needed to manage an I2C M24LR64 
+   6:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *          EEPROM memory.
+   7:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *
+   8:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   ******************************************************************************
+   9:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @attention
+  10:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *
+  11:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * Copyright (c) 2016 STMicroelectronics.
+  12:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * All rights reserved.
+  13:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *
+  14:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  15:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * in the root directory of this software component.
+  16:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  17:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *
+  18:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   ******************************************************************************
+  19:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   @verbatim
+  20:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             To be able to use this driver, the switch EE_M24LR64 must be defined
+  21:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             in your toolchain compiler preprocessor
+  22:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             
+  23:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             =================================================================== 
+  24:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             Notes:
+  25:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****              - The I2C EEPROM memory (M24LR64) is available on separate daughter 
+  26:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                board ANT7-M24LR-A, which is not provided with the STM32F769I_DISCOVERY
+  27:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                board.
+  28:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                To use this driver you have to connect the ANT7-M24LR-A to CN2 
+  29:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                connector of STM32F769I_DISCOVERY board.
+  30:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             ===================================================================
+  31:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 2
+
+
+  32:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             It implements a high level communication layer for read and write 
+  33:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             from/to this memory. The needed STM32F7xx hardware resources (I2C and
+  34:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             GPIO) are defined in stm32f769i_discovery.h file, and the initialization is
+  35:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             performed in EEPROM_IO_Init() function declared in stm32f769i_discovery.c
+  36:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             file.
+  37:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             You can easily tailor this driver to any other development board, 
+  38:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             by just adapting the defines for hardware resources and 
+  39:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             EEPROM_IO_Init() function. 
+  40:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           
+  41:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****             @note In this driver, basic read and write functions (BSP_EEPROM_ReadBuffer() 
+  42:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   and BSP_EEPROM_WritePage()) use DMA mode to perform the data 
+  43:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   transfer to/from EEPROM memory.
+  44:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+  45:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****            @note   Regarding BSP_EEPROM_WritePage(), it is an optimized function to perform
+  46:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   small write (less than 1 page) BUT the number of bytes (combined to write start a
+  47:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   cross the EEPROM page boundary. This function can only writes into
+  48:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   the boundaries of an EEPROM page.
+  49:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   This function doesn't check on boundaries condition (in this driver 
+  50:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   the function BSP_EEPROM_WriteBuffer() which calls BSP_EEPROM_WritePage() is 
+  51:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                   responsible of checking on Page boundaries).
+  52:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****    
+  53:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                
+  54:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        +-----------------------------------------------------------------+
+  55:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        |               Pin assignment for M24LR64 EEPROM                 |
+  56:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        +---------------------------------------+-----------+-------------+
+  57:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        |  STM32F7xx I2C Pins                   |   EEPROM  |   Pin       |
+  58:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        +---------------------------------------+-----------+-------------+
+  59:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   E0(GND) |    1  (0V)  |
+  60:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   AC0     |    2        |
+  61:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   AC1     |    3        |
+  62:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   VSS     |    4  (0V)  |
+  63:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | SDA                                   |   SDA     |    5        |
+  64:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | SCL                                   |   SCL     |    6        |
+  65:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   E1(GND) |    7  (0V)  |
+  66:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        | .                                     |   VDD     |    8 (3.3V) |
+  67:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****        +---------------------------------------+-----------+-------------+
+  68:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   @endverbatim
+  69:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   ******************************************************************************
+  70:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+  71:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+  72:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /* Dependencies 
+  73:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** - stm32f769i_discovery.c
+  74:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** EndDependencies */
+  75:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+  76:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /* Includes ------------------------------------------------------------------*/
+  77:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** #include "stm32f769i_discovery_eeprom.h"
+  78:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+  79:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @addtogroup BSP
+  80:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+  81:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+  82:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+  83:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @addtogroup STM32F769I_DISCOVERY
+  84:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+  85:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+  86:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+  87:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @addtogroup STM32F769I_DISCOVERY_EEPROM STM32F769I_DISCOVERY EEPROM
+  88:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief This file includes the I2C EEPROM driver of STM32F769I-DISCOVERY board.
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 3
+
+
+  89:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+  90:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+  91:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+  92:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Types  EEPROM Private Types
+  93:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+  94:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+  95:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+  96:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @}
+  97:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+  98:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+  99:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Defines EEPROM Private Defines
+ 100:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+ 101:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */  
+ 102:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 103:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @}
+ 104:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 105:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 106:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Macros EEPROM Private Macros
+ 107:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+ 108:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 109:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 110:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @}
+ 111:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 112:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 113:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Variables  EEPROM Private Variables
+ 114:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+ 115:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 116:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** __IO uint16_t EEPROMAddress = 0;
+ 117:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** __IO uint16_t EEPROMDataRead;
+ 118:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** __IO uint8_t  EEPROMDataWrite;
+ 119:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 120:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @}
+ 121:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 122:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 123:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Function_Prototypes EEPROM Private Function Proto
+ 124:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+ 125:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 126:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 127:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @}
+ 128:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 129:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 130:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /** @defgroup STM32F769I_DISCOVERY_EEPROM_Private_Functions EEPROM Private Functions
+ 131:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @{
+ 132:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */ 
+ 133:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 134:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 135:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Initializes peripherals used by the I2C EEPROM driver.
+ 136:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @note   There are 2 different versions of M24LR64 (A01 & A02).
+ 137:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *             Then try to connect on 1st one (EEPROM_I2C_ADDRESS_A01) 
+ 138:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *             and if problem, check the 2nd one (EEPROM_I2C_ADDRESS_A02)
+ 139:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM_OK (0) if operation is correctly performed, else return value 
+ 140:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         different from EEPROM_OK (0)
+ 141:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 142:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint32_t BSP_EEPROM_Init(void)
+ 143:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** { 
+  28              		.loc 1 143 1 view -0
+  29              		.cfi_startproc
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 4
+
+
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 08B5     		push	{r3, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 144:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* I2C Initialization */
+ 145:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   EEPROM_IO_Init();
+  36              		.loc 1 145 3 view .LVU1
+  37 0002 FFF7FEFF 		bl	EEPROM_IO_Init
+  38              	.LVL0:
+ 146:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 147:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* Select the EEPROM address for A01 and check if OK */
+ 148:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   EEPROMAddress = EEPROM_I2C_ADDRESS_A01;
+  39              		.loc 1 148 3 view .LVU2
+  40              		.loc 1 148 17 is_stmt 0 view .LVU3
+  41 0006 0C4B     		ldr	r3, .L7
+  42 0008 A022     		movs	r2, #160
+  43 000a 1A80     		strh	r2, [r3]	@ movhi
+ 149:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(EEPROM_IO_IsDeviceReady(EEPROMAddress, EEPROM_MAX_TRIALS) != HAL_OK) 
+  44              		.loc 1 149 3 is_stmt 1 view .LVU4
+  45              		.loc 1 149 6 is_stmt 0 view .LVU5
+  46 000c 1888     		ldrh	r0, [r3]
+  47 000e 40F6B831 		movw	r1, #3000
+  48 0012 80B2     		uxth	r0, r0
+  49 0014 FFF7FEFF 		bl	EEPROM_IO_IsDeviceReady
+  50              	.LVL1:
+  51              		.loc 1 149 5 discriminator 1 view .LVU6
+  52 0018 08B9     		cbnz	r0, .L6
+ 150:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 151:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* Select the EEPROM address for A02 and check if OK */
+ 152:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     EEPROMAddress = EEPROM_I2C_ADDRESS_A02;
+ 153:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     if(EEPROM_IO_IsDeviceReady(EEPROMAddress, EEPROM_MAX_TRIALS) != HAL_OK)
+ 154:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 155:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       return EEPROM_FAIL;
+ 156:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+ 157:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 158:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return EEPROM_OK;
+  53              		.loc 1 158 10 view .LVU7
+  54 001a 0020     		movs	r0, #0
+  55              	.L1:
+ 159:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+  56              		.loc 1 159 1 view .LVU8
+  57 001c 08BD     		pop	{r3, pc}
+  58              	.L6:
+ 152:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     if(EEPROM_IO_IsDeviceReady(EEPROMAddress, EEPROM_MAX_TRIALS) != HAL_OK)
+  59              		.loc 1 152 5 is_stmt 1 view .LVU9
+ 152:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     if(EEPROM_IO_IsDeviceReady(EEPROMAddress, EEPROM_MAX_TRIALS) != HAL_OK)
+  60              		.loc 1 152 19 is_stmt 0 view .LVU10
+  61 001e 064B     		ldr	r3, .L7
+  62 0020 A622     		movs	r2, #166
+  63 0022 1A80     		strh	r2, [r3]	@ movhi
+ 153:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+  64              		.loc 1 153 5 is_stmt 1 view .LVU11
+ 153:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+  65              		.loc 1 153 8 is_stmt 0 view .LVU12
+  66 0024 1888     		ldrh	r0, [r3]
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 5
+
+
+  67 0026 40F6B831 		movw	r1, #3000
+  68 002a 80B2     		uxth	r0, r0
+  69 002c FFF7FEFF 		bl	EEPROM_IO_IsDeviceReady
+  70              	.LVL2:
+ 153:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+  71              		.loc 1 153 7 discriminator 1 view .LVU13
+  72 0030 0028     		cmp	r0, #0
+  73 0032 F3D0     		beq	.L1
+ 155:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+  74              		.loc 1 155 14 view .LVU14
+  75 0034 0120     		movs	r0, #1
+  76 0036 F1E7     		b	.L1
+  77              	.L8:
+  78              		.align	2
+  79              	.L7:
+  80 0038 00000000 		.word	EEPROMAddress
+  81              		.cfi_endproc
+  82              	.LFE141:
+  84              		.section	.text.BSP_EEPROM_DeInit,"ax",%progbits
+  85              		.align	1
+  86              		.global	BSP_EEPROM_DeInit
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	BSP_EEPROM_DeInit:
+  92              	.LFB142:
+ 160:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 161:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 162:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  DeInitializes the EEPROM.
+ 163:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM state
+ 164:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 165:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint8_t BSP_EEPROM_DeInit(void)
+ 166:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** { 
+  93              		.loc 1 166 1 is_stmt 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              		@ link register save eliminated.
+ 167:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* I2C won't be disabled because common to other functionalities */
+ 168:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return EEPROM_OK;
+  98              		.loc 1 168 3 view .LVU16
+ 169:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+  99              		.loc 1 169 1 is_stmt 0 view .LVU17
+ 100 0000 0020     		movs	r0, #0
+ 101 0002 7047     		bx	lr
+ 102              		.cfi_endproc
+ 103              	.LFE142:
+ 105              		.section	.text.BSP_EEPROM_TIMEOUT_UserCallback,"ax",%progbits
+ 106              		.align	1
+ 107              		.weak	BSP_EEPROM_TIMEOUT_UserCallback
+ 108              		.syntax unified
+ 109              		.thumb
+ 110              		.thumb_func
+ 112              	BSP_EEPROM_TIMEOUT_UserCallback:
+ 113              	.LFB147:
+ 170:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 171:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 6
+
+
+ 172:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Reads a block of data from the EEPROM.
+ 173:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  pBuffer: pointer to the buffer that receives the data read from 
+ 174:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         the EEPROM.
+ 175:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  ReadAddr: EEPROM's internal address to start reading from.
+ 176:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  NumByteToRead: pointer to the variable holding number of bytes to 
+ 177:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         be read from the EEPROM.
+ 178:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 179:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        @note The variable pointed by NumByteToRead is reset to 0 when all the 
+ 180:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              data are read from the EEPROM. Application should monitor this 
+ 181:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              variable in order know when the transfer is complete.
+ 182:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 183:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM_OK (0) if operation is correctly performed, else return value 
+ 184:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         different from EEPROM_OK (0) or the timeout user callback.
+ 185:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 186:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint32_t BSP_EEPROM_ReadBuffer(uint8_t* pBuffer, uint16_t ReadAddr, uint16_t* NumByteToRead)
+ 187:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** {  
+ 188:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToRead;
+ 189:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 190:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* Set the pointer to the Number of data to be read. This pointer will be used 
+ 191:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****      by the DMA Transfer Completer interrupt Handler in order to reset the 
+ 192:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****      variable to 0. User should check on this variable in order to know if the 
+ 193:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****      DMA transfer has been complete or not. */
+ 194:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   EEPROMDataRead = *NumByteToRead;
+ 195:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 196:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(EEPROM_IO_ReadData(EEPROMAddress, ReadAddr, pBuffer, buffersize) != HAL_OK)
+ 197:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 198:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     BSP_EEPROM_TIMEOUT_UserCallback();
+ 199:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     return EEPROM_FAIL;
+ 200:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 201:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 202:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* If all operations OK, return EEPROM_OK (0) */
+ 203:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return EEPROM_OK;
+ 204:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 205:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 206:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 207:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Writes more than one byte to the EEPROM with a single WRITE cycle.
+ 208:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *
+ 209:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @note   The number of bytes (combined to write start address) must not 
+ 210:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         cross the EEPROM page boundary. This function can only write into
+ 211:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         the boundaries of an EEPROM page.
+ 212:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         This function doesn't check on boundaries condition (in this driver 
+ 213:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         the function BSP_EEPROM_WriteBuffer() which calls BSP_EEPROM_WritePage() is 
+ 214:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         responsible of checking on Page boundaries).
+ 215:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 216:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  pBuffer: pointer to the buffer containing the data to be written to 
+ 217:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         the EEPROM.
+ 218:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  WriteAddr: EEPROM's internal address to write to.
+ 219:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  NumByteToWrite: pointer to the variable holding number of bytes to 
+ 220:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         be written into the EEPROM. 
+ 221:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 222:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        @note The variable pointed by NumByteToWrite is reset to 0 when all the 
+ 223:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              data are written to the EEPROM. Application should monitor this 
+ 224:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              variable in order know when the transfer is complete.
+ 225:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 226:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        @note This function just configure the communication and enable the DMA 
+ 227:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              channel to transfer data. Meanwhile, the user application may perform 
+ 228:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *              other tasks in parallel.
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 7
+
+
+ 229:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 230:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM_OK (0) if operation is correctly performed, else return value 
+ 231:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         different from EEPROM_OK (0) or the timeout user callback.
+ 232:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 233:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint32_t BSP_EEPROM_WritePage(uint8_t* pBuffer, uint16_t WriteAddr, uint8_t* NumByteToWrite)
+ 234:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** { 
+ 235:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToWrite;
+ 236:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 237:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 238:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* Set the pointer to the Number of data to be written. This pointer will be used 
+ 239:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       by the DMA Transfer Completer interrupt Handler in order to reset the 
+ 240:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       variable to 0. User should check on this variable in order to know if the 
+ 241:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       DMA transfer has been complete or not. */
+ 242:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   EEPROMDataWrite = *NumByteToWrite;  
+ 243:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 244:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(EEPROM_IO_WriteData(EEPROMAddress, WriteAddr, pBuffer, buffersize) != HAL_OK)
+ 245:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 246:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     BSP_EEPROM_TIMEOUT_UserCallback();
+ 247:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     status = EEPROM_FAIL;
+ 248:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 249:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 250:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(BSP_EEPROM_WaitEepromStandbyState() != EEPROM_OK) 
+ 251:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 252:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     return EEPROM_FAIL;
+ 253:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 254:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 255:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* If all operations OK, return EEPROM_OK (0) */
+ 256:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return status;
+ 257:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 258:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 259:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 260:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Writes buffer of data to the I2C EEPROM.
+ 261:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  pBuffer: pointer to the buffer  containing the data to be written 
+ 262:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         to the EEPROM.
+ 263:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  WriteAddr: EEPROM's internal address to write to.
+ 264:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @param  NumByteToWrite: number of bytes to write to the EEPROM.
+ 265:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM_OK (0) if operation is correctly performed, else return value 
+ 266:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         different from EEPROM_OK (0) or the timeout user callback.
+ 267:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 268:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint32_t BSP_EEPROM_WriteBuffer(uint8_t *pBuffer, uint16_t WriteAddr, uint16_t NumByteToWrite)
+ 269:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** {
+ 270:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint16_t numofpage = 0, numofsingle = 0, count = 0;
+ 271:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint16_t addr = 0;
+ 272:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint8_t  dataindex = 0;
+ 273:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 274:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 275:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   addr = WriteAddr % EEPROM_PAGESIZE;
+ 276:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   count = EEPROM_PAGESIZE - addr;
+ 277:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 278:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   numofsingle = NumByteToWrite % EEPROM_PAGESIZE;
+ 279:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****  
+ 280:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* If WriteAddr is EEPROM_PAGESIZE aligned */
+ 281:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(addr == 0) 
+ 282:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 283:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* If NumByteToWrite < EEPROM_PAGESIZE */
+ 284:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     if(numofpage == 0) 
+ 285:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 8
+
+
+ 286:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       /* Store the number of data to be written */
+ 287:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       dataindex = numofsingle;
+ 288:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       /* Start writing data */
+ 289:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 290:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(status != EEPROM_OK)
+ 291:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 292:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         return status;
+ 293:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 294:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+ 295:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* If NumByteToWrite > EEPROM_PAGESIZE */
+ 296:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     else  
+ 297:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 298:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       while(numofpage--)
+ 299:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 300:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 301:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = EEPROM_PAGESIZE;        
+ 302:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 303:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 304:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 305:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 306:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 307:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         
+ 308:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         WriteAddr +=  EEPROM_PAGESIZE;
+ 309:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;
+ 310:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 311:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       
+ 312:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(numofsingle!=0)
+ 313:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 314:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 315:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = numofsingle;          
+ 316:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 317:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 318:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 319:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 320:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 321:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 322:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+ 323:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 324:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* If WriteAddr is not EEPROM_PAGESIZE aligned */
+ 325:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   else 
+ 326:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 327:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* If NumByteToWrite < EEPROM_PAGESIZE */
+ 328:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     if(numofpage== 0) 
+ 329:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 330:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       /* If the number of data to be written is more than the remaining space 
+ 331:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       in the current page: */
+ 332:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(NumByteToWrite > count)
+ 333:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 334:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 335:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = count;        
+ 336:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the data contained in same page */
+ 337:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 338:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 339:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 340:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 341:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 342:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 9
+
+
+ 343:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 344:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = (NumByteToWrite - count);          
+ 345:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the remaining data in the following page */
+ 346:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage((uint8_t*)(pBuffer + count), (WriteAddr + count), (uint8_t*)(
+ 347:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 348:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 349:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 350:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 351:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }      
+ 352:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       else      
+ 353:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 354:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 355:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = numofsingle;         
+ 356:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 357:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 358:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 359:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 360:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 361:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }     
+ 362:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+ 363:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* If NumByteToWrite > EEPROM_PAGESIZE */
+ 364:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     else
+ 365:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 366:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       NumByteToWrite -= count;
+ 367:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 368:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofsingle = NumByteToWrite % EEPROM_PAGESIZE;
+ 369:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       
+ 370:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(count != 0)
+ 371:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {  
+ 372:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 373:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = count;         
+ 374:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 375:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 376:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 377:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 378:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 379:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         WriteAddr += count;
+ 380:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += count;
+ 381:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       } 
+ 382:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       
+ 383:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       while(numofpage--)
+ 384:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 385:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 386:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = EEPROM_PAGESIZE;          
+ 387:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 388:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 389:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 390:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 391:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 392:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         WriteAddr +=  EEPROM_PAGESIZE;
+ 393:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;  
+ 394:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 395:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(numofsingle != 0)
+ 396:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 397:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Store the number of data to be written */
+ 398:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         dataindex = numofsingle;           
+ 399:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 10
+
+
+ 400:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 401:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 402:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****           return status;
+ 403:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         }
+ 404:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 405:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     }
+ 406:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }  
+ 407:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****                                    
+ 408:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* If all operations OK, return EEPROM_OK (0) */
+ 409:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return EEPROM_OK;
+ 410:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 411:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 412:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 413:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Wait for EEPROM Standby state.
+ 414:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 415:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @note  This function allows to wait and check that EEPROM has finished the 
+ 416:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        last operation. It is mostly used after Write operation: after receiving
+ 417:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        the buffer to be written, the EEPROM may need additional time to actually
+ 418:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        perform the write operation. During this time, it doesn't answer to
+ 419:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        I2C packets addressed to it. Once the write operation is complete
+ 420:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *        the EEPROM responds to its address.
+ 421:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * 
+ 422:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval EEPROM_OK (0) if operation is correctly performed, else return value 
+ 423:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   *         different from EEPROM_OK (0) or the timeout user callback.
+ 424:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 425:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** uint32_t BSP_EEPROM_WaitEepromStandbyState(void)      
+ 426:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** {
+ 427:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* Check if the maximum allowed number of trials has bee reached */
+ 428:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   if(EEPROM_IO_IsDeviceReady(EEPROMAddress, EEPROM_MAX_TRIALS) != HAL_OK)
+ 429:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 430:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     /* If the maximum number of trials has been reached, exit the function */
+ 431:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     BSP_EEPROM_TIMEOUT_UserCallback();
+ 432:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     return EEPROM_TIMEOUT;
+ 433:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 434:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   return EEPROM_OK;
+ 435:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 436:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 437:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** /**
+ 438:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @brief  Basic management of the timeout situation.
+ 439:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   * @retval None
+ 440:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   */
+ 441:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** __weak void BSP_EEPROM_TIMEOUT_UserCallback(void)
+ 442:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** {
+ 114              		.loc 1 442 1 is_stmt 1 view -0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118              		@ link register save eliminated.
+ 443:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 119              		.loc 1 443 1 view .LVU19
+ 120 0000 7047     		bx	lr
+ 121              		.cfi_endproc
+ 122              	.LFE147:
+ 124              		.section	.text.BSP_EEPROM_ReadBuffer,"ax",%progbits
+ 125              		.align	1
+ 126              		.global	BSP_EEPROM_ReadBuffer
+ 127              		.syntax unified
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 11
+
+
+ 128              		.thumb
+ 129              		.thumb_func
+ 131              	BSP_EEPROM_ReadBuffer:
+ 132              	.LVL3:
+ 133              	.LFB143:
+ 187:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToRead;
+ 134              		.loc 1 187 1 view -0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 0, uses_anonymous_args = 0
+ 187:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToRead;
+ 138              		.loc 1 187 1 is_stmt 0 view .LVU21
+ 139 0000 08B5     		push	{r3, lr}
+ 140              		.cfi_def_cfa_offset 8
+ 141              		.cfi_offset 3, -8
+ 142              		.cfi_offset 14, -4
+ 188:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 143              		.loc 1 188 3 is_stmt 1 view .LVU22
+ 188:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 144              		.loc 1 188 25 is_stmt 0 view .LVU23
+ 145 0002 1388     		ldrh	r3, [r2]
+ 146              	.LVL4:
+ 194:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 147              		.loc 1 194 3 is_stmt 1 view .LVU24
+ 194:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 148              		.loc 1 194 18 is_stmt 0 view .LVU25
+ 149 0004 084A     		ldr	r2, .L16
+ 150              	.LVL5:
+ 194:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 151              		.loc 1 194 18 view .LVU26
+ 152 0006 1380     		strh	r3, [r2]	@ movhi
+ 196:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 153              		.loc 1 196 3 is_stmt 1 view .LVU27
+ 196:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 154              		.loc 1 196 6 is_stmt 0 view .LVU28
+ 155 0008 084A     		ldr	r2, .L16+4
+ 156 000a B2F800C0 		ldrh	ip, [r2]
+ 157 000e 0246     		mov	r2, r0
+ 158 0010 1FFA8CF0 		uxth	r0, ip
+ 159              	.LVL6:
+ 196:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 160              		.loc 1 196 6 view .LVU29
+ 161 0014 FFF7FEFF 		bl	EEPROM_IO_ReadData
+ 162              	.LVL7:
+ 196:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 163              		.loc 1 196 5 discriminator 1 view .LVU30
+ 164 0018 08B9     		cbnz	r0, .L15
+ 203:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 165              		.loc 1 203 10 view .LVU31
+ 166 001a 0020     		movs	r0, #0
+ 167              	.L11:
+ 204:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 168              		.loc 1 204 1 view .LVU32
+ 169 001c 08BD     		pop	{r3, pc}
+ 170              	.L15:
+ 198:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     return EEPROM_FAIL;
+ 171              		.loc 1 198 5 is_stmt 1 view .LVU33
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 12
+
+
+ 172 001e FFF7FEFF 		bl	BSP_EEPROM_TIMEOUT_UserCallback
+ 173              	.LVL8:
+ 199:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 174              		.loc 1 199 5 view .LVU34
+ 199:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 175              		.loc 1 199 12 is_stmt 0 view .LVU35
+ 176 0022 0120     		movs	r0, #1
+ 177 0024 FAE7     		b	.L11
+ 178              	.L17:
+ 179 0026 00BF     		.align	2
+ 180              	.L16:
+ 181 0028 00000000 		.word	EEPROMDataRead
+ 182 002c 00000000 		.word	EEPROMAddress
+ 183              		.cfi_endproc
+ 184              	.LFE143:
+ 186              		.section	.text.BSP_EEPROM_WaitEepromStandbyState,"ax",%progbits
+ 187              		.align	1
+ 188              		.global	BSP_EEPROM_WaitEepromStandbyState
+ 189              		.syntax unified
+ 190              		.thumb
+ 191              		.thumb_func
+ 193              	BSP_EEPROM_WaitEepromStandbyState:
+ 194              	.LFB146:
+ 426:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   /* Check if the maximum allowed number of trials has bee reached */
+ 195              		.loc 1 426 1 is_stmt 1 view -0
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199 0000 08B5     		push	{r3, lr}
+ 200              		.cfi_def_cfa_offset 8
+ 201              		.cfi_offset 3, -8
+ 202              		.cfi_offset 14, -4
+ 428:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 203              		.loc 1 428 3 view .LVU37
+ 428:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 204              		.loc 1 428 6 is_stmt 0 view .LVU38
+ 205 0002 074B     		ldr	r3, .L23
+ 206 0004 1888     		ldrh	r0, [r3]
+ 207 0006 40F6B831 		movw	r1, #3000
+ 208 000a 80B2     		uxth	r0, r0
+ 209 000c FFF7FEFF 		bl	EEPROM_IO_IsDeviceReady
+ 210              	.LVL9:
+ 428:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 211              		.loc 1 428 5 discriminator 1 view .LVU39
+ 212 0010 08B9     		cbnz	r0, .L22
+ 434:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 213              		.loc 1 434 10 view .LVU40
+ 214 0012 0020     		movs	r0, #0
+ 215              	.L18:
+ 435:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 216              		.loc 1 435 1 view .LVU41
+ 217 0014 08BD     		pop	{r3, pc}
+ 218              	.L22:
+ 431:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     return EEPROM_TIMEOUT;
+ 219              		.loc 1 431 5 is_stmt 1 view .LVU42
+ 220 0016 FFF7FEFF 		bl	BSP_EEPROM_TIMEOUT_UserCallback
+ 221              	.LVL10:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 13
+
+
+ 432:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 222              		.loc 1 432 5 view .LVU43
+ 432:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 223              		.loc 1 432 12 is_stmt 0 view .LVU44
+ 224 001a 0220     		movs	r0, #2
+ 225 001c FAE7     		b	.L18
+ 226              	.L24:
+ 227 001e 00BF     		.align	2
+ 228              	.L23:
+ 229 0020 00000000 		.word	EEPROMAddress
+ 230              		.cfi_endproc
+ 231              	.LFE146:
+ 233              		.section	.text.BSP_EEPROM_WritePage,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	BSP_EEPROM_WritePage
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	BSP_EEPROM_WritePage:
+ 241              	.LVL11:
+ 242              	.LFB144:
+ 234:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToWrite;
+ 243              		.loc 1 234 1 is_stmt 1 view -0
+ 244              		.cfi_startproc
+ 245              		@ args = 0, pretend = 0, frame = 0
+ 246              		@ frame_needed = 0, uses_anonymous_args = 0
+ 234:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t buffersize = *NumByteToWrite;
+ 247              		.loc 1 234 1 is_stmt 0 view .LVU46
+ 248 0000 10B5     		push	{r4, lr}
+ 249              		.cfi_def_cfa_offset 8
+ 250              		.cfi_offset 4, -8
+ 251              		.cfi_offset 14, -4
+ 235:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 252              		.loc 1 235 3 is_stmt 1 view .LVU47
+ 235:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 253              		.loc 1 235 25 is_stmt 0 view .LVU48
+ 254 0002 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 255              	.LVL12:
+ 236:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 256              		.loc 1 236 3 is_stmt 1 view .LVU49
+ 242:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 257              		.loc 1 242 3 view .LVU50
+ 242:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 258              		.loc 1 242 19 is_stmt 0 view .LVU51
+ 259 0004 0A4A     		ldr	r2, .L33
+ 260              	.LVL13:
+ 242:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 261              		.loc 1 242 19 view .LVU52
+ 262 0006 1370     		strb	r3, [r2]
+ 244:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 263              		.loc 1 244 3 is_stmt 1 view .LVU53
+ 244:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 264              		.loc 1 244 6 is_stmt 0 view .LVU54
+ 265 0008 0A4A     		ldr	r2, .L33+4
+ 266 000a 1488     		ldrh	r4, [r2]
+ 267 000c 0246     		mov	r2, r0
+ 268 000e A0B2     		uxth	r0, r4
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 14
+
+
+ 269              	.LVL14:
+ 244:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 270              		.loc 1 244 6 view .LVU55
+ 271 0010 FFF7FEFF 		bl	EEPROM_IO_WriteData
+ 272              	.LVL15:
+ 244:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 273              		.loc 1 244 5 discriminator 1 view .LVU56
+ 274 0014 28B9     		cbnz	r0, .L31
+ 236:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   
+ 275              		.loc 1 236 12 view .LVU57
+ 276 0016 0024     		movs	r4, #0
+ 277              	.LVL16:
+ 278              	.L26:
+ 250:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 279              		.loc 1 250 3 is_stmt 1 view .LVU58
+ 250:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 280              		.loc 1 250 6 is_stmt 0 view .LVU59
+ 281 0018 FFF7FEFF 		bl	BSP_EEPROM_WaitEepromStandbyState
+ 282              	.LVL17:
+ 250:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 283              		.loc 1 250 5 discriminator 1 view .LVU60
+ 284 001c 28B9     		cbnz	r0, .L32
+ 285              	.LVL18:
+ 286              	.L25:
+ 257:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 287              		.loc 1 257 1 view .LVU61
+ 288 001e 2046     		mov	r0, r4
+ 289 0020 10BD     		pop	{r4, pc}
+ 290              	.LVL19:
+ 291              	.L31:
+ 246:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     status = EEPROM_FAIL;
+ 292              		.loc 1 246 5 is_stmt 1 view .LVU62
+ 293 0022 FFF7FEFF 		bl	BSP_EEPROM_TIMEOUT_UserCallback
+ 294              	.LVL20:
+ 247:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 295              		.loc 1 247 5 view .LVU63
+ 247:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 296              		.loc 1 247 12 is_stmt 0 view .LVU64
+ 297 0026 0124     		movs	r4, #1
+ 298 0028 F6E7     		b	.L26
+ 299              	.LVL21:
+ 300              	.L32:
+ 252:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 301              		.loc 1 252 12 view .LVU65
+ 302 002a 0124     		movs	r4, #1
+ 303              	.LVL22:
+ 252:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   }
+ 304              		.loc 1 252 12 view .LVU66
+ 305 002c F7E7     		b	.L25
+ 306              	.L34:
+ 307 002e 00BF     		.align	2
+ 308              	.L33:
+ 309 0030 00000000 		.word	EEPROMDataWrite
+ 310 0034 00000000 		.word	EEPROMAddress
+ 311              		.cfi_endproc
+ 312              	.LFE144:
+ 314              		.section	.text.BSP_EEPROM_WriteBuffer,"ax",%progbits
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 15
+
+
+ 315              		.align	1
+ 316              		.global	BSP_EEPROM_WriteBuffer
+ 317              		.syntax unified
+ 318              		.thumb
+ 319              		.thumb_func
+ 321              	BSP_EEPROM_WriteBuffer:
+ 322              	.LVL23:
+ 323              	.LFB145:
+ 269:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint16_t numofpage = 0, numofsingle = 0, count = 0;
+ 324              		.loc 1 269 1 is_stmt 1 view -0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 8
+ 327              		@ frame_needed = 0, uses_anonymous_args = 0
+ 269:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint16_t numofpage = 0, numofsingle = 0, count = 0;
+ 328              		.loc 1 269 1 is_stmt 0 view .LVU68
+ 329 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 330              		.cfi_def_cfa_offset 24
+ 331              		.cfi_offset 4, -24
+ 332              		.cfi_offset 5, -20
+ 333              		.cfi_offset 6, -16
+ 334              		.cfi_offset 7, -12
+ 335              		.cfi_offset 8, -8
+ 336              		.cfi_offset 14, -4
+ 337 0004 82B0     		sub	sp, sp, #8
+ 338              		.cfi_def_cfa_offset 32
+ 339 0006 0546     		mov	r5, r0
+ 340 0008 0C46     		mov	r4, r1
+ 341 000a 1646     		mov	r6, r2
+ 270:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint16_t addr = 0;
+ 342              		.loc 1 270 3 is_stmt 1 view .LVU69
+ 343              	.LVL24:
+ 271:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint8_t  dataindex = 0;
+ 344              		.loc 1 271 3 view .LVU70
+ 272:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 345              		.loc 1 272 3 view .LVU71
+ 272:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   uint32_t status = EEPROM_OK;
+ 346              		.loc 1 272 12 is_stmt 0 view .LVU72
+ 347 000c 0023     		movs	r3, #0
+ 348 000e 8DF80730 		strb	r3, [sp, #7]
+ 273:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 349              		.loc 1 273 3 is_stmt 1 view .LVU73
+ 350              	.LVL25:
+ 275:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   count = EEPROM_PAGESIZE - addr;
+ 351              		.loc 1 275 3 view .LVU74
+ 275:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   count = EEPROM_PAGESIZE - addr;
+ 352              		.loc 1 275 8 is_stmt 0 view .LVU75
+ 353 0012 01F00302 		and	r2, r1, #3
+ 354              	.LVL26:
+ 276:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 355              		.loc 1 276 3 is_stmt 1 view .LVU76
+ 277:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   numofsingle = NumByteToWrite % EEPROM_PAGESIZE;
+ 356              		.loc 1 277 3 view .LVU77
+ 278:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****  
+ 357              		.loc 1 278 3 view .LVU78
+ 278:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****  
+ 358              		.loc 1 278 15 is_stmt 0 view .LVU79
+ 359 0016 06F00307 		and	r7, r6, #3
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 16
+
+
+ 360              	.LVL27:
+ 281:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 361              		.loc 1 281 3 is_stmt 1 view .LVU80
+ 281:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****   {
+ 362              		.loc 1 281 5 is_stmt 0 view .LVU81
+ 363 001a 6ABB     		cbnz	r2, .L36
+ 364 001c B308     		lsrs	r3, r6, #2
+ 284:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 365              		.loc 1 284 5 is_stmt 1 view .LVU82
+ 284:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 366              		.loc 1 284 7 is_stmt 0 view .LVU83
+ 367 001e 032E     		cmp	r6, #3
+ 368 0020 12D9     		bls	.L48
+ 369              	.LVL28:
+ 370              	.L37:
+ 298:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 371              		.loc 1 298 13 is_stmt 1 view .LVU84
+ 298:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 372              		.loc 1 298 22 is_stmt 0 view .LVU85
+ 373 0022 5A1E     		subs	r2, r3, #1
+ 374 0024 96B2     		uxth	r6, r2
+ 375              	.LVL29:
+ 298:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 376              		.loc 1 298 13 view .LVU86
+ 377 0026 D3B1     		cbz	r3, .L49
+ 301:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 378              		.loc 1 301 9 is_stmt 1 view .LVU87
+ 301:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 379              		.loc 1 301 19 is_stmt 0 view .LVU88
+ 380 0028 0423     		movs	r3, #4
+ 381 002a 8DF80730 		strb	r3, [sp, #7]
+ 302:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 382              		.loc 1 302 9 is_stmt 1 view .LVU89
+ 302:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 383              		.loc 1 302 18 is_stmt 0 view .LVU90
+ 384 002e 0DF10702 		add	r2, sp, #7
+ 385 0032 2146     		mov	r1, r4
+ 386 0034 2846     		mov	r0, r5
+ 387 0036 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 388              	.LVL30:
+ 303:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 389              		.loc 1 303 9 is_stmt 1 view .LVU91
+ 303:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 390              		.loc 1 303 11 is_stmt 0 view .LVU92
+ 391 003a 0346     		mov	r3, r0
+ 392 003c 58B9     		cbnz	r0, .L35
+ 308:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;
+ 393              		.loc 1 308 9 is_stmt 1 view .LVU93
+ 308:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;
+ 394              		.loc 1 308 19 is_stmt 0 view .LVU94
+ 395 003e 0434     		adds	r4, r4, #4
+ 396              	.LVL31:
+ 308:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;
+ 397              		.loc 1 308 19 view .LVU95
+ 398 0040 A4B2     		uxth	r4, r4
+ 399              	.LVL32:
+ 309:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 17
+
+
+ 400              		.loc 1 309 9 is_stmt 1 view .LVU96
+ 309:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 401              		.loc 1 309 17 is_stmt 0 view .LVU97
+ 402 0042 0435     		adds	r5, r5, #4
+ 403              	.LVL33:
+ 298:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 404              		.loc 1 298 22 view .LVU98
+ 405 0044 3346     		mov	r3, r6
+ 406 0046 ECE7     		b	.L37
+ 407              	.LVL34:
+ 408              	.L48:
+ 287:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       /* Start writing data */
+ 409              		.loc 1 287 7 is_stmt 1 view .LVU99
+ 287:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       /* Start writing data */
+ 410              		.loc 1 287 17 is_stmt 0 view .LVU100
+ 411 0048 8DF80770 		strb	r7, [sp, #7]
+ 289:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(status != EEPROM_OK)
+ 412              		.loc 1 289 7 is_stmt 1 view .LVU101
+ 289:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(status != EEPROM_OK)
+ 413              		.loc 1 289 16 is_stmt 0 view .LVU102
+ 414 004c 0DF10702 		add	r2, sp, #7
+ 415              	.LVL35:
+ 289:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(status != EEPROM_OK)
+ 416              		.loc 1 289 16 view .LVU103
+ 417 0050 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 418              	.LVL36:
+ 289:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       if(status != EEPROM_OK)
+ 419              		.loc 1 289 16 view .LVU104
+ 420 0054 0346     		mov	r3, r0
+ 421              	.LVL37:
+ 290:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 422              		.loc 1 290 7 is_stmt 1 view .LVU105
+ 423              	.L35:
+ 410:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** 
+ 424              		.loc 1 410 1 is_stmt 0 view .LVU106
+ 425 0056 1846     		mov	r0, r3
+ 426 0058 02B0     		add	sp, sp, #8
+ 427              		.cfi_remember_state
+ 428              		.cfi_def_cfa_offset 24
+ 429              		@ sp needed
+ 430 005a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 431              	.LVL38:
+ 432              	.L49:
+ 433              		.cfi_restore_state
+ 312:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 434              		.loc 1 312 7 is_stmt 1 view .LVU107
+ 312:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 435              		.loc 1 312 9 is_stmt 0 view .LVU108
+ 436 005e 0FB9     		cbnz	r7, .L50
+ 409:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 437              		.loc 1 409 10 view .LVU109
+ 438 0060 0023     		movs	r3, #0
+ 439 0062 F8E7     		b	.L35
+ 440              	.L50:
+ 315:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 441              		.loc 1 315 9 is_stmt 1 view .LVU110
+ 315:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 18
+
+
+ 442              		.loc 1 315 19 is_stmt 0 view .LVU111
+ 443 0064 8DF80770 		strb	r7, [sp, #7]
+ 316:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 444              		.loc 1 316 9 is_stmt 1 view .LVU112
+ 316:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 445              		.loc 1 316 18 is_stmt 0 view .LVU113
+ 446 0068 0DF10702 		add	r2, sp, #7
+ 447 006c 2146     		mov	r1, r4
+ 448 006e 2846     		mov	r0, r5
+ 449 0070 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 450              	.LVL39:
+ 451 0074 0346     		mov	r3, r0
+ 452              	.LVL40:
+ 317:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 453              		.loc 1 317 9 is_stmt 1 view .LVU114
+ 454 0076 EEE7     		b	.L35
+ 455              	.LVL41:
+ 456              	.L36:
+ 317:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 457              		.loc 1 317 9 is_stmt 0 view .LVU115
+ 458 0078 C2F10408 		rsb	r8, r2, #4
+ 459 007c 1FFA88F8 		uxth	r8, r8
+ 328:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 460              		.loc 1 328 5 is_stmt 1 view .LVU116
+ 328:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****     {
+ 461              		.loc 1 328 7 is_stmt 0 view .LVU117
+ 462 0080 032E     		cmp	r6, #3
+ 463 0082 22D8     		bhi	.L40
+ 332:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 464              		.loc 1 332 7 is_stmt 1 view .LVU118
+ 332:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 465              		.loc 1 332 9 is_stmt 0 view .LVU119
+ 466 0084 B045     		cmp	r8, r6
+ 467 0086 18D2     		bcs	.L41
+ 335:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the data contained in same page */
+ 468              		.loc 1 335 9 is_stmt 1 view .LVU120
+ 335:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the data contained in same page */
+ 469              		.loc 1 335 19 is_stmt 0 view .LVU121
+ 470 0088 5FFA88F7 		uxtb	r7, r8
+ 471              	.LVL42:
+ 335:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the data contained in same page */
+ 472              		.loc 1 335 19 view .LVU122
+ 473 008c 8DF80770 		strb	r7, [sp, #7]
+ 337:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 474              		.loc 1 337 9 is_stmt 1 view .LVU123
+ 337:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 475              		.loc 1 337 18 is_stmt 0 view .LVU124
+ 476 0090 0DF10702 		add	r2, sp, #7
+ 477              	.LVL43:
+ 337:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 478              		.loc 1 337 18 view .LVU125
+ 479 0094 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 480              	.LVL44:
+ 338:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 481              		.loc 1 338 9 is_stmt 1 view .LVU126
+ 338:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 482              		.loc 1 338 11 is_stmt 0 view .LVU127
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 19
+
+
+ 483 0098 0346     		mov	r3, r0
+ 484 009a 0028     		cmp	r0, #0
+ 485 009c DBD1     		bne	.L35
+ 344:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the remaining data in the following page */
+ 486              		.loc 1 344 9 is_stmt 1 view .LVU128
+ 344:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the remaining data in the following page */
+ 487              		.loc 1 344 37 is_stmt 0 view .LVU129
+ 488 009e F71B     		subs	r7, r6, r7
+ 344:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         /* Write the remaining data in the following page */
+ 489              		.loc 1 344 19 view .LVU130
+ 490 00a0 8DF80770 		strb	r7, [sp, #7]
+ 346:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 491              		.loc 1 346 9 is_stmt 1 view .LVU131
+ 346:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 492              		.loc 1 346 18 is_stmt 0 view .LVU132
+ 493 00a4 04EB0801 		add	r1, r4, r8
+ 494 00a8 0DF10702 		add	r2, sp, #7
+ 495 00ac 89B2     		uxth	r1, r1
+ 496 00ae 05EB0800 		add	r0, r5, r8
+ 497              	.LVL45:
+ 346:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 498              		.loc 1 346 18 view .LVU133
+ 499 00b2 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 500              	.LVL46:
+ 346:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 501              		.loc 1 346 18 view .LVU134
+ 502 00b6 0346     		mov	r3, r0
+ 503              	.LVL47:
+ 347:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 504              		.loc 1 347 9 is_stmt 1 view .LVU135
+ 505 00b8 CDE7     		b	.L35
+ 506              	.LVL48:
+ 507              	.L41:
+ 355:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 508              		.loc 1 355 9 view .LVU136
+ 355:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 509              		.loc 1 355 19 is_stmt 0 view .LVU137
+ 510 00ba 8DF80770 		strb	r7, [sp, #7]
+ 356:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 511              		.loc 1 356 9 is_stmt 1 view .LVU138
+ 356:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 512              		.loc 1 356 18 is_stmt 0 view .LVU139
+ 513 00be 0DF10702 		add	r2, sp, #7
+ 514              	.LVL49:
+ 356:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 515              		.loc 1 356 18 view .LVU140
+ 516 00c2 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 517              	.LVL50:
+ 356:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 518              		.loc 1 356 18 view .LVU141
+ 519 00c6 0346     		mov	r3, r0
+ 520              	.LVL51:
+ 357:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 521              		.loc 1 357 9 is_stmt 1 view .LVU142
+ 522 00c8 C5E7     		b	.L35
+ 523              	.LVL52:
+ 524              	.L40:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 20
+
+
+ 366:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 525              		.loc 1 366 7 view .LVU143
+ 366:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 526              		.loc 1 366 22 is_stmt 0 view .LVU144
+ 527 00ca 043A     		subs	r2, r2, #4
+ 528              	.LVL53:
+ 366:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofpage =  NumByteToWrite / EEPROM_PAGESIZE;
+ 529              		.loc 1 366 22 view .LVU145
+ 530 00cc 3244     		add	r2, r2, r6
+ 531              	.LVL54:
+ 367:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofsingle = NumByteToWrite % EEPROM_PAGESIZE;
+ 532              		.loc 1 367 7 is_stmt 1 view .LVU146
+ 367:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       numofsingle = NumByteToWrite % EEPROM_PAGESIZE;
+ 533              		.loc 1 367 17 is_stmt 0 view .LVU147
+ 534 00ce C2F38D07 		ubfx	r7, r2, #2, #14
+ 535              	.LVL55:
+ 368:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       
+ 536              		.loc 1 368 7 is_stmt 1 view .LVU148
+ 368:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       
+ 537              		.loc 1 368 19 is_stmt 0 view .LVU149
+ 538 00d2 02F00306 		and	r6, r2, #3
+ 539              	.LVL56:
+ 370:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {  
+ 540              		.loc 1 370 7 is_stmt 1 view .LVU150
+ 370:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {  
+ 541              		.loc 1 370 9 is_stmt 0 view .LVU151
+ 542 00d6 B8F1000F 		cmp	r8, #0
+ 543 00da 14D1     		bne	.L51
+ 544              	.LVL57:
+ 545              	.L43:
+ 383:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 546              		.loc 1 383 13 is_stmt 1 view .LVU152
+ 383:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 547              		.loc 1 383 22 is_stmt 0 view .LVU153
+ 548 00dc 7B1E     		subs	r3, r7, #1
+ 549 00de 1FFA83F8 		uxth	r8, r3
+ 550              	.LVL58:
+ 383:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 551              		.loc 1 383 13 view .LVU154
+ 552 00e2 EFB1     		cbz	r7, .L52
+ 386:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 553              		.loc 1 386 9 is_stmt 1 view .LVU155
+ 386:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 554              		.loc 1 386 19 is_stmt 0 view .LVU156
+ 555 00e4 0423     		movs	r3, #4
+ 556 00e6 8DF80730 		strb	r3, [sp, #7]
+ 387:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 557              		.loc 1 387 9 is_stmt 1 view .LVU157
+ 387:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 558              		.loc 1 387 18 is_stmt 0 view .LVU158
+ 559 00ea 0DF10702 		add	r2, sp, #7
+ 560 00ee 2146     		mov	r1, r4
+ 561 00f0 2846     		mov	r0, r5
+ 562 00f2 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 563              	.LVL59:
+ 388:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 564              		.loc 1 388 9 is_stmt 1 view .LVU159
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 21
+
+
+ 388:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 565              		.loc 1 388 11 is_stmt 0 view .LVU160
+ 566 00f6 0346     		mov	r3, r0
+ 567 00f8 0028     		cmp	r0, #0
+ 568 00fa ACD1     		bne	.L35
+ 392:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;  
+ 569              		.loc 1 392 9 is_stmt 1 view .LVU161
+ 392:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;  
+ 570              		.loc 1 392 19 is_stmt 0 view .LVU162
+ 571 00fc 0434     		adds	r4, r4, #4
+ 572              	.LVL60:
+ 392:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += EEPROM_PAGESIZE;  
+ 573              		.loc 1 392 19 view .LVU163
+ 574 00fe A4B2     		uxth	r4, r4
+ 575              	.LVL61:
+ 393:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 576              		.loc 1 393 9 is_stmt 1 view .LVU164
+ 393:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       }
+ 577              		.loc 1 393 17 is_stmt 0 view .LVU165
+ 578 0100 0435     		adds	r5, r5, #4
+ 579              	.LVL62:
+ 383:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 580              		.loc 1 383 22 view .LVU166
+ 581 0102 4746     		mov	r7, r8
+ 582 0104 EAE7     		b	.L43
+ 583              	.LVL63:
+ 584              	.L51:
+ 373:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 585              		.loc 1 373 9 is_stmt 1 view .LVU167
+ 373:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 586              		.loc 1 373 19 is_stmt 0 view .LVU168
+ 587 0106 8DF80780 		strb	r8, [sp, #7]
+ 374:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 588              		.loc 1 374 9 is_stmt 1 view .LVU169
+ 374:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 589              		.loc 1 374 18 is_stmt 0 view .LVU170
+ 590 010a 0DF10702 		add	r2, sp, #7
+ 591              	.LVL64:
+ 374:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 592              		.loc 1 374 18 view .LVU171
+ 593 010e FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 594              	.LVL65:
+ 375:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 595              		.loc 1 375 9 is_stmt 1 view .LVU172
+ 375:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 596              		.loc 1 375 11 is_stmt 0 view .LVU173
+ 597 0112 0346     		mov	r3, r0
+ 598 0114 0028     		cmp	r0, #0
+ 599 0116 9ED1     		bne	.L35
+ 379:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += count;
+ 600              		.loc 1 379 9 is_stmt 1 view .LVU174
+ 379:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += count;
+ 601              		.loc 1 379 19 is_stmt 0 view .LVU175
+ 602 0118 4444     		add	r4, r4, r8
+ 603              	.LVL66:
+ 379:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         pBuffer += count;
+ 604              		.loc 1 379 19 view .LVU176
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 22
+
+
+ 605 011a A4B2     		uxth	r4, r4
+ 606              	.LVL67:
+ 380:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       } 
+ 607              		.loc 1 380 9 is_stmt 1 view .LVU177
+ 380:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       } 
+ 608              		.loc 1 380 17 is_stmt 0 view .LVU178
+ 609 011c 4544     		add	r5, r5, r8
+ 610              	.LVL68:
+ 380:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       } 
+ 611              		.loc 1 380 17 view .LVU179
+ 612 011e DDE7     		b	.L43
+ 613              	.LVL69:
+ 614              	.L52:
+ 395:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 615              		.loc 1 395 7 is_stmt 1 view .LVU180
+ 395:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****       {
+ 616              		.loc 1 395 9 is_stmt 0 view .LVU181
+ 617 0120 0EB9     		cbnz	r6, .L53
+ 409:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c **** }
+ 618              		.loc 1 409 10 view .LVU182
+ 619 0122 0023     		movs	r3, #0
+ 620 0124 97E7     		b	.L35
+ 621              	.L53:
+ 398:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 622              		.loc 1 398 9 is_stmt 1 view .LVU183
+ 398:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         status = BSP_EEPROM_WritePage(pBuffer, WriteAddr, (uint8_t*)(&dataindex));
+ 623              		.loc 1 398 19 is_stmt 0 view .LVU184
+ 624 0126 8DF80760 		strb	r6, [sp, #7]
+ 399:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 625              		.loc 1 399 9 is_stmt 1 view .LVU185
+ 399:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         if(status != EEPROM_OK)
+ 626              		.loc 1 399 18 is_stmt 0 view .LVU186
+ 627 012a 0DF10702 		add	r2, sp, #7
+ 628 012e 2146     		mov	r1, r4
+ 629 0130 2846     		mov	r0, r5
+ 630 0132 FFF7FEFF 		bl	BSP_EEPROM_WritePage
+ 631              	.LVL70:
+ 632 0136 0346     		mov	r3, r0
+ 633              	.LVL71:
+ 400:Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.c ****         {
+ 634              		.loc 1 400 9 is_stmt 1 view .LVU187
+ 635 0138 8DE7     		b	.L35
+ 636              		.cfi_endproc
+ 637              	.LFE145:
+ 639              		.global	EEPROMDataWrite
+ 640              		.section	.bss.EEPROMDataWrite,"aw",%nobits
+ 643              	EEPROMDataWrite:
+ 644 0000 00       		.space	1
+ 645              		.global	EEPROMDataRead
+ 646              		.section	.bss.EEPROMDataRead,"aw",%nobits
+ 647              		.align	1
+ 650              	EEPROMDataRead:
+ 651 0000 0000     		.space	2
+ 652              		.global	EEPROMAddress
+ 653              		.section	.bss.EEPROMAddress,"aw",%nobits
+ 654              		.align	1
+ 657              	EEPROMAddress:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 23
+
+
+ 658 0000 0000     		.space	2
+ 659              		.text
+ 660              	.Letext0:
+ 661              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 662              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 663              		.file 4 "Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_def.h"
+ 664              		.file 5 "Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_eeprom.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s 			page 24
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f769i_discovery_eeprom.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:20     .text.BSP_EEPROM_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:26     .text.BSP_EEPROM_Init:00000000 BSP_EEPROM_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:80     .text.BSP_EEPROM_Init:00000038 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:657    .bss.EEPROMAddress:00000000 EEPROMAddress
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:85     .text.BSP_EEPROM_DeInit:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:91     .text.BSP_EEPROM_DeInit:00000000 BSP_EEPROM_DeInit
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:106    .text.BSP_EEPROM_TIMEOUT_UserCallback:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:112    .text.BSP_EEPROM_TIMEOUT_UserCallback:00000000 BSP_EEPROM_TIMEOUT_UserCallback
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:125    .text.BSP_EEPROM_ReadBuffer:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:131    .text.BSP_EEPROM_ReadBuffer:00000000 BSP_EEPROM_ReadBuffer
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:181    .text.BSP_EEPROM_ReadBuffer:00000028 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:650    .bss.EEPROMDataRead:00000000 EEPROMDataRead
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:187    .text.BSP_EEPROM_WaitEepromStandbyState:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:193    .text.BSP_EEPROM_WaitEepromStandbyState:00000000 BSP_EEPROM_WaitEepromStandbyState
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:229    .text.BSP_EEPROM_WaitEepromStandbyState:00000020 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:234    .text.BSP_EEPROM_WritePage:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:240    .text.BSP_EEPROM_WritePage:00000000 BSP_EEPROM_WritePage
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:309    .text.BSP_EEPROM_WritePage:00000030 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:643    .bss.EEPROMDataWrite:00000000 EEPROMDataWrite
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:315    .text.BSP_EEPROM_WriteBuffer:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:321    .text.BSP_EEPROM_WriteBuffer:00000000 BSP_EEPROM_WriteBuffer
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:644    .bss.EEPROMDataWrite:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:647    .bss.EEPROMDataRead:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//cc3u1O0C.s:654    .bss.EEPROMAddress:00000000 $d
+
+UNDEFINED SYMBOLS
+EEPROM_IO_Init
+EEPROM_IO_IsDeviceReady
+EEPROM_IO_ReadData
+EEPROM_IO_WriteData

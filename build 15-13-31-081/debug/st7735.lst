@@ -1,0 +1,2004 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"st7735.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/Components/st7735/st7735.c"
+  19              		.section	.text.st7735_GetLcdPixelWidth,"ax",%progbits
+  20              		.align	1
+  21              		.global	st7735_GetLcdPixelWidth
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	st7735_GetLcdPixelWidth:
+  27              	.LFB9:
+   1:Drivers/BSP/Components/st7735/st7735.c **** /**
+   2:Drivers/BSP/Components/st7735/st7735.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/st7735/st7735.c ****   * @file    st7735.c
+   4:Drivers/BSP/Components/st7735/st7735.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/st7735/st7735.c ****   * @brief   This file includes the driver for ST7735 LCD mounted on the Adafruit
+   6:Drivers/BSP/Components/st7735/st7735.c ****   *          1.8" TFT LCD shield (reference ID 802).
+   7:Drivers/BSP/Components/st7735/st7735.c ****   ******************************************************************************
+   8:Drivers/BSP/Components/st7735/st7735.c ****   * @attention
+   9:Drivers/BSP/Components/st7735/st7735.c ****   *
+  10:Drivers/BSP/Components/st7735/st7735.c ****   * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  11:Drivers/BSP/Components/st7735/st7735.c ****   *
+  12:Drivers/BSP/Components/st7735/st7735.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  13:Drivers/BSP/Components/st7735/st7735.c ****   * are permitted provided that the following conditions are met:
+  14:Drivers/BSP/Components/st7735/st7735.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  15:Drivers/BSP/Components/st7735/st7735.c ****   *      this list of conditions and the following disclaimer.
+  16:Drivers/BSP/Components/st7735/st7735.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  17:Drivers/BSP/Components/st7735/st7735.c ****   *      this list of conditions and the following disclaimer in the documentation
+  18:Drivers/BSP/Components/st7735/st7735.c ****   *      and/or other materials provided with the distribution.
+  19:Drivers/BSP/Components/st7735/st7735.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  20:Drivers/BSP/Components/st7735/st7735.c ****   *      may be used to endorse or promote products derived from this software
+  21:Drivers/BSP/Components/st7735/st7735.c ****   *      without specific prior written permission.
+  22:Drivers/BSP/Components/st7735/st7735.c ****   *
+  23:Drivers/BSP/Components/st7735/st7735.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  24:Drivers/BSP/Components/st7735/st7735.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  25:Drivers/BSP/Components/st7735/st7735.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  26:Drivers/BSP/Components/st7735/st7735.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  27:Drivers/BSP/Components/st7735/st7735.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  28:Drivers/BSP/Components/st7735/st7735.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  29:Drivers/BSP/Components/st7735/st7735.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  30:Drivers/BSP/Components/st7735/st7735.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  31:Drivers/BSP/Components/st7735/st7735.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 2
+
+
+  32:Drivers/BSP/Components/st7735/st7735.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  33:Drivers/BSP/Components/st7735/st7735.c ****   *
+  34:Drivers/BSP/Components/st7735/st7735.c ****   ******************************************************************************
+  35:Drivers/BSP/Components/st7735/st7735.c ****   */
+  36:Drivers/BSP/Components/st7735/st7735.c **** 
+  37:Drivers/BSP/Components/st7735/st7735.c **** /* Includes ------------------------------------------------------------------*/
+  38:Drivers/BSP/Components/st7735/st7735.c **** #include "st7735.h"
+  39:Drivers/BSP/Components/st7735/st7735.c **** 
+  40:Drivers/BSP/Components/st7735/st7735.c **** /** @addtogroup BSP
+  41:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  42:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  43:Drivers/BSP/Components/st7735/st7735.c **** 
+  44:Drivers/BSP/Components/st7735/st7735.c **** /** @addtogroup Components
+  45:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  46:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  47:Drivers/BSP/Components/st7735/st7735.c **** 
+  48:Drivers/BSP/Components/st7735/st7735.c **** /** @addtogroup ST7735
+  49:Drivers/BSP/Components/st7735/st7735.c ****   * @brief      This file provides a set of functions needed to drive the
+  50:Drivers/BSP/Components/st7735/st7735.c ****   *             ST7735 LCD.
+  51:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  52:Drivers/BSP/Components/st7735/st7735.c ****   */
+  53:Drivers/BSP/Components/st7735/st7735.c **** 
+  54:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_TypesDefinitions
+  55:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  56:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  57:Drivers/BSP/Components/st7735/st7735.c **** 
+  58:Drivers/BSP/Components/st7735/st7735.c **** /**
+  59:Drivers/BSP/Components/st7735/st7735.c ****   * @}
+  60:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  61:Drivers/BSP/Components/st7735/st7735.c **** 
+  62:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_Defines
+  63:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  64:Drivers/BSP/Components/st7735/st7735.c ****   */
+  65:Drivers/BSP/Components/st7735/st7735.c **** 
+  66:Drivers/BSP/Components/st7735/st7735.c **** /**
+  67:Drivers/BSP/Components/st7735/st7735.c ****   * @}
+  68:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  69:Drivers/BSP/Components/st7735/st7735.c **** 
+  70:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_Macros
+  71:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  72:Drivers/BSP/Components/st7735/st7735.c ****   */
+  73:Drivers/BSP/Components/st7735/st7735.c **** 
+  74:Drivers/BSP/Components/st7735/st7735.c **** /**
+  75:Drivers/BSP/Components/st7735/st7735.c ****   * @}
+  76:Drivers/BSP/Components/st7735/st7735.c ****   */  
+  77:Drivers/BSP/Components/st7735/st7735.c **** 
+  78:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_Variables
+  79:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+  80:Drivers/BSP/Components/st7735/st7735.c ****   */ 
+  81:Drivers/BSP/Components/st7735/st7735.c **** 
+  82:Drivers/BSP/Components/st7735/st7735.c **** 
+  83:Drivers/BSP/Components/st7735/st7735.c **** LCD_DrvTypeDef   st7735_drv = 
+  84:Drivers/BSP/Components/st7735/st7735.c **** {
+  85:Drivers/BSP/Components/st7735/st7735.c ****   st7735_Init,
+  86:Drivers/BSP/Components/st7735/st7735.c ****   0,
+  87:Drivers/BSP/Components/st7735/st7735.c ****   st7735_DisplayOn,
+  88:Drivers/BSP/Components/st7735/st7735.c ****   st7735_DisplayOff,
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 3
+
+
+  89:Drivers/BSP/Components/st7735/st7735.c ****   st7735_SetCursor,
+  90:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WritePixel,
+  91:Drivers/BSP/Components/st7735/st7735.c ****   0,
+  92:Drivers/BSP/Components/st7735/st7735.c ****   st7735_SetDisplayWindow,
+  93:Drivers/BSP/Components/st7735/st7735.c ****   st7735_DrawHLine,
+  94:Drivers/BSP/Components/st7735/st7735.c ****   st7735_DrawVLine,
+  95:Drivers/BSP/Components/st7735/st7735.c ****   st7735_GetLcdPixelWidth,
+  96:Drivers/BSP/Components/st7735/st7735.c ****   st7735_GetLcdPixelHeight,
+  97:Drivers/BSP/Components/st7735/st7735.c ****   st7735_DrawBitmap,
+  98:Drivers/BSP/Components/st7735/st7735.c **** };
+  99:Drivers/BSP/Components/st7735/st7735.c **** 
+ 100:Drivers/BSP/Components/st7735/st7735.c **** static uint16_t ArrayRGB[320] = {0};
+ 101:Drivers/BSP/Components/st7735/st7735.c **** 
+ 102:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 103:Drivers/BSP/Components/st7735/st7735.c **** * @}
+ 104:Drivers/BSP/Components/st7735/st7735.c **** */ 
+ 105:Drivers/BSP/Components/st7735/st7735.c **** 
+ 106:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_FunctionPrototypes
+ 107:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+ 108:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 109:Drivers/BSP/Components/st7735/st7735.c **** 
+ 110:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 111:Drivers/BSP/Components/st7735/st7735.c **** * @}
+ 112:Drivers/BSP/Components/st7735/st7735.c **** */ 
+ 113:Drivers/BSP/Components/st7735/st7735.c **** 
+ 114:Drivers/BSP/Components/st7735/st7735.c **** /** @defgroup ST7735_Private_Functions
+ 115:Drivers/BSP/Components/st7735/st7735.c ****   * @{
+ 116:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 117:Drivers/BSP/Components/st7735/st7735.c **** 
+ 118:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 119:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Initialize the ST7735 LCD Component.
+ 120:Drivers/BSP/Components/st7735/st7735.c ****   * @param  None
+ 121:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 122:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 123:Drivers/BSP/Components/st7735/st7735.c **** void st7735_Init(void)
+ 124:Drivers/BSP/Components/st7735/st7735.c **** {    
+ 125:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 126:Drivers/BSP/Components/st7735/st7735.c ****   
+ 127:Drivers/BSP/Components/st7735/st7735.c ****   /* Initialize ST7735 low level bus layer -----------------------------------*/
+ 128:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_Init();
+ 129:Drivers/BSP/Components/st7735/st7735.c ****   /* Out of sleep mode, 0 args, no delay */
+ 130:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_17, 0x00); 
+ 131:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate ctrl - normal mode, 3 args:Rate = fosc/(1x2+40) * (LINE+2C+2D)*/
+ 132:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_177);
+ 133:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x01;
+ 134:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 135:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x2C;
+ 136:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 137:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x2D;
+ 138:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 139:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate control - idle mode, 3 args:Rate = fosc/(1x2+40) * (LINE+2C+2D) */    
+ 140:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_178, 0x01);
+ 141:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_178, 0x2C);
+ 142:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_178, 0x2D);
+ 143:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate ctrl - partial mode, 6 args: Dot inversion mode, Line inversion mode */ 
+ 144:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x01);
+ 145:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2C);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 4
+
+
+ 146:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2D);
+ 147:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x01);
+ 148:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2C);
+ 149:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2D);
+ 150:Drivers/BSP/Components/st7735/st7735.c ****   /* Display inversion ctrl, 1 arg, no delay: No inversion */
+ 151:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_180, 0x07);
+ 152:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 3 args, no delay: -4.6V , AUTO mode */
+ 153:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_192, 0xA2);
+ 154:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_192, 0x02);
+ 155:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_192, 0x84);
+ 156:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 1 arg, no delay: VGH25 = 2.4C VGSEL = -10 VGH = 3 * AVDD */
+ 157:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_193, 0xC5);
+ 158:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay: Opamp current small, Boost frequency */ 
+ 159:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_194, 0x0A);
+ 160:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_194, 0x00);
+ 161:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay: BCLK/2, Opamp current small & Medium low */  
+ 162:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_195, 0x8A);
+ 163:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_195, 0x2A);
+ 164:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay */
+ 165:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_196, 0x8A);
+ 166:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_196, 0xEE);
+ 167:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 1 arg, no delay */
+ 168:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_197, 0x0E);
+ 169:Drivers/BSP/Components/st7735/st7735.c ****   /* Don't invert display, no args, no delay */
+ 170:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_32);
+ 171:Drivers/BSP/Components/st7735/st7735.c ****   /* Set color mode, 1 arg, no delay: 16-bit color */
+ 172:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_58, 0x05);
+ 173:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = 0, XEND = 127 */
+ 174:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_42);
+ 175:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x00;
+ 176:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 177:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 178:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 179:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x7F;
+ 180:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 181:Drivers/BSP/Components/st7735/st7735.c ****   /* Row addr set, 4 args, no delay: YSTART = 0, YEND = 159 */
+ 182:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_43);
+ 183:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x00;
+ 184:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 185:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 186:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 187:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x9F;
+ 188:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 189:Drivers/BSP/Components/st7735/st7735.c ****   /* Magical unicorn dust, 16 args, no delay */
+ 190:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x02); 
+ 191:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x1c);  
+ 192:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x07); 
+ 193:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x12);
+ 194:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x37);  
+ 195:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x32);  
+ 196:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x29);  
+ 197:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x2d);
+ 198:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x29);  
+ 199:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x25);  
+ 200:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x2B);  
+ 201:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x39);  
+ 202:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x00);  
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 5
+
+
+ 203:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x01);  
+ 204:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x03);  
+ 205:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x10);
+ 206:Drivers/BSP/Components/st7735/st7735.c ****   /* Sparkles and rainbows, 16 args, no delay */
+ 207:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x03);
+ 208:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x1d);  
+ 209:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x07);  
+ 210:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x06);
+ 211:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 212:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2C);  
+ 213:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x29);  
+ 214:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2D);
+ 215:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 216:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 217:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x37);  
+ 218:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x3F);  
+ 219:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x00);  
+ 220:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x00);  
+ 221:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x02);  
+ 222:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x10);
+ 223:Drivers/BSP/Components/st7735/st7735.c ****   /* Normal display on, no args, no delay */
+ 224:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_19, 0x00);
+ 225:Drivers/BSP/Components/st7735/st7735.c ****   /* Main screen turn on, no delay */
+ 226:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_41, 0x00);
+ 227:Drivers/BSP/Components/st7735/st7735.c ****   /* Memory access control: MY = 1, MX = 1, MV = 0, ML = 0 */
+ 228:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_54, 0xC0);
+ 229:Drivers/BSP/Components/st7735/st7735.c **** }
+ 230:Drivers/BSP/Components/st7735/st7735.c **** 
+ 231:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 232:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Enables the Display.
+ 233:Drivers/BSP/Components/st7735/st7735.c ****   * @param  None
+ 234:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 235:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 236:Drivers/BSP/Components/st7735/st7735.c **** void st7735_DisplayOn(void)
+ 237:Drivers/BSP/Components/st7735/st7735.c **** {
+ 238:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 239:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 240:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 241:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_41);
+ 242:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 243:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_54);
+ 244:Drivers/BSP/Components/st7735/st7735.c ****   data = 0xC0;
+ 245:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 246:Drivers/BSP/Components/st7735/st7735.c **** }
+ 247:Drivers/BSP/Components/st7735/st7735.c **** 
+ 248:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 249:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Disables the Display.
+ 250:Drivers/BSP/Components/st7735/st7735.c ****   * @param  None
+ 251:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 252:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 253:Drivers/BSP/Components/st7735/st7735.c **** void st7735_DisplayOff(void)
+ 254:Drivers/BSP/Components/st7735/st7735.c **** {
+ 255:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 256:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 257:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 258:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_40);
+ 259:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 6
+
+
+ 260:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_54);
+ 261:Drivers/BSP/Components/st7735/st7735.c ****   data = 0xC0;
+ 262:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 263:Drivers/BSP/Components/st7735/st7735.c **** }
+ 264:Drivers/BSP/Components/st7735/st7735.c **** 
+ 265:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 266:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Sets Cursor position.
+ 267:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Xpos: specifies the X position.
+ 268:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Ypos: specifies the Y position.
+ 269:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 270:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 271:Drivers/BSP/Components/st7735/st7735.c **** void st7735_SetCursor(uint16_t Xpos, uint16_t Ypos)
+ 272:Drivers/BSP/Components/st7735/st7735.c **** {
+ 273:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 274:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_42);
+ 275:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+ 276:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 277:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) & 0xFF;
+ 278:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 279:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_43); 
+ 280:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) >> 8;
+ 281:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 282:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) & 0xFF;
+ 283:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 284:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_44);
+ 285:Drivers/BSP/Components/st7735/st7735.c **** }
+ 286:Drivers/BSP/Components/st7735/st7735.c **** 
+ 287:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 288:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Writes pixel.   
+ 289:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Xpos: specifies the X position.
+ 290:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Ypos: specifies the Y position.
+ 291:Drivers/BSP/Components/st7735/st7735.c ****   * @param  RGBCode: the RGB pixel color
+ 292:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 293:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 294:Drivers/BSP/Components/st7735/st7735.c **** void st7735_WritePixel(uint16_t Xpos, uint16_t Ypos, uint16_t RGBCode)
+ 295:Drivers/BSP/Components/st7735/st7735.c **** {
+ 296:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 297:Drivers/BSP/Components/st7735/st7735.c ****   if((Xpos >= ST7735_LCD_PIXEL_WIDTH) || (Ypos >= ST7735_LCD_PIXEL_HEIGHT)) 
+ 298:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 299:Drivers/BSP/Components/st7735/st7735.c ****     return;
+ 300:Drivers/BSP/Components/st7735/st7735.c ****   }
+ 301:Drivers/BSP/Components/st7735/st7735.c ****   
+ 302:Drivers/BSP/Components/st7735/st7735.c ****   /* Set Cursor */
+ 303:Drivers/BSP/Components/st7735/st7735.c ****   st7735_SetCursor(Xpos, Ypos);
+ 304:Drivers/BSP/Components/st7735/st7735.c ****   
+ 305:Drivers/BSP/Components/st7735/st7735.c ****   data = RGBCode >> 8;
+ 306:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 307:Drivers/BSP/Components/st7735/st7735.c ****   data = RGBCode;
+ 308:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 309:Drivers/BSP/Components/st7735/st7735.c **** }  
+ 310:Drivers/BSP/Components/st7735/st7735.c **** 
+ 311:Drivers/BSP/Components/st7735/st7735.c **** 
+ 312:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 313:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Writes to the selected LCD register.
+ 314:Drivers/BSP/Components/st7735/st7735.c ****   * @param  LCDReg: Address of the selected register.
+ 315:Drivers/BSP/Components/st7735/st7735.c ****   * @param  LCDRegValue: value to write to the selected register.
+ 316:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 7
+
+
+ 317:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 318:Drivers/BSP/Components/st7735/st7735.c **** void st7735_WriteReg(uint8_t LCDReg, uint8_t LCDRegValue)
+ 319:Drivers/BSP/Components/st7735/st7735.c **** {
+ 320:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCDReg);
+ 321:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&LCDRegValue, 1);
+ 322:Drivers/BSP/Components/st7735/st7735.c **** }
+ 323:Drivers/BSP/Components/st7735/st7735.c **** 
+ 324:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 325:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Sets a display window
+ 326:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Xpos:   specifies the X bottom left position.
+ 327:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Ypos:   specifies the Y bottom left position.
+ 328:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Height: display window height.
+ 329:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Width:  display window width.
+ 330:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 331:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 332:Drivers/BSP/Components/st7735/st7735.c **** void st7735_SetDisplayWindow(uint16_t Xpos, uint16_t Ypos, uint16_t Width, uint16_t Height)
+ 333:Drivers/BSP/Components/st7735/st7735.c **** {
+ 334:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 335:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = Xpos, XEND = (Xpos + Width - 1) */
+ 336:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_42);
+ 337:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+ 338:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 339:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) & 0xFF;
+ 340:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos + Width - 1) >> 8;
+ 342:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 343:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos + Width - 1) & 0xFF;
+ 344:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 345:Drivers/BSP/Components/st7735/st7735.c ****   /* Row addr set, 4 args, no delay: YSTART = Ypos, YEND = (Ypos + Height - 1) */
+ 346:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_43);
+ 347:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) >> 8;
+ 348:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 349:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) & 0xFF;
+ 350:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos + Height - 1) >> 8;
+ 352:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 353:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos + Height - 1) & 0xFF;
+ 354:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 355:Drivers/BSP/Components/st7735/st7735.c **** }
+ 356:Drivers/BSP/Components/st7735/st7735.c **** 
+ 357:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 358:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Draws horizontal line.
+ 359:Drivers/BSP/Components/st7735/st7735.c ****   * @param  RGBCode: Specifies the RGB color   
+ 360:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Xpos: specifies the X position.
+ 361:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Ypos: specifies the Y position.
+ 362:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Length: specifies the line length.  
+ 363:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 364:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 365:Drivers/BSP/Components/st7735/st7735.c **** void st7735_DrawHLine(uint16_t RGBCode, uint16_t Xpos, uint16_t Ypos, uint16_t Length)
+ 366:Drivers/BSP/Components/st7735/st7735.c **** {
+ 367:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 368:Drivers/BSP/Components/st7735/st7735.c ****   
+ 369:Drivers/BSP/Components/st7735/st7735.c ****   if(Xpos + Length > ST7735_LCD_PIXEL_WIDTH) return;
+ 370:Drivers/BSP/Components/st7735/st7735.c ****   
+ 371:Drivers/BSP/Components/st7735/st7735.c ****   /* Set Cursor */
+ 372:Drivers/BSP/Components/st7735/st7735.c ****   st7735_SetCursor(Xpos, Ypos);
+ 373:Drivers/BSP/Components/st7735/st7735.c ****   
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 8
+
+
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   for(counter = 0; counter < Length; counter++)
+ 375:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 376:Drivers/BSP/Components/st7735/st7735.c ****     ArrayRGB[counter] = RGBCode;
+ 377:Drivers/BSP/Components/st7735/st7735.c ****   }
+ 378:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData((uint8_t*)&ArrayRGB[0], Length * 2);
+ 379:Drivers/BSP/Components/st7735/st7735.c **** }
+ 380:Drivers/BSP/Components/st7735/st7735.c **** 
+ 381:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 382:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Draws vertical line.
+ 383:Drivers/BSP/Components/st7735/st7735.c ****   * @param  RGBCode: Specifies the RGB color   
+ 384:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Xpos: specifies the X position.
+ 385:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Ypos: specifies the Y position.
+ 386:Drivers/BSP/Components/st7735/st7735.c ****   * @param  Length: specifies the line length.  
+ 387:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 388:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 389:Drivers/BSP/Components/st7735/st7735.c **** void st7735_DrawVLine(uint16_t RGBCode, uint16_t Xpos, uint16_t Ypos, uint16_t Length)
+ 390:Drivers/BSP/Components/st7735/st7735.c **** {
+ 391:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 392:Drivers/BSP/Components/st7735/st7735.c ****   
+ 393:Drivers/BSP/Components/st7735/st7735.c ****   if(Ypos + Length > ST7735_LCD_PIXEL_HEIGHT) return;
+ 394:Drivers/BSP/Components/st7735/st7735.c ****   for(counter = 0; counter < Length; counter++)
+ 395:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 396:Drivers/BSP/Components/st7735/st7735.c ****     st7735_WritePixel(Xpos, Ypos + counter, RGBCode);
+ 397:Drivers/BSP/Components/st7735/st7735.c ****   }   
+ 398:Drivers/BSP/Components/st7735/st7735.c **** }
+ 399:Drivers/BSP/Components/st7735/st7735.c **** 
+ 400:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 401:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Gets the LCD pixel Width.
+ 402:Drivers/BSP/Components/st7735/st7735.c ****   * @param  None
+ 403:Drivers/BSP/Components/st7735/st7735.c ****   * @retval The Lcd Pixel Width
+ 404:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 405:Drivers/BSP/Components/st7735/st7735.c **** uint16_t st7735_GetLcdPixelWidth(void)
+ 406:Drivers/BSP/Components/st7735/st7735.c **** {
+  28              		.loc 1 406 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+ 407:Drivers/BSP/Components/st7735/st7735.c ****   return ST7735_LCD_PIXEL_WIDTH;
+  33              		.loc 1 407 3 view .LVU1
+ 408:Drivers/BSP/Components/st7735/st7735.c **** }
+  34              		.loc 1 408 1 is_stmt 0 view .LVU2
+  35 0000 8020     		movs	r0, #128
+  36 0002 7047     		bx	lr
+  37              		.cfi_endproc
+  38              	.LFE9:
+  40              		.section	.text.st7735_GetLcdPixelHeight,"ax",%progbits
+  41              		.align	1
+  42              		.global	st7735_GetLcdPixelHeight
+  43              		.syntax unified
+  44              		.thumb
+  45              		.thumb_func
+  47              	st7735_GetLcdPixelHeight:
+  48              	.LFB10:
+ 409:Drivers/BSP/Components/st7735/st7735.c **** 
+ 410:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 411:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Gets the LCD pixel Height.
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 9
+
+
+ 412:Drivers/BSP/Components/st7735/st7735.c ****   * @param  None
+ 413:Drivers/BSP/Components/st7735/st7735.c ****   * @retval The Lcd Pixel Height
+ 414:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 415:Drivers/BSP/Components/st7735/st7735.c **** uint16_t st7735_GetLcdPixelHeight(void)
+ 416:Drivers/BSP/Components/st7735/st7735.c **** {                          
+  49              		.loc 1 416 1 is_stmt 1 view -0
+  50              		.cfi_startproc
+  51              		@ args = 0, pretend = 0, frame = 0
+  52              		@ frame_needed = 0, uses_anonymous_args = 0
+  53              		@ link register save eliminated.
+ 417:Drivers/BSP/Components/st7735/st7735.c ****   return ST7735_LCD_PIXEL_HEIGHT;
+  54              		.loc 1 417 3 view .LVU4
+ 418:Drivers/BSP/Components/st7735/st7735.c **** }
+  55              		.loc 1 418 1 is_stmt 0 view .LVU5
+  56 0000 A020     		movs	r0, #160
+  57 0002 7047     		bx	lr
+  58              		.cfi_endproc
+  59              	.LFE10:
+  61              		.section	.text.st7735_SetCursor,"ax",%progbits
+  62              		.align	1
+  63              		.global	st7735_SetCursor
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  68              	st7735_SetCursor:
+  69              	.LVL0:
+  70              	.LFB3:
+ 272:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+  71              		.loc 1 272 1 is_stmt 1 view -0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 8
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+ 272:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+  75              		.loc 1 272 1 is_stmt 0 view .LVU7
+  76 0000 30B5     		push	{r4, r5, lr}
+  77              		.cfi_def_cfa_offset 12
+  78              		.cfi_offset 4, -12
+  79              		.cfi_offset 5, -8
+  80              		.cfi_offset 14, -4
+  81 0002 83B0     		sub	sp, sp, #12
+  82              		.cfi_def_cfa_offset 24
+  83 0004 0546     		mov	r5, r0
+  84 0006 0C46     		mov	r4, r1
+ 273:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_42);
+  85              		.loc 1 273 3 is_stmt 1 view .LVU8
+ 273:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_42);
+  86              		.loc 1 273 11 is_stmt 0 view .LVU9
+  87 0008 0023     		movs	r3, #0
+  88 000a 8DF80730 		strb	r3, [sp, #7]
+ 274:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+  89              		.loc 1 274 3 is_stmt 1 view .LVU10
+  90 000e 2A20     		movs	r0, #42
+  91              	.LVL1:
+ 274:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+  92              		.loc 1 274 3 is_stmt 0 view .LVU11
+  93 0010 FFF7FEFF 		bl	LCD_IO_WriteReg
+  94              	.LVL2:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 10
+
+
+ 275:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+  95              		.loc 1 275 3 is_stmt 1 view .LVU12
+ 275:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+  96              		.loc 1 275 8 is_stmt 0 view .LVU13
+  97 0014 2B0A     		lsrs	r3, r5, #8
+  98 0016 8DF80730 		strb	r3, [sp, #7]
+ 276:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) & 0xFF;
+  99              		.loc 1 276 3 is_stmt 1 view .LVU14
+ 100 001a 0121     		movs	r1, #1
+ 101 001c 0DF10700 		add	r0, sp, #7
+ 102 0020 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 103              	.LVL3:
+ 277:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 104              		.loc 1 277 3 view .LVU15
+ 277:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 105              		.loc 1 277 8 is_stmt 0 view .LVU16
+ 106 0024 8DF80750 		strb	r5, [sp, #7]
+ 278:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_43); 
+ 107              		.loc 1 278 3 is_stmt 1 view .LVU17
+ 108 0028 0121     		movs	r1, #1
+ 109 002a 0DF10700 		add	r0, sp, #7
+ 110 002e FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 111              	.LVL4:
+ 279:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) >> 8;
+ 112              		.loc 1 279 3 view .LVU18
+ 113 0032 2B20     		movs	r0, #43
+ 114 0034 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 115              	.LVL5:
+ 280:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 116              		.loc 1 280 3 view .LVU19
+ 280:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 117              		.loc 1 280 8 is_stmt 0 view .LVU20
+ 118 0038 230A     		lsrs	r3, r4, #8
+ 119 003a 8DF80730 		strb	r3, [sp, #7]
+ 281:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) & 0xFF;
+ 120              		.loc 1 281 3 is_stmt 1 view .LVU21
+ 121 003e 0121     		movs	r1, #1
+ 122 0040 0DF10700 		add	r0, sp, #7
+ 123 0044 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 124              	.LVL6:
+ 282:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 125              		.loc 1 282 3 view .LVU22
+ 282:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 126              		.loc 1 282 8 is_stmt 0 view .LVU23
+ 127 0048 8DF80740 		strb	r4, [sp, #7]
+ 283:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_44);
+ 128              		.loc 1 283 3 is_stmt 1 view .LVU24
+ 129 004c 0121     		movs	r1, #1
+ 130 004e 0DF10700 		add	r0, sp, #7
+ 131 0052 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 132              	.LVL7:
+ 284:Drivers/BSP/Components/st7735/st7735.c **** }
+ 133              		.loc 1 284 3 view .LVU25
+ 134 0056 2C20     		movs	r0, #44
+ 135 0058 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 136              	.LVL8:
+ 285:Drivers/BSP/Components/st7735/st7735.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 11
+
+
+ 137              		.loc 1 285 1 is_stmt 0 view .LVU26
+ 138 005c 03B0     		add	sp, sp, #12
+ 139              		.cfi_def_cfa_offset 12
+ 140              		@ sp needed
+ 141 005e 30BD     		pop	{r4, r5, pc}
+ 285:Drivers/BSP/Components/st7735/st7735.c **** 
+ 142              		.loc 1 285 1 view .LVU27
+ 143              		.cfi_endproc
+ 144              	.LFE3:
+ 146              		.section	.text.st7735_WritePixel,"ax",%progbits
+ 147              		.align	1
+ 148              		.global	st7735_WritePixel
+ 149              		.syntax unified
+ 150              		.thumb
+ 151              		.thumb_func
+ 153              	st7735_WritePixel:
+ 154              	.LVL9:
+ 155              	.LFB4:
+ 295:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 156              		.loc 1 295 1 is_stmt 1 view -0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 8
+ 159              		@ frame_needed = 0, uses_anonymous_args = 0
+ 295:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 160              		.loc 1 295 1 is_stmt 0 view .LVU29
+ 161 0000 10B5     		push	{r4, lr}
+ 162              		.cfi_def_cfa_offset 8
+ 163              		.cfi_offset 4, -8
+ 164              		.cfi_offset 14, -4
+ 165 0002 82B0     		sub	sp, sp, #8
+ 166              		.cfi_def_cfa_offset 16
+ 296:Drivers/BSP/Components/st7735/st7735.c ****   if((Xpos >= ST7735_LCD_PIXEL_WIDTH) || (Ypos >= ST7735_LCD_PIXEL_HEIGHT)) 
+ 167              		.loc 1 296 3 is_stmt 1 view .LVU30
+ 296:Drivers/BSP/Components/st7735/st7735.c ****   if((Xpos >= ST7735_LCD_PIXEL_WIDTH) || (Ypos >= ST7735_LCD_PIXEL_HEIGHT)) 
+ 168              		.loc 1 296 11 is_stmt 0 view .LVU31
+ 169 0004 0023     		movs	r3, #0
+ 170 0006 8DF80730 		strb	r3, [sp, #7]
+ 297:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 171              		.loc 1 297 3 is_stmt 1 view .LVU32
+ 297:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 172              		.loc 1 297 5 is_stmt 0 view .LVU33
+ 173 000a 9F29     		cmp	r1, #159
+ 174 000c 98BF     		it	ls
+ 175 000e 7F28     		cmpls	r0, #127
+ 176 0010 01D9     		bls	.L9
+ 177              	.LVL10:
+ 178              	.L5:
+ 309:Drivers/BSP/Components/st7735/st7735.c **** 
+ 179              		.loc 1 309 1 view .LVU34
+ 180 0012 02B0     		add	sp, sp, #8
+ 181              		.cfi_remember_state
+ 182              		.cfi_def_cfa_offset 8
+ 183              		@ sp needed
+ 184 0014 10BD     		pop	{r4, pc}
+ 185              	.LVL11:
+ 186              	.L9:
+ 187              		.cfi_restore_state
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 12
+
+
+ 309:Drivers/BSP/Components/st7735/st7735.c **** 
+ 188              		.loc 1 309 1 view .LVU35
+ 189 0016 1446     		mov	r4, r2
+ 303:Drivers/BSP/Components/st7735/st7735.c ****   
+ 190              		.loc 1 303 3 is_stmt 1 view .LVU36
+ 191 0018 FFF7FEFF 		bl	st7735_SetCursor
+ 192              	.LVL12:
+ 305:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 193              		.loc 1 305 3 view .LVU37
+ 305:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 194              		.loc 1 305 8 is_stmt 0 view .LVU38
+ 195 001c 230A     		lsrs	r3, r4, #8
+ 196 001e 8DF80730 		strb	r3, [sp, #7]
+ 306:Drivers/BSP/Components/st7735/st7735.c ****   data = RGBCode;
+ 197              		.loc 1 306 3 is_stmt 1 view .LVU39
+ 198 0022 0121     		movs	r1, #1
+ 199 0024 0DF10700 		add	r0, sp, #7
+ 200 0028 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 201              	.LVL13:
+ 307:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 202              		.loc 1 307 3 view .LVU40
+ 307:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 203              		.loc 1 307 8 is_stmt 0 view .LVU41
+ 204 002c 8DF80740 		strb	r4, [sp, #7]
+ 308:Drivers/BSP/Components/st7735/st7735.c **** }  
+ 205              		.loc 1 308 3 is_stmt 1 view .LVU42
+ 206 0030 0121     		movs	r1, #1
+ 207 0032 0DF10700 		add	r0, sp, #7
+ 208 0036 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 209              	.LVL14:
+ 210 003a EAE7     		b	.L5
+ 211              		.cfi_endproc
+ 212              	.LFE4:
+ 214              		.section	.text.st7735_DrawVLine,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	st7735_DrawVLine
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	st7735_DrawVLine:
+ 222              	.LVL15:
+ 223              	.LFB8:
+ 390:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 224              		.loc 1 390 1 view -0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 390:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 228              		.loc 1 390 1 is_stmt 0 view .LVU44
+ 229 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 230              		.cfi_def_cfa_offset 24
+ 231              		.cfi_offset 4, -24
+ 232              		.cfi_offset 5, -20
+ 233              		.cfi_offset 6, -16
+ 234              		.cfi_offset 7, -12
+ 235              		.cfi_offset 8, -8
+ 236              		.cfi_offset 14, -4
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 13
+
+
+ 237 0004 1D46     		mov	r5, r3
+ 391:Drivers/BSP/Components/st7735/st7735.c ****   
+ 238              		.loc 1 391 3 is_stmt 1 view .LVU45
+ 239              	.LVL16:
+ 393:Drivers/BSP/Components/st7735/st7735.c ****   for(counter = 0; counter < Length; counter++)
+ 240              		.loc 1 393 3 view .LVU46
+ 393:Drivers/BSP/Components/st7735/st7735.c ****   for(counter = 0; counter < Length; counter++)
+ 241              		.loc 1 393 11 is_stmt 0 view .LVU47
+ 242 0006 D318     		adds	r3, r2, r3
+ 243              	.LVL17:
+ 393:Drivers/BSP/Components/st7735/st7735.c ****   for(counter = 0; counter < Length; counter++)
+ 244              		.loc 1 393 5 view .LVU48
+ 245 0008 A02B     		cmp	r3, #160
+ 246 000a 0EDC     		bgt	.L10
+ 247 000c 0746     		mov	r7, r0
+ 248 000e 8846     		mov	r8, r1
+ 249 0010 1646     		mov	r6, r2
+ 394:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 250              		.loc 1 394 15 view .LVU49
+ 251 0012 0024     		movs	r4, #0
+ 252 0014 07E0     		b	.L12
+ 253              	.LVL18:
+ 254              	.L13:
+ 396:Drivers/BSP/Components/st7735/st7735.c ****   }   
+ 255              		.loc 1 396 5 is_stmt 1 view .LVU50
+ 256 0016 A119     		adds	r1, r4, r6
+ 257 0018 3A46     		mov	r2, r7
+ 258 001a 89B2     		uxth	r1, r1
+ 259 001c 4046     		mov	r0, r8
+ 260 001e FFF7FEFF 		bl	st7735_WritePixel
+ 261              	.LVL19:
+ 394:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 262              		.loc 1 394 45 discriminator 3 view .LVU51
+ 263 0022 0134     		adds	r4, r4, #1
+ 264              	.LVL20:
+ 394:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 265              		.loc 1 394 45 is_stmt 0 discriminator 3 view .LVU52
+ 266 0024 E4B2     		uxtb	r4, r4
+ 267              	.LVL21:
+ 268              	.L12:
+ 394:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 269              		.loc 1 394 28 is_stmt 1 discriminator 1 view .LVU53
+ 270 0026 AC42     		cmp	r4, r5
+ 271 0028 F5D3     		bcc	.L13
+ 272              	.LVL22:
+ 273              	.L10:
+ 398:Drivers/BSP/Components/st7735/st7735.c **** 
+ 274              		.loc 1 398 1 is_stmt 0 view .LVU54
+ 275 002a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 398:Drivers/BSP/Components/st7735/st7735.c **** 
+ 276              		.loc 1 398 1 view .LVU55
+ 277              		.cfi_endproc
+ 278              	.LFE8:
+ 280              		.section	.text.st7735_SetDisplayWindow,"ax",%progbits
+ 281              		.align	1
+ 282              		.global	st7735_SetDisplayWindow
+ 283              		.syntax unified
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 14
+
+
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	st7735_SetDisplayWindow:
+ 288              	.LVL23:
+ 289              	.LFB6:
+ 333:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 290              		.loc 1 333 1 is_stmt 1 view -0
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 8
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ 333:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 294              		.loc 1 333 1 is_stmt 0 view .LVU57
+ 295 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 296              		.cfi_def_cfa_offset 24
+ 297              		.cfi_offset 4, -24
+ 298              		.cfi_offset 5, -20
+ 299              		.cfi_offset 6, -16
+ 300              		.cfi_offset 7, -12
+ 301              		.cfi_offset 8, -8
+ 302              		.cfi_offset 14, -4
+ 303 0004 82B0     		sub	sp, sp, #8
+ 304              		.cfi_def_cfa_offset 32
+ 305 0006 0546     		mov	r5, r0
+ 306 0008 0C46     		mov	r4, r1
+ 307 000a 9046     		mov	r8, r2
+ 308 000c 1E46     		mov	r6, r3
+ 334:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = Xpos, XEND = (Xpos + Width - 1) */
+ 309              		.loc 1 334 3 is_stmt 1 view .LVU58
+ 334:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = Xpos, XEND = (Xpos + Width - 1) */
+ 310              		.loc 1 334 11 is_stmt 0 view .LVU59
+ 311 000e 0023     		movs	r3, #0
+ 312              	.LVL24:
+ 334:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = Xpos, XEND = (Xpos + Width - 1) */
+ 313              		.loc 1 334 11 view .LVU60
+ 314 0010 8DF80730 		strb	r3, [sp, #7]
+ 336:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+ 315              		.loc 1 336 3 is_stmt 1 view .LVU61
+ 316 0014 2A20     		movs	r0, #42
+ 317              	.LVL25:
+ 336:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) >> 8;
+ 318              		.loc 1 336 3 is_stmt 0 view .LVU62
+ 319 0016 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 320              	.LVL26:
+ 337:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 321              		.loc 1 337 3 is_stmt 1 view .LVU63
+ 337:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 322              		.loc 1 337 8 is_stmt 0 view .LVU64
+ 323 001a 2B0A     		lsrs	r3, r5, #8
+ 324 001c 8DF80730 		strb	r3, [sp, #7]
+ 338:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos) & 0xFF;
+ 325              		.loc 1 338 3 is_stmt 1 view .LVU65
+ 326 0020 0121     		movs	r1, #1
+ 327 0022 0DF10700 		add	r0, sp, #7
+ 328 0026 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 329              	.LVL27:
+ 339:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 330              		.loc 1 339 3 view .LVU66
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 15
+
+
+ 339:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 331              		.loc 1 339 8 is_stmt 0 view .LVU67
+ 332 002a EFB2     		uxtb	r7, r5
+ 333 002c 8DF80770 		strb	r7, [sp, #7]
+ 340:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos + Width - 1) >> 8;
+ 334              		.loc 1 340 3 is_stmt 1 view .LVU68
+ 335 0030 0121     		movs	r1, #1
+ 336 0032 0DF10700 		add	r0, sp, #7
+ 337 0036 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 338              	.LVL28:
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 339              		.loc 1 341 3 view .LVU69
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 340              		.loc 1 341 16 is_stmt 0 view .LVU70
+ 341 003a 4544     		add	r5, r5, r8
+ 342              	.LVL29:
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 343              		.loc 1 341 24 view .LVU71
+ 344 003c 013D     		subs	r5, r5, #1
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 345              		.loc 1 341 29 view .LVU72
+ 346 003e 2D12     		asrs	r5, r5, #8
+ 341:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 347              		.loc 1 341 8 view .LVU73
+ 348 0040 8DF80750 		strb	r5, [sp, #7]
+ 342:Drivers/BSP/Components/st7735/st7735.c ****   data = (Xpos + Width - 1) & 0xFF;
+ 349              		.loc 1 342 3 is_stmt 1 view .LVU74
+ 350 0044 0121     		movs	r1, #1
+ 351 0046 0DF10700 		add	r0, sp, #7
+ 352 004a FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 353              	.LVL30:
+ 343:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 354              		.loc 1 343 3 view .LVU75
+ 343:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 355              		.loc 1 343 16 is_stmt 0 view .LVU76
+ 356 004e 4744     		add	r7, r7, r8
+ 357 0050 FFB2     		uxtb	r7, r7
+ 343:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 358              		.loc 1 343 24 view .LVU77
+ 359 0052 013F     		subs	r7, r7, #1
+ 343:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 360              		.loc 1 343 8 view .LVU78
+ 361 0054 8DF80770 		strb	r7, [sp, #7]
+ 344:Drivers/BSP/Components/st7735/st7735.c ****   /* Row addr set, 4 args, no delay: YSTART = Ypos, YEND = (Ypos + Height - 1) */
+ 362              		.loc 1 344 3 is_stmt 1 view .LVU79
+ 363 0058 0121     		movs	r1, #1
+ 364 005a 0DF10700 		add	r0, sp, #7
+ 365 005e FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 366              	.LVL31:
+ 346:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) >> 8;
+ 367              		.loc 1 346 3 view .LVU80
+ 368 0062 2B20     		movs	r0, #43
+ 369 0064 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 370              	.LVL32:
+ 347:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 371              		.loc 1 347 3 view .LVU81
+ 347:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 16
+
+
+ 372              		.loc 1 347 8 is_stmt 0 view .LVU82
+ 373 0068 230A     		lsrs	r3, r4, #8
+ 374 006a 8DF80730 		strb	r3, [sp, #7]
+ 348:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos) & 0xFF;
+ 375              		.loc 1 348 3 is_stmt 1 view .LVU83
+ 376 006e 0121     		movs	r1, #1
+ 377 0070 0DF10700 		add	r0, sp, #7
+ 378 0074 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 379              	.LVL33:
+ 349:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 380              		.loc 1 349 3 view .LVU84
+ 349:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 381              		.loc 1 349 8 is_stmt 0 view .LVU85
+ 382 0078 E5B2     		uxtb	r5, r4
+ 383 007a 8DF80750 		strb	r5, [sp, #7]
+ 350:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos + Height - 1) >> 8;
+ 384              		.loc 1 350 3 is_stmt 1 view .LVU86
+ 385 007e 0121     		movs	r1, #1
+ 386 0080 0DF10700 		add	r0, sp, #7
+ 387 0084 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 388              	.LVL34:
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 389              		.loc 1 351 3 view .LVU87
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 390              		.loc 1 351 16 is_stmt 0 view .LVU88
+ 391 0088 3444     		add	r4, r4, r6
+ 392              	.LVL35:
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 393              		.loc 1 351 25 view .LVU89
+ 394 008a 013C     		subs	r4, r4, #1
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 395              		.loc 1 351 30 view .LVU90
+ 396 008c 2412     		asrs	r4, r4, #8
+ 351:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 397              		.loc 1 351 8 view .LVU91
+ 398 008e 8DF80740 		strb	r4, [sp, #7]
+ 352:Drivers/BSP/Components/st7735/st7735.c ****   data = (Ypos + Height - 1) & 0xFF;
+ 399              		.loc 1 352 3 is_stmt 1 view .LVU92
+ 400 0092 0121     		movs	r1, #1
+ 401 0094 0DF10700 		add	r0, sp, #7
+ 402 0098 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 403              	.LVL36:
+ 353:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 404              		.loc 1 353 3 view .LVU93
+ 353:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 405              		.loc 1 353 16 is_stmt 0 view .LVU94
+ 406 009c 3544     		add	r5, r5, r6
+ 407 009e EDB2     		uxtb	r5, r5
+ 353:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 408              		.loc 1 353 25 view .LVU95
+ 409 00a0 013D     		subs	r5, r5, #1
+ 353:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 410              		.loc 1 353 8 view .LVU96
+ 411 00a2 8DF80750 		strb	r5, [sp, #7]
+ 354:Drivers/BSP/Components/st7735/st7735.c **** }
+ 412              		.loc 1 354 3 is_stmt 1 view .LVU97
+ 413 00a6 0121     		movs	r1, #1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 17
+
+
+ 414 00a8 0DF10700 		add	r0, sp, #7
+ 415 00ac FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 416              	.LVL37:
+ 355:Drivers/BSP/Components/st7735/st7735.c **** 
+ 417              		.loc 1 355 1 is_stmt 0 view .LVU98
+ 418 00b0 02B0     		add	sp, sp, #8
+ 419              		.cfi_def_cfa_offset 24
+ 420              		@ sp needed
+ 421 00b2 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 355:Drivers/BSP/Components/st7735/st7735.c **** 
+ 422              		.loc 1 355 1 view .LVU99
+ 423              		.cfi_endproc
+ 424              	.LFE6:
+ 426              		.section	.text.st7735_DrawHLine,"ax",%progbits
+ 427              		.align	1
+ 428              		.global	st7735_DrawHLine
+ 429              		.syntax unified
+ 430              		.thumb
+ 431              		.thumb_func
+ 433              	st7735_DrawHLine:
+ 434              	.LVL38:
+ 435              	.LFB7:
+ 366:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 436              		.loc 1 366 1 is_stmt 1 view -0
+ 437              		.cfi_startproc
+ 438              		@ args = 0, pretend = 0, frame = 0
+ 439              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t counter = 0;
+ 440              		.loc 1 366 1 is_stmt 0 view .LVU101
+ 441 0000 38B5     		push	{r3, r4, r5, lr}
+ 442              		.cfi_def_cfa_offset 16
+ 443              		.cfi_offset 3, -16
+ 444              		.cfi_offset 4, -12
+ 445              		.cfi_offset 5, -8
+ 446              		.cfi_offset 14, -4
+ 447 0002 1C46     		mov	r4, r3
+ 367:Drivers/BSP/Components/st7735/st7735.c ****   
+ 448              		.loc 1 367 3 is_stmt 1 view .LVU102
+ 449              	.LVL39:
+ 369:Drivers/BSP/Components/st7735/st7735.c ****   
+ 450              		.loc 1 369 3 view .LVU103
+ 369:Drivers/BSP/Components/st7735/st7735.c ****   
+ 451              		.loc 1 369 11 is_stmt 0 view .LVU104
+ 452 0004 CB18     		adds	r3, r1, r3
+ 453              	.LVL40:
+ 369:Drivers/BSP/Components/st7735/st7735.c ****   
+ 454              		.loc 1 369 5 view .LVU105
+ 455 0006 802B     		cmp	r3, #128
+ 456 0008 00DD     		ble	.L22
+ 457              	.LVL41:
+ 458              	.L17:
+ 379:Drivers/BSP/Components/st7735/st7735.c **** 
+ 459              		.loc 1 379 1 view .LVU106
+ 460 000a 38BD     		pop	{r3, r4, r5, pc}
+ 461              	.LVL42:
+ 462              	.L22:
+ 379:Drivers/BSP/Components/st7735/st7735.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 18
+
+
+ 463              		.loc 1 379 1 view .LVU107
+ 464 000c 0546     		mov	r5, r0
+ 465 000e 0846     		mov	r0, r1
+ 466              	.LVL43:
+ 372:Drivers/BSP/Components/st7735/st7735.c ****   
+ 467              		.loc 1 372 3 is_stmt 1 view .LVU108
+ 468 0010 1146     		mov	r1, r2
+ 469              	.LVL44:
+ 372:Drivers/BSP/Components/st7735/st7735.c ****   
+ 470              		.loc 1 372 3 is_stmt 0 view .LVU109
+ 471 0012 FFF7FEFF 		bl	st7735_SetCursor
+ 472              	.LVL45:
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 473              		.loc 1 374 3 is_stmt 1 view .LVU110
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 474              		.loc 1 374 15 is_stmt 0 view .LVU111
+ 475 0016 0022     		movs	r2, #0
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 476              		.loc 1 374 3 view .LVU112
+ 477 0018 04E0     		b	.L19
+ 478              	.LVL46:
+ 479              	.L20:
+ 376:Drivers/BSP/Components/st7735/st7735.c ****   }
+ 480              		.loc 1 376 5 is_stmt 1 view .LVU113
+ 376:Drivers/BSP/Components/st7735/st7735.c ****   }
+ 481              		.loc 1 376 23 is_stmt 0 view .LVU114
+ 482 001a 064B     		ldr	r3, .L23
+ 483 001c 23F81250 		strh	r5, [r3, r2, lsl #1]	@ movhi
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 484              		.loc 1 374 45 is_stmt 1 discriminator 3 view .LVU115
+ 485 0020 0132     		adds	r2, r2, #1
+ 486              	.LVL47:
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 487              		.loc 1 374 45 is_stmt 0 discriminator 3 view .LVU116
+ 488 0022 D2B2     		uxtb	r2, r2
+ 489              	.LVL48:
+ 490              	.L19:
+ 374:Drivers/BSP/Components/st7735/st7735.c ****   {
+ 491              		.loc 1 374 28 is_stmt 1 discriminator 1 view .LVU117
+ 492 0024 A242     		cmp	r2, r4
+ 493 0026 F8D3     		bcc	.L20
+ 378:Drivers/BSP/Components/st7735/st7735.c **** }
+ 494              		.loc 1 378 3 view .LVU118
+ 495 0028 6100     		lsls	r1, r4, #1
+ 496 002a 0248     		ldr	r0, .L23
+ 497 002c FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 498              	.LVL49:
+ 378:Drivers/BSP/Components/st7735/st7735.c **** }
+ 499              		.loc 1 378 3 is_stmt 0 view .LVU119
+ 500 0030 EBE7     		b	.L17
+ 501              	.L24:
+ 502 0032 00BF     		.align	2
+ 503              	.L23:
+ 504 0034 00000000 		.word	ArrayRGB
+ 505              		.cfi_endproc
+ 506              	.LFE7:
+ 508              		.section	.text.st7735_DisplayOn,"ax",%progbits
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 19
+
+
+ 509              		.align	1
+ 510              		.global	st7735_DisplayOn
+ 511              		.syntax unified
+ 512              		.thumb
+ 513              		.thumb_func
+ 515              	st7735_DisplayOn:
+ 516              	.LFB1:
+ 237:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 517              		.loc 1 237 1 is_stmt 1 view -0
+ 518              		.cfi_startproc
+ 519              		@ args = 0, pretend = 0, frame = 8
+ 520              		@ frame_needed = 0, uses_anonymous_args = 0
+ 521 0000 00B5     		push	{lr}
+ 522              		.cfi_def_cfa_offset 4
+ 523              		.cfi_offset 14, -4
+ 524 0002 83B0     		sub	sp, sp, #12
+ 525              		.cfi_def_cfa_offset 16
+ 238:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 526              		.loc 1 238 3 view .LVU121
+ 238:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 527              		.loc 1 238 11 is_stmt 0 view .LVU122
+ 528 0004 0023     		movs	r3, #0
+ 529 0006 8DF80730 		strb	r3, [sp, #7]
+ 239:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 530              		.loc 1 239 3 is_stmt 1 view .LVU123
+ 531 000a 1320     		movs	r0, #19
+ 532 000c FFF7FEFF 		bl	LCD_IO_WriteReg
+ 533              	.LVL50:
+ 240:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_41);
+ 534              		.loc 1 240 3 view .LVU124
+ 535 0010 0A20     		movs	r0, #10
+ 536 0012 FFF7FEFF 		bl	LCD_Delay
+ 537              	.LVL51:
+ 241:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 538              		.loc 1 241 3 view .LVU125
+ 539 0016 2920     		movs	r0, #41
+ 540 0018 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 541              	.LVL52:
+ 242:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_54);
+ 542              		.loc 1 242 3 view .LVU126
+ 543 001c 0A20     		movs	r0, #10
+ 544 001e FFF7FEFF 		bl	LCD_Delay
+ 545              	.LVL53:
+ 243:Drivers/BSP/Components/st7735/st7735.c ****   data = 0xC0;
+ 546              		.loc 1 243 3 view .LVU127
+ 547 0022 3620     		movs	r0, #54
+ 548 0024 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 549              	.LVL54:
+ 244:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 550              		.loc 1 244 3 view .LVU128
+ 244:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 551              		.loc 1 244 8 is_stmt 0 view .LVU129
+ 552 0028 C023     		movs	r3, #192
+ 553 002a 8DF80730 		strb	r3, [sp, #7]
+ 245:Drivers/BSP/Components/st7735/st7735.c **** }
+ 554              		.loc 1 245 3 is_stmt 1 view .LVU130
+ 555 002e 0121     		movs	r1, #1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 20
+
+
+ 556 0030 0DF10700 		add	r0, sp, #7
+ 557 0034 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 558              	.LVL55:
+ 246:Drivers/BSP/Components/st7735/st7735.c **** 
+ 559              		.loc 1 246 1 is_stmt 0 view .LVU131
+ 560 0038 03B0     		add	sp, sp, #12
+ 561              		.cfi_def_cfa_offset 4
+ 562              		@ sp needed
+ 563 003a 5DF804FB 		ldr	pc, [sp], #4
+ 564              		.cfi_endproc
+ 565              	.LFE1:
+ 567              		.section	.text.st7735_DisplayOff,"ax",%progbits
+ 568              		.align	1
+ 569              		.global	st7735_DisplayOff
+ 570              		.syntax unified
+ 571              		.thumb
+ 572              		.thumb_func
+ 574              	st7735_DisplayOff:
+ 575              	.LFB2:
+ 254:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 576              		.loc 1 254 1 is_stmt 1 view -0
+ 577              		.cfi_startproc
+ 578              		@ args = 0, pretend = 0, frame = 8
+ 579              		@ frame_needed = 0, uses_anonymous_args = 0
+ 580 0000 00B5     		push	{lr}
+ 581              		.cfi_def_cfa_offset 4
+ 582              		.cfi_offset 14, -4
+ 583 0002 83B0     		sub	sp, sp, #12
+ 584              		.cfi_def_cfa_offset 16
+ 255:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 585              		.loc 1 255 3 view .LVU133
+ 255:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_19);
+ 586              		.loc 1 255 11 is_stmt 0 view .LVU134
+ 587 0004 0023     		movs	r3, #0
+ 588 0006 8DF80730 		strb	r3, [sp, #7]
+ 256:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 589              		.loc 1 256 3 is_stmt 1 view .LVU135
+ 590 000a 1320     		movs	r0, #19
+ 591 000c FFF7FEFF 		bl	LCD_IO_WriteReg
+ 592              	.LVL56:
+ 257:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_40);
+ 593              		.loc 1 257 3 view .LVU136
+ 594 0010 0A20     		movs	r0, #10
+ 595 0012 FFF7FEFF 		bl	LCD_Delay
+ 596              	.LVL57:
+ 258:Drivers/BSP/Components/st7735/st7735.c ****   LCD_Delay(10);
+ 597              		.loc 1 258 3 view .LVU137
+ 598 0016 2820     		movs	r0, #40
+ 599 0018 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 600              	.LVL58:
+ 259:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCD_REG_54);
+ 601              		.loc 1 259 3 view .LVU138
+ 602 001c 0A20     		movs	r0, #10
+ 603 001e FFF7FEFF 		bl	LCD_Delay
+ 604              	.LVL59:
+ 260:Drivers/BSP/Components/st7735/st7735.c ****   data = 0xC0;
+ 605              		.loc 1 260 3 view .LVU139
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 21
+
+
+ 606 0022 3620     		movs	r0, #54
+ 607 0024 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 608              	.LVL60:
+ 261:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 609              		.loc 1 261 3 view .LVU140
+ 261:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 610              		.loc 1 261 8 is_stmt 0 view .LVU141
+ 611 0028 C023     		movs	r3, #192
+ 612 002a 8DF80730 		strb	r3, [sp, #7]
+ 262:Drivers/BSP/Components/st7735/st7735.c **** }
+ 613              		.loc 1 262 3 is_stmt 1 view .LVU142
+ 614 002e 0121     		movs	r1, #1
+ 615 0030 0DF10700 		add	r0, sp, #7
+ 616 0034 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 617              	.LVL61:
+ 263:Drivers/BSP/Components/st7735/st7735.c **** 
+ 618              		.loc 1 263 1 is_stmt 0 view .LVU143
+ 619 0038 03B0     		add	sp, sp, #12
+ 620              		.cfi_def_cfa_offset 4
+ 621              		@ sp needed
+ 622 003a 5DF804FB 		ldr	pc, [sp], #4
+ 623              		.cfi_endproc
+ 624              	.LFE2:
+ 626              		.section	.text.st7735_WriteReg,"ax",%progbits
+ 627              		.align	1
+ 628              		.global	st7735_WriteReg
+ 629              		.syntax unified
+ 630              		.thumb
+ 631              		.thumb_func
+ 633              	st7735_WriteReg:
+ 634              	.LVL62:
+ 635              	.LFB5:
+ 319:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCDReg);
+ 636              		.loc 1 319 1 is_stmt 1 view -0
+ 637              		.cfi_startproc
+ 638              		@ args = 0, pretend = 0, frame = 8
+ 639              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteReg(LCDReg);
+ 640              		.loc 1 319 1 is_stmt 0 view .LVU145
+ 641 0000 00B5     		push	{lr}
+ 642              		.cfi_def_cfa_offset 4
+ 643              		.cfi_offset 14, -4
+ 644 0002 83B0     		sub	sp, sp, #12
+ 645              		.cfi_def_cfa_offset 16
+ 646 0004 8DF80710 		strb	r1, [sp, #7]
+ 320:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&LCDRegValue, 1);
+ 647              		.loc 1 320 3 is_stmt 1 view .LVU146
+ 648 0008 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 649              	.LVL63:
+ 321:Drivers/BSP/Components/st7735/st7735.c **** }
+ 650              		.loc 1 321 3 view .LVU147
+ 651 000c 0121     		movs	r1, #1
+ 652 000e 0DF10700 		add	r0, sp, #7
+ 653 0012 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 654              	.LVL64:
+ 322:Drivers/BSP/Components/st7735/st7735.c **** 
+ 655              		.loc 1 322 1 is_stmt 0 view .LVU148
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 22
+
+
+ 656 0016 03B0     		add	sp, sp, #12
+ 657              		.cfi_def_cfa_offset 4
+ 658              		@ sp needed
+ 659 0018 5DF804FB 		ldr	pc, [sp], #4
+ 660              		.cfi_endproc
+ 661              	.LFE5:
+ 663              		.section	.text.st7735_Init,"ax",%progbits
+ 664              		.align	1
+ 665              		.global	st7735_Init
+ 666              		.syntax unified
+ 667              		.thumb
+ 668              		.thumb_func
+ 670              	st7735_Init:
+ 671              	.LFB0:
+ 124:Drivers/BSP/Components/st7735/st7735.c ****   uint8_t data = 0;
+ 672              		.loc 1 124 1 is_stmt 1 view -0
+ 673              		.cfi_startproc
+ 674              		@ args = 0, pretend = 0, frame = 8
+ 675              		@ frame_needed = 0, uses_anonymous_args = 0
+ 676 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 677              		.cfi_def_cfa_offset 20
+ 678              		.cfi_offset 4, -20
+ 679              		.cfi_offset 5, -16
+ 680              		.cfi_offset 6, -12
+ 681              		.cfi_offset 7, -8
+ 682              		.cfi_offset 14, -4
+ 683 0002 83B0     		sub	sp, sp, #12
+ 684              		.cfi_def_cfa_offset 32
+ 125:Drivers/BSP/Components/st7735/st7735.c ****   
+ 685              		.loc 1 125 3 view .LVU150
+ 125:Drivers/BSP/Components/st7735/st7735.c ****   
+ 686              		.loc 1 125 11 is_stmt 0 view .LVU151
+ 687 0004 0025     		movs	r5, #0
+ 688 0006 8DF80750 		strb	r5, [sp, #7]
+ 128:Drivers/BSP/Components/st7735/st7735.c ****   /* Out of sleep mode, 0 args, no delay */
+ 689              		.loc 1 128 3 is_stmt 1 view .LVU152
+ 690 000a FFF7FEFF 		bl	LCD_IO_Init
+ 691              	.LVL65:
+ 130:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate ctrl - normal mode, 3 args:Rate = fosc/(1x2+40) * (LINE+2C+2D)*/
+ 692              		.loc 1 130 3 view .LVU153
+ 693 000e 2946     		mov	r1, r5
+ 694 0010 1120     		movs	r0, #17
+ 695 0012 FFF7FEFF 		bl	st7735_WriteReg
+ 696              	.LVL66:
+ 132:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x01;
+ 697              		.loc 1 132 3 view .LVU154
+ 698 0016 B120     		movs	r0, #177
+ 699 0018 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 700              	.LVL67:
+ 133:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 701              		.loc 1 133 3 view .LVU155
+ 133:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 702              		.loc 1 133 8 is_stmt 0 view .LVU156
+ 703 001c 0124     		movs	r4, #1
+ 704 001e 8DF80740 		strb	r4, [sp, #7]
+ 134:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x2C;
+ 705              		.loc 1 134 3 is_stmt 1 view .LVU157
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 23
+
+
+ 706 0022 2146     		mov	r1, r4
+ 707 0024 0DF10700 		add	r0, sp, #7
+ 708 0028 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 709              	.LVL68:
+ 135:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 710              		.loc 1 135 3 view .LVU158
+ 135:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 711              		.loc 1 135 8 is_stmt 0 view .LVU159
+ 712 002c 2C27     		movs	r7, #44
+ 713 002e 8DF80770 		strb	r7, [sp, #7]
+ 136:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x2D;
+ 714              		.loc 1 136 3 is_stmt 1 view .LVU160
+ 715 0032 2146     		mov	r1, r4
+ 716 0034 0DF10700 		add	r0, sp, #7
+ 717 0038 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 718              	.LVL69:
+ 137:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 719              		.loc 1 137 3 view .LVU161
+ 137:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 720              		.loc 1 137 8 is_stmt 0 view .LVU162
+ 721 003c 2D26     		movs	r6, #45
+ 722 003e 8DF80760 		strb	r6, [sp, #7]
+ 138:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate control - idle mode, 3 args:Rate = fosc/(1x2+40) * (LINE+2C+2D) */    
+ 723              		.loc 1 138 3 is_stmt 1 view .LVU163
+ 724 0042 2146     		mov	r1, r4
+ 725 0044 0DF10700 		add	r0, sp, #7
+ 726 0048 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 727              	.LVL70:
+ 140:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_178, 0x2C);
+ 728              		.loc 1 140 3 view .LVU164
+ 729 004c 2146     		mov	r1, r4
+ 730 004e B220     		movs	r0, #178
+ 731 0050 FFF7FEFF 		bl	st7735_WriteReg
+ 732              	.LVL71:
+ 141:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_178, 0x2D);
+ 733              		.loc 1 141 3 view .LVU165
+ 734 0054 3946     		mov	r1, r7
+ 735 0056 B220     		movs	r0, #178
+ 736 0058 FFF7FEFF 		bl	st7735_WriteReg
+ 737              	.LVL72:
+ 142:Drivers/BSP/Components/st7735/st7735.c ****   /* Frame rate ctrl - partial mode, 6 args: Dot inversion mode, Line inversion mode */ 
+ 738              		.loc 1 142 3 view .LVU166
+ 739 005c 3146     		mov	r1, r6
+ 740 005e B220     		movs	r0, #178
+ 741 0060 FFF7FEFF 		bl	st7735_WriteReg
+ 742              	.LVL73:
+ 144:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2C);
+ 743              		.loc 1 144 3 view .LVU167
+ 744 0064 2146     		mov	r1, r4
+ 745 0066 B320     		movs	r0, #179
+ 746 0068 FFF7FEFF 		bl	st7735_WriteReg
+ 747              	.LVL74:
+ 145:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2D);
+ 748              		.loc 1 145 3 view .LVU168
+ 749 006c 3946     		mov	r1, r7
+ 750 006e B320     		movs	r0, #179
+ 751 0070 FFF7FEFF 		bl	st7735_WriteReg
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 24
+
+
+ 752              	.LVL75:
+ 146:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x01);
+ 753              		.loc 1 146 3 view .LVU169
+ 754 0074 3146     		mov	r1, r6
+ 755 0076 B320     		movs	r0, #179
+ 756 0078 FFF7FEFF 		bl	st7735_WriteReg
+ 757              	.LVL76:
+ 147:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2C);
+ 758              		.loc 1 147 3 view .LVU170
+ 759 007c 2146     		mov	r1, r4
+ 760 007e B320     		movs	r0, #179
+ 761 0080 FFF7FEFF 		bl	st7735_WriteReg
+ 762              	.LVL77:
+ 148:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_179, 0x2D);
+ 763              		.loc 1 148 3 view .LVU171
+ 764 0084 3946     		mov	r1, r7
+ 765 0086 B320     		movs	r0, #179
+ 766 0088 FFF7FEFF 		bl	st7735_WriteReg
+ 767              	.LVL78:
+ 149:Drivers/BSP/Components/st7735/st7735.c ****   /* Display inversion ctrl, 1 arg, no delay: No inversion */
+ 768              		.loc 1 149 3 view .LVU172
+ 769 008c 3146     		mov	r1, r6
+ 770 008e B320     		movs	r0, #179
+ 771 0090 FFF7FEFF 		bl	st7735_WriteReg
+ 772              	.LVL79:
+ 151:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 3 args, no delay: -4.6V , AUTO mode */
+ 773              		.loc 1 151 3 view .LVU173
+ 774 0094 0721     		movs	r1, #7
+ 775 0096 B420     		movs	r0, #180
+ 776 0098 FFF7FEFF 		bl	st7735_WriteReg
+ 777              	.LVL80:
+ 153:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_192, 0x02);
+ 778              		.loc 1 153 3 view .LVU174
+ 779 009c A221     		movs	r1, #162
+ 780 009e C020     		movs	r0, #192
+ 781 00a0 FFF7FEFF 		bl	st7735_WriteReg
+ 782              	.LVL81:
+ 154:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_192, 0x84);
+ 783              		.loc 1 154 3 view .LVU175
+ 784 00a4 0221     		movs	r1, #2
+ 785 00a6 C020     		movs	r0, #192
+ 786 00a8 FFF7FEFF 		bl	st7735_WriteReg
+ 787              	.LVL82:
+ 155:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 1 arg, no delay: VGH25 = 2.4C VGSEL = -10 VGH = 3 * AVDD */
+ 788              		.loc 1 155 3 view .LVU176
+ 789 00ac 8421     		movs	r1, #132
+ 790 00ae C020     		movs	r0, #192
+ 791 00b0 FFF7FEFF 		bl	st7735_WriteReg
+ 792              	.LVL83:
+ 157:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay: Opamp current small, Boost frequency */ 
+ 793              		.loc 1 157 3 view .LVU177
+ 794 00b4 C521     		movs	r1, #197
+ 795 00b6 C120     		movs	r0, #193
+ 796 00b8 FFF7FEFF 		bl	st7735_WriteReg
+ 797              	.LVL84:
+ 159:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_194, 0x00);
+ 798              		.loc 1 159 3 view .LVU178
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 25
+
+
+ 799 00bc 0A21     		movs	r1, #10
+ 800 00be C220     		movs	r0, #194
+ 801 00c0 FFF7FEFF 		bl	st7735_WriteReg
+ 802              	.LVL85:
+ 160:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay: BCLK/2, Opamp current small & Medium low */  
+ 803              		.loc 1 160 3 view .LVU179
+ 804 00c4 2946     		mov	r1, r5
+ 805 00c6 C220     		movs	r0, #194
+ 806 00c8 FFF7FEFF 		bl	st7735_WriteReg
+ 807              	.LVL86:
+ 162:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_195, 0x2A);
+ 808              		.loc 1 162 3 view .LVU180
+ 809 00cc 8A21     		movs	r1, #138
+ 810 00ce C320     		movs	r0, #195
+ 811 00d0 FFF7FEFF 		bl	st7735_WriteReg
+ 812              	.LVL87:
+ 163:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 2 args, no delay */
+ 813              		.loc 1 163 3 view .LVU181
+ 814 00d4 2A21     		movs	r1, #42
+ 815 00d6 C320     		movs	r0, #195
+ 816 00d8 FFF7FEFF 		bl	st7735_WriteReg
+ 817              	.LVL88:
+ 165:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_196, 0xEE);
+ 818              		.loc 1 165 3 view .LVU182
+ 819 00dc 8A21     		movs	r1, #138
+ 820 00de C420     		movs	r0, #196
+ 821 00e0 FFF7FEFF 		bl	st7735_WriteReg
+ 822              	.LVL89:
+ 166:Drivers/BSP/Components/st7735/st7735.c ****   /* Power control, 1 arg, no delay */
+ 823              		.loc 1 166 3 view .LVU183
+ 824 00e4 EE21     		movs	r1, #238
+ 825 00e6 C420     		movs	r0, #196
+ 826 00e8 FFF7FEFF 		bl	st7735_WriteReg
+ 827              	.LVL90:
+ 168:Drivers/BSP/Components/st7735/st7735.c ****   /* Don't invert display, no args, no delay */
+ 828              		.loc 1 168 3 view .LVU184
+ 829 00ec 0E21     		movs	r1, #14
+ 830 00ee C520     		movs	r0, #197
+ 831 00f0 FFF7FEFF 		bl	st7735_WriteReg
+ 832              	.LVL91:
+ 170:Drivers/BSP/Components/st7735/st7735.c ****   /* Set color mode, 1 arg, no delay: 16-bit color */
+ 833              		.loc 1 170 3 view .LVU185
+ 834 00f4 2020     		movs	r0, #32
+ 835 00f6 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 836              	.LVL92:
+ 172:Drivers/BSP/Components/st7735/st7735.c ****   /* Column addr set, 4 args, no delay: XSTART = 0, XEND = 127 */
+ 837              		.loc 1 172 3 view .LVU186
+ 838 00fa 0521     		movs	r1, #5
+ 839 00fc 3A20     		movs	r0, #58
+ 840 00fe FFF7FEFF 		bl	st7735_WriteReg
+ 841              	.LVL93:
+ 174:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x00;
+ 842              		.loc 1 174 3 view .LVU187
+ 843 0102 2A20     		movs	r0, #42
+ 844 0104 FFF7FEFF 		bl	LCD_IO_WriteReg
+ 845              	.LVL94:
+ 175:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 26
+
+
+ 846              		.loc 1 175 3 view .LVU188
+ 175:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 847              		.loc 1 175 8 is_stmt 0 view .LVU189
+ 848 0108 8DF80750 		strb	r5, [sp, #7]
+ 176:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 849              		.loc 1 176 3 is_stmt 1 view .LVU190
+ 850 010c 2146     		mov	r1, r4
+ 851 010e 0DF10700 		add	r0, sp, #7
+ 852 0112 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 853              	.LVL95:
+ 177:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 854              		.loc 1 177 3 view .LVU191
+ 855 0116 2146     		mov	r1, r4
+ 856 0118 0DF10700 		add	r0, sp, #7
+ 857 011c FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 858              	.LVL96:
+ 178:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x7F;
+ 859              		.loc 1 178 3 view .LVU192
+ 860 0120 2146     		mov	r1, r4
+ 861 0122 0DF10700 		add	r0, sp, #7
+ 862 0126 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 863              	.LVL97:
+ 179:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 864              		.loc 1 179 3 view .LVU193
+ 179:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 865              		.loc 1 179 8 is_stmt 0 view .LVU194
+ 866 012a 7F23     		movs	r3, #127
+ 867 012c 8DF80730 		strb	r3, [sp, #7]
+ 180:Drivers/BSP/Components/st7735/st7735.c ****   /* Row addr set, 4 args, no delay: YSTART = 0, YEND = 159 */
+ 868              		.loc 1 180 3 is_stmt 1 view .LVU195
+ 869 0130 2146     		mov	r1, r4
+ 870 0132 0DF10700 		add	r0, sp, #7
+ 871 0136 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 872              	.LVL98:
+ 182:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x00;
+ 873              		.loc 1 182 3 view .LVU196
+ 874 013a 2B20     		movs	r0, #43
+ 875 013c FFF7FEFF 		bl	LCD_IO_WriteReg
+ 876              	.LVL99:
+ 183:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 877              		.loc 1 183 3 view .LVU197
+ 183:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 878              		.loc 1 183 8 is_stmt 0 view .LVU198
+ 879 0140 8DF80750 		strb	r5, [sp, #7]
+ 184:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 880              		.loc 1 184 3 is_stmt 1 view .LVU199
+ 881 0144 2146     		mov	r1, r4
+ 882 0146 0DF10700 		add	r0, sp, #7
+ 883 014a FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 884              	.LVL100:
+ 185:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 885              		.loc 1 185 3 view .LVU200
+ 886 014e 2146     		mov	r1, r4
+ 887 0150 0DF10700 		add	r0, sp, #7
+ 888 0154 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 889              	.LVL101:
+ 186:Drivers/BSP/Components/st7735/st7735.c ****   data = 0x9F;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 27
+
+
+ 890              		.loc 1 186 3 view .LVU201
+ 891 0158 2146     		mov	r1, r4
+ 892 015a 0DF10700 		add	r0, sp, #7
+ 893 015e FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 894              	.LVL102:
+ 187:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 895              		.loc 1 187 3 view .LVU202
+ 187:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData(&data, 1);
+ 896              		.loc 1 187 8 is_stmt 0 view .LVU203
+ 897 0162 9F23     		movs	r3, #159
+ 898 0164 8DF80730 		strb	r3, [sp, #7]
+ 188:Drivers/BSP/Components/st7735/st7735.c ****   /* Magical unicorn dust, 16 args, no delay */
+ 899              		.loc 1 188 3 is_stmt 1 view .LVU204
+ 900 0168 2146     		mov	r1, r4
+ 901 016a 0DF10700 		add	r0, sp, #7
+ 902 016e FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 903              	.LVL103:
+ 190:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x1c);  
+ 904              		.loc 1 190 3 view .LVU205
+ 905 0172 0221     		movs	r1, #2
+ 906 0174 E020     		movs	r0, #224
+ 907 0176 FFF7FEFF 		bl	st7735_WriteReg
+ 908              	.LVL104:
+ 191:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x07); 
+ 909              		.loc 1 191 3 view .LVU206
+ 910 017a 1C21     		movs	r1, #28
+ 911 017c E020     		movs	r0, #224
+ 912 017e FFF7FEFF 		bl	st7735_WriteReg
+ 913              	.LVL105:
+ 192:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x12);
+ 914              		.loc 1 192 3 view .LVU207
+ 915 0182 0721     		movs	r1, #7
+ 916 0184 E020     		movs	r0, #224
+ 917 0186 FFF7FEFF 		bl	st7735_WriteReg
+ 918              	.LVL106:
+ 193:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x37);  
+ 919              		.loc 1 193 3 view .LVU208
+ 920 018a 1221     		movs	r1, #18
+ 921 018c E020     		movs	r0, #224
+ 922 018e FFF7FEFF 		bl	st7735_WriteReg
+ 923              	.LVL107:
+ 194:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x32);  
+ 924              		.loc 1 194 3 view .LVU209
+ 925 0192 3721     		movs	r1, #55
+ 926 0194 E020     		movs	r0, #224
+ 927 0196 FFF7FEFF 		bl	st7735_WriteReg
+ 928              	.LVL108:
+ 195:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x29);  
+ 929              		.loc 1 195 3 view .LVU210
+ 930 019a 3221     		movs	r1, #50
+ 931 019c E020     		movs	r0, #224
+ 932 019e FFF7FEFF 		bl	st7735_WriteReg
+ 933              	.LVL109:
+ 196:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x2d);
+ 934              		.loc 1 196 3 view .LVU211
+ 935 01a2 2921     		movs	r1, #41
+ 936 01a4 E020     		movs	r0, #224
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 28
+
+
+ 937 01a6 FFF7FEFF 		bl	st7735_WriteReg
+ 938              	.LVL110:
+ 197:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x29);  
+ 939              		.loc 1 197 3 view .LVU212
+ 940 01aa 3146     		mov	r1, r6
+ 941 01ac E020     		movs	r0, #224
+ 942 01ae FFF7FEFF 		bl	st7735_WriteReg
+ 943              	.LVL111:
+ 198:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x25);  
+ 944              		.loc 1 198 3 view .LVU213
+ 945 01b2 2921     		movs	r1, #41
+ 946 01b4 E020     		movs	r0, #224
+ 947 01b6 FFF7FEFF 		bl	st7735_WriteReg
+ 948              	.LVL112:
+ 199:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x2B);  
+ 949              		.loc 1 199 3 view .LVU214
+ 950 01ba 2521     		movs	r1, #37
+ 951 01bc E020     		movs	r0, #224
+ 952 01be FFF7FEFF 		bl	st7735_WriteReg
+ 953              	.LVL113:
+ 200:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x39);  
+ 954              		.loc 1 200 3 view .LVU215
+ 955 01c2 2B21     		movs	r1, #43
+ 956 01c4 E020     		movs	r0, #224
+ 957 01c6 FFF7FEFF 		bl	st7735_WriteReg
+ 958              	.LVL114:
+ 201:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x00);  
+ 959              		.loc 1 201 3 view .LVU216
+ 960 01ca 3921     		movs	r1, #57
+ 961 01cc E020     		movs	r0, #224
+ 962 01ce FFF7FEFF 		bl	st7735_WriteReg
+ 963              	.LVL115:
+ 202:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x01);  
+ 964              		.loc 1 202 3 view .LVU217
+ 965 01d2 2946     		mov	r1, r5
+ 966 01d4 E020     		movs	r0, #224
+ 967 01d6 FFF7FEFF 		bl	st7735_WriteReg
+ 968              	.LVL116:
+ 203:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x03);  
+ 969              		.loc 1 203 3 view .LVU218
+ 970 01da 2146     		mov	r1, r4
+ 971 01dc E020     		movs	r0, #224
+ 972 01de FFF7FEFF 		bl	st7735_WriteReg
+ 973              	.LVL117:
+ 204:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_224, 0x10);
+ 974              		.loc 1 204 3 view .LVU219
+ 975 01e2 0321     		movs	r1, #3
+ 976 01e4 E020     		movs	r0, #224
+ 977 01e6 FFF7FEFF 		bl	st7735_WriteReg
+ 978              	.LVL118:
+ 205:Drivers/BSP/Components/st7735/st7735.c ****   /* Sparkles and rainbows, 16 args, no delay */
+ 979              		.loc 1 205 3 view .LVU220
+ 980 01ea 1021     		movs	r1, #16
+ 981 01ec E020     		movs	r0, #224
+ 982 01ee FFF7FEFF 		bl	st7735_WriteReg
+ 983              	.LVL119:
+ 207:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x1d);  
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 29
+
+
+ 984              		.loc 1 207 3 view .LVU221
+ 985 01f2 0321     		movs	r1, #3
+ 986 01f4 E120     		movs	r0, #225
+ 987 01f6 FFF7FEFF 		bl	st7735_WriteReg
+ 988              	.LVL120:
+ 208:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x07);  
+ 989              		.loc 1 208 3 view .LVU222
+ 990 01fa 1D21     		movs	r1, #29
+ 991 01fc E120     		movs	r0, #225
+ 992 01fe FFF7FEFF 		bl	st7735_WriteReg
+ 993              	.LVL121:
+ 209:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x06);
+ 994              		.loc 1 209 3 view .LVU223
+ 995 0202 0721     		movs	r1, #7
+ 996 0204 E120     		movs	r0, #225
+ 997 0206 FFF7FEFF 		bl	st7735_WriteReg
+ 998              	.LVL122:
+ 210:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 999              		.loc 1 210 3 view .LVU224
+ 1000 020a 0621     		movs	r1, #6
+ 1001 020c E120     		movs	r0, #225
+ 1002 020e FFF7FEFF 		bl	st7735_WriteReg
+ 1003              	.LVL123:
+ 211:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2C);  
+ 1004              		.loc 1 211 3 view .LVU225
+ 1005 0212 2E21     		movs	r1, #46
+ 1006 0214 E120     		movs	r0, #225
+ 1007 0216 FFF7FEFF 		bl	st7735_WriteReg
+ 1008              	.LVL124:
+ 212:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x29);  
+ 1009              		.loc 1 212 3 view .LVU226
+ 1010 021a 3946     		mov	r1, r7
+ 1011 021c E120     		movs	r0, #225
+ 1012 021e FFF7FEFF 		bl	st7735_WriteReg
+ 1013              	.LVL125:
+ 213:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2D);
+ 1014              		.loc 1 213 3 view .LVU227
+ 1015 0222 2921     		movs	r1, #41
+ 1016 0224 E120     		movs	r0, #225
+ 1017 0226 FFF7FEFF 		bl	st7735_WriteReg
+ 1018              	.LVL126:
+ 214:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 1019              		.loc 1 214 3 view .LVU228
+ 1020 022a 3146     		mov	r1, r6
+ 1021 022c E120     		movs	r0, #225
+ 1022 022e FFF7FEFF 		bl	st7735_WriteReg
+ 1023              	.LVL127:
+ 215:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x2E);  
+ 1024              		.loc 1 215 3 view .LVU229
+ 1025 0232 2E21     		movs	r1, #46
+ 1026 0234 E120     		movs	r0, #225
+ 1027 0236 FFF7FEFF 		bl	st7735_WriteReg
+ 1028              	.LVL128:
+ 216:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x37);  
+ 1029              		.loc 1 216 3 view .LVU230
+ 1030 023a 2E21     		movs	r1, #46
+ 1031 023c E120     		movs	r0, #225
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 30
+
+
+ 1032 023e FFF7FEFF 		bl	st7735_WriteReg
+ 1033              	.LVL129:
+ 217:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x3F);  
+ 1034              		.loc 1 217 3 view .LVU231
+ 1035 0242 3721     		movs	r1, #55
+ 1036 0244 E120     		movs	r0, #225
+ 1037 0246 FFF7FEFF 		bl	st7735_WriteReg
+ 1038              	.LVL130:
+ 218:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x00);  
+ 1039              		.loc 1 218 3 view .LVU232
+ 1040 024a 3F21     		movs	r1, #63
+ 1041 024c E120     		movs	r0, #225
+ 1042 024e FFF7FEFF 		bl	st7735_WriteReg
+ 1043              	.LVL131:
+ 219:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x00);  
+ 1044              		.loc 1 219 3 view .LVU233
+ 1045 0252 2946     		mov	r1, r5
+ 1046 0254 E120     		movs	r0, #225
+ 1047 0256 FFF7FEFF 		bl	st7735_WriteReg
+ 1048              	.LVL132:
+ 220:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x02);  
+ 1049              		.loc 1 220 3 view .LVU234
+ 1050 025a 2946     		mov	r1, r5
+ 1051 025c E120     		movs	r0, #225
+ 1052 025e FFF7FEFF 		bl	st7735_WriteReg
+ 1053              	.LVL133:
+ 221:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_225, 0x10);
+ 1054              		.loc 1 221 3 view .LVU235
+ 1055 0262 0221     		movs	r1, #2
+ 1056 0264 E120     		movs	r0, #225
+ 1057 0266 FFF7FEFF 		bl	st7735_WriteReg
+ 1058              	.LVL134:
+ 222:Drivers/BSP/Components/st7735/st7735.c ****   /* Normal display on, no args, no delay */
+ 1059              		.loc 1 222 3 view .LVU236
+ 1060 026a 1021     		movs	r1, #16
+ 1061 026c E120     		movs	r0, #225
+ 1062 026e FFF7FEFF 		bl	st7735_WriteReg
+ 1063              	.LVL135:
+ 224:Drivers/BSP/Components/st7735/st7735.c ****   /* Main screen turn on, no delay */
+ 1064              		.loc 1 224 3 view .LVU237
+ 1065 0272 2946     		mov	r1, r5
+ 1066 0274 1320     		movs	r0, #19
+ 1067 0276 FFF7FEFF 		bl	st7735_WriteReg
+ 1068              	.LVL136:
+ 226:Drivers/BSP/Components/st7735/st7735.c ****   /* Memory access control: MY = 1, MX = 1, MV = 0, ML = 0 */
+ 1069              		.loc 1 226 3 view .LVU238
+ 1070 027a 2946     		mov	r1, r5
+ 1071 027c 2920     		movs	r0, #41
+ 1072 027e FFF7FEFF 		bl	st7735_WriteReg
+ 1073              	.LVL137:
+ 228:Drivers/BSP/Components/st7735/st7735.c **** }
+ 1074              		.loc 1 228 3 view .LVU239
+ 1075 0282 C021     		movs	r1, #192
+ 1076 0284 3620     		movs	r0, #54
+ 1077 0286 FFF7FEFF 		bl	st7735_WriteReg
+ 1078              	.LVL138:
+ 229:Drivers/BSP/Components/st7735/st7735.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 31
+
+
+ 1079              		.loc 1 229 1 is_stmt 0 view .LVU240
+ 1080 028a 03B0     		add	sp, sp, #12
+ 1081              		.cfi_def_cfa_offset 20
+ 1082              		@ sp needed
+ 1083 028c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1084              		.cfi_endproc
+ 1085              	.LFE0:
+ 1087              		.section	.text.st7735_DrawBitmap,"ax",%progbits
+ 1088              		.align	1
+ 1089              		.global	st7735_DrawBitmap
+ 1090              		.syntax unified
+ 1091              		.thumb
+ 1092              		.thumb_func
+ 1094              	st7735_DrawBitmap:
+ 1095              	.LVL139:
+ 1096              	.LFB11:
+ 419:Drivers/BSP/Components/st7735/st7735.c **** 
+ 420:Drivers/BSP/Components/st7735/st7735.c **** /**
+ 421:Drivers/BSP/Components/st7735/st7735.c ****   * @brief  Displays a bitmap picture loaded in the internal Flash.
+ 422:Drivers/BSP/Components/st7735/st7735.c ****   * @param  BmpAddress: Bmp picture address in the internal Flash.
+ 423:Drivers/BSP/Components/st7735/st7735.c ****   * @retval None
+ 424:Drivers/BSP/Components/st7735/st7735.c ****   */
+ 425:Drivers/BSP/Components/st7735/st7735.c **** void st7735_DrawBitmap(uint16_t Xpos, uint16_t Ypos, uint8_t *pbmp)
+ 426:Drivers/BSP/Components/st7735/st7735.c **** {
+ 1097              		.loc 1 426 1 is_stmt 1 view -0
+ 1098              		.cfi_startproc
+ 1099              		@ args = 0, pretend = 0, frame = 0
+ 1100              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1101              		.loc 1 426 1 is_stmt 0 view .LVU242
+ 1102 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1103              		.cfi_def_cfa_offset 24
+ 1104              		.cfi_offset 3, -24
+ 1105              		.cfi_offset 4, -20
+ 1106              		.cfi_offset 5, -16
+ 1107              		.cfi_offset 6, -12
+ 1108              		.cfi_offset 7, -8
+ 1109              		.cfi_offset 14, -4
+ 1110 0002 0646     		mov	r6, r0
+ 1111 0004 0F46     		mov	r7, r1
+ 427:Drivers/BSP/Components/st7735/st7735.c ****   uint32_t index = 0, size = 0;
+ 1112              		.loc 1 427 3 is_stmt 1 view .LVU243
+ 1113              	.LVL140:
+ 428:Drivers/BSP/Components/st7735/st7735.c ****   
+ 429:Drivers/BSP/Components/st7735/st7735.c ****   /* Read bitmap size */
+ 430:Drivers/BSP/Components/st7735/st7735.c ****   size = *(volatile uint16_t *) (pbmp + 2);
+ 1114              		.loc 1 430 3 view .LVU244
+ 1115              		.loc 1 430 10 is_stmt 0 view .LVU245
+ 1116 0006 5588     		ldrh	r5, [r2, #2]
+ 1117 0008 ADB2     		uxth	r5, r5
+ 1118              	.LVL141:
+ 431:Drivers/BSP/Components/st7735/st7735.c ****   size |= (*(volatile uint16_t *) (pbmp + 4)) << 16;
+ 1119              		.loc 1 431 3 is_stmt 1 view .LVU246
+ 1120              		.loc 1 431 12 is_stmt 0 view .LVU247
+ 1121 000a 9388     		ldrh	r3, [r2, #4]
+ 1122              		.loc 1 431 8 view .LVU248
+ 1123 000c 45EA0345 		orr	r5, r5, r3, lsl #16
+ 1124              	.LVL142:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 32
+
+
+ 432:Drivers/BSP/Components/st7735/st7735.c ****   /* Get bitmap data address offset */
+ 433:Drivers/BSP/Components/st7735/st7735.c ****   index = *(volatile uint16_t *) (pbmp + 10);
+ 1125              		.loc 1 433 3 is_stmt 1 view .LVU249
+ 1126              		.loc 1 433 11 is_stmt 0 view .LVU250
+ 1127 0010 5389     		ldrh	r3, [r2, #10]
+ 1128 0012 9BB2     		uxth	r3, r3
+ 1129              	.LVL143:
+ 434:Drivers/BSP/Components/st7735/st7735.c ****   index |= (*(volatile uint16_t *) (pbmp + 12)) << 16;
+ 1130              		.loc 1 434 3 is_stmt 1 view .LVU251
+ 1131              		.loc 1 434 13 is_stmt 0 view .LVU252
+ 1132 0014 9189     		ldrh	r1, [r2, #12]
+ 1133              	.LVL144:
+ 1134              		.loc 1 434 9 view .LVU253
+ 1135 0016 43EA0143 		orr	r3, r3, r1, lsl #16
+ 1136              	.LVL145:
+ 435:Drivers/BSP/Components/st7735/st7735.c ****   size = (size - index)/2;
+ 1137              		.loc 1 435 3 is_stmt 1 view .LVU254
+ 1138              		.loc 1 435 16 is_stmt 0 view .LVU255
+ 1139 001a ED1A     		subs	r5, r5, r3
+ 1140              	.LVL146:
+ 436:Drivers/BSP/Components/st7735/st7735.c ****   pbmp += index;
+ 1141              		.loc 1 436 3 is_stmt 1 view .LVU256
+ 1142              		.loc 1 436 8 is_stmt 0 view .LVU257
+ 1143 001c D418     		adds	r4, r2, r3
+ 1144              	.LVL147:
+ 437:Drivers/BSP/Components/st7735/st7735.c ****   
+ 438:Drivers/BSP/Components/st7735/st7735.c ****   /* Set GRAM write direction and BGR = 0 */
+ 439:Drivers/BSP/Components/st7735/st7735.c ****   /* Memory access control: MY = 0, MX = 1, MV = 0, ML = 0 */
+ 440:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_54, 0x40);
+ 1145              		.loc 1 440 3 is_stmt 1 view .LVU258
+ 1146 001e 4021     		movs	r1, #64
+ 1147 0020 3620     		movs	r0, #54
+ 1148              	.LVL148:
+ 1149              		.loc 1 440 3 is_stmt 0 view .LVU259
+ 1150 0022 FFF7FEFF 		bl	st7735_WriteReg
+ 1151              	.LVL149:
+ 441:Drivers/BSP/Components/st7735/st7735.c **** 
+ 442:Drivers/BSP/Components/st7735/st7735.c ****   /* Set Cursor */
+ 443:Drivers/BSP/Components/st7735/st7735.c ****   st7735_SetCursor(Xpos, Ypos);  
+ 1152              		.loc 1 443 3 is_stmt 1 view .LVU260
+ 1153 0026 3946     		mov	r1, r7
+ 1154 0028 3046     		mov	r0, r6
+ 1155 002a FFF7FEFF 		bl	st7735_SetCursor
+ 1156              	.LVL150:
+ 444:Drivers/BSP/Components/st7735/st7735.c ****  
+ 445:Drivers/BSP/Components/st7735/st7735.c ****   LCD_IO_WriteMultipleData((uint8_t*)pbmp, size*2);
+ 1157              		.loc 1 445 3 view .LVU261
+ 1158 002e 25F00101 		bic	r1, r5, #1
+ 1159 0032 2046     		mov	r0, r4
+ 1160 0034 FFF7FEFF 		bl	LCD_IO_WriteMultipleData
+ 1161              	.LVL151:
+ 446:Drivers/BSP/Components/st7735/st7735.c ****  
+ 447:Drivers/BSP/Components/st7735/st7735.c ****   /* Set GRAM write direction and BGR = 0 */
+ 448:Drivers/BSP/Components/st7735/st7735.c ****   /* Memory access control: MY = 1, MX = 1, MV = 0, ML = 0 */
+ 449:Drivers/BSP/Components/st7735/st7735.c ****   st7735_WriteReg(LCD_REG_54, 0xC0);
+ 1162              		.loc 1 449 3 view .LVU262
+ 1163 0038 C021     		movs	r1, #192
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 33
+
+
+ 1164 003a 3620     		movs	r0, #54
+ 1165 003c FFF7FEFF 		bl	st7735_WriteReg
+ 1166              	.LVL152:
+ 450:Drivers/BSP/Components/st7735/st7735.c **** }
+ 1167              		.loc 1 450 1 is_stmt 0 view .LVU263
+ 1168 0040 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1169              		.loc 1 450 1 view .LVU264
+ 1170              		.cfi_endproc
+ 1171              	.LFE11:
+ 1173              		.section	.bss.ArrayRGB,"aw",%nobits
+ 1174              		.align	2
+ 1177              	ArrayRGB:
+ 1178 0000 00000000 		.space	640
+ 1178      00000000 
+ 1178      00000000 
+ 1178      00000000 
+ 1178      00000000 
+ 1179              		.global	st7735_drv
+ 1180              		.section	.data.st7735_drv,"aw"
+ 1181              		.align	2
+ 1184              	st7735_drv:
+ 1185 0000 00000000 		.word	st7735_Init
+ 1186 0004 00000000 		.word	0
+ 1187 0008 00000000 		.word	st7735_DisplayOn
+ 1188 000c 00000000 		.word	st7735_DisplayOff
+ 1189 0010 00000000 		.word	st7735_SetCursor
+ 1190 0014 00000000 		.word	st7735_WritePixel
+ 1191 0018 00000000 		.word	0
+ 1192 001c 00000000 		.word	st7735_SetDisplayWindow
+ 1193 0020 00000000 		.word	st7735_DrawHLine
+ 1194 0024 00000000 		.word	st7735_DrawVLine
+ 1195 0028 00000000 		.word	st7735_GetLcdPixelWidth
+ 1196 002c 00000000 		.word	st7735_GetLcdPixelHeight
+ 1197 0030 00000000 		.word	st7735_DrawBitmap
+ 1198 0034 00000000 		.space	4
+ 1199              		.text
+ 1200              	.Letext0:
+ 1201              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1202              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1203              		.file 4 "Drivers/BSP/Components/st7735/../Common/lcd.h"
+ 1204              		.file 5 "Drivers/BSP/Components/st7735/st7735.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s 			page 34
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 st7735.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:20     .text.st7735_GetLcdPixelWidth:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:26     .text.st7735_GetLcdPixelWidth:00000000 st7735_GetLcdPixelWidth
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:41     .text.st7735_GetLcdPixelHeight:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:47     .text.st7735_GetLcdPixelHeight:00000000 st7735_GetLcdPixelHeight
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:62     .text.st7735_SetCursor:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:68     .text.st7735_SetCursor:00000000 st7735_SetCursor
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:147    .text.st7735_WritePixel:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:153    .text.st7735_WritePixel:00000000 st7735_WritePixel
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:215    .text.st7735_DrawVLine:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:221    .text.st7735_DrawVLine:00000000 st7735_DrawVLine
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:281    .text.st7735_SetDisplayWindow:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:287    .text.st7735_SetDisplayWindow:00000000 st7735_SetDisplayWindow
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:427    .text.st7735_DrawHLine:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:433    .text.st7735_DrawHLine:00000000 st7735_DrawHLine
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:504    .text.st7735_DrawHLine:00000034 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1177   .bss.ArrayRGB:00000000 ArrayRGB
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:509    .text.st7735_DisplayOn:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:515    .text.st7735_DisplayOn:00000000 st7735_DisplayOn
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:568    .text.st7735_DisplayOff:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:574    .text.st7735_DisplayOff:00000000 st7735_DisplayOff
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:627    .text.st7735_WriteReg:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:633    .text.st7735_WriteReg:00000000 st7735_WriteReg
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:664    .text.st7735_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:670    .text.st7735_Init:00000000 st7735_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1088   .text.st7735_DrawBitmap:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1094   .text.st7735_DrawBitmap:00000000 st7735_DrawBitmap
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1174   .bss.ArrayRGB:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1184   .data.st7735_drv:00000000 st7735_drv
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccokcadj.s:1181   .data.st7735_drv:00000000 $d
+
+UNDEFINED SYMBOLS
+LCD_IO_WriteReg
+LCD_IO_WriteMultipleData
+LCD_Delay
+LCD_IO_Init

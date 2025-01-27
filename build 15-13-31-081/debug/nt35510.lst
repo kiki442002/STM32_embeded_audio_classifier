@@ -1,0 +1,946 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"nt35510.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/Components/nt35510/nt35510.c"
+  19              		.section	.rodata.NT35510_Init.str1.4,"aMS",%progbits,1
+  20              		.align	2
+  21              	.LC0:
+  22 0000 55AA5208 		.ascii	"U\252R\010\001\360\000"
+  22      01F000
+  23 0007 00       		.align	2
+  24              	.LC5:
+  25 0008 01020202 		.ascii	"\001\002\002\002\270\000"
+  25      B800
+  26              		.section	.text.NT35510_Init,"ax",%progbits
+  27              		.align	1
+  28              		.global	NT35510_Init
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	NT35510_Init:
+  34              	.LVL0:
+  35              	.LFB3:
+   1:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+   2:Drivers/BSP/Components/nt35510/nt35510.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/nt35510/nt35510.c ****   * @file    nt35510.c
+   4:Drivers/BSP/Components/nt35510/nt35510.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/nt35510/nt35510.c ****   * @brief   This file provides the LCD Driver for Frida Techshine 3K138 (WVGA)
+   6:Drivers/BSP/Components/nt35510/nt35510.c ****   *          DSI LCD Display NT35510.
+   7:Drivers/BSP/Components/nt35510/nt35510.c ****   ******************************************************************************
+   8:Drivers/BSP/Components/nt35510/nt35510.c ****   * @attention
+   9:Drivers/BSP/Components/nt35510/nt35510.c ****   *
+  10:Drivers/BSP/Components/nt35510/nt35510.c ****   * Copyright (c) 2020 STMicroelectronics.
+  11:Drivers/BSP/Components/nt35510/nt35510.c ****   * All rights reserved.
+  12:Drivers/BSP/Components/nt35510/nt35510.c ****   *
+  13:Drivers/BSP/Components/nt35510/nt35510.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Drivers/BSP/Components/nt35510/nt35510.c ****   * in the root directory of this software component.
+  15:Drivers/BSP/Components/nt35510/nt35510.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Drivers/BSP/Components/nt35510/nt35510.c ****   *
+  17:Drivers/BSP/Components/nt35510/nt35510.c ****   ******************************************************************************
+  18:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  19:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  20:Drivers/BSP/Components/nt35510/nt35510.c **** /* Includes ------------------------------------------------------------------*/
+  21:Drivers/BSP/Components/nt35510/nt35510.c **** #include "nt35510.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 2
+
+
+  22:Drivers/BSP/Components/nt35510/nt35510.c **** #include <stdio.h>
+  23:Drivers/BSP/Components/nt35510/nt35510.c **** #include <stdarg.h>
+  24:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  25:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  26:Drivers/BSP/Components/nt35510/nt35510.c **** /** @addtogroup BSP
+  27:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  28:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  29:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  30:Drivers/BSP/Components/nt35510/nt35510.c **** /** @addtogroup Components
+  31:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  32:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  33:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  34:Drivers/BSP/Components/nt35510/nt35510.c **** /** @defgroup NT35510 NT35510
+  35:Drivers/BSP/Components/nt35510/nt35510.c ****   * @brief     This file provides a set of functions needed to drive the
+  36:Drivers/BSP/Components/nt35510/nt35510.c ****   *            NT35510 IC display driver.
+  37:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  38:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  39:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  40:Drivers/BSP/Components/nt35510/nt35510.c **** /* Private types -------------------------------------------------------------*/
+  41:Drivers/BSP/Components/nt35510/nt35510.c **** /* Private variables ---------------------------------------------------------*/
+  42:Drivers/BSP/Components/nt35510/nt35510.c **** /* Private constants ---------------------------------------------------------*/
+  43:Drivers/BSP/Components/nt35510/nt35510.c **** /** @defgroup NT35510_Private_Constants NT35510 Private Constants
+  44:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  45:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  46:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  47:Drivers/BSP/Components/nt35510/nt35510.c **** /*
+  48:Drivers/BSP/Components/nt35510/nt35510.c ****  * @brief Constant tables of register settings used to transmit DSI
+  49:Drivers/BSP/Components/nt35510/nt35510.c ****  * command packets as power up initialization sequence of the Frida 3K138
+  50:Drivers/BSP/Components/nt35510/nt35510.c ****  */
+  51:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  52:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+  53:Drivers/BSP/Components/nt35510/nt35510.c ****   * @}
+  54:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  55:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  56:Drivers/BSP/Components/nt35510/nt35510.c **** /* Private macros ------------------------------------------------------------*/
+  57:Drivers/BSP/Components/nt35510/nt35510.c **** /* Private functions ---------------------------------------------------------*/
+  58:Drivers/BSP/Components/nt35510/nt35510.c **** /** @defgroup NT35510_Exported_Variables
+  59:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  60:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  61:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  62:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+  63:Drivers/BSP/Components/nt35510/nt35510.c ****   * @}
+  64:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  65:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  66:Drivers/BSP/Components/nt35510/nt35510.c **** /* Exported functions ---------------------------------------------------------*/
+  67:Drivers/BSP/Components/nt35510/nt35510.c **** /** @defgroup NT35510_Exported_Functions OTM8009A Exported Functions
+  68:Drivers/BSP/Components/nt35510/nt35510.c ****   * @{
+  69:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  70:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  71:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+  72:Drivers/BSP/Components/nt35510/nt35510.c ****   * @brief  Initializes the LCD Frida display part by communication in DSI mode in Video Mode
+  73:Drivers/BSP/Components/nt35510/nt35510.c ****   *         with IC Display Driver NT35510 (see IC Driver specification for more information).
+  74:Drivers/BSP/Components/nt35510/nt35510.c ****   * @param  hdsi_eval : pointer on DSI configuration structure
+  75:Drivers/BSP/Components/nt35510/nt35510.c ****   * @param  hdsivideo_handle : pointer on DSI video mode configuration structure
+  76:Drivers/BSP/Components/nt35510/nt35510.c ****   * @retval Status
+  77:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+  78:Drivers/BSP/Components/nt35510/nt35510.c **** uint8_t NT35510_Init(uint32_t ColorCoding, uint32_t orientation)
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 3
+
+
+  79:Drivers/BSP/Components/nt35510/nt35510.c **** {
+  36              		.loc 1 79 1 view -0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 192
+  39              		@ frame_needed = 0, uses_anonymous_args = 0
+  40              		.loc 1 79 1 is_stmt 0 view .LVU1
+  41 0000 30B5     		push	{r4, r5, lr}
+  42              		.cfi_def_cfa_offset 12
+  43              		.cfi_offset 4, -12
+  44              		.cfi_offset 5, -8
+  45              		.cfi_offset 14, -4
+  46 0002 B1B0     		sub	sp, sp, #196
+  47              		.cfi_def_cfa_offset 208
+  48 0004 0446     		mov	r4, r0
+  49 0006 0D46     		mov	r5, r1
+  80:Drivers/BSP/Components/nt35510/nt35510.c ****   NT35510_IO_Delay(120);
+  50              		.loc 1 80 3 is_stmt 1 view .LVU2
+  51 0008 7820     		movs	r0, #120
+  52              	.LVL1:
+  53              		.loc 1 80 3 is_stmt 0 view .LVU3
+  54 000a FFF7FEFF 		bl	NT35510_IO_Delay
+  55              	.LVL2:
+  81:Drivers/BSP/Components/nt35510/nt35510.c **** 
+  82:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+  83:Drivers/BSP/Components/nt35510/nt35510.c **** /* Proprietary Initialization                                                 */
+  84:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+  85:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg[]   = {0x55, 0xAA, 0x52, 0x08, 0x01, 0xF0};
+  56              		.loc 1 85 3 is_stmt 1 view .LVU4
+  57              		.loc 1 85 17 is_stmt 0 view .LVU5
+  58 000e A94B     		ldr	r3, .L8
+  59 0010 93E80300 		ldm	r3, {r0, r1}
+  60 0014 2E90     		str	r0, [sp, #184]
+  61 0016 ADF8BC10 		strh	r1, [sp, #188]	@ movhi
+  86:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg1[]  = {0x03, 0x03, 0x03, 0xB0};
+  62              		.loc 1 86 3 is_stmt 1 view .LVU6
+  63              		.loc 1 86 17 is_stmt 0 view .LVU7
+  64 001a A74B     		ldr	r3, .L8+4
+  65 001c 2D93     		str	r3, [sp, #180]
+  87:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg2[]  = {0x46, 0x46, 0x46, 0xB6};
+  66              		.loc 1 87 3 is_stmt 1 view .LVU8
+  67              		.loc 1 87 17 is_stmt 0 view .LVU9
+  68 001e A74B     		ldr	r3, .L8+8
+  69 0020 2C93     		str	r3, [sp, #176]
+  88:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg3[]  = {0x03, 0x03, 0x03, 0xB1};
+  70              		.loc 1 88 3 is_stmt 1 view .LVU10
+  71              		.loc 1 88 17 is_stmt 0 view .LVU11
+  72 0022 A74B     		ldr	r3, .L8+12
+  73 0024 2B93     		str	r3, [sp, #172]
+  89:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg4[]  = {0x36, 0x36, 0x36, 0xB7};
+  74              		.loc 1 89 3 is_stmt 1 view .LVU12
+  75              		.loc 1 89 17 is_stmt 0 view .LVU13
+  76 0026 A74B     		ldr	r3, .L8+16
+  77 0028 2A93     		str	r3, [sp, #168]
+  90:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg5[]  = {0x00, 0x00, 0x02, 0xB2};
+  78              		.loc 1 90 3 is_stmt 1 view .LVU14
+  79              		.loc 1 90 17 is_stmt 0 view .LVU15
+  80 002a A74B     		ldr	r3, .L8+20
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 4
+
+
+  81 002c 2993     		str	r3, [sp, #164]
+  91:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg6[]  = {0x26, 0x26, 0x26, 0xB8};
+  82              		.loc 1 91 3 is_stmt 1 view .LVU16
+  83              		.loc 1 91 17 is_stmt 0 view .LVU17
+  84 002e A74B     		ldr	r3, .L8+24
+  85 0030 2893     		str	r3, [sp, #160]
+  92:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg7[]  = {0xBF, 0x01};
+  86              		.loc 1 92 3 is_stmt 1 view .LVU18
+  87              		.loc 1 92 17 is_stmt 0 view .LVU19
+  88 0032 40F2BF13 		movw	r3, #447
+  89 0036 ADF89C30 		strh	r3, [sp, #156]	@ movhi
+  93:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg8[]  = {0x09, 0x09, 0x09, 0xB3};
+  90              		.loc 1 93 3 is_stmt 1 view .LVU20
+  91              		.loc 1 93 17 is_stmt 0 view .LVU21
+  92 003a A54B     		ldr	r3, .L8+28
+  93 003c 2693     		str	r3, [sp, #152]
+  94:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg9[]  = {0x36, 0x36, 0x36, 0xB9};
+  94              		.loc 1 94 3 is_stmt 1 view .LVU22
+  95              		.loc 1 94 17 is_stmt 0 view .LVU23
+  96 003e A54B     		ldr	r3, .L8+32
+  97 0040 2593     		str	r3, [sp, #148]
+  95:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg10[] = {0x08, 0x08, 0x08, 0xB5};
+  98              		.loc 1 95 3 is_stmt 1 view .LVU24
+  99              		.loc 1 95 17 is_stmt 0 view .LVU25
+ 100 0042 A54B     		ldr	r3, .L8+36
+ 101 0044 2493     		str	r3, [sp, #144]
+  96:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg12[] = {0x26, 0x26, 0x26, 0xBA};
+ 102              		.loc 1 96 3 is_stmt 1 view .LVU26
+ 103              		.loc 1 96 17 is_stmt 0 view .LVU27
+ 104 0046 A54B     		ldr	r3, .L8+40
+ 105 0048 2393     		str	r3, [sp, #140]
+  97:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg13[] = {0x00, 0x80, 0x00, 0xBC};
+ 106              		.loc 1 97 3 is_stmt 1 view .LVU28
+ 107              		.loc 1 97 17 is_stmt 0 view .LVU29
+ 108 004a A54B     		ldr	r3, .L8+44
+ 109 004c 2293     		str	r3, [sp, #136]
+  98:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg14[] = {0x00, 0x80, 0x00, 0xBD};
+ 110              		.loc 1 98 3 is_stmt 1 view .LVU30
+ 111              		.loc 1 98 17 is_stmt 0 view .LVU31
+ 112 004e 03F18073 		add	r3, r3, #16777216
+ 113 0052 2193     		str	r3, [sp, #132]
+  99:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg15[] = {0x00, 0x50, 0xBE};
+ 114              		.loc 1 99 3 is_stmt 1 view .LVU32
+ 115              		.loc 1 99 17 is_stmt 0 view .LVU33
+ 116 0054 A34B     		ldr	r3, .L8+48
+ 117 0056 1A46     		mov	r2, r3
+ 118 0058 52F8041B 		ldr	r1, [r2], #4
+ 119 005c ADF88010 		strh	r1, [sp, #128]	@ movhi
+ 120 0060 090C     		lsrs	r1, r1, #16
+ 121 0062 8DF88210 		strb	r1, [sp, #130]
+ 100:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg16[] = {0x55, 0xAA, 0x52, 0x08, 0x00, 0xF0};
+ 122              		.loc 1 100 3 is_stmt 1 view .LVU34
+ 123              		.loc 1 100 17 is_stmt 0 view .LVU35
+ 124 0066 92E80300 		ldm	r2, {r0, r1}
+ 125 006a 1E90     		str	r0, [sp, #120]
+ 126 006c ADF87C10 		strh	r1, [sp, #124]	@ movhi
+ 101:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg17[] = {0xFC, 0x00, 0xB1};
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 5
+
+
+ 127              		.loc 1 101 3 is_stmt 1 view .LVU36
+ 128              		.loc 1 101 17 is_stmt 0 view .LVU37
+ 129 0070 DA68     		ldr	r2, [r3, #12]
+ 130 0072 ADF87420 		strh	r2, [sp, #116]	@ movhi
+ 131 0076 120C     		lsrs	r2, r2, #16
+ 132 0078 8DF87620 		strb	r2, [sp, #118]
+ 102:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg18[] = {0xB6, 0x03};
+ 133              		.loc 1 102 3 is_stmt 1 view .LVU38
+ 134              		.loc 1 102 17 is_stmt 0 view .LVU39
+ 135 007c 40F2B632 		movw	r2, #950
+ 136 0080 ADF87020 		strh	r2, [sp, #112]	@ movhi
+ 103:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg19[] = {0xB5, 0x50};
+ 137              		.loc 1 103 3 is_stmt 1 view .LVU40
+ 138              		.loc 1 103 17 is_stmt 0 view .LVU41
+ 139 0084 45F2B502 		movw	r2, #20661
+ 140 0088 ADF86C20 		strh	r2, [sp, #108]	@ movhi
+ 104:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg20[] = {0x00, 0x00, 0xB7};
+ 141              		.loc 1 104 3 is_stmt 1 view .LVU42
+ 142              		.loc 1 104 17 is_stmt 0 view .LVU43
+ 143 008c 1A69     		ldr	r2, [r3, #16]
+ 144 008e ADF86820 		strh	r2, [sp, #104]	@ movhi
+ 145 0092 120C     		lsrs	r2, r2, #16
+ 146 0094 8DF86A20 		strb	r2, [sp, #106]
+ 105:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg21[] = {0x01, 0x02, 0x02, 0x02, 0xB8};
+ 147              		.loc 1 105 3 is_stmt 1 view .LVU44
+ 148              		.loc 1 105 17 is_stmt 0 view .LVU45
+ 149 0098 934A     		ldr	r2, .L8+52
+ 150 009a 92E80300 		ldm	r2, {r0, r1}
+ 151 009e 1890     		str	r0, [sp, #96]
+ 152 00a0 8DF86410 		strb	r1, [sp, #100]
+ 106:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg22[] = {0x00, 0x00, 0x00, 0xBC};
+ 153              		.loc 1 106 3 is_stmt 1 view .LVU46
+ 154              		.loc 1 106 17 is_stmt 0 view .LVU47
+ 155 00a4 4FF03C42 		mov	r2, #-1140850688
+ 156 00a8 1792     		str	r2, [sp, #92]
+ 107:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg23[] = {0x03, 0x00, 0x00, 0xCC};
+ 157              		.loc 1 107 3 is_stmt 1 view .LVU48
+ 158              		.loc 1 107 17 is_stmt 0 view .LVU49
+ 159 00aa 904A     		ldr	r2, .L8+56
+ 160 00ac 1692     		str	r2, [sp, #88]
+ 108:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg24[] = {0xBA, 0x01};
+ 161              		.loc 1 108 3 is_stmt 1 view .LVU50
+ 162              		.loc 1 108 17 is_stmt 0 view .LVU51
+ 163 00ae 4FF4DD72 		mov	r2, #442
+ 164 00b2 ADF85420 		strh	r2, [sp, #84]	@ movhi
+ 109:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_madctl_portrait[] = {NT35510_CMD_MADCTL ,0x00};
+ 165              		.loc 1 109 3 is_stmt 1 view .LVU52
+ 166              		.loc 1 109 17 is_stmt 0 view .LVU53
+ 167 00b6 3622     		movs	r2, #54
+ 168 00b8 ADF85020 		strh	r2, [sp, #80]	@ movhi
+ 110:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_caset_portrait[] = {0x00, 0x00, 0x01, 0xDF ,NT35510_CMD_CASET};
+ 169              		.loc 1 110 3 is_stmt 1 view .LVU54
+ 170              		.loc 1 110 17 is_stmt 0 view .LVU55
+ 171 00bc 03F11402 		add	r2, r3, #20
+ 172 00c0 92E80300 		ldm	r2, {r0, r1}
+ 173 00c4 1290     		str	r0, [sp, #72]
+ 174 00c6 8DF84C10 		strb	r1, [sp, #76]
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 6
+
+
+ 111:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_raset_portrait[] = {0x00, 0x00, 0x03, 0x1F ,NT35510_CMD_RASET};
+ 175              		.loc 1 111 3 is_stmt 1 view .LVU56
+ 176              		.loc 1 111 17 is_stmt 0 view .LVU57
+ 177 00ca 03F11C02 		add	r2, r3, #28
+ 178 00ce 92E80300 		ldm	r2, {r0, r1}
+ 179 00d2 1090     		str	r0, [sp, #64]
+ 180 00d4 8DF84410 		strb	r1, [sp, #68]
+ 112:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_madctl_landscape[] = {NT35510_CMD_MADCTL, 0x60};
+ 181              		.loc 1 112 3 is_stmt 1 view .LVU58
+ 182              		.loc 1 112 17 is_stmt 0 view .LVU59
+ 183 00d8 46F23602 		movw	r2, #24630
+ 184 00dc ADF83C20 		strh	r2, [sp, #60]	@ movhi
+ 113:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_caset_landscape[] = {0x00, 0x00, 0x03, 0x1F ,NT35510_CMD_CASET};
+ 185              		.loc 1 113 3 is_stmt 1 view .LVU60
+ 186              		.loc 1 113 17 is_stmt 0 view .LVU61
+ 187 00e0 03F12402 		add	r2, r3, #36
+ 188 00e4 92E80300 		ldm	r2, {r0, r1}
+ 189 00e8 0D90     		str	r0, [sp, #52]
+ 190 00ea 8DF83810 		strb	r1, [sp, #56]
+ 114:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_raset_landscape[] = {0x00, 0x00, 0x01, 0xDF ,NT35510_CMD_RASET};
+ 191              		.loc 1 114 3 is_stmt 1 view .LVU62
+ 192              		.loc 1 114 17 is_stmt 0 view .LVU63
+ 193 00ee 2C33     		adds	r3, r3, #44
+ 194 00f0 93E80300 		ldm	r3, {r0, r1}
+ 195 00f4 0B90     		str	r0, [sp, #44]
+ 196 00f6 8DF83010 		strb	r1, [sp, #48]
+ 115:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg26[] = {NT35510_CMD_TEEON, 0x00};  /* Tear on */
+ 197              		.loc 1 115 3 is_stmt 1 view .LVU64
+ 198              		.loc 1 115 17 is_stmt 0 view .LVU65
+ 199 00fa 3523     		movs	r3, #53
+ 200 00fc ADF82830 		strh	r3, [sp, #40]	@ movhi
+ 116:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg27[] = {NT35510_CMD_SLPOUT, 0x00}; /* Sleep out */
+ 201              		.loc 1 116 3 is_stmt 1 view .LVU66
+ 202              		.loc 1 116 17 is_stmt 0 view .LVU67
+ 203 0100 1123     		movs	r3, #17
+ 204 0102 ADF82430 		strh	r3, [sp, #36]	@ movhi
+ 117:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg30[] = {NT35510_CMD_DISPON, 0x00};
+ 205              		.loc 1 117 3 is_stmt 1 view .LVU68
+ 206              		.loc 1 117 17 is_stmt 0 view .LVU69
+ 207 0106 2923     		movs	r3, #41
+ 208 0108 ADF82030 		strh	r3, [sp, #32]	@ movhi
+ 118:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 119:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg31[] = {NT35510_CMD_WRDISBV, 0x7F};
+ 209              		.loc 1 119 3 is_stmt 1 view .LVU70
+ 210              		.loc 1 119 17 is_stmt 0 view .LVU71
+ 211 010c 47F65173 		movw	r3, #32593
+ 212 0110 ADF81C30 		strh	r3, [sp, #28]	@ movhi
+ 120:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg32[] = {NT35510_CMD_WRCTRLD, 0x2C};
+ 213              		.loc 1 120 3 is_stmt 1 view .LVU72
+ 214              		.loc 1 120 17 is_stmt 0 view .LVU73
+ 215 0114 42F65343 		movw	r3, #11347
+ 216 0118 ADF81830 		strh	r3, [sp, #24]	@ movhi
+ 121:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg33[] = {NT35510_CMD_WRCABC, 0x02};
+ 217              		.loc 1 121 3 is_stmt 1 view .LVU74
+ 218              		.loc 1 121 17 is_stmt 0 view .LVU75
+ 219 011c 40F25523 		movw	r3, #597
+ 220 0120 ADF81430 		strh	r3, [sp, #20]	@ movhi
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 7
+
+
+ 122:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg34[] = {NT35510_CMD_WRCABCMB, 0xFF};
+ 221              		.loc 1 122 3 is_stmt 1 view .LVU76
+ 222              		.loc 1 122 17 is_stmt 0 view .LVU77
+ 223 0124 4FF65E73 		movw	r3, #65374
+ 224 0128 ADF81030 		strh	r3, [sp, #16]	@ movhi
+ 123:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg35[] = {NT35510_CMD_RAMWR, 0x00};
+ 225              		.loc 1 123 3 is_stmt 1 view .LVU78
+ 226              		.loc 1 123 17 is_stmt 0 view .LVU79
+ 227 012c 2C23     		movs	r3, #44
+ 228 012e ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 124:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg36[] = {NT35510_CMD_COLMOD, NT35510_COLMOD_RGB565};
+ 229              		.loc 1 124 3 is_stmt 1 view .LVU80
+ 230              		.loc 1 124 17 is_stmt 0 view .LVU81
+ 231 0132 45F23A53 		movw	r3, #21818
+ 232 0136 ADF80830 		strh	r3, [sp, #8]	@ movhi
+ 125:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg37[] = {NT35510_CMD_COLMOD, NT35510_COLMOD_RGB888};
+ 233              		.loc 1 125 3 is_stmt 1 view .LVU82
+ 234              		.loc 1 125 17 is_stmt 0 view .LVU83
+ 235 013a 47F23A73 		movw	r3, #30522
+ 236 013e ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 126:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 127:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(5, (uint8_t *)nt35510_reg); /* LV2:  Page 1 enable */
+ 237              		.loc 1 127 3 is_stmt 1 view .LVU84
+ 238 0142 2EA9     		add	r1, sp, #184
+ 239 0144 0520     		movs	r0, #5
+ 240 0146 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 241              	.LVL3:
+ 128:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg1);/* AVDD: 5.2V */
+ 242              		.loc 1 128 3 view .LVU85
+ 243 014a 2DA9     		add	r1, sp, #180
+ 244 014c 0320     		movs	r0, #3
+ 245 014e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 246              	.LVL4:
+ 129:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg2);/* AVDD: Ratio */
+ 247              		.loc 1 129 3 view .LVU86
+ 248 0152 2CA9     		add	r1, sp, #176
+ 249 0154 0320     		movs	r0, #3
+ 250 0156 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 251              	.LVL5:
+ 130:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg3);/* AVEE: -5.2V */
+ 252              		.loc 1 130 3 view .LVU87
+ 253 015a 2BA9     		add	r1, sp, #172
+ 254 015c 0320     		movs	r0, #3
+ 255 015e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 256              	.LVL6:
+ 131:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg4);/* AVEE: Ratio */
+ 257              		.loc 1 131 3 view .LVU88
+ 258 0162 2AA9     		add	r1, sp, #168
+ 259 0164 0320     		movs	r0, #3
+ 260 0166 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 261              	.LVL7:
+ 132:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg5);/* VCL: -2.5V */
+ 262              		.loc 1 132 3 view .LVU89
+ 263 016a 29A9     		add	r1, sp, #164
+ 264 016c 0320     		movs	r0, #3
+ 265 016e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 266              	.LVL8:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 8
+
+
+ 133:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg6);/* VCL: Ratio */
+ 267              		.loc 1 133 3 view .LVU90
+ 268 0172 28A9     		add	r1, sp, #160
+ 269 0174 0320     		movs	r0, #3
+ 270 0176 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 271              	.LVL9:
+ 134:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg7);/* VGH: 15V (Free Pump) */
+ 272              		.loc 1 134 3 view .LVU91
+ 273 017a 27A9     		add	r1, sp, #156
+ 274 017c 0120     		movs	r0, #1
+ 275 017e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 276              	.LVL10:
+ 135:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg8);
+ 277              		.loc 1 135 3 view .LVU92
+ 278 0182 26A9     		add	r1, sp, #152
+ 279 0184 0320     		movs	r0, #3
+ 280 0186 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 281              	.LVL11:
+ 136:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg9);/* VGH: Ratio */
+ 282              		.loc 1 136 3 view .LVU93
+ 283 018a 25A9     		add	r1, sp, #148
+ 284 018c 0320     		movs	r0, #3
+ 285 018e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 286              	.LVL12:
+ 137:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg10);/* VGL_REG: -10V */
+ 287              		.loc 1 137 3 view .LVU94
+ 288 0192 24A9     		add	r1, sp, #144
+ 289 0194 0320     		movs	r0, #3
+ 290 0196 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 291              	.LVL13:
+ 138:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg12);/* VGLX: Ratio */
+ 292              		.loc 1 138 3 view .LVU95
+ 293 019a 23A9     		add	r1, sp, #140
+ 294 019c 0320     		movs	r0, #3
+ 295 019e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 296              	.LVL14:
+ 139:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg13);/* VGMP/VGSP: 4.5V/0V */
+ 297              		.loc 1 139 3 view .LVU96
+ 298 01a2 22A9     		add	r1, sp, #136
+ 299 01a4 0320     		movs	r0, #3
+ 300 01a6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 301              	.LVL15:
+ 140:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg14);/* VGMN/VGSN:-4.5V/0V */
+ 302              		.loc 1 140 3 view .LVU97
+ 303 01aa 21A9     		add	r1, sp, #132
+ 304 01ac 0320     		movs	r0, #3
+ 305 01ae FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 306              	.LVL16:
+ 141:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(2, (uint8_t *)nt35510_reg15);/* VCOM: -1.325V */
+ 307              		.loc 1 141 3 view .LVU98
+ 308 01b2 20A9     		add	r1, sp, #128
+ 309 01b4 0220     		movs	r0, #2
+ 310 01b6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 311              	.LVL17:
+ 142:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 143:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+ 144:Drivers/BSP/Components/nt35510/nt35510.c **** /* Proprietary DCS Initialization                                             */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 9
+
+
+ 145:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+ 146:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(5, (uint8_t *)nt35510_reg16);/* LV2: Page 0 enable */
+ 312              		.loc 1 146 3 view .LVU99
+ 313 01ba 1EA9     		add	r1, sp, #120
+ 314 01bc 0520     		movs	r0, #5
+ 315 01be FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 316              	.LVL18:
+ 147:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(2, (uint8_t *)nt35510_reg17);/* Display control */
+ 317              		.loc 1 147 3 view .LVU100
+ 318 01c2 1DA9     		add	r1, sp, #116
+ 319 01c4 0220     		movs	r0, #2
+ 320 01c6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 321              	.LVL19:
+ 148:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg18);/* Src hold time */
+ 322              		.loc 1 148 3 view .LVU101
+ 323 01ca 1CA9     		add	r1, sp, #112
+ 324 01cc 0120     		movs	r0, #1
+ 325 01ce FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 326              	.LVL20:
+ 149:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg19);
+ 327              		.loc 1 149 3 view .LVU102
+ 328 01d2 1BA9     		add	r1, sp, #108
+ 329 01d4 0120     		movs	r0, #1
+ 330 01d6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 331              	.LVL21:
+ 150:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(2, (uint8_t *)nt35510_reg20);/* Gate EQ control */
+ 332              		.loc 1 150 3 view .LVU103
+ 333 01da 1AA9     		add	r1, sp, #104
+ 334 01dc 0220     		movs	r0, #2
+ 335 01de FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 336              	.LVL22:
+ 151:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(4, (uint8_t *)nt35510_reg21);/* Src EQ control(Mode2) */
+ 337              		.loc 1 151 3 view .LVU104
+ 338 01e2 18A9     		add	r1, sp, #96
+ 339 01e4 0420     		movs	r0, #4
+ 340 01e6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 341              	.LVL23:
+ 152:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg22);/* Inv. mode(2-dot) */
+ 342              		.loc 1 152 3 view .LVU105
+ 343 01ea 17A9     		add	r1, sp, #92
+ 344 01ec 0320     		movs	r0, #3
+ 345 01ee FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 346              	.LVL24:
+ 153:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(3, (uint8_t *)nt35510_reg23);
+ 347              		.loc 1 153 3 view .LVU106
+ 348 01f2 16A9     		add	r1, sp, #88
+ 349 01f4 0320     		movs	r0, #3
+ 350 01f6 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 351              	.LVL25:
+ 154:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg24);
+ 352              		.loc 1 154 3 view .LVU107
+ 353 01fa 15A9     		add	r1, sp, #84
+ 354 01fc 0120     		movs	r0, #1
+ 355 01fe FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 356              	.LVL26:
+ 155:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Tear on */
+ 156:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg26);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 10
+
+
+ 357              		.loc 1 156 3 view .LVU108
+ 358 0202 0AA9     		add	r1, sp, #40
+ 359 0204 0020     		movs	r0, #0
+ 360 0206 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 361              	.LVL27:
+ 157:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Set Pixel color format to RGB888 */
+ 158:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg37);
+ 362              		.loc 1 158 3 view .LVU109
+ 363 020a 01A9     		add	r1, sp, #4
+ 364 020c 0020     		movs	r0, #0
+ 365 020e FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 366              	.LVL28:
+ 159:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 160:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+ 161:Drivers/BSP/Components/nt35510/nt35510.c **** /* Standard DCS Initialization                                                */
+ 162:Drivers/BSP/Components/nt35510/nt35510.c **** /* ************************************************************************** */
+ 163:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 164:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Add a delay, otherwise MADCTL not taken */
+ 165:Drivers/BSP/Components/nt35510/nt35510.c ****   NT35510_IO_Delay(200);
+ 367              		.loc 1 165 3 view .LVU110
+ 368 0212 C820     		movs	r0, #200
+ 369 0214 FFF7FEFF 		bl	NT35510_IO_Delay
+ 370              	.LVL29:
+ 166:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 167:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Configure orientation */
+ 168:Drivers/BSP/Components/nt35510/nt35510.c ****   if(orientation == NT35510_ORIENTATION_PORTRAIT)
+ 371              		.loc 1 168 3 view .LVU111
+ 372              		.loc 1 168 5 is_stmt 0 view .LVU112
+ 373 0218 002D     		cmp	r5, #0
+ 374 021a 34D1     		bne	.L2
+ 169:Drivers/BSP/Components/nt35510/nt35510.c ****   {
+ 170:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(1, (uint8_t *)nt35510_madctl_portrait);
+ 375              		.loc 1 170 5 is_stmt 1 view .LVU113
+ 376 021c 14A9     		add	r1, sp, #80
+ 377 021e 0120     		movs	r0, #1
+ 378 0220 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 379              	.LVL30:
+ 171:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_caset_portrait);
+ 380              		.loc 1 171 5 view .LVU114
+ 381 0224 12A9     		add	r1, sp, #72
+ 382 0226 0420     		movs	r0, #4
+ 383 0228 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 384              	.LVL31:
+ 172:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_raset_portrait);
+ 385              		.loc 1 172 5 view .LVU115
+ 386 022c 10A9     		add	r1, sp, #64
+ 387 022e 0420     		movs	r0, #4
+ 388 0230 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 389              	.LVL32:
+ 390              	.L3:
+ 173:Drivers/BSP/Components/nt35510/nt35510.c ****   }
+ 174:Drivers/BSP/Components/nt35510/nt35510.c ****   else
+ 175:Drivers/BSP/Components/nt35510/nt35510.c ****   {
+ 176:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(1, (uint8_t *)nt35510_madctl_landscape);
+ 177:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_caset_landscape);
+ 178:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_raset_landscape);
+ 179:Drivers/BSP/Components/nt35510/nt35510.c ****   }
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 11
+
+
+ 180:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 181:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg27);
+ 391              		.loc 1 181 3 view .LVU116
+ 392 0234 09A9     		add	r1, sp, #36
+ 393 0236 0020     		movs	r0, #0
+ 394 0238 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 395              	.LVL33:
+ 182:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Wait for sleep out exit */
+ 183:Drivers/BSP/Components/nt35510/nt35510.c ****   NT35510_IO_Delay(120);
+ 396              		.loc 1 183 3 view .LVU117
+ 397 023c 7820     		movs	r0, #120
+ 398 023e FFF7FEFF 		bl	NT35510_IO_Delay
+ 399              	.LVL34:
+ 184:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 185:Drivers/BSP/Components/nt35510/nt35510.c ****   switch(ColorCoding)
+ 400              		.loc 1 185 3 view .LVU118
+ 401 0242 6CB3     		cbz	r4, .L4
+ 402 0244 022C     		cmp	r4, #2
+ 403 0246 30D1     		bne	.L5
+ 186:Drivers/BSP/Components/nt35510/nt35510.c ****   {
+ 187:Drivers/BSP/Components/nt35510/nt35510.c ****     case NT35510_FORMAT_RBG565 :
+ 188:Drivers/BSP/Components/nt35510/nt35510.c ****       /* Set Pixel color format to RGB565 */
+ 189:Drivers/BSP/Components/nt35510/nt35510.c ****       DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg36);
+ 404              		.loc 1 189 7 view .LVU119
+ 405 0248 02A9     		add	r1, sp, #8
+ 406 024a 0120     		movs	r0, #1
+ 407 024c FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 408              	.LVL35:
+ 190:Drivers/BSP/Components/nt35510/nt35510.c ****       break;
+ 409              		.loc 1 190 7 view .LVU120
+ 410              	.L6:
+ 191:Drivers/BSP/Components/nt35510/nt35510.c ****     case NT35510_FORMAT_RGB888 :
+ 192:Drivers/BSP/Components/nt35510/nt35510.c ****       /* Set Pixel color format to RGB888 */
+ 193:Drivers/BSP/Components/nt35510/nt35510.c ****       DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg37);
+ 194:Drivers/BSP/Components/nt35510/nt35510.c ****       break;
+ 195:Drivers/BSP/Components/nt35510/nt35510.c ****     default :
+ 196:Drivers/BSP/Components/nt35510/nt35510.c ****       /* Set Pixel color format to RGB888 */
+ 197:Drivers/BSP/Components/nt35510/nt35510.c ****       DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg37);
+ 198:Drivers/BSP/Components/nt35510/nt35510.c ****       break;
+ 199:Drivers/BSP/Components/nt35510/nt35510.c ****   }
+ 200:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 201:Drivers/BSP/Components/nt35510/nt35510.c ****   /** CABC : Content Adaptive Backlight Control section start >> */
+ 202:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Note : defaut is 0 (lowest Brightness), 0xFF is highest Brightness, try 0x7F : intermediate va
+ 203:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg31);
+ 411              		.loc 1 203 3 view .LVU121
+ 412 0250 07A9     		add	r1, sp, #28
+ 413 0252 0120     		movs	r0, #1
+ 414 0254 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 415              	.LVL36:
+ 204:Drivers/BSP/Components/nt35510/nt35510.c ****   /* defaut is 0, try 0x2C - Brightness Control Block, Display Dimming & BackLight on */
+ 205:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg32);
+ 416              		.loc 1 205 3 view .LVU122
+ 417 0258 06A9     		add	r1, sp, #24
+ 418 025a 0120     		movs	r0, #1
+ 419 025c FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 420              	.LVL37:
+ 206:Drivers/BSP/Components/nt35510/nt35510.c ****   /* defaut is 0, try 0x02 - image Content based Adaptive Brightness [Still Picture] */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 12
+
+
+ 207:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg33);
+ 421              		.loc 1 207 3 view .LVU123
+ 422 0260 05A9     		add	r1, sp, #20
+ 423 0262 0120     		movs	r0, #1
+ 424 0264 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 425              	.LVL38:
+ 208:Drivers/BSP/Components/nt35510/nt35510.c ****   /* defaut is 0 (lowest Brightness), 0xFF is highest Brightness */
+ 209:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(1, (uint8_t *)nt35510_reg34);
+ 426              		.loc 1 209 3 view .LVU124
+ 427 0268 04A9     		add	r1, sp, #16
+ 428 026a 0120     		movs	r0, #1
+ 429 026c FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 430              	.LVL39:
+ 210:Drivers/BSP/Components/nt35510/nt35510.c ****   /** CABC : Content Adaptive Backlight Control section end << */
+ 211:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 212:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Display on */
+ 213:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg30);
+ 431              		.loc 1 213 3 view .LVU125
+ 432 0270 08A9     		add	r1, sp, #32
+ 433 0272 0020     		movs	r0, #0
+ 434 0274 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 435              	.LVL40:
+ 214:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 215:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Send Command GRAM memory write (no parameters) : this initiates frame write via other DSI comm
+ 216:Drivers/BSP/Components/nt35510/nt35510.c ****   /* DSI host from LTDC incoming pixels in video mode */
+ 217:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg35);
+ 436              		.loc 1 217 3 view .LVU126
+ 437 0278 03A9     		add	r1, sp, #12
+ 438 027a 0020     		movs	r0, #0
+ 439 027c FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 440              	.LVL41:
+ 218:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 219:Drivers/BSP/Components/nt35510/nt35510.c ****   return 0;
+ 441              		.loc 1 219 3 view .LVU127
+ 220:Drivers/BSP/Components/nt35510/nt35510.c **** }
+ 442              		.loc 1 220 1 is_stmt 0 view .LVU128
+ 443 0280 0020     		movs	r0, #0
+ 444 0282 31B0     		add	sp, sp, #196
+ 445              		.cfi_remember_state
+ 446              		.cfi_def_cfa_offset 12
+ 447              		@ sp needed
+ 448 0284 30BD     		pop	{r4, r5, pc}
+ 449              	.LVL42:
+ 450              	.L2:
+ 451              		.cfi_restore_state
+ 176:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_caset_landscape);
+ 452              		.loc 1 176 5 is_stmt 1 view .LVU129
+ 453 0286 0FA9     		add	r1, sp, #60
+ 454 0288 0120     		movs	r0, #1
+ 455 028a FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 456              	.LVL43:
+ 177:Drivers/BSP/Components/nt35510/nt35510.c ****     DSI_IO_WriteCmd(4, (uint8_t *)nt35510_raset_landscape);
+ 457              		.loc 1 177 5 view .LVU130
+ 458 028e 0DA9     		add	r1, sp, #52
+ 459 0290 0420     		movs	r0, #4
+ 460 0292 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 461              	.LVL44:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 13
+
+
+ 178:Drivers/BSP/Components/nt35510/nt35510.c ****   }
+ 462              		.loc 1 178 5 view .LVU131
+ 463 0296 0BA9     		add	r1, sp, #44
+ 464 0298 0420     		movs	r0, #4
+ 465 029a FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 466              	.LVL45:
+ 467 029e C9E7     		b	.L3
+ 468              	.L4:
+ 193:Drivers/BSP/Components/nt35510/nt35510.c ****       break;
+ 469              		.loc 1 193 7 view .LVU132
+ 470 02a0 01A9     		add	r1, sp, #4
+ 471 02a2 0120     		movs	r0, #1
+ 472 02a4 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 473              	.LVL46:
+ 194:Drivers/BSP/Components/nt35510/nt35510.c ****     default :
+ 474              		.loc 1 194 7 view .LVU133
+ 475 02a8 D2E7     		b	.L6
+ 476              	.L5:
+ 197:Drivers/BSP/Components/nt35510/nt35510.c ****       break;
+ 477              		.loc 1 197 7 view .LVU134
+ 478 02aa 01A9     		add	r1, sp, #4
+ 479 02ac 0120     		movs	r0, #1
+ 480 02ae FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 481              	.LVL47:
+ 198:Drivers/BSP/Components/nt35510/nt35510.c ****   }
+ 482              		.loc 1 198 7 view .LVU135
+ 483 02b2 CDE7     		b	.L6
+ 484              	.L9:
+ 485              		.align	2
+ 486              	.L8:
+ 487 02b4 00000000 		.word	.LC0
+ 488 02b8 030303B0 		.word	-1341979901
+ 489 02bc 464646B6 		.word	-1236908474
+ 490 02c0 030303B1 		.word	-1325202685
+ 491 02c4 363636B7 		.word	-1221183946
+ 492 02c8 000002B2 		.word	-1308491776
+ 493 02cc 262626B8 		.word	-1205459418
+ 494 02d0 090909B3 		.word	-1291253495
+ 495 02d4 363636B9 		.word	-1187629514
+ 496 02d8 080808B5 		.word	-1257764856
+ 497 02dc 262626BA 		.word	-1171904986
+ 498 02e0 008000BC 		.word	-1140817920
+ 499 02e4 00000000 		.word	.LANCHOR0
+ 500 02e8 08000000 		.word	.LC5
+ 501 02ec 030000CC 		.word	-872415229
+ 502              		.cfi_endproc
+ 503              	.LFE3:
+ 505              		.section	.text.NT35510_DeInit,"ax",%progbits
+ 506              		.align	1
+ 507              		.global	NT35510_DeInit
+ 508              		.syntax unified
+ 509              		.thumb
+ 510              		.thumb_func
+ 512              	NT35510_DeInit:
+ 513              	.LFB4:
+ 221:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 222:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 14
+
+
+ 223:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+ 224:Drivers/BSP/Components/nt35510/nt35510.c ****   * @}
+ 225:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+ 226:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 227:Drivers/BSP/Components/nt35510/nt35510.c **** uint8_t NT35510_DeInit(void)
+ 228:Drivers/BSP/Components/nt35510/nt35510.c **** {
+ 514              		.loc 1 228 1 view -0
+ 515              		.cfi_startproc
+ 516              		@ args = 0, pretend = 0, frame = 8
+ 517              		@ frame_needed = 0, uses_anonymous_args = 0
+ 518 0000 00B5     		push	{lr}
+ 519              		.cfi_def_cfa_offset 4
+ 520              		.cfi_offset 14, -4
+ 521 0002 83B0     		sub	sp, sp, #12
+ 522              		.cfi_def_cfa_offset 16
+ 229:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg30b[] = {NT35510_CMD_DISPOFF, 0x00};
+ 523              		.loc 1 229 3 view .LVU137
+ 524              		.loc 1 229 17 is_stmt 0 view .LVU138
+ 525 0004 2823     		movs	r3, #40
+ 526 0006 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 230:Drivers/BSP/Components/nt35510/nt35510.c ****   const uint8_t nt35510_reg27b[] = {NT35510_CMD_SLPIN, 0x00};
+ 527              		.loc 1 230 3 is_stmt 1 view .LVU139
+ 528              		.loc 1 230 17 is_stmt 0 view .LVU140
+ 529 000a 1023     		movs	r3, #16
+ 530 000c ADF80030 		strh	r3, [sp]	@ movhi
+ 231:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Display off */
+ 232:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg30b);
+ 531              		.loc 1 232 3 is_stmt 1 view .LVU141
+ 532 0010 01A9     		add	r1, sp, #4
+ 533 0012 0020     		movs	r0, #0
+ 534 0014 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 535              	.LVL48:
+ 233:Drivers/BSP/Components/nt35510/nt35510.c ****   NT35510_IO_Delay(120);
+ 536              		.loc 1 233 3 view .LVU142
+ 537 0018 7820     		movs	r0, #120
+ 538 001a FFF7FEFF 		bl	NT35510_IO_Delay
+ 539              	.LVL49:
+ 234:Drivers/BSP/Components/nt35510/nt35510.c ****   /* Sleep in */
+ 235:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_WriteCmd(0, (uint8_t *)nt35510_reg27b);
+ 540              		.loc 1 235 3 view .LVU143
+ 541 001e 6946     		mov	r1, sp
+ 542 0020 0020     		movs	r0, #0
+ 543 0022 FFF7FEFF 		bl	DSI_IO_WriteCmd
+ 544              	.LVL50:
+ 236:Drivers/BSP/Components/nt35510/nt35510.c ****   return 0;
+ 545              		.loc 1 236 3 view .LVU144
+ 237:Drivers/BSP/Components/nt35510/nt35510.c **** }
+ 546              		.loc 1 237 1 is_stmt 0 view .LVU145
+ 547 0026 0020     		movs	r0, #0
+ 548 0028 03B0     		add	sp, sp, #12
+ 549              		.cfi_def_cfa_offset 4
+ 550              		@ sp needed
+ 551 002a 5DF804FB 		ldr	pc, [sp], #4
+ 552              		.cfi_endproc
+ 553              	.LFE4:
+ 555              		.section	.text.NT35510_ReadID,"ax",%progbits
+ 556              		.align	1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 15
+
+
+ 557              		.global	NT35510_ReadID
+ 558              		.syntax unified
+ 559              		.thumb
+ 560              		.thumb_func
+ 562              	NT35510_ReadID:
+ 563              	.LFB5:
+ 238:Drivers/BSP/Components/nt35510/nt35510.c **** 
+ 239:Drivers/BSP/Components/nt35510/nt35510.c **** /**
+ 240:Drivers/BSP/Components/nt35510/nt35510.c ****   * @brief  Read the component ID.
+ 241:Drivers/BSP/Components/nt35510/nt35510.c ****   * @retval Component ID
+ 242:Drivers/BSP/Components/nt35510/nt35510.c ****   */
+ 243:Drivers/BSP/Components/nt35510/nt35510.c **** uint16_t NT35510_ReadID(void)
+ 244:Drivers/BSP/Components/nt35510/nt35510.c **** {
+ 564              		.loc 1 244 1 is_stmt 1 view -0
+ 565              		.cfi_startproc
+ 566              		@ args = 0, pretend = 0, frame = 8
+ 567              		@ frame_needed = 0, uses_anonymous_args = 0
+ 568 0000 00B5     		push	{lr}
+ 569              		.cfi_def_cfa_offset 4
+ 570              		.cfi_offset 14, -4
+ 571 0002 83B0     		sub	sp, sp, #12
+ 572              		.cfi_def_cfa_offset 16
+ 245:Drivers/BSP/Components/nt35510/nt35510.c ****   uint8_t pData=0;
+ 573              		.loc 1 245 3 view .LVU147
+ 574              		.loc 1 245 11 is_stmt 0 view .LVU148
+ 575 0004 0023     		movs	r3, #0
+ 576 0006 8DF80730 		strb	r3, [sp, #7]
+ 246:Drivers/BSP/Components/nt35510/nt35510.c ****   DSI_IO_ReadCmd(NT35510_CMD_RDID2, &pData, 1);
+ 577              		.loc 1 246 3 is_stmt 1 view .LVU149
+ 578 000a 0122     		movs	r2, #1
+ 579 000c 0DF10701 		add	r1, sp, #7
+ 580 0010 DB20     		movs	r0, #219
+ 581 0012 FFF7FEFF 		bl	DSI_IO_ReadCmd
+ 582              	.LVL51:
+ 247:Drivers/BSP/Components/nt35510/nt35510.c ****   return pData;
+ 583              		.loc 1 247 3 view .LVU150
+ 248:Drivers/BSP/Components/nt35510/nt35510.c **** }
+ 584              		.loc 1 248 1 is_stmt 0 view .LVU151
+ 585 0016 9DF80700 		ldrb	r0, [sp, #7]	@ zero_extendqisi2
+ 586 001a 03B0     		add	sp, sp, #12
+ 587              		.cfi_def_cfa_offset 4
+ 588              		@ sp needed
+ 589 001c 5DF804FB 		ldr	pc, [sp], #4
+ 590              		.cfi_endproc
+ 591              	.LFE5:
+ 593              		.section	.rodata
+ 594              		.align	2
+ 595              		.set	.LANCHOR0,. + 0
+ 596              	.LC1:
+ 597 0000 0050BE   		.ascii	"\000P\276"
+ 598 0003 00       		.space	1
+ 599              	.LC2:
+ 600 0004 55AA5208 		.ascii	"U\252R\010\000\360"
+ 600      00F0
+ 601 000a 0000     		.space	2
+ 602              	.LC3:
+ 603 000c FC00B1   		.ascii	"\374\000\261"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 16
+
+
+ 604 000f 00       		.space	1
+ 605              	.LC4:
+ 606 0010 0000B7   		.ascii	"\000\000\267"
+ 607 0013 00       		.space	1
+ 608              	.LC6:
+ 609 0014 000001DF 		.ascii	"\000\000\001\337*"
+ 609      2A
+ 610 0019 000000   		.space	3
+ 611              	.LC7:
+ 612 001c 0000031F 		.ascii	"\000\000\003\037+"
+ 612      2B
+ 613 0021 000000   		.space	3
+ 614              	.LC8:
+ 615 0024 0000031F 		.ascii	"\000\000\003\037*"
+ 615      2A
+ 616 0029 000000   		.space	3
+ 617              	.LC9:
+ 618 002c 000001DF 		.ascii	"\000\000\001\337+"
+ 618      2B
+ 619              		.text
+ 620              	.Letext0:
+ 621              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 622              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 623              		.file 4 "Drivers/BSP/Components/nt35510/nt35510.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 nt35510.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:20     .rodata.NT35510_Init.str1.4:00000000 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:27     .text.NT35510_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:33     .text.NT35510_Init:00000000 NT35510_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:487    .text.NT35510_Init:000002b4 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:506    .text.NT35510_DeInit:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:512    .text.NT35510_DeInit:00000000 NT35510_DeInit
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:556    .text.NT35510_ReadID:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:562    .text.NT35510_ReadID:00000000 NT35510_ReadID
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccdUshzW.s:594    .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+NT35510_IO_Delay
+DSI_IO_WriteCmd
+DSI_IO_ReadCmd

@@ -1,0 +1,1421 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"arm_fir_decimate_f32.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c"
+  19              		.section	.text.arm_fir_decimate_f32,"ax",%progbits
+  20              		.align	1
+  21              		.global	arm_fir_decimate_f32
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	arm_fir_decimate_f32:
+  27              	.LVL0:
+  28              	.LFB135:
+   1:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /* ----------------------------------------------------------------------
+   2:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Project:      CMSIS DSP Library
+   3:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Title:        arm_fir_decimate_f32.c
+   4:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Description:  FIR decimation for floating-point sequences
+   5:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+   6:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * $Date:        27. January 2017
+   7:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * $Revision:    V.1.5.1
+   8:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+   9:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Target Processor: Cortex-M cores
+  10:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * -------------------------------------------------------------------- */
+  11:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /*
+  12:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Copyright (C) 2010-2017 ARM Limited or its affiliates. All rights reserved.
+  13:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  14:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * SPDX-License-Identifier: Apache-2.0
+  15:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  16:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  17:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * not use this file except in compliance with the License.
+  18:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * You may obtain a copy of the License at
+  19:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  20:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * www.apache.org/licenses/LICENSE-2.0
+  21:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  22:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Unless required by applicable law or agreed to in writing, software
+  23:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  24:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  25:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * See the License for the specific language governing permissions and
+  26:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * limitations under the License.
+  27:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  */
+  28:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+  29:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** #include "arm_math.h"
+  30:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 2
+
+
+  31:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /**
+  32:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * @ingroup groupFilters
+  33:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  */
+  34:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+  35:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /**
+  36:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * @defgroup FIR_decimate Finite Impulse Response (FIR) Decimator
+  37:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  38:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * These functions combine an FIR filter together with a decimator.
+  39:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * They are used in multirate systems for reducing the sample rate of a signal without introducing 
+  40:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Conceptually, the functions are equivalent to the block diagram below:
+  41:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \image html FIRDecimator.gif "Components included in the FIR Decimator functions"
+  42:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * When decimating by a factor of <code>M</code>, the signal should be prefiltered by a lowpass fil
+  43:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * cutoff frequency of <code>1/M</code> in order to prevent aliasing distortion.
+  44:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The user of the function is responsible for providing the filter coefficients.
+  45:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  46:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The FIR decimator functions provided in the CMSIS DSP Library combine the FIR filter and the dec
+  47:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Instead of calculating all of the FIR filter outputs and discarding <code>M-1</code> out of ever
+  48:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * samples output by the decimator are computed.
+  49:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The functions operate on blocks of input and output data.
+  50:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <code>pSrc</code> points to an array of <code>blockSize</code> input values and
+  51:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <code>pDst</code> points to an array of <code>blockSize/M</code> output values.
+  52:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * In order to have an integer number of output samples <code>blockSize</code>
+  53:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * must always be a multiple of the decimation factor <code>M</code>.
+  54:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  55:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The library provides separate functions for Q15, Q31 and floating-point data types.
+  56:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  57:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par Algorithm:
+  58:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The FIR portion of the algorithm uses the standard form filter:
+  59:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <pre>
+  60:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *    y[n] = b[0] * x[n] + b[1] * x[n-1] + b[2] * x[n-2] + ...+ b[numTaps-1] * x[n-numTaps+1]
+  61:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * </pre>
+  62:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * where, <code>b[n]</code> are the filter coefficients.
+  63:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par
+  64:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The <code>pCoeffs</code> points to a coefficient array of size <code>numTaps</code>.
+  65:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Coefficients are stored in time reversed order.
+  66:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par
+  67:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <pre>
+  68:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *    {b[numTaps-1], b[numTaps-2], b[N-2], ..., b[1], b[0]}
+  69:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * </pre>
+  70:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par
+  71:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <code>pState</code> points to a state array of size <code>numTaps + blockSize - 1</code>.
+  72:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Samples in the state buffer are stored in the order:
+  73:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par
+  74:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <pre>
+  75:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *    {x[n-numTaps+1], x[n-numTaps], x[n-numTaps-1], x[n-numTaps-2]....x[0], x[1], ..., x[blockSize
+  76:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * </pre>
+  77:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The state variables are updated after each block of data is processed, the coefficients are unto
+  78:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  79:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par Instance Structure
+  80:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The coefficients and state variables for a filter are stored together in an instance data struct
+  81:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * A separate instance structure must be defined for each filter.
+  82:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Coefficient arrays may be shared among several instances while state variable array should be al
+  83:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * There are separate instance structure declarations for each of the 3 supported data types.
+  84:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  85:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par Initialization Functions
+  86:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * There is also an associated initialization function for each data type.
+  87:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The initialization function performs the following operations:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 3
+
+
+  88:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * - Sets the values of the internal structure fields.
+  89:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * - Zeros out the values in the state buffer.
+  90:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * - Checks to make sure that the size of the input is a multiple of the decimation factor.
+  91:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * To do this manually without calling the init function, assign the follow subfields of the instan
+  92:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * numTaps, pCoeffs, M (decimation factor), pState. Also set all of the values in pState to zero.
+  93:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+  94:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par
+  95:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Use of the initialization function is optional.
+  96:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * However, if the initialization function is used, then the instance structure cannot be placed in
+  97:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * To place an instance structure into a const data section, the instance structure must be manuall
+  98:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * The code below statically initializes each of the 3 different data type filter instance structur
+  99:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <pre>
+ 100:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *arm_fir_decimate_instance_f32 S = {M, numTaps, pCoeffs, pState};
+ 101:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *arm_fir_decimate_instance_q31 S = {M, numTaps, pCoeffs, pState};
+ 102:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *arm_fir_decimate_instance_q15 S = {M, numTaps, pCoeffs, pState};
+ 103:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * </pre>
+ 104:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * where <code>M</code> is the decimation factor; <code>numTaps</code> is the number of filter coef
+ 105:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <code>pCoeffs</code> is the address of the coefficient buffer;
+ 106:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * <code>pState</code> is the address of the state buffer.
+ 107:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Be sure to set the values in the state buffer to zeros when doing static initialization.
+ 108:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  *
+ 109:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * \par Fixed-Point Behavior
+ 110:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Care must be taken when using the fixed-point versions of the FIR decimate filter functions.
+ 111:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * In particular, the overflow and saturation behavior of the accumulator used in each function mus
+ 112:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * Refer to the function specific documentation below for usage guidelines.
+ 113:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  */
+ 114:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 115:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /**
+ 116:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * @addtogroup FIR_decimate
+ 117:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  * @{
+ 118:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****  */
+ 119:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 120:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /**
+ 121:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @brief Processing function for the floating-point FIR decimator.
+ 122:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @param[in] *S        points to an instance of the floating-point FIR decimator structure.
+ 123:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @param[in] *pSrc     points to the block of input data.
+ 124:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @param[out] *pDst    points to the block of output data.
+ 125:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @param[in] blockSize number of input samples to process per call.
+ 126:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    * @return none.
+ 127:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    */
+ 128:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 129:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** void arm_fir_decimate_f32(
+ 130:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   const arm_fir_decimate_instance_f32 * S,
+ 131:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t * pSrc,
+ 132:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t * pDst,
+ 133:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   uint32_t blockSize)
+ 134:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** {
+  29              		.loc 1 134 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 8
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 134 1 is_stmt 0 view .LVU1
+  34 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+  35              		.cfi_def_cfa_offset 36
+  36              		.cfi_offset 4, -36
+  37              		.cfi_offset 5, -32
+  38              		.cfi_offset 6, -28
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 4
+
+
+  39              		.cfi_offset 7, -24
+  40              		.cfi_offset 8, -20
+  41              		.cfi_offset 9, -16
+  42              		.cfi_offset 10, -12
+  43              		.cfi_offset 11, -8
+  44              		.cfi_offset 14, -4
+  45 0004 83B0     		sub	sp, sp, #12
+  46              		.cfi_def_cfa_offset 48
+  47 0006 8046     		mov	r8, r0
+  48 0008 0C46     		mov	r4, r1
+  49 000a 1746     		mov	r7, r2
+ 135:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t *pState = S->pState;                 /* State pointer */
+  50              		.loc 1 135 3 is_stmt 1 view .LVU2
+  51              		.loc 1 135 14 is_stmt 0 view .LVU3
+  52 000c 8668     		ldr	r6, [r0, #8]
+  53              	.LVL1:
+ 136:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t *pCoeffs = S->pCoeffs;               /* Coefficient pointer */
+  54              		.loc 1 136 3 is_stmt 1 view .LVU4
+  55              		.loc 1 136 14 is_stmt 0 view .LVU5
+  56 000e 4268     		ldr	r2, [r0, #4]
+  57              	.LVL2:
+  58              		.loc 1 136 14 view .LVU6
+  59 0010 0092     		str	r2, [sp]
+  60              	.LVL3:
+ 137:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t *pStateCurnt;                        /* Points to the current sample of the state */
+  61              		.loc 1 137 3 is_stmt 1 view .LVU7
+ 138:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t *px, *pb;                            /* Temporary pointers for state and coefficient bu
+  62              		.loc 1 138 3 view .LVU8
+ 139:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t sum0;                                /* Accumulator */
+  63              		.loc 1 139 3 view .LVU9
+ 140:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t x0, c0;                              /* Temporary variables to hold state and coefficie
+  64              		.loc 1 140 3 view .LVU10
+ 141:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   uint32_t numTaps = S->numTaps;                 /* Number of filter coefficients in the filter */
+  65              		.loc 1 141 3 view .LVU11
+  66              		.loc 1 141 23 is_stmt 0 view .LVU12
+  67 0012 B0F80290 		ldrh	r9, [r0, #2]
+  68              	.LVL4:
+ 142:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   uint32_t i, tapCnt, blkCnt, outBlockSize = blockSize / S->M;  /* Loop counters */
+  69              		.loc 1 142 3 is_stmt 1 view .LVU13
+  70              		.loc 1 142 59 is_stmt 0 view .LVU14
+  71 0016 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
+  72              	.LVL5:
+  73              		.loc 1 142 31 view .LVU15
+  74 0018 B3FBF2F3 		udiv	r3, r3, r2
+  75              	.LVL6:
+ 143:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 144:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** #if defined (ARM_MATH_DSP)
+ 145:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 146:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   uint32_t blkCntN4;
+  76              		.loc 1 146 3 is_stmt 1 view .LVU16
+ 147:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t *px0, *px1, *px2, *px3;
+  77              		.loc 1 147 3 view .LVU17
+ 148:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t acc0, acc1, acc2, acc3;
+  78              		.loc 1 148 3 view .LVU18
+ 149:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   float32_t x1, x2, x3;
+  79              		.loc 1 149 3 view .LVU19
+ 150:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 5
+
+
+ 151:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Run the below code for Cortex-M4 and Cortex-M3 */
+ 152:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 153:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* S->pState buffer contains previous frame (numTaps - 1) samples */
+ 154:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* pStateCurnt points to the location where the new input data should be written */
+ 155:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   pStateCurnt = S->pState + (numTaps - 1U);
+  80              		.loc 1 155 3 view .LVU20
+  81              		.loc 1 155 27 is_stmt 0 view .LVU21
+  82 001c 6FF04040 		mvn	r0, #-1073741824
+  83              	.LVL7:
+  84              		.loc 1 155 27 view .LVU22
+  85 0020 4844     		add	r0, r0, r9
+  86              		.loc 1 155 15 view .LVU23
+  87 0022 06EB8000 		add	r0, r6, r0, lsl #2
+  88              	.LVL8:
+ 156:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 157:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Total number of output samples to be computed */
+ 158:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   blkCnt = outBlockSize / 4;
+  89              		.loc 1 158 3 is_stmt 1 view .LVU24
+  90              		.loc 1 158 10 is_stmt 0 view .LVU25
+  91 0026 4FEA930B 		lsr	fp, r3, #2
+  92              	.LVL9:
+ 159:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   blkCntN4 = outBlockSize - (4 * blkCnt);
+  93              		.loc 1 159 3 is_stmt 1 view .LVU26
+  94 002a 03F00302 		and	r2, r3, #3
+  95              	.LVL10:
+ 160:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 161:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (blkCnt > 0U)
+  96              		.loc 1 161 3 view .LVU27
+  97 002e B646     		mov	lr, r6
+  98 0030 0192     		str	r2, [sp, #4]
+  99              		.loc 1 161 9 is_stmt 0 view .LVU28
+ 100 0032 9DE0     		b	.L2
+ 101              	.LVL11:
+ 102              	.L5:
+ 162:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 163:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Copy 4 * decimation factor number of new input samples into the state buffer */
+ 164:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i = 4 * S->M;
+ 165:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 166:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     do
+ 167:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       *pStateCurnt++ = *pSrc++;
+ 169:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 170:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     } while (--i);
+ 171:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 172:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Set accumulators to zero */
+ 173:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc0 = 0.0f;
+ 174:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc1 = 0.0f;
+ 175:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc2 = 0.0f;
+ 176:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc3 = 0.0f;
+ 177:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 178:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize state pointer for all the samples */
+ 179:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px0 = pState;
+ 180:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px1 = pState + S->M;
+ 181:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px2 = pState + 2 * S->M;
+ 182:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px3 = pState + 3 * S->M;
+ 183:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 184:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize coeff pointer */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 6
+
+
+ 185:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pb = pCoeffs;
+ 186:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 187:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Loop unrolling.  Process 4 taps at a time. */
+ 188:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     tapCnt = numTaps >> 2;
+ 189:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 190:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Loop over the number of taps.  Unroll by a factor of 4.
+ 191:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****      ** Repeat until we've computed numTaps-4 coefficients. */
+ 192:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     while (tapCnt > 0U)
+ 194:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 195:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-1] coefficient */
+ 196:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 103              		.loc 1 196 7 is_stmt 1 view .LVU29
+ 104              		.loc 1 196 10 is_stmt 0 view .LVU30
+ 105 0034 92ED007A 		vldr.32	s14, [r2]
+ 106              	.LVL12:
+ 197:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 198:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-1] sample for acc0 */
+ 199:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px0++);
+ 107              		.loc 1 199 7 is_stmt 1 view .LVU31
+ 108              		.loc 1 199 10 is_stmt 0 view .LVU32
+ 109 0038 91ED004A 		vldr.32	s8, [r1]
+ 110              	.LVL13:
+ 200:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-1] sample for acc1 */
+ 201:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 111              		.loc 1 201 7 is_stmt 1 view .LVU33
+ 112              		.loc 1 201 10 is_stmt 0 view .LVU34
+ 113 003c 95ED005A 		vldr.32	s10, [r5]
+ 114              	.LVL14:
+ 202:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-1] sample for acc2 */
+ 203:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 115              		.loc 1 203 7 is_stmt 1 view .LVU35
+ 116              		.loc 1 203 10 is_stmt 0 view .LVU36
+ 117 0040 9CED006A 		vldr.32	s12, [ip]
+ 118              	.LVL15:
+ 204:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-1] sample for acc3 */
+ 205:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 119              		.loc 1 205 7 is_stmt 1 view .LVU37
+ 120              		.loc 1 205 10 is_stmt 0 view .LVU38
+ 121 0044 D3ED003A 		vldr.32	s7, [r3]
+ 122              	.LVL16:
+ 206:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 207:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 208:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc0 += x0 * c0;
+ 123              		.loc 1 208 7 is_stmt 1 view .LVU39
+ 124              		.loc 1 208 18 is_stmt 0 view .LVU40
+ 125 0048 27EE044A 		vmul.f32	s8, s14, s8
+ 126              	.LVL17:
+ 127              		.loc 1 208 12 view .LVU41
+ 128 004c 74EE244A 		vadd.f32	s9, s8, s9
+ 129              	.LVL18:
+ 209:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc1 += x1 * c0;
+ 130              		.loc 1 209 7 is_stmt 1 view .LVU42
+ 131              		.loc 1 209 18 is_stmt 0 view .LVU43
+ 132 0050 27EE055A 		vmul.f32	s10, s14, s10
+ 133              	.LVL19:
+ 134              		.loc 1 209 12 view .LVU44
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 7
+
+
+ 135 0054 75EE255A 		vadd.f32	s11, s10, s11
+ 136              	.LVL20:
+ 210:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc2 += x2 * c0;
+ 137              		.loc 1 210 7 is_stmt 1 view .LVU45
+ 138              		.loc 1 210 18 is_stmt 0 view .LVU46
+ 139 0058 27EE066A 		vmul.f32	s12, s14, s12
+ 140              	.LVL21:
+ 141              		.loc 1 210 12 view .LVU47
+ 142 005c 76EE266A 		vadd.f32	s13, s12, s13
+ 143              	.LVL22:
+ 211:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc3 += x3 * c0;
+ 144              		.loc 1 211 7 is_stmt 1 view .LVU48
+ 145              		.loc 1 211 18 is_stmt 0 view .LVU49
+ 146 0060 27EE237A 		vmul.f32	s14, s14, s7
+ 147              	.LVL23:
+ 148              		.loc 1 211 12 view .LVU50
+ 149 0064 77EE277A 		vadd.f32	s15, s14, s15
+ 150              	.LVL24:
+ 212:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 213:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-2] coefficient */
+ 214:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 151              		.loc 1 214 7 is_stmt 1 view .LVU51
+ 152              		.loc 1 214 10 is_stmt 0 view .LVU52
+ 153 0068 92ED017A 		vldr.32	s14, [r2, #4]
+ 154              	.LVL25:
+ 215:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 216:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-2] sample for acc0, acc1, acc2, acc3 */
+ 217:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px0++);
+ 155              		.loc 1 217 7 is_stmt 1 view .LVU53
+ 156              		.loc 1 217 10 is_stmt 0 view .LVU54
+ 157 006c 91ED014A 		vldr.32	s8, [r1, #4]
+ 158              	.LVL26:
+ 218:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 159              		.loc 1 218 7 is_stmt 1 view .LVU55
+ 160              		.loc 1 218 10 is_stmt 0 view .LVU56
+ 161 0070 95ED015A 		vldr.32	s10, [r5, #4]
+ 162              	.LVL27:
+ 219:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 163              		.loc 1 219 7 is_stmt 1 view .LVU57
+ 164              		.loc 1 219 10 is_stmt 0 view .LVU58
+ 165 0074 9CED016A 		vldr.32	s12, [ip, #4]
+ 166              	.LVL28:
+ 220:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 167              		.loc 1 220 7 is_stmt 1 view .LVU59
+ 168              		.loc 1 220 10 is_stmt 0 view .LVU60
+ 169 0078 D3ED013A 		vldr.32	s7, [r3, #4]
+ 170              	.LVL29:
+ 221:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 222:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 223:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc0 += x0 * c0;
+ 171              		.loc 1 223 7 is_stmt 1 view .LVU61
+ 172              		.loc 1 223 18 is_stmt 0 view .LVU62
+ 173 007c 27EE044A 		vmul.f32	s8, s14, s8
+ 174              	.LVL30:
+ 175              		.loc 1 223 12 view .LVU63
+ 176 0080 74EE244A 		vadd.f32	s9, s8, s9
+ 177              	.LVL31:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 8
+
+
+ 224:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc1 += x1 * c0;
+ 178              		.loc 1 224 7 is_stmt 1 view .LVU64
+ 179              		.loc 1 224 18 is_stmt 0 view .LVU65
+ 180 0084 27EE055A 		vmul.f32	s10, s14, s10
+ 181              	.LVL32:
+ 182              		.loc 1 224 12 view .LVU66
+ 183 0088 75EE255A 		vadd.f32	s11, s10, s11
+ 184              	.LVL33:
+ 225:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc2 += x2 * c0;
+ 185              		.loc 1 225 7 is_stmt 1 view .LVU67
+ 186              		.loc 1 225 18 is_stmt 0 view .LVU68
+ 187 008c 27EE066A 		vmul.f32	s12, s14, s12
+ 188              	.LVL34:
+ 189              		.loc 1 225 12 view .LVU69
+ 190 0090 76EE266A 		vadd.f32	s13, s12, s13
+ 191              	.LVL35:
+ 226:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc3 += x3 * c0;
+ 192              		.loc 1 226 7 is_stmt 1 view .LVU70
+ 193              		.loc 1 226 18 is_stmt 0 view .LVU71
+ 194 0094 27EE237A 		vmul.f32	s14, s14, s7
+ 195              	.LVL36:
+ 196              		.loc 1 226 12 view .LVU72
+ 197 0098 37EE277A 		vadd.f32	s14, s14, s15
+ 198              	.LVL37:
+ 227:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 228:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-3] coefficient */
+ 229:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 199              		.loc 1 229 7 is_stmt 1 view .LVU73
+ 200              		.loc 1 229 10 is_stmt 0 view .LVU74
+ 201 009c D2ED027A 		vldr.32	s15, [r2, #8]
+ 202              	.LVL38:
+ 230:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 231:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-3] sample acc0, acc1, acc2, acc3 */
+ 232:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px0++);
+ 203              		.loc 1 232 7 is_stmt 1 view .LVU75
+ 204              		.loc 1 232 10 is_stmt 0 view .LVU76
+ 205 00a0 91ED024A 		vldr.32	s8, [r1, #8]
+ 206              	.LVL39:
+ 233:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 207              		.loc 1 233 7 is_stmt 1 view .LVU77
+ 208              		.loc 1 233 10 is_stmt 0 view .LVU78
+ 209 00a4 95ED025A 		vldr.32	s10, [r5, #8]
+ 210              	.LVL40:
+ 234:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 211              		.loc 1 234 7 is_stmt 1 view .LVU79
+ 212              		.loc 1 234 10 is_stmt 0 view .LVU80
+ 213 00a8 9CED026A 		vldr.32	s12, [ip, #8]
+ 214              	.LVL41:
+ 235:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 215              		.loc 1 235 7 is_stmt 1 view .LVU81
+ 216              		.loc 1 235 10 is_stmt 0 view .LVU82
+ 217 00ac D3ED023A 		vldr.32	s7, [r3, #8]
+ 218              	.LVL42:
+ 236:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 237:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 238:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc0 += x0 * c0;
+ 219              		.loc 1 238 7 is_stmt 1 view .LVU83
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 9
+
+
+ 220              		.loc 1 238 18 is_stmt 0 view .LVU84
+ 221 00b0 27EE844A 		vmul.f32	s8, s15, s8
+ 222              	.LVL43:
+ 223              		.loc 1 238 12 view .LVU85
+ 224 00b4 34EE244A 		vadd.f32	s8, s8, s9
+ 225              	.LVL44:
+ 239:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc1 += x1 * c0;
+ 226              		.loc 1 239 7 is_stmt 1 view .LVU86
+ 227              		.loc 1 239 18 is_stmt 0 view .LVU87
+ 228 00b8 27EE855A 		vmul.f32	s10, s15, s10
+ 229              	.LVL45:
+ 230              		.loc 1 239 12 view .LVU88
+ 231 00bc 35EE255A 		vadd.f32	s10, s10, s11
+ 232              	.LVL46:
+ 240:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc2 += x2 * c0;
+ 233              		.loc 1 240 7 is_stmt 1 view .LVU89
+ 234              		.loc 1 240 18 is_stmt 0 view .LVU90
+ 235 00c0 27EE866A 		vmul.f32	s12, s15, s12
+ 236              	.LVL47:
+ 237              		.loc 1 240 12 view .LVU91
+ 238 00c4 36EE266A 		vadd.f32	s12, s12, s13
+ 239              	.LVL48:
+ 241:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc3 += x3 * c0;
+ 240              		.loc 1 241 7 is_stmt 1 view .LVU92
+ 241              		.loc 1 241 18 is_stmt 0 view .LVU93
+ 242 00c8 67EEA37A 		vmul.f32	s15, s15, s7
+ 243              	.LVL49:
+ 244              		.loc 1 241 12 view .LVU94
+ 245 00cc 37EE877A 		vadd.f32	s14, s15, s14
+ 246              	.LVL50:
+ 242:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 243:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-4] coefficient */
+ 244:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 247              		.loc 1 244 7 is_stmt 1 view .LVU95
+ 248              		.loc 1 244 10 is_stmt 0 view .LVU96
+ 249 00d0 D2ED037A 		vldr.32	s15, [r2, #12]
+ 250              	.LVL51:
+ 245:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 246:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-4] sample acc0, acc1, acc2, acc3 */
+ 247:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px0++);
+ 251              		.loc 1 247 7 is_stmt 1 view .LVU97
+ 252              		.loc 1 247 10 is_stmt 0 view .LVU98
+ 253 00d4 D1ED034A 		vldr.32	s9, [r1, #12]
+ 254              	.LVL52:
+ 248:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 255              		.loc 1 248 7 is_stmt 1 view .LVU99
+ 256              		.loc 1 248 10 is_stmt 0 view .LVU100
+ 257 00d8 D5ED035A 		vldr.32	s11, [r5, #12]
+ 258              	.LVL53:
+ 249:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 259              		.loc 1 249 7 is_stmt 1 view .LVU101
+ 260              		.loc 1 249 10 is_stmt 0 view .LVU102
+ 261 00dc DCED036A 		vldr.32	s13, [ip, #12]
+ 262              	.LVL54:
+ 250:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 263              		.loc 1 250 7 is_stmt 1 view .LVU103
+ 264              		.loc 1 250 10 is_stmt 0 view .LVU104
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 10
+
+
+ 265 00e0 D3ED033A 		vldr.32	s7, [r3, #12]
+ 266              	.LVL55:
+ 251:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 252:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 253:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc0 += x0 * c0;
+ 267              		.loc 1 253 7 is_stmt 1 view .LVU105
+ 268              		.loc 1 253 18 is_stmt 0 view .LVU106
+ 269 00e4 67EEA44A 		vmul.f32	s9, s15, s9
+ 270              	.LVL56:
+ 271              		.loc 1 253 12 view .LVU107
+ 272 00e8 74EE844A 		vadd.f32	s9, s9, s8
+ 273              	.LVL57:
+ 254:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc1 += x1 * c0;
+ 274              		.loc 1 254 7 is_stmt 1 view .LVU108
+ 275              		.loc 1 254 18 is_stmt 0 view .LVU109
+ 276 00ec 67EEA55A 		vmul.f32	s11, s15, s11
+ 277              	.LVL58:
+ 278              		.loc 1 254 12 view .LVU110
+ 279 00f0 75EE855A 		vadd.f32	s11, s11, s10
+ 280              	.LVL59:
+ 255:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc2 += x2 * c0;
+ 281              		.loc 1 255 7 is_stmt 1 view .LVU111
+ 282              		.loc 1 255 18 is_stmt 0 view .LVU112
+ 283 00f4 67EEA66A 		vmul.f32	s13, s15, s13
+ 284              	.LVL60:
+ 285              		.loc 1 255 12 view .LVU113
+ 286 00f8 76EE866A 		vadd.f32	s13, s13, s12
+ 287              	.LVL61:
+ 256:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc3 += x3 * c0;
+ 288              		.loc 1 256 7 is_stmt 1 view .LVU114
+ 289              		.loc 1 256 18 is_stmt 0 view .LVU115
+ 290 00fc 67EEA37A 		vmul.f32	s15, s15, s7
+ 291              	.LVL62:
+ 292              		.loc 1 256 12 view .LVU116
+ 293 0100 77EE877A 		vadd.f32	s15, s15, s14
+ 294              	.LVL63:
+ 257:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 258:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Decrement the loop counter */
+ 259:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       tapCnt--;
+ 295              		.loc 1 259 7 is_stmt 1 view .LVU117
+ 296              		.loc 1 259 13 is_stmt 0 view .LVU118
+ 297 0104 013E     		subs	r6, r6, #1
+ 298              	.LVL64:
+ 250:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 299              		.loc 1 250 17 view .LVU119
+ 300 0106 1033     		adds	r3, r3, #16
+ 301              	.LVL65:
+ 249:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 302              		.loc 1 249 17 view .LVU120
+ 303 0108 0CF1100C 		add	ip, ip, #16
+ 304              	.LVL66:
+ 248:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 305              		.loc 1 248 17 view .LVU121
+ 306 010c 1035     		adds	r5, r5, #16
+ 307              	.LVL67:
+ 247:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 308              		.loc 1 247 17 view .LVU122
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 11
+
+
+ 309 010e 1031     		adds	r1, r1, #16
+ 310              	.LVL68:
+ 244:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 311              		.loc 1 244 16 view .LVU123
+ 312 0110 1032     		adds	r2, r2, #16
+ 313              	.LVL69:
+ 314              	.L4:
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 315              		.loc 1 193 19 is_stmt 1 view .LVU124
+ 316 0112 002E     		cmp	r6, #0
+ 317 0114 8ED1     		bne	.L5
+ 260:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     }
+ 261:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 262:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* If the filter length is not a multiple of 4, compute the remaining filter taps */
+ 263:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     tapCnt = numTaps % 0x4U;
+ 318              		.loc 1 263 5 view .LVU125
+ 319              		.loc 1 263 12 is_stmt 0 view .LVU126
+ 320 0116 09F00306 		and	r6, r9, #3
+ 321              	.LVL70:
+ 264:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 265:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     while (tapCnt > 0U)
+ 322              		.loc 1 265 5 is_stmt 1 view .LVU127
+ 323              		.loc 1 265 11 is_stmt 0 view .LVU128
+ 324 011a 1AE0     		b	.L6
+ 325              	.L7:
+ 266:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 267:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read coefficients */
+ 268:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 326              		.loc 1 268 7 is_stmt 1 view .LVU129
+ 327              	.LVL71:
+ 328              		.loc 1 268 10 is_stmt 0 view .LVU130
+ 329 011c B2EC017A 		vldmia.32	r2!, {s14}
+ 330              	.LVL72:
+ 269:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 270:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Fetch  state variables for acc0, acc1, acc2, acc3 */
+ 271:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px0++);
+ 331              		.loc 1 271 7 is_stmt 1 view .LVU131
+ 332              		.loc 1 271 10 is_stmt 0 view .LVU132
+ 333 0120 B1EC014A 		vldmia.32	r1!, {s8}
+ 334              	.LVL73:
+ 272:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x1 = *(px1++);
+ 335              		.loc 1 272 7 is_stmt 1 view .LVU133
+ 336              		.loc 1 272 10 is_stmt 0 view .LVU134
+ 337 0124 B5EC015A 		vldmia.32	r5!, {s10}
+ 338              	.LVL74:
+ 273:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x2 = *(px2++);
+ 339              		.loc 1 273 7 is_stmt 1 view .LVU135
+ 340              		.loc 1 273 10 is_stmt 0 view .LVU136
+ 341 0128 BCEC016A 		vldmia.32	ip!, {s12}
+ 342              	.LVL75:
+ 274:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x3 = *(px3++);
+ 343              		.loc 1 274 7 is_stmt 1 view .LVU137
+ 344              		.loc 1 274 10 is_stmt 0 view .LVU138
+ 345 012c F3EC013A 		vldmia.32	r3!, {s7}
+ 346              	.LVL76:
+ 275:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 276:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 12
+
+
+ 277:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc0 += x0 * c0;
+ 347              		.loc 1 277 7 is_stmt 1 view .LVU139
+ 348              		.loc 1 277 18 is_stmt 0 view .LVU140
+ 349 0130 27EE044A 		vmul.f32	s8, s14, s8
+ 350              	.LVL77:
+ 351              		.loc 1 277 12 view .LVU141
+ 352 0134 74EE844A 		vadd.f32	s9, s9, s8
+ 353              	.LVL78:
+ 278:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc1 += x1 * c0;
+ 354              		.loc 1 278 7 is_stmt 1 view .LVU142
+ 355              		.loc 1 278 18 is_stmt 0 view .LVU143
+ 356 0138 27EE055A 		vmul.f32	s10, s14, s10
+ 357              	.LVL79:
+ 358              		.loc 1 278 12 view .LVU144
+ 359 013c 75EE855A 		vadd.f32	s11, s11, s10
+ 360              	.LVL80:
+ 279:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc2 += x2 * c0;
+ 361              		.loc 1 279 7 is_stmt 1 view .LVU145
+ 362              		.loc 1 279 18 is_stmt 0 view .LVU146
+ 363 0140 27EE066A 		vmul.f32	s12, s14, s12
+ 364              	.LVL81:
+ 365              		.loc 1 279 12 view .LVU147
+ 366 0144 76EE866A 		vadd.f32	s13, s13, s12
+ 367              	.LVL82:
+ 280:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       acc3 += x3 * c0;
+ 368              		.loc 1 280 7 is_stmt 1 view .LVU148
+ 369              		.loc 1 280 18 is_stmt 0 view .LVU149
+ 370 0148 27EE237A 		vmul.f32	s14, s14, s7
+ 371              	.LVL83:
+ 372              		.loc 1 280 12 view .LVU150
+ 373 014c 77EE877A 		vadd.f32	s15, s15, s14
+ 374              	.LVL84:
+ 281:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 282:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Decrement the loop counter */
+ 283:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       tapCnt--;
+ 375              		.loc 1 283 7 is_stmt 1 view .LVU151
+ 376              		.loc 1 283 13 is_stmt 0 view .LVU152
+ 377 0150 013E     		subs	r6, r6, #1
+ 378              	.LVL85:
+ 379              	.L6:
+ 265:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 380              		.loc 1 265 19 is_stmt 1 view .LVU153
+ 381 0152 002E     		cmp	r6, #0
+ 382 0154 E2D1     		bne	.L7
+ 284:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     }
+ 285:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 286:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Advance the state pointer by the decimation factor
+ 287:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****      * to process the next group of decimation factor number samples */
+ 288:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pState = pState + 4 * S->M;
+ 383              		.loc 1 288 5 view .LVU154
+ 384              		.loc 1 288 12 is_stmt 0 view .LVU155
+ 385 0156 0EEB0A1E 		add	lr, lr, r10, lsl #4
+ 386              	.LVL86:
+ 289:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 290:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* The result is in the accumulator, store in the destination buffer. */
+ 291:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = acc0;
+ 387              		.loc 1 291 5 is_stmt 1 view .LVU156
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 13
+
+
+ 388              		.loc 1 291 13 is_stmt 0 view .LVU157
+ 389 015a C7ED004A 		vstr.32	s9, [r7]
+ 292:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = acc1;
+ 390              		.loc 1 292 5 is_stmt 1 view .LVU158
+ 391              	.LVL87:
+ 392              		.loc 1 292 13 is_stmt 0 view .LVU159
+ 393 015e C7ED015A 		vstr.32	s11, [r7, #4]
+ 293:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = acc2;
+ 394              		.loc 1 293 5 is_stmt 1 view .LVU160
+ 395              	.LVL88:
+ 396              		.loc 1 293 13 is_stmt 0 view .LVU161
+ 397 0162 C7ED026A 		vstr.32	s13, [r7, #8]
+ 294:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = acc3;
+ 398              		.loc 1 294 5 is_stmt 1 view .LVU162
+ 399              	.LVL89:
+ 400              		.loc 1 294 13 is_stmt 0 view .LVU163
+ 401 0166 C7ED037A 		vstr.32	s15, [r7, #12]
+ 295:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 296:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 297:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     blkCnt--;
+ 402              		.loc 1 297 5 is_stmt 1 view .LVU164
+ 403              		.loc 1 297 11 is_stmt 0 view .LVU165
+ 404 016a 0BF1FF3B 		add	fp, fp, #-1
+ 405              	.LVL90:
+ 294:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = acc3;
+ 406              		.loc 1 294 10 view .LVU166
+ 407 016e 1037     		adds	r7, r7, #16
+ 408              	.LVL91:
+ 409              	.L2:
+ 161:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 410              		.loc 1 161 17 is_stmt 1 view .LVU167
+ 411 0170 BBF1000F 		cmp	fp, #0
+ 412 0174 20D0     		beq	.L21
+ 164:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 413              		.loc 1 164 5 view .LVU168
+ 164:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 414              		.loc 1 164 14 is_stmt 0 view .LVU169
+ 415 0176 98F80020 		ldrb	r2, [r8]	@ zero_extendqisi2
+ 164:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 416              		.loc 1 164 11 view .LVU170
+ 417 017a 9200     		lsls	r2, r2, #2
+ 418              	.LVL92:
+ 419              	.L3:
+ 166:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 420              		.loc 1 166 5 is_stmt 1 view .LVU171
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 421              		.loc 1 168 7 view .LVU172
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 422              		.loc 1 168 7 is_stmt 0 view .LVU173
+ 423 017c 0146     		mov	r1, r0
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 424              		.loc 1 168 19 view .LVU174
+ 425 017e 0430     		adds	r0, r0, #4
+ 426              	.LVL93:
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 427              		.loc 1 168 24 view .LVU175
+ 428 0180 2368     		ldr	r3, [r4]	@ float
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 14
+
+
+ 429 0182 0434     		adds	r4, r4, #4
+ 430              	.LVL94:
+ 168:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 431              		.loc 1 168 22 view .LVU176
+ 432 0184 0B60     		str	r3, [r1]	@ float
+ 170:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 433              		.loc 1 170 14 is_stmt 1 discriminator 1 view .LVU177
+ 434              	.LVL95:
+ 170:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 435              		.loc 1 170 14 is_stmt 0 discriminator 1 view .LVU178
+ 436 0186 013A     		subs	r2, r2, #1
+ 437              	.LVL96:
+ 170:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 438              		.loc 1 170 14 discriminator 1 view .LVU179
+ 439 0188 F8D1     		bne	.L3
+ 173:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc1 = 0.0f;
+ 440              		.loc 1 173 5 is_stmt 1 view .LVU180
+ 441              	.LVL97:
+ 174:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc2 = 0.0f;
+ 442              		.loc 1 174 5 view .LVU181
+ 175:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc3 = 0.0f;
+ 443              		.loc 1 175 5 view .LVU182
+ 176:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 444              		.loc 1 176 5 view .LVU183
+ 179:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px1 = pState + S->M;
+ 445              		.loc 1 179 5 view .LVU184
+ 180:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px2 = pState + 2 * S->M;
+ 446              		.loc 1 180 5 view .LVU185
+ 180:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px2 = pState + 2 * S->M;
+ 447              		.loc 1 180 21 is_stmt 0 view .LVU186
+ 448 018a 98F800A0 		ldrb	r10, [r8]	@ zero_extendqisi2
+ 180:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px2 = pState + 2 * S->M;
+ 449              		.loc 1 180 9 view .LVU187
+ 450 018e 0EEB8A05 		add	r5, lr, r10, lsl #2
+ 451              	.LVL98:
+ 181:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px3 = pState + 3 * S->M;
+ 452              		.loc 1 181 5 is_stmt 1 view .LVU188
+ 181:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px3 = pState + 3 * S->M;
+ 453              		.loc 1 181 9 is_stmt 0 view .LVU189
+ 454 0192 0EEBCA0C 		add	ip, lr, r10, lsl #3
+ 455              	.LVL99:
+ 182:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 456              		.loc 1 182 5 is_stmt 1 view .LVU190
+ 182:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 457              		.loc 1 182 18 is_stmt 0 view .LVU191
+ 458 0196 0AEB4A03 		add	r3, r10, r10, lsl #1
+ 182:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 459              		.loc 1 182 9 view .LVU192
+ 460 019a 0EEB8303 		add	r3, lr, r3, lsl #2
+ 461              	.LVL100:
+ 185:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 462              		.loc 1 185 5 is_stmt 1 view .LVU193
+ 188:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 463              		.loc 1 188 5 view .LVU194
+ 188:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 464              		.loc 1 188 12 is_stmt 0 view .LVU195
+ 465 019e 4FEA9906 		lsr	r6, r9, #2
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 15
+
+
+ 466              	.LVL101:
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 467              		.loc 1 193 5 is_stmt 1 view .LVU196
+ 179:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px1 = pState + S->M;
+ 468              		.loc 1 179 9 is_stmt 0 view .LVU197
+ 469 01a2 7146     		mov	r1, lr
+ 185:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 470              		.loc 1 185 8 view .LVU198
+ 471 01a4 009A     		ldr	r2, [sp]
+ 472              	.LVL102:
+ 176:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 473              		.loc 1 176 10 view .LVU199
+ 474 01a6 DFED3B7A 		vldr.32	s15, .L23
+ 175:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc3 = 0.0f;
+ 475              		.loc 1 175 10 view .LVU200
+ 476 01aa F0EE676A 		vmov.f32	s13, s15
+ 174:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc2 = 0.0f;
+ 477              		.loc 1 174 10 view .LVU201
+ 478 01ae F0EE675A 		vmov.f32	s11, s15
+ 173:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     acc1 = 0.0f;
+ 479              		.loc 1 173 10 view .LVU202
+ 480 01b2 F0EE674A 		vmov.f32	s9, s15
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 481              		.loc 1 193 11 view .LVU203
+ 482 01b6 ACE7     		b	.L4
+ 483              	.LVL103:
+ 484              	.L21:
+ 193:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 485              		.loc 1 193 11 view .LVU204
+ 486 01b8 7646     		mov	r6, lr
+ 487 01ba 019A     		ldr	r2, [sp, #4]
+ 488 01bc 39E0     		b	.L9
+ 489              	.LVL104:
+ 490              	.L12:
+ 298:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 299:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 300:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (blkCntN4 > 0U)
+ 301:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 302:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Copy decimation factor number of new input samples into the state buffer */
+ 303:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i = S->M;
+ 304:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 305:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     do
+ 306:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       *pStateCurnt++ = *pSrc++;
+ 308:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 309:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     } while (--i);
+ 310:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 311:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Set accumulator to zero */
+ 312:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     sum0 = 0.0f;
+ 313:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 314:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize state pointer */
+ 315:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px = pState;
+ 316:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 317:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize coeff pointer */
+ 318:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pb = pCoeffs;
+ 319:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 320:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Loop unrolling.  Process 4 taps at a time. */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 16
+
+
+ 321:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     tapCnt = numTaps >> 2;
+ 322:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 323:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Loop over the number of taps.  Unroll by a factor of 4.
+ 324:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****      ** Repeat until we've computed numTaps-4 coefficients. */
+ 325:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     while (tapCnt > 0U)
+ 326:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 327:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-1] coefficient */
+ 328:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 491              		.loc 1 328 7 is_stmt 1 view .LVU205
+ 492              		.loc 1 328 10 is_stmt 0 view .LVU206
+ 493 01be 91ED007A 		vldr.32	s14, [r1]
+ 494              	.LVL105:
+ 329:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 330:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-1] sample */
+ 331:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px++);
+ 495              		.loc 1 331 7 is_stmt 1 view .LVU207
+ 496              		.loc 1 331 10 is_stmt 0 view .LVU208
+ 497 01c2 D3ED006A 		vldr.32	s13, [r3]
+ 498              	.LVL106:
+ 332:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 333:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 334:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 499              		.loc 1 334 7 is_stmt 1 view .LVU209
+ 500              		.loc 1 334 18 is_stmt 0 view .LVU210
+ 501 01c6 27EE267A 		vmul.f32	s14, s14, s13
+ 502              	.LVL107:
+ 503              		.loc 1 334 12 view .LVU211
+ 504 01ca 37EE277A 		vadd.f32	s14, s14, s15
+ 505              	.LVL108:
+ 335:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 336:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-2] coefficient */
+ 337:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 506              		.loc 1 337 7 is_stmt 1 view .LVU212
+ 507              		.loc 1 337 10 is_stmt 0 view .LVU213
+ 508 01ce D1ED017A 		vldr.32	s15, [r1, #4]
+ 509              	.LVL109:
+ 338:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 339:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-2] sample */
+ 340:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px++);
+ 510              		.loc 1 340 7 is_stmt 1 view .LVU214
+ 511              		.loc 1 340 10 is_stmt 0 view .LVU215
+ 512 01d2 D3ED016A 		vldr.32	s13, [r3, #4]
+ 513              	.LVL110:
+ 341:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 342:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 343:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 514              		.loc 1 343 7 is_stmt 1 view .LVU216
+ 515              		.loc 1 343 18 is_stmt 0 view .LVU217
+ 516 01d6 67EEA67A 		vmul.f32	s15, s15, s13
+ 517              	.LVL111:
+ 518              		.loc 1 343 12 view .LVU218
+ 519 01da 77EE877A 		vadd.f32	s15, s15, s14
+ 520              	.LVL112:
+ 344:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 345:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-3] coefficient */
+ 346:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 521              		.loc 1 346 7 is_stmt 1 view .LVU219
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 17
+
+
+ 522              		.loc 1 346 10 is_stmt 0 view .LVU220
+ 523 01de 91ED027A 		vldr.32	s14, [r1, #8]
+ 524              	.LVL113:
+ 347:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 348:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-3] sample */
+ 349:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px++);
+ 525              		.loc 1 349 7 is_stmt 1 view .LVU221
+ 526              		.loc 1 349 10 is_stmt 0 view .LVU222
+ 527 01e2 D3ED026A 		vldr.32	s13, [r3, #8]
+ 528              	.LVL114:
+ 350:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 351:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 352:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 529              		.loc 1 352 7 is_stmt 1 view .LVU223
+ 530              		.loc 1 352 18 is_stmt 0 view .LVU224
+ 531 01e6 27EE267A 		vmul.f32	s14, s14, s13
+ 532              	.LVL115:
+ 533              		.loc 1 352 12 view .LVU225
+ 534 01ea 37EE277A 		vadd.f32	s14, s14, s15
+ 535              	.LVL116:
+ 353:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 354:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read the b[numTaps-4] coefficient */
+ 355:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 536              		.loc 1 355 7 is_stmt 1 view .LVU226
+ 537              		.loc 1 355 10 is_stmt 0 view .LVU227
+ 538 01ee D1ED037A 		vldr.32	s15, [r1, #12]
+ 539              	.LVL117:
+ 356:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 357:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read x[n-numTaps-4] sample */
+ 358:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px++);
+ 540              		.loc 1 358 7 is_stmt 1 view .LVU228
+ 541              		.loc 1 358 10 is_stmt 0 view .LVU229
+ 542 01f2 D3ED036A 		vldr.32	s13, [r3, #12]
+ 543              	.LVL118:
+ 359:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 360:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 361:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 544              		.loc 1 361 7 is_stmt 1 view .LVU230
+ 545              		.loc 1 361 18 is_stmt 0 view .LVU231
+ 546 01f6 67EEA67A 		vmul.f32	s15, s15, s13
+ 547              	.LVL119:
+ 548              		.loc 1 361 12 view .LVU232
+ 549 01fa 77EE877A 		vadd.f32	s15, s15, s14
+ 550              	.LVL120:
+ 362:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 363:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Decrement the loop counter */
+ 364:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       tapCnt--;
+ 551              		.loc 1 364 7 is_stmt 1 view .LVU233
+ 552              		.loc 1 364 13 is_stmt 0 view .LVU234
+ 553 01fe 013D     		subs	r5, r5, #1
+ 554              	.LVL121:
+ 355:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 555              		.loc 1 355 16 view .LVU235
+ 556 0200 1031     		adds	r1, r1, #16
+ 557              	.LVL122:
+ 358:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 558              		.loc 1 358 16 view .LVU236
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 18
+
+
+ 559 0202 1033     		adds	r3, r3, #16
+ 560              	.LVL123:
+ 561              	.L11:
+ 325:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 562              		.loc 1 325 19 is_stmt 1 view .LVU237
+ 563 0204 002D     		cmp	r5, #0
+ 564 0206 DAD1     		bne	.L12
+ 365:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     }
+ 366:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 367:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* If the filter length is not a multiple of 4, compute the remaining filter taps */
+ 368:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     tapCnt = numTaps % 0x4U;
+ 565              		.loc 1 368 5 view .LVU238
+ 566              		.loc 1 368 12 is_stmt 0 view .LVU239
+ 567 0208 09F00305 		and	r5, r9, #3
+ 568              	.LVL124:
+ 369:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 370:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     while (tapCnt > 0U)
+ 569              		.loc 1 370 5 is_stmt 1 view .LVU240
+ 570              		.loc 1 370 11 is_stmt 0 view .LVU241
+ 571 020c 08E0     		b	.L13
+ 572              	.L14:
+ 371:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 372:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read coefficients */
+ 373:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *(pb++);
+ 573              		.loc 1 373 7 is_stmt 1 view .LVU242
+ 574              	.LVL125:
+ 575              		.loc 1 373 10 is_stmt 0 view .LVU243
+ 576 020e B1EC017A 		vldmia.32	r1!, {s14}
+ 577              	.LVL126:
+ 374:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 375:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Fetch 1 state variable */
+ 376:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *(px++);
+ 578              		.loc 1 376 7 is_stmt 1 view .LVU244
+ 579              		.loc 1 376 10 is_stmt 0 view .LVU245
+ 580 0212 F3EC016A 		vldmia.32	r3!, {s13}
+ 581              	.LVL127:
+ 377:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 378:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 379:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 582              		.loc 1 379 7 is_stmt 1 view .LVU246
+ 583              		.loc 1 379 18 is_stmt 0 view .LVU247
+ 584 0216 27EE267A 		vmul.f32	s14, s14, s13
+ 585              	.LVL128:
+ 586              		.loc 1 379 12 view .LVU248
+ 587 021a 77EE877A 		vadd.f32	s15, s15, s14
+ 588              	.LVL129:
+ 380:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 381:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Decrement the loop counter */
+ 382:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       tapCnt--;
+ 589              		.loc 1 382 7 is_stmt 1 view .LVU249
+ 590              		.loc 1 382 13 is_stmt 0 view .LVU250
+ 591 021e 013D     		subs	r5, r5, #1
+ 592              	.LVL130:
+ 593              	.L13:
+ 370:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 594              		.loc 1 370 19 is_stmt 1 view .LVU251
+ 595 0220 002D     		cmp	r5, #0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 19
+
+
+ 596 0222 F4D1     		bne	.L14
+ 383:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     }
+ 384:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 385:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Advance the state pointer by the decimation factor
+ 386:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****      * to process the next group of decimation factor number samples */
+ 387:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pState = pState + S->M;
+ 597              		.loc 1 387 5 view .LVU252
+ 598              		.loc 1 387 24 is_stmt 0 view .LVU253
+ 599 0224 98F80030 		ldrb	r3, [r8]	@ zero_extendqisi2
+ 600              	.LVL131:
+ 601              		.loc 1 387 12 view .LVU254
+ 602 0228 06EB8306 		add	r6, r6, r3, lsl #2
+ 603              	.LVL132:
+ 388:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 389:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* The result is in the accumulator, store in the destination buffer. */
+ 390:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = sum0;
+ 604              		.loc 1 390 5 is_stmt 1 view .LVU255
+ 605              		.loc 1 390 13 is_stmt 0 view .LVU256
+ 606 022c E7EC017A 		vstmia.32	r7!, {s15}
+ 607              	.LVL133:
+ 391:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 392:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 393:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     blkCntN4--;
+ 608              		.loc 1 393 5 is_stmt 1 view .LVU257
+ 609              		.loc 1 393 13 is_stmt 0 view .LVU258
+ 610 0230 013A     		subs	r2, r2, #1
+ 611              	.LVL134:
+ 612              	.L9:
+ 300:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 613              		.loc 1 300 19 is_stmt 1 view .LVU259
+ 614 0232 7AB1     		cbz	r2, .L22
+ 303:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 615              		.loc 1 303 5 view .LVU260
+ 303:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 616              		.loc 1 303 10 is_stmt 0 view .LVU261
+ 617 0234 98F80010 		ldrb	r1, [r8]	@ zero_extendqisi2
+ 618              	.LVL135:
+ 619              	.L10:
+ 305:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 620              		.loc 1 305 5 is_stmt 1 view .LVU262
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 621              		.loc 1 307 7 view .LVU263
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 622              		.loc 1 307 7 is_stmt 0 view .LVU264
+ 623 0238 0546     		mov	r5, r0
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 624              		.loc 1 307 19 view .LVU265
+ 625 023a 0430     		adds	r0, r0, #4
+ 626              	.LVL136:
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 627              		.loc 1 307 24 view .LVU266
+ 628 023c 2368     		ldr	r3, [r4]	@ float
+ 629 023e 0434     		adds	r4, r4, #4
+ 630              	.LVL137:
+ 307:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 631              		.loc 1 307 22 view .LVU267
+ 632 0240 2B60     		str	r3, [r5]	@ float
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 20
+
+
+ 309:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 633              		.loc 1 309 14 is_stmt 1 discriminator 1 view .LVU268
+ 634              	.LVL138:
+ 309:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 635              		.loc 1 309 14 is_stmt 0 discriminator 1 view .LVU269
+ 636 0242 0139     		subs	r1, r1, #1
+ 637              	.LVL139:
+ 309:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 638              		.loc 1 309 14 discriminator 1 view .LVU270
+ 639 0244 F8D1     		bne	.L10
+ 312:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 640              		.loc 1 312 5 is_stmt 1 view .LVU271
+ 641              	.LVL140:
+ 315:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 642              		.loc 1 315 5 view .LVU272
+ 318:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 643              		.loc 1 318 5 view .LVU273
+ 321:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 644              		.loc 1 321 5 view .LVU274
+ 321:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 645              		.loc 1 321 12 is_stmt 0 view .LVU275
+ 646 0246 4FEA9905 		lsr	r5, r9, #2
+ 647              	.LVL141:
+ 325:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 648              		.loc 1 325 5 is_stmt 1 view .LVU276
+ 318:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 649              		.loc 1 318 8 is_stmt 0 view .LVU277
+ 650 024a 0099     		ldr	r1, [sp]
+ 651              	.LVL142:
+ 315:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 652              		.loc 1 315 8 view .LVU278
+ 653 024c 3346     		mov	r3, r6
+ 312:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 654              		.loc 1 312 10 view .LVU279
+ 655 024e DFED117A 		vldr.32	s15, .L23
+ 325:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 656              		.loc 1 325 11 view .LVU280
+ 657 0252 D7E7     		b	.L11
+ 658              	.LVL143:
+ 659              	.L22:
+ 394:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 395:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 396:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Processing is complete.
+ 397:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    ** Now copy the last numTaps - 1 samples to the satrt of the state buffer.
+ 398:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    ** This prepares the state buffer for the next function call. */
+ 399:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 400:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Points to the start of the state buffer */
+ 401:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   pStateCurnt = S->pState;
+ 660              		.loc 1 401 3 is_stmt 1 view .LVU281
+ 661              		.loc 1 401 15 is_stmt 0 view .LVU282
+ 662 0254 D8F80830 		ldr	r3, [r8, #8]
+ 663              	.LVL144:
+ 402:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 403:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   i = (numTaps - 1U) >> 2;
+ 664              		.loc 1 403 3 is_stmt 1 view .LVU283
+ 665              		.loc 1 403 16 is_stmt 0 view .LVU284
+ 666 0258 09F1FF32 		add	r2, r9, #-1
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 21
+
+
+ 667              	.LVL145:
+ 668              		.loc 1 403 5 view .LVU285
+ 669 025c 9108     		lsrs	r1, r2, #2
+ 670              	.LVL146:
+ 404:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 405:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* copy data */
+ 406:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (i > 0U)
+ 671              		.loc 1 406 3 is_stmt 1 view .LVU286
+ 672              		.loc 1 406 9 is_stmt 0 view .LVU287
+ 673 025e 0AE0     		b	.L16
+ 674              	.L17:
+ 407:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 408:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 675              		.loc 1 408 5 is_stmt 1 view .LVU288
+ 676              	.LVL147:
+ 677              		.loc 1 408 22 is_stmt 0 view .LVU289
+ 678 0260 3068     		ldr	r0, [r6]	@ float
+ 679              		.loc 1 408 20 view .LVU290
+ 680 0262 1860     		str	r0, [r3]	@ float
+ 409:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 681              		.loc 1 409 5 is_stmt 1 view .LVU291
+ 682              	.LVL148:
+ 683              		.loc 1 409 22 is_stmt 0 view .LVU292
+ 684 0264 7068     		ldr	r0, [r6, #4]	@ float
+ 685              		.loc 1 409 20 view .LVU293
+ 686 0266 5860     		str	r0, [r3, #4]	@ float
+ 410:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 687              		.loc 1 410 5 is_stmt 1 view .LVU294
+ 688              	.LVL149:
+ 689              		.loc 1 410 22 is_stmt 0 view .LVU295
+ 690 0268 B068     		ldr	r0, [r6, #8]	@ float
+ 691              		.loc 1 410 20 view .LVU296
+ 692 026a 9860     		str	r0, [r3, #8]	@ float
+ 411:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 693              		.loc 1 411 5 is_stmt 1 view .LVU297
+ 694              	.LVL150:
+ 695              		.loc 1 411 22 is_stmt 0 view .LVU298
+ 696 026c F068     		ldr	r0, [r6, #12]	@ float
+ 697              		.loc 1 411 20 view .LVU299
+ 698 026e D860     		str	r0, [r3, #12]	@ float
+ 412:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 413:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 414:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i--;
+ 699              		.loc 1 414 5 is_stmt 1 view .LVU300
+ 700              		.loc 1 414 6 is_stmt 0 view .LVU301
+ 701 0270 0139     		subs	r1, r1, #1
+ 702              	.LVL151:
+ 411:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 703              		.loc 1 411 17 view .LVU302
+ 704 0272 1033     		adds	r3, r3, #16
+ 705              	.LVL152:
+ 411:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 706              		.loc 1 411 29 view .LVU303
+ 707 0274 1036     		adds	r6, r6, #16
+ 708              	.LVL153:
+ 709              	.L16:
+ 406:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 22
+
+
+ 710              		.loc 1 406 12 is_stmt 1 view .LVU304
+ 711 0276 0029     		cmp	r1, #0
+ 712 0278 F2D1     		bne	.L17
+ 415:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 416:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 417:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   i = (numTaps - 1U) % 0x04U;
+ 713              		.loc 1 417 3 view .LVU305
+ 714              		.loc 1 417 5 is_stmt 0 view .LVU306
+ 715 027a 02F00302 		and	r2, r2, #3
+ 716              	.LVL154:
+ 418:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 419:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* copy data */
+ 420:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (i > 0U)
+ 717              		.loc 1 420 3 is_stmt 1 view .LVU307
+ 718              		.loc 1 420 9 is_stmt 0 view .LVU308
+ 719 027e 04E0     		b	.L18
+ 720              	.L19:
+ 421:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 422:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ 721              		.loc 1 422 5 is_stmt 1 view .LVU309
+ 722              	.LVL155:
+ 723              		.loc 1 422 22 is_stmt 0 view .LVU310
+ 724 0280 56F8041B 		ldr	r1, [r6], #4	@ float
+ 725              	.LVL156:
+ 726              		.loc 1 422 20 view .LVU311
+ 727 0284 43F8041B 		str	r1, [r3], #4	@ float
+ 728              	.LVL157:
+ 423:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 424:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 425:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i--;
+ 729              		.loc 1 425 5 is_stmt 1 view .LVU312
+ 730              		.loc 1 425 6 is_stmt 0 view .LVU313
+ 731 0288 013A     		subs	r2, r2, #1
+ 732              	.LVL158:
+ 733              	.L18:
+ 420:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 734              		.loc 1 420 12 is_stmt 1 view .LVU314
+ 735 028a 002A     		cmp	r2, #0
+ 736 028c F8D1     		bne	.L19
+ 426:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 427:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 428:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** #else
+ 429:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 430:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** /* Run the below code for Cortex-M0 */
+ 431:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 432:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* S->pState buffer contains previous frame (numTaps - 1) samples */
+ 433:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* pStateCurnt points to the location where the new input data should be written */
+ 434:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   pStateCurnt = S->pState + (numTaps - 1U);
+ 435:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 436:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Total number of output samples to be computed */
+ 437:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   blkCnt = outBlockSize;
+ 438:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 439:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (blkCnt > 0U)
+ 440:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 441:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Copy decimation factor number of new input samples into the state buffer */
+ 442:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i = S->M;
+ 443:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 23
+
+
+ 444:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     do
+ 445:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 446:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       *pStateCurnt++ = *pSrc++;
+ 447:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 448:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     } while (--i);
+ 449:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 450:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Set accumulator to zero */
+ 451:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     sum0 = 0.0f;
+ 452:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 453:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize state pointer */
+ 454:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     px = pState;
+ 455:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 456:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Initialize coeff pointer */
+ 457:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pb = pCoeffs;
+ 458:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 459:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     tapCnt = numTaps;
+ 460:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 461:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     while (tapCnt > 0U)
+ 462:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     {
+ 463:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Read coefficients */
+ 464:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       c0 = *pb++;
+ 465:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 466:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Fetch 1 state variable */
+ 467:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       x0 = *px++;
+ 468:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 469:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Perform the multiply-accumulate */
+ 470:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       sum0 += x0 * c0;
+ 471:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 472:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       /* Decrement the loop counter */
+ 473:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****       tapCnt--;
+ 474:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     }
+ 475:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 476:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Advance the state pointer by the decimation factor
+ 477:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****      * to process the next group of decimation factor number samples */
+ 478:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     pState = pState + S->M;
+ 479:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 480:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* The result is in the accumulator, store in the destination buffer. */
+ 481:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pDst++ = sum0;
+ 482:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 483:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 484:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     blkCnt--;
+ 485:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 486:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 487:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Processing is complete.
+ 488:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    ** Now copy the last numTaps - 1 samples to the start of the state buffer.
+ 489:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****    ** This prepares the state buffer for the next function call. */
+ 490:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 491:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Points to the start of the state buffer */
+ 492:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   pStateCurnt = S->pState;
+ 493:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 494:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* Copy numTaps number of values */
+ 495:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   i = (numTaps - 1U);
+ 496:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 497:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   /* copy data */
+ 498:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   while (i > 0U)
+ 499:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   {
+ 500:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     *pStateCurnt++ = *pState++;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 24
+
+
+ 501:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 502:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     /* Decrement the loop counter */
+ 503:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****     i--;
+ 504:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c ****   }
+ 505:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 506:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** #endif /*   #if defined (ARM_MATH_DSP)        */
+ 507:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** 
+ 508:Drivers/CMSIS/DSP/Source/FilteringFunctions/arm_fir_decimate_f32.c **** }
+ 737              		.loc 1 508 1 is_stmt 0 view .LVU315
+ 738 028e 03B0     		add	sp, sp, #12
+ 739              		.cfi_def_cfa_offset 36
+ 740              	.LVL159:
+ 741              		.loc 1 508 1 view .LVU316
+ 742              		@ sp needed
+ 743 0290 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 744              	.LVL160:
+ 745              	.L24:
+ 746              		.loc 1 508 1 view .LVU317
+ 747              		.align	2
+ 748              	.L23:
+ 749 0294 00000000 		.word	0
+ 750              		.cfi_endproc
+ 751              	.LFE135:
+ 753              		.text
+ 754              	.Letext0:
+ 755              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 756              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 757              		.file 4 "Drivers/CMSIS/DSP/Include/arm_math.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 arm_fir_decimate_f32.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s:20     .text.arm_fir_decimate_f32:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s:26     .text.arm_fir_decimate_f32:00000000 arm_fir_decimate_f32
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccIGWSEc.s:749    .text.arm_fir_decimate_f32:00000294 $d
+
+NO UNDEFINED SYMBOLS

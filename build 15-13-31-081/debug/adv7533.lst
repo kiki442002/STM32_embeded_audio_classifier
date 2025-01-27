@@ -1,0 +1,2081 @@
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"adv7533.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "Drivers/BSP/Components/adv7533/adv7533.c"
+  19              		.section	.text.adv7533_SetOutputMode,"ax",%progbits
+  20              		.align	1
+  21              		.global	adv7533_SetOutputMode
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	adv7533_SetOutputMode:
+  27              	.LVL0:
+  28              	.LFB14:
+   1:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+   2:Drivers/BSP/Components/adv7533/adv7533.c ****   ******************************************************************************
+   3:Drivers/BSP/Components/adv7533/adv7533.c ****   * @file    adv7533.c
+   4:Drivers/BSP/Components/adv7533/adv7533.c ****   * @author  MCD Application Team
+   5:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief   This file provides the ADV7533 DSI to HDMI bridge driver 
+   6:Drivers/BSP/Components/adv7533/adv7533.c ****   ******************************************************************************
+   7:Drivers/BSP/Components/adv7533/adv7533.c ****   * @attention
+   8:Drivers/BSP/Components/adv7533/adv7533.c ****   *
+   9:Drivers/BSP/Components/adv7533/adv7533.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  10:Drivers/BSP/Components/adv7533/adv7533.c ****   *
+  11:Drivers/BSP/Components/adv7533/adv7533.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  12:Drivers/BSP/Components/adv7533/adv7533.c ****   * are permitted provided that the following conditions are met:
+  13:Drivers/BSP/Components/adv7533/adv7533.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  14:Drivers/BSP/Components/adv7533/adv7533.c ****   *      this list of conditions and the following disclaimer.
+  15:Drivers/BSP/Components/adv7533/adv7533.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  16:Drivers/BSP/Components/adv7533/adv7533.c ****   *      this list of conditions and the following disclaimer in the documentation
+  17:Drivers/BSP/Components/adv7533/adv7533.c ****   *      and/or other materials provided with the distribution.
+  18:Drivers/BSP/Components/adv7533/adv7533.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  19:Drivers/BSP/Components/adv7533/adv7533.c ****   *      may be used to endorse or promote products derived from this software
+  20:Drivers/BSP/Components/adv7533/adv7533.c ****   *      without specific prior written permission.
+  21:Drivers/BSP/Components/adv7533/adv7533.c ****   *
+  22:Drivers/BSP/Components/adv7533/adv7533.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  23:Drivers/BSP/Components/adv7533/adv7533.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  24:Drivers/BSP/Components/adv7533/adv7533.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  25:Drivers/BSP/Components/adv7533/adv7533.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  26:Drivers/BSP/Components/adv7533/adv7533.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  27:Drivers/BSP/Components/adv7533/adv7533.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  28:Drivers/BSP/Components/adv7533/adv7533.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  29:Drivers/BSP/Components/adv7533/adv7533.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  30:Drivers/BSP/Components/adv7533/adv7533.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 2
+
+
+  31:Drivers/BSP/Components/adv7533/adv7533.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  32:Drivers/BSP/Components/adv7533/adv7533.c ****   *
+  33:Drivers/BSP/Components/adv7533/adv7533.c ****   ******************************************************************************
+  34:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  35:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  36:Drivers/BSP/Components/adv7533/adv7533.c **** /* Includes ------------------------------------------------------------------*/
+  37:Drivers/BSP/Components/adv7533/adv7533.c **** #include "adv7533.h"
+  38:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  39:Drivers/BSP/Components/adv7533/adv7533.c **** /** @addtogroup BSP
+  40:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  41:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  42:Drivers/BSP/Components/adv7533/adv7533.c ****   
+  43:Drivers/BSP/Components/adv7533/adv7533.c **** /** @addtogroup Components
+  44:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  45:Drivers/BSP/Components/adv7533/adv7533.c ****   */ 
+  46:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  47:Drivers/BSP/Components/adv7533/adv7533.c **** /** @defgroup ADV7533 ADV7533
+  48:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief     This file provides a set of functions needed to drive the 
+  49:Drivers/BSP/Components/adv7533/adv7533.c ****   *            adv7533 DSI-HDMI bridge.
+  50:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  51:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  52:Drivers/BSP/Components/adv7533/adv7533.c ****     
+  53:Drivers/BSP/Components/adv7533/adv7533.c **** /* Private types -------------------------------------------------------------*/
+  54:Drivers/BSP/Components/adv7533/adv7533.c **** /* Private variables ---------------------------------------------------------*/
+  55:Drivers/BSP/Components/adv7533/adv7533.c **** /* Private constants ---------------------------------------------------------*/
+  56:Drivers/BSP/Components/adv7533/adv7533.c **** /** @defgroup ADV7533_Private_Constants ADV7533 Private Constants
+  57:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  58:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  59:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  60:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+  61:Drivers/BSP/Components/adv7533/adv7533.c ****   * @}
+  62:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  63:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  64:Drivers/BSP/Components/adv7533/adv7533.c **** /* Private macros ------------------------------------------------------------*/
+  65:Drivers/BSP/Components/adv7533/adv7533.c **** /* Private functions ---------------------------------------------------------*/
+  66:Drivers/BSP/Components/adv7533/adv7533.c **** /** @defgroup ADV7533_Exported_Variables
+  67:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  68:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  69:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  70:Drivers/BSP/Components/adv7533/adv7533.c **** AUDIO_DrvTypeDef adv7533_drv = 
+  71:Drivers/BSP/Components/adv7533/adv7533.c **** {
+  72:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_AudioInit,
+  73:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_DeInit,
+  74:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_ReadID,
+  75:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_Play,
+  76:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_Pause,
+  77:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_Resume,
+  78:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_Stop,  
+  79:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_SetFrequency,
+  80:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_SetVolume, /* Not supported, added for compatibility */
+  81:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_SetMute,  
+  82:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_SetOutputMode, /* Not supported, added for compatibility */ 
+  83:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_Reset /* Not supported, added for compatibility */
+  84:Drivers/BSP/Components/adv7533/adv7533.c **** };
+  85:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  86:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+  87:Drivers/BSP/Components/adv7533/adv7533.c ****   * @}
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 3
+
+
+  88:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  89:Drivers/BSP/Components/adv7533/adv7533.c ****    
+  90:Drivers/BSP/Components/adv7533/adv7533.c **** /* Exported functions --------------------------------------------------------*/
+  91:Drivers/BSP/Components/adv7533/adv7533.c **** /** @defgroup ADV7533_Exported_Functions ADV7533 Exported Functions
+  92:Drivers/BSP/Components/adv7533/adv7533.c ****   * @{
+  93:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+  94:Drivers/BSP/Components/adv7533/adv7533.c **** 
+  95:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+  96:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Initializes the ADV7533 bridge.
+  97:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  None
+  98:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval Status
+  99:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 100:Drivers/BSP/Components/adv7533/adv7533.c **** uint8_t ADV7533_Init(void)
+ 101:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 102:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Init();
+ 103:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 104:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Configure the IC2 address for CEC_DSI interface */
+ 105:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE1, ADV7533_CEC_DSI_I2C_ADDR);
+ 106:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 107:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+ 108:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 109:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 110:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 111:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Power on the ADV7533 bridge.
+ 112:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  None
+ 113:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval None
+ 114:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 115:Drivers/BSP/Components/adv7533/adv7533.c **** void ADV7533_PowerOn(void)
+ 116:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 117:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp;
+ 118:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 119:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Power on */
+ 120:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x41);
+ 121:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 122:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 123:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 124:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 125:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 126:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Power off the ADV7533 bridge.
+ 127:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  None
+ 128:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval None
+ 129:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 130:Drivers/BSP/Components/adv7533/adv7533.c **** void ADV7533_PowerDown(void)
+ 131:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 132:Drivers/BSP/Components/adv7533/adv7533.c ****    uint8_t tmp;
+ 133:Drivers/BSP/Components/adv7533/adv7533.c ****    
+ 134:Drivers/BSP/Components/adv7533/adv7533.c ****    /* Power down */
+ 135:Drivers/BSP/Components/adv7533/adv7533.c ****    tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x41);
+ 136:Drivers/BSP/Components/adv7533/adv7533.c ****    tmp |= 0x40;
+ 137:Drivers/BSP/Components/adv7533/adv7533.c ****    HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 138:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 139:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 140:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 141:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Configure the DSI-HDMI ADV7533 bridge for video.
+ 142:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param config : pointer to adv7533ConfigTypeDef that contains the
+ 143:Drivers/BSP/Components/adv7533/adv7533.c ****   *                 video configuration parameters
+ 144:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval None
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 4
+
+
+ 145:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 146:Drivers/BSP/Components/adv7533/adv7533.c **** void ADV7533_Configure(adv7533ConfigTypeDef * config)
+ 147:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 148:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp;
+ 149:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 150:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Sequence from Section 3 - Quick Start Guide */
+ 151:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 152:Drivers/BSP/Components/adv7533/adv7533.c ****   /* ADV7533 Power Settings */
+ 153:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Power down */
+ 154:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x41);
+ 155:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 156:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 157:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HPD Override */
+ 158:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0xD6);
+ 159:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 160:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xD6, tmp);
+ 161:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Gate DSI LP Oscillator and DSI Bias Clock Powerdown */
+ 162:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x03);
+ 163:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x02;
+ 164:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, tmp);
+ 165:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 166:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Fixed registers that must be set on power-up */
+ 167:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x16);
+ 168:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x3E;
+ 169:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x20; 
+ 170:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x16, tmp);
+ 171:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x9A, 0xE0);
+ 172:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0xBA);
+ 173:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF8;
+ 174:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x70; 
+ 175:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xBA, tmp);
+ 176:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xDE, 0x82);
+ 177:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 178:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0xE4); 
+ 179:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 180:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE4, tmp);
+ 181:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE5, 0x80);
+ 182:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 183:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x15);
+ 184:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x30;
+ 185:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x10; 
+ 186:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x17);
+ 187:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF0;
+ 188:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0xD0; 
+ 189:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x17, tmp);
+ 190:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x24);
+ 191:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x10;
+ 192:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x24, tmp);
+ 193:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x57);
+ 194:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x01;
+ 195:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x10;
+ 196:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x57, tmp);
+ 197:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 198:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Configure the number of DSI lanes */
+ 199:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x1C, (config->DSI_LANES << 4));
+ 200:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 201:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Setup video output mode */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 5
+
+
+ 202:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Select HDMI mode */
+ 203:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0xAF);
+ 204:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x02;
+ 205:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xAF, tmp); 
+ 206:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HDMI Output Enable */
+ 207:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x03);
+ 208:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 209:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, tmp);
+ 210:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 211:Drivers/BSP/Components/adv7533/adv7533.c ****   /* GC packet enable */
+ 212:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x40);
+ 213:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 214:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x40, tmp);
+ 215:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Input color depth 24-bit per pixel */
+ 216:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x4C);
+ 217:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x0F;
+ 218:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x03;
+ 219:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x4C, tmp);
+ 220:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Down dither output color depth */
+ 221:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x49, 0xfc);
+ 222:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 223:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Internal timing disabled */
+ 224:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x27);
+ 225:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x80;
+ 226:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x27, tmp);
+ 227:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 228:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 229:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 230:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Enable video pattern generation.
+ 231:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  None
+ 232:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval None
+ 233:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 234:Drivers/BSP/Components/adv7533/adv7533.c **** void ADV7533_PatternEnable(void)
+ 235:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 236:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Timing generator enable */
+ 237:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x55, 0x80); /* Color bar */
+ 238:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x55, 0xA0); /* Color ramp */
+ 239:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 240:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, 0x89);
+ 241:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0xAF, 0x16);
+ 242:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 243:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 244:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 245:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Disable video pattern generation.
+ 246:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  none
+ 247:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval none
+ 248:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 249:Drivers/BSP/Components/adv7533/adv7533.c **** void ADV7533_PatternDisable(void)
+ 250:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 251:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Timing generator enable */
+ 252:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x55, 0x00);
+ 253:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 254:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 255:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 256:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Initializes the ADV7533 audio  interface.
+ 257:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 258:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param OutputDevice: Not used (for compatiblity only).   
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 6
+
+
+ 259:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param Volume: Not used (for compatiblity only).   
+ 260:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param AudioFreq: Audio Frequency 
+ 261:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 262:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 263:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_AudioInit(uint16_t DeviceAddr, uint16_t OutputDevice, uint8_t Volume,uint32_t Audi
+ 264:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 265:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t val = 4096;
+ 266:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t  tmp = 0;
+ 267:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 268:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Audio data enable*/
+ 269:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x05);
+ 270:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x20;
+ 271:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x05, tmp);
+ 272:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 273:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HDMI statup */
+ 274:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp= (uint8_t)((val & 0xF0000)>>16);
+ 275:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x01, tmp);
+ 276:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 277:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp= (uint8_t)((val & 0xFF00)>>8);
+ 278:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x02, tmp);
+ 279:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 280:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp= (uint8_t)((val & 0xFF));
+ 281:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x03, tmp);
+ 282:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 283:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Enable spdif */
+ 284:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, 0x0B);
+ 285:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 286:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0B, tmp);
+ 287:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 288:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Enable I2S */
+ 289:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, 0x0C);
+ 290:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |=0x04;
+ 291:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0C, tmp);
+ 292:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 293:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Set audio sampling frequency */
+ 294:Drivers/BSP/Components/adv7533/adv7533.c ****   adv7533_SetFrequency(DeviceAddr, AudioFreq);
+ 295:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 296:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Select SPDIF is 0x10 , I2S=0x00  */
+ 297:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0x0A);
+ 298:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &=~ 0x10;
+ 299:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0A, tmp);
+ 300:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 301:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Set v1P2 enable */
+ 302:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, 0xE4);
+ 303:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 304:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0xE4, tmp);
+ 305:Drivers/BSP/Components/adv7533/adv7533.c ****  
+ 306:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+ 307:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 308:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 309:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 310:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Deinitializes the adv7533
+ 311:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param  None
+ 312:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval  None
+ 313:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 314:Drivers/BSP/Components/adv7533/adv7533.c **** void adv7533_DeInit(void)
+ 315:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 7
+
+
+ 316:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Deinitialize Audio adv7533 interface */
+ 317:Drivers/BSP/Components/adv7533/adv7533.c ****   AUDIO_IO_DeInit();
+ 318:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 319:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 320:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 321:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief  Get the adv7533 ID.
+ 322:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 323:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval The adv7533 ID 
+ 324:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 325:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_ReadID(uint16_t DeviceAddr)
+ 326:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 327:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t  tmp = 0;
+ 328:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 329:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, ADV7533_CHIPID_ADDR0);
+ 330:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = (tmp<<8);
+ 331:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= HDMI_IO_Read(DeviceAddr, ADV7533_CHIPID_ADDR1);
+ 332:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 333:Drivers/BSP/Components/adv7533/adv7533.c ****   return(tmp);
+ 334:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 335:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 336:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 337:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Pauses playing on the audio hdmi
+ 338:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 339:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 340:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 341:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_Pause(uint16_t DeviceAddr)
+ 342:Drivers/BSP/Components/adv7533/adv7533.c **** { 
+ 343:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ 344:Drivers/BSP/Components/adv7533/adv7533.c **** }       
+ 345:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 346:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 347:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Resumes playing on the audio hdmi.
+ 348:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 349:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 350:Drivers/BSP/Components/adv7533/adv7533.c ****   */   
+ 351:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_Resume(uint16_t DeviceAddr)
+ 352:Drivers/BSP/Components/adv7533/adv7533.c **** { 
+ 353:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 354:Drivers/BSP/Components/adv7533/adv7533.c **** } 
+ 355:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 356:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 357:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Start the audio hdmi play feature.
+ 358:Drivers/BSP/Components/adv7533/adv7533.c ****   * @note  For this codec no Play options are required.
+ 359:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 360:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 361:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 362:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_Play(uint16_t DeviceAddr ,uint16_t* pBuffer  ,uint16_t Size)
+ 363:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 364:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 365:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 366:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 367:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 368:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Stop playing on the audio hdmi
+ 369:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 370:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 371:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 372:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_Stop(uint16_t DeviceAddr,uint32_t cmd)
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 8
+
+
+ 373:Drivers/BSP/Components/adv7533/adv7533.c **** { 
+ 374:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ 375:Drivers/BSP/Components/adv7533/adv7533.c **** }               
+ 376:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 377:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 378:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Enables or disables the mute feature on the audio hdmi.
+ 379:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.   
+ 380:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param Cmd: AUDIO_MUTE_ON to enable the mute or AUDIO_MUTE_OFF to disable the
+ 381:Drivers/BSP/Components/adv7533/adv7533.c ****   *             mute mode.
+ 382:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 383:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 384:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_SetMute(uint16_t DeviceAddr, uint32_t Cmd)
+ 385:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 386:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp = 0;
+ 387:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 388:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, 0x0D);
+ 389:Drivers/BSP/Components/adv7533/adv7533.c ****   if (Cmd == AUDIO_MUTE_ON)  
+ 390:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 391:Drivers/BSP/Components/adv7533/adv7533.c ****     /* enable audio mute*/ 
+ 392:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0x40;
+ 393:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x0D, tmp);
+ 394:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 395:Drivers/BSP/Components/adv7533/adv7533.c ****   else
+ 396:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 397:Drivers/BSP/Components/adv7533/adv7533.c ****     /*audio mute off disable the mute */
+ 398:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp &= ~0x40;
+ 399:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x0D, tmp);
+ 400:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 401:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+ 402:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 403:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 404:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 405:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Sets output mode.
+ 406:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 407:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param Output : hdmi output.
+ 408:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 409:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 410:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_SetOutputMode(uint16_t DeviceAddr, uint8_t Output)
+ 411:Drivers/BSP/Components/adv7533/adv7533.c **** {
+  29              		.loc 1 411 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ 412:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+  34              		.loc 1 412 3 view .LVU1
+ 413:Drivers/BSP/Components/adv7533/adv7533.c **** }    
+  35              		.loc 1 413 1 is_stmt 0 view .LVU2
+  36 0000 0020     		movs	r0, #0
+  37              	.LVL1:
+  38              		.loc 1 413 1 view .LVU3
+  39 0002 7047     		bx	lr
+  40              		.cfi_endproc
+  41              	.LFE14:
+  43              		.section	.text.adv7533_SetVolume,"ax",%progbits
+  44              		.align	1
+  45              		.global	adv7533_SetVolume
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 9
+
+
+  46              		.syntax unified
+  47              		.thumb
+  48              		.thumb_func
+  50              	adv7533_SetVolume:
+  51              	.LVL2:
+  52              	.LFB15:
+ 414:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 415:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 416:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Sets volumee.
+ 417:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 418:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param Volume : volume value.
+ 419:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 420:Drivers/BSP/Components/adv7533/adv7533.c ****   */           
+ 421:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_SetVolume(uint16_t DeviceAddr, uint8_t Volume)
+ 422:Drivers/BSP/Components/adv7533/adv7533.c **** {
+  53              		.loc 1 422 1 is_stmt 1 view -0
+  54              		.cfi_startproc
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		@ link register save eliminated.
+ 423:Drivers/BSP/Components/adv7533/adv7533.c ****  return 0;
+  58              		.loc 1 423 2 view .LVU5
+ 424:Drivers/BSP/Components/adv7533/adv7533.c **** }
+  59              		.loc 1 424 1 is_stmt 0 view .LVU6
+  60 0000 0020     		movs	r0, #0
+  61              	.LVL3:
+  62              		.loc 1 424 1 view .LVU7
+  63 0002 7047     		bx	lr
+  64              		.cfi_endproc
+  65              	.LFE15:
+  67              		.section	.text.adv7533_Reset,"ax",%progbits
+  68              		.align	1
+  69              		.global	adv7533_Reset
+  70              		.syntax unified
+  71              		.thumb
+  72              		.thumb_func
+  74              	adv7533_Reset:
+  75              	.LVL4:
+  76              	.LFB16:
+ 425:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 426:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 427:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Resets adv7533 registers.
+ 428:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus. 
+ 429:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 430:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 431:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_Reset(uint16_t DeviceAddr)
+ 432:Drivers/BSP/Components/adv7533/adv7533.c **** {
+  77              		.loc 1 432 1 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+ 433:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+  82              		.loc 1 433 3 view .LVU9
+ 434:Drivers/BSP/Components/adv7533/adv7533.c **** }
+  83              		.loc 1 434 1 is_stmt 0 view .LVU10
+  84 0000 0020     		movs	r0, #0
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 10
+
+
+  85              	.LVL5:
+  86              		.loc 1 434 1 view .LVU11
+  87 0002 7047     		bx	lr
+  88              		.cfi_endproc
+  89              	.LFE16:
+  91              		.section	.text.adv7533_ReadID,"ax",%progbits
+  92              		.align	1
+  93              		.global	adv7533_ReadID
+  94              		.syntax unified
+  95              		.thumb
+  96              		.thumb_func
+  98              	adv7533_ReadID:
+  99              	.LVL6:
+ 100              	.LFB8:
+ 326:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t  tmp = 0;
+ 101              		.loc 1 326 1 is_stmt 1 view -0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 326:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t  tmp = 0;
+ 105              		.loc 1 326 1 is_stmt 0 view .LVU13
+ 106 0000 38B5     		push	{r3, r4, r5, lr}
+ 107              		.cfi_def_cfa_offset 16
+ 108              		.cfi_offset 3, -16
+ 109              		.cfi_offset 4, -12
+ 110              		.cfi_offset 5, -8
+ 111              		.cfi_offset 14, -4
+ 327:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 112              		.loc 1 327 3 is_stmt 1 view .LVU14
+ 113              	.LVL7:
+ 329:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = (tmp<<8);
+ 114              		.loc 1 329 3 view .LVU15
+ 329:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = (tmp<<8);
+ 115              		.loc 1 329 9 is_stmt 0 view .LVU16
+ 116 0002 C4B2     		uxtb	r4, r0
+ 117 0004 0021     		movs	r1, #0
+ 118 0006 2046     		mov	r0, r4
+ 119              	.LVL8:
+ 329:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = (tmp<<8);
+ 120              		.loc 1 329 9 view .LVU17
+ 121 0008 FFF7FEFF 		bl	HDMI_IO_Read
+ 122              	.LVL9:
+ 330:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= HDMI_IO_Read(DeviceAddr, ADV7533_CHIPID_ADDR1);
+ 123              		.loc 1 330 3 is_stmt 1 view .LVU18
+ 330:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= HDMI_IO_Read(DeviceAddr, ADV7533_CHIPID_ADDR1);
+ 124              		.loc 1 330 7 is_stmt 0 view .LVU19
+ 125 000c 0502     		lsls	r5, r0, #8
+ 126              	.LVL10:
+ 331:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 127              		.loc 1 331 3 is_stmt 1 view .LVU20
+ 331:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 128              		.loc 1 331 10 is_stmt 0 view .LVU21
+ 129 000e 0121     		movs	r1, #1
+ 130 0010 2046     		mov	r0, r4
+ 131 0012 FFF7FEFF 		bl	HDMI_IO_Read
+ 132              	.LVL11:
+ 333:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 11
+
+
+ 133              		.loc 1 333 3 is_stmt 1 view .LVU22
+ 334:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 134              		.loc 1 334 1 is_stmt 0 view .LVU23
+ 135 0016 2843     		orrs	r0, r0, r5
+ 136              	.LVL12:
+ 334:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 137              		.loc 1 334 1 view .LVU24
+ 138 0018 38BD     		pop	{r3, r4, r5, pc}
+ 139              		.cfi_endproc
+ 140              	.LFE8:
+ 142              		.section	.text.adv7533_SetMute,"ax",%progbits
+ 143              		.align	1
+ 144              		.global	adv7533_SetMute
+ 145              		.syntax unified
+ 146              		.thumb
+ 147              		.thumb_func
+ 149              	adv7533_SetMute:
+ 150              	.LVL13:
+ 151              	.LFB13:
+ 385:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp = 0;
+ 152              		.loc 1 385 1 is_stmt 1 view -0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 385:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp = 0;
+ 156              		.loc 1 385 1 is_stmt 0 view .LVU26
+ 157 0000 38B5     		push	{r3, r4, r5, lr}
+ 158              		.cfi_def_cfa_offset 16
+ 159              		.cfi_offset 3, -16
+ 160              		.cfi_offset 4, -12
+ 161              		.cfi_offset 5, -8
+ 162              		.cfi_offset 14, -4
+ 163 0002 0D46     		mov	r5, r1
+ 386:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 164              		.loc 1 386 3 is_stmt 1 view .LVU27
+ 165              	.LVL14:
+ 388:Drivers/BSP/Components/adv7533/adv7533.c ****   if (Cmd == AUDIO_MUTE_ON)  
+ 166              		.loc 1 388 3 view .LVU28
+ 388:Drivers/BSP/Components/adv7533/adv7533.c ****   if (Cmd == AUDIO_MUTE_ON)  
+ 167              		.loc 1 388 9 is_stmt 0 view .LVU29
+ 168 0004 C4B2     		uxtb	r4, r0
+ 169 0006 0D21     		movs	r1, #13
+ 170              	.LVL15:
+ 388:Drivers/BSP/Components/adv7533/adv7533.c ****   if (Cmd == AUDIO_MUTE_ON)  
+ 171              		.loc 1 388 9 view .LVU30
+ 172 0008 2046     		mov	r0, r4
+ 173              	.LVL16:
+ 388:Drivers/BSP/Components/adv7533/adv7533.c ****   if (Cmd == AUDIO_MUTE_ON)  
+ 174              		.loc 1 388 9 view .LVU31
+ 175 000a FFF7FEFF 		bl	HDMI_IO_Read
+ 176              	.LVL17:
+ 389:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 177              		.loc 1 389 3 is_stmt 1 view .LVU32
+ 389:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 178              		.loc 1 389 6 is_stmt 0 view .LVU33
+ 179 000e 012D     		cmp	r5, #1
+ 180 0010 07D0     		beq	.L10
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 12
+
+
+ 398:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x0D, tmp);
+ 181              		.loc 1 398 5 is_stmt 1 view .LVU34
+ 182              	.LVL18:
+ 399:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 183              		.loc 1 399 5 view .LVU35
+ 184 0012 00F0BF02 		and	r2, r0, #191
+ 185 0016 0D21     		movs	r1, #13
+ 186 0018 2046     		mov	r0, r4
+ 187              	.LVL19:
+ 399:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 188              		.loc 1 399 5 is_stmt 0 view .LVU36
+ 189 001a FFF7FEFF 		bl	HDMI_IO_Write
+ 190              	.LVL20:
+ 191              	.L8:
+ 401:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 192              		.loc 1 401 3 is_stmt 1 view .LVU37
+ 402:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 193              		.loc 1 402 1 is_stmt 0 view .LVU38
+ 194 001e 0020     		movs	r0, #0
+ 195 0020 38BD     		pop	{r3, r4, r5, pc}
+ 196              	.LVL21:
+ 197              	.L10:
+ 392:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x0D, tmp);
+ 198              		.loc 1 392 5 is_stmt 1 view .LVU39
+ 392:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x0D, tmp);
+ 199              		.loc 1 392 9 is_stmt 0 view .LVU40
+ 200 0022 40F04002 		orr	r2, r0, #64
+ 201              	.LVL22:
+ 393:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 202              		.loc 1 393 5 is_stmt 1 view .LVU41
+ 203 0026 D2B2     		uxtb	r2, r2
+ 393:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 204              		.loc 1 393 5 is_stmt 0 view .LVU42
+ 205 0028 0D21     		movs	r1, #13
+ 206 002a 2046     		mov	r0, r4
+ 207 002c FFF7FEFF 		bl	HDMI_IO_Write
+ 208              	.LVL23:
+ 393:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 209              		.loc 1 393 5 view .LVU43
+ 210 0030 F5E7     		b	.L8
+ 211              		.cfi_endproc
+ 212              	.LFE13:
+ 214              		.section	.text.adv7533_Pause,"ax",%progbits
+ 215              		.align	1
+ 216              		.global	adv7533_Pause
+ 217              		.syntax unified
+ 218              		.thumb
+ 219              		.thumb_func
+ 221              	adv7533_Pause:
+ 222              	.LVL24:
+ 223              	.LFB9:
+ 342:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ 224              		.loc 1 342 1 is_stmt 1 view -0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 0, uses_anonymous_args = 0
+ 342:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 13
+
+
+ 228              		.loc 1 342 1 is_stmt 0 view .LVU45
+ 229 0000 08B5     		push	{r3, lr}
+ 230              		.cfi_def_cfa_offset 8
+ 231              		.cfi_offset 3, -8
+ 232              		.cfi_offset 14, -4
+ 343:Drivers/BSP/Components/adv7533/adv7533.c **** }       
+ 233              		.loc 1 343 3 is_stmt 1 view .LVU46
+ 343:Drivers/BSP/Components/adv7533/adv7533.c **** }       
+ 234              		.loc 1 343 10 is_stmt 0 view .LVU47
+ 235 0002 0121     		movs	r1, #1
+ 236 0004 FFF7FEFF 		bl	adv7533_SetMute
+ 237              	.LVL25:
+ 344:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 238              		.loc 1 344 1 view .LVU48
+ 239 0008 08BD     		pop	{r3, pc}
+ 240              		.cfi_endproc
+ 241              	.LFE9:
+ 243              		.section	.text.adv7533_Resume,"ax",%progbits
+ 244              		.align	1
+ 245              		.global	adv7533_Resume
+ 246              		.syntax unified
+ 247              		.thumb
+ 248              		.thumb_func
+ 250              	adv7533_Resume:
+ 251              	.LVL26:
+ 252              	.LFB10:
+ 352:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 253              		.loc 1 352 1 is_stmt 1 view -0
+ 254              		.cfi_startproc
+ 255              		@ args = 0, pretend = 0, frame = 0
+ 256              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 257              		.loc 1 352 1 is_stmt 0 view .LVU50
+ 258 0000 08B5     		push	{r3, lr}
+ 259              		.cfi_def_cfa_offset 8
+ 260              		.cfi_offset 3, -8
+ 261              		.cfi_offset 14, -4
+ 353:Drivers/BSP/Components/adv7533/adv7533.c **** } 
+ 262              		.loc 1 353 3 is_stmt 1 view .LVU51
+ 353:Drivers/BSP/Components/adv7533/adv7533.c **** } 
+ 263              		.loc 1 353 10 is_stmt 0 view .LVU52
+ 264 0002 0021     		movs	r1, #0
+ 265 0004 FFF7FEFF 		bl	adv7533_SetMute
+ 266              	.LVL27:
+ 354:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 267              		.loc 1 354 1 view .LVU53
+ 268 0008 08BD     		pop	{r3, pc}
+ 269              		.cfi_endproc
+ 270              	.LFE10:
+ 272              		.section	.text.adv7533_Play,"ax",%progbits
+ 273              		.align	1
+ 274              		.global	adv7533_Play
+ 275              		.syntax unified
+ 276              		.thumb
+ 277              		.thumb_func
+ 279              	adv7533_Play:
+ 280              	.LVL28:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 14
+
+
+ 281              	.LFB11:
+ 363:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 282              		.loc 1 363 1 is_stmt 1 view -0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 363:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_OFF));
+ 286              		.loc 1 363 1 is_stmt 0 view .LVU55
+ 287 0000 08B5     		push	{r3, lr}
+ 288              		.cfi_def_cfa_offset 8
+ 289              		.cfi_offset 3, -8
+ 290              		.cfi_offset 14, -4
+ 364:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 291              		.loc 1 364 3 is_stmt 1 view .LVU56
+ 364:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 292              		.loc 1 364 10 is_stmt 0 view .LVU57
+ 293 0002 0021     		movs	r1, #0
+ 294              	.LVL29:
+ 364:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 295              		.loc 1 364 10 view .LVU58
+ 296 0004 FFF7FEFF 		bl	adv7533_SetMute
+ 297              	.LVL30:
+ 365:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 298              		.loc 1 365 1 view .LVU59
+ 299 0008 08BD     		pop	{r3, pc}
+ 300              		.cfi_endproc
+ 301              	.LFE11:
+ 303              		.section	.text.adv7533_Stop,"ax",%progbits
+ 304              		.align	1
+ 305              		.global	adv7533_Stop
+ 306              		.syntax unified
+ 307              		.thumb
+ 308              		.thumb_func
+ 310              	adv7533_Stop:
+ 311              	.LVL31:
+ 312              	.LFB12:
+ 373:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ 313              		.loc 1 373 1 is_stmt 1 view -0
+ 314              		.cfi_startproc
+ 315              		@ args = 0, pretend = 0, frame = 0
+ 316              		@ frame_needed = 0, uses_anonymous_args = 0
+ 373:Drivers/BSP/Components/adv7533/adv7533.c ****   return(adv7533_SetMute(DeviceAddr,AUDIO_MUTE_ON));
+ 317              		.loc 1 373 1 is_stmt 0 view .LVU61
+ 318 0000 08B5     		push	{r3, lr}
+ 319              		.cfi_def_cfa_offset 8
+ 320              		.cfi_offset 3, -8
+ 321              		.cfi_offset 14, -4
+ 374:Drivers/BSP/Components/adv7533/adv7533.c **** }               
+ 322              		.loc 1 374 3 is_stmt 1 view .LVU62
+ 374:Drivers/BSP/Components/adv7533/adv7533.c **** }               
+ 323              		.loc 1 374 10 is_stmt 0 view .LVU63
+ 324 0002 0121     		movs	r1, #1
+ 325              	.LVL32:
+ 374:Drivers/BSP/Components/adv7533/adv7533.c **** }               
+ 326              		.loc 1 374 10 view .LVU64
+ 327 0004 FFF7FEFF 		bl	adv7533_SetMute
+ 328              	.LVL33:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 15
+
+
+ 375:Drivers/BSP/Components/adv7533/adv7533.c ****             
+ 329              		.loc 1 375 1 view .LVU65
+ 330 0008 08BD     		pop	{r3, pc}
+ 331              		.cfi_endproc
+ 332              	.LFE12:
+ 334              		.section	.text.adv7533_SetFrequency,"ax",%progbits
+ 335              		.align	1
+ 336              		.global	adv7533_SetFrequency
+ 337              		.syntax unified
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	adv7533_SetFrequency:
+ 342              	.LVL34:
+ 343              	.LFB17:
+ 435:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 436:Drivers/BSP/Components/adv7533/adv7533.c **** /**
+ 437:Drivers/BSP/Components/adv7533/adv7533.c ****   * @brief Sets new frequency.
+ 438:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param DeviceAddr: Device address on communication Bus.
+ 439:Drivers/BSP/Components/adv7533/adv7533.c ****   * @param AudioFreq: Audio frequency used to play the audio stream.
+ 440:Drivers/BSP/Components/adv7533/adv7533.c ****   * @retval 0 if correct communication, else wrong communication
+ 441:Drivers/BSP/Components/adv7533/adv7533.c ****   */
+ 442:Drivers/BSP/Components/adv7533/adv7533.c **** uint32_t adv7533_SetFrequency(uint16_t DeviceAddr, uint32_t AudioFreq)
+ 443:Drivers/BSP/Components/adv7533/adv7533.c **** {
+ 344              		.loc 1 443 1 is_stmt 1 view -0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 0
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348              		.loc 1 443 1 is_stmt 0 view .LVU67
+ 349 0000 38B5     		push	{r3, r4, r5, lr}
+ 350              		.cfi_def_cfa_offset 16
+ 351              		.cfi_offset 3, -16
+ 352              		.cfi_offset 4, -12
+ 353              		.cfi_offset 5, -8
+ 354              		.cfi_offset 14, -4
+ 355 0002 0C46     		mov	r4, r1
+ 444:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp = 0;
+ 356              		.loc 1 444 3 is_stmt 1 view .LVU68
+ 357              	.LVL35:
+ 445:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 446:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(DeviceAddr, 0x15);
+ 358              		.loc 1 446 3 view .LVU69
+ 359              		.loc 1 446 9 is_stmt 0 view .LVU70
+ 360 0004 C5B2     		uxtb	r5, r0
+ 361 0006 1521     		movs	r1, #21
+ 362              	.LVL36:
+ 363              		.loc 1 446 9 view .LVU71
+ 364 0008 2846     		mov	r0, r5
+ 365              	.LVL37:
+ 366              		.loc 1 446 9 view .LVU72
+ 367 000a FFF7FEFF 		bl	HDMI_IO_Read
+ 368              	.LVL38:
+ 447:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= (~0xF0);
+ 369              		.loc 1 447 3 is_stmt 1 view .LVU73
+ 370              		.loc 1 447 7 is_stmt 0 view .LVU74
+ 371 000e 00F00F02 		and	r2, r0, #15
+ 372              	.LVL39:
+ 448:Drivers/BSP/Components/adv7533/adv7533.c ****   /*  Clock Configurations */
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 16
+
+
+ 449:Drivers/BSP/Components/adv7533/adv7533.c ****   switch (AudioFreq)
+ 373              		.loc 1 449 3 is_stmt 1 view .LVU75
+ 374 0012 244B     		ldr	r3, .L30
+ 375 0014 9C42     		cmp	r4, r3
+ 376 0016 2FD0     		beq	.L20
+ 377 0018 12D8     		bhi	.L21
+ 378 001a 4AF64443 		movw	r3, #44100
+ 379 001e 9C42     		cmp	r4, r3
+ 380 0020 1ED0     		beq	.L22
+ 381 0022 4BF68033 		movw	r3, #48000
+ 382 0026 9C42     		cmp	r4, r3
+ 383 0028 1FD0     		beq	.L23
+ 384 002a B4F5FA4F 		cmp	r4, #32000
+ 385 002e 05D1     		bne	.L25
+ 450:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 451:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_32K:
+ 452:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =32 KHZ*/
+ 453:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0x30;
+ 386              		.loc 1 453 5 view .LVU76
+ 387              	.LVL40:
+ 454:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 388              		.loc 1 454 5 view .LVU77
+ 389 0030 42F03002 		orr	r2, r2, #48
+ 390              	.LVL41:
+ 391              		.loc 1 454 5 is_stmt 0 view .LVU78
+ 392 0034 1521     		movs	r1, #21
+ 393 0036 2846     		mov	r0, r5
+ 394              	.LVL42:
+ 395              		.loc 1 454 5 view .LVU79
+ 396 0038 FFF7FEFF 		bl	HDMI_IO_Write
+ 397              	.LVL43:
+ 455:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 398              		.loc 1 455 5 is_stmt 1 view .LVU80
+ 399              	.L25:
+ 456:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_44K: 
+ 457:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =44,1 KHZ*/
+ 458:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0x00;
+ 459:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 460:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 461:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 462:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_48K: 
+ 463:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =48KHZ*/
+ 464:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0x20;
+ 465:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 466:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 467:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 468:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_96K: 
+ 469:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =96 KHZ*/
+ 470:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0xA0;
+ 471:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 472:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 473:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 474:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_88K: 
+ 475:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =88,2 KHZ*/
+ 476:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0x80;
+ 477:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 478:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 17
+
+
+ 479:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 480:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_176K: 
+ 481:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =176,4 KHZ*/
+ 482:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0xC0;
+ 483:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 484:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 485:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 486:Drivers/BSP/Components/adv7533/adv7533.c ****   case  AUDIO_FREQUENCY_192K: 
+ 487:Drivers/BSP/Components/adv7533/adv7533.c ****     /* Sampling Frequency =192KHZ*/
+ 488:Drivers/BSP/Components/adv7533/adv7533.c ****     tmp |= 0xE0;
+ 489:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 490:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 491:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 492:Drivers/BSP/Components/adv7533/adv7533.c ****   return 0;
+ 400              		.loc 1 492 3 view .LVU81
+ 493:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 401              		.loc 1 493 1 is_stmt 0 view .LVU82
+ 402 003c 0020     		movs	r0, #0
+ 403 003e 38BD     		pop	{r3, r4, r5, pc}
+ 404              	.LVL44:
+ 405              	.L21:
+ 449:Drivers/BSP/Components/adv7533/adv7533.c ****   {
+ 406              		.loc 1 449 3 view .LVU83
+ 407 0040 194B     		ldr	r3, .L30+4
+ 408 0042 9C42     		cmp	r4, r3
+ 409 0044 1FD0     		beq	.L26
+ 410 0046 194B     		ldr	r3, .L30+8
+ 411 0048 9C42     		cmp	r4, r3
+ 412 004a 23D0     		beq	.L27
+ 413 004c 184B     		ldr	r3, .L30+12
+ 414 004e 9C42     		cmp	r4, r3
+ 415 0050 F4D1     		bne	.L25
+ 470:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 416              		.loc 1 470 5 is_stmt 1 view .LVU84
+ 417              	.LVL45:
+ 471:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 418              		.loc 1 471 5 view .LVU85
+ 419 0052 42F0A002 		orr	r2, r2, #160
+ 420              	.LVL46:
+ 471:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 421              		.loc 1 471 5 is_stmt 0 view .LVU86
+ 422 0056 1521     		movs	r1, #21
+ 423 0058 2846     		mov	r0, r5
+ 424              	.LVL47:
+ 471:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 425              		.loc 1 471 5 view .LVU87
+ 426 005a FFF7FEFF 		bl	HDMI_IO_Write
+ 427              	.LVL48:
+ 472:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 428              		.loc 1 472 5 is_stmt 1 view .LVU88
+ 429 005e EDE7     		b	.L25
+ 430              	.LVL49:
+ 431              	.L22:
+ 458:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 432              		.loc 1 458 5 view .LVU89
+ 459:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 433              		.loc 1 459 5 view .LVU90
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 18
+
+
+ 434 0060 1521     		movs	r1, #21
+ 435 0062 2846     		mov	r0, r5
+ 436 0064 FFF7FEFF 		bl	HDMI_IO_Write
+ 437              	.LVL50:
+ 460:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 438              		.loc 1 460 5 view .LVU91
+ 439 0068 E8E7     		b	.L25
+ 440              	.LVL51:
+ 441              	.L23:
+ 464:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 442              		.loc 1 464 5 view .LVU92
+ 465:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 443              		.loc 1 465 5 view .LVU93
+ 444 006a 42F02002 		orr	r2, r2, #32
+ 445              	.LVL52:
+ 465:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 446              		.loc 1 465 5 is_stmt 0 view .LVU94
+ 447 006e 1521     		movs	r1, #21
+ 448 0070 2846     		mov	r0, r5
+ 449              	.LVL53:
+ 465:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 450              		.loc 1 465 5 view .LVU95
+ 451 0072 FFF7FEFF 		bl	HDMI_IO_Write
+ 452              	.LVL54:
+ 466:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 453              		.loc 1 466 5 is_stmt 1 view .LVU96
+ 454 0076 E1E7     		b	.L25
+ 455              	.LVL55:
+ 456              	.L20:
+ 476:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 457              		.loc 1 476 5 view .LVU97
+ 477:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 458              		.loc 1 477 5 view .LVU98
+ 459 0078 42F08002 		orr	r2, r2, #128
+ 460              	.LVL56:
+ 477:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 461              		.loc 1 477 5 is_stmt 0 view .LVU99
+ 462 007c 1521     		movs	r1, #21
+ 463 007e 2846     		mov	r0, r5
+ 464              	.LVL57:
+ 477:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 465              		.loc 1 477 5 view .LVU100
+ 466 0080 FFF7FEFF 		bl	HDMI_IO_Write
+ 467              	.LVL58:
+ 478:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 468              		.loc 1 478 5 is_stmt 1 view .LVU101
+ 469 0084 DAE7     		b	.L25
+ 470              	.LVL59:
+ 471              	.L26:
+ 482:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 472              		.loc 1 482 5 view .LVU102
+ 483:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 473              		.loc 1 483 5 view .LVU103
+ 474 0086 42F0C002 		orr	r2, r2, #192
+ 475              	.LVL60:
+ 483:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 476              		.loc 1 483 5 is_stmt 0 view .LVU104
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 19
+
+
+ 477 008a 1521     		movs	r1, #21
+ 478 008c 2846     		mov	r0, r5
+ 479              	.LVL61:
+ 483:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 480              		.loc 1 483 5 view .LVU105
+ 481 008e FFF7FEFF 		bl	HDMI_IO_Write
+ 482              	.LVL62:
+ 484:Drivers/BSP/Components/adv7533/adv7533.c ****     
+ 483              		.loc 1 484 5 is_stmt 1 view .LVU106
+ 484 0092 D3E7     		b	.L25
+ 485              	.LVL63:
+ 486              	.L27:
+ 488:Drivers/BSP/Components/adv7533/adv7533.c ****     HDMI_IO_Write(DeviceAddr, 0x15, tmp);
+ 487              		.loc 1 488 5 view .LVU107
+ 489:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 488              		.loc 1 489 5 view .LVU108
+ 489 0094 42F0E002 		orr	r2, r2, #224
+ 490              	.LVL64:
+ 489:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 491              		.loc 1 489 5 is_stmt 0 view .LVU109
+ 492 0098 1521     		movs	r1, #21
+ 493 009a 2846     		mov	r0, r5
+ 494              	.LVL65:
+ 489:Drivers/BSP/Components/adv7533/adv7533.c ****     break;
+ 495              		.loc 1 489 5 view .LVU110
+ 496 009c FFF7FEFF 		bl	HDMI_IO_Write
+ 497              	.LVL66:
+ 490:Drivers/BSP/Components/adv7533/adv7533.c ****   }
+ 498              		.loc 1 490 5 is_stmt 1 view .LVU111
+ 499 00a0 CCE7     		b	.L25
+ 500              	.L31:
+ 501 00a2 00BF     		.align	2
+ 502              	.L30:
+ 503 00a4 88580100 		.word	88200
+ 504 00a8 10B10200 		.word	176400
+ 505 00ac 00EE0200 		.word	192000
+ 506 00b0 00770100 		.word	96000
+ 507              		.cfi_endproc
+ 508              	.LFE17:
+ 510              		.section	.text.adv7533_AudioInit,"ax",%progbits
+ 511              		.align	1
+ 512              		.global	adv7533_AudioInit
+ 513              		.syntax unified
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	adv7533_AudioInit:
+ 518              	.LVL67:
+ 519              	.LFB6:
+ 264:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t val = 4096;
+ 520              		.loc 1 264 1 view -0
+ 521              		.cfi_startproc
+ 522              		@ args = 0, pretend = 0, frame = 0
+ 523              		@ frame_needed = 0, uses_anonymous_args = 0
+ 264:Drivers/BSP/Components/adv7533/adv7533.c ****   uint32_t val = 4096;
+ 524              		.loc 1 264 1 is_stmt 0 view .LVU113
+ 525 0000 70B5     		push	{r4, r5, r6, lr}
+ 526              		.cfi_def_cfa_offset 16
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 20
+
+
+ 527              		.cfi_offset 4, -16
+ 528              		.cfi_offset 5, -12
+ 529              		.cfi_offset 6, -8
+ 530              		.cfi_offset 14, -4
+ 531 0002 0546     		mov	r5, r0
+ 532 0004 1E46     		mov	r6, r3
+ 265:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t  tmp = 0;
+ 533              		.loc 1 265 3 is_stmt 1 view .LVU114
+ 534              	.LVL68:
+ 266:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 535              		.loc 1 266 3 view .LVU115
+ 269:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x20;
+ 536              		.loc 1 269 3 view .LVU116
+ 269:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x20;
+ 537              		.loc 1 269 9 is_stmt 0 view .LVU117
+ 538 0006 0521     		movs	r1, #5
+ 539              	.LVL69:
+ 269:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x20;
+ 540              		.loc 1 269 9 view .LVU118
+ 541 0008 7820     		movs	r0, #120
+ 542              	.LVL70:
+ 269:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x20;
+ 543              		.loc 1 269 9 view .LVU119
+ 544 000a FFF7FEFF 		bl	HDMI_IO_Read
+ 545              	.LVL71:
+ 270:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x05, tmp);
+ 546              		.loc 1 270 3 is_stmt 1 view .LVU120
+ 271:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 547              		.loc 1 271 3 view .LVU121
+ 548 000e 00F0DF02 		and	r2, r0, #223
+ 549 0012 0521     		movs	r1, #5
+ 550 0014 7820     		movs	r0, #120
+ 551              	.LVL72:
+ 271:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 552              		.loc 1 271 3 is_stmt 0 view .LVU122
+ 553 0016 FFF7FEFF 		bl	HDMI_IO_Write
+ 554              	.LVL73:
+ 274:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x01, tmp);
+ 555              		.loc 1 274 3 is_stmt 1 view .LVU123
+ 275:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 556              		.loc 1 275 3 view .LVU124
+ 557 001a ECB2     		uxtb	r4, r5
+ 558 001c 0022     		movs	r2, #0
+ 559 001e 0121     		movs	r1, #1
+ 560 0020 2046     		mov	r0, r4
+ 561 0022 FFF7FEFF 		bl	HDMI_IO_Write
+ 562              	.LVL74:
+ 277:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x02, tmp);
+ 563              		.loc 1 277 3 view .LVU125
+ 278:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 564              		.loc 1 278 3 view .LVU126
+ 565 0026 1022     		movs	r2, #16
+ 566 0028 0221     		movs	r1, #2
+ 567 002a 2046     		mov	r0, r4
+ 568 002c FFF7FEFF 		bl	HDMI_IO_Write
+ 569              	.LVL75:
+ 280:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x03, tmp);
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 21
+
+
+ 570              		.loc 1 280 3 view .LVU127
+ 281:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 571              		.loc 1 281 3 view .LVU128
+ 572 0030 0022     		movs	r2, #0
+ 573 0032 0321     		movs	r1, #3
+ 574 0034 2046     		mov	r0, r4
+ 575 0036 FFF7FEFF 		bl	HDMI_IO_Write
+ 576              	.LVL76:
+ 284:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 577              		.loc 1 284 3 view .LVU129
+ 284:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 578              		.loc 1 284 9 is_stmt 0 view .LVU130
+ 579 003a 0B21     		movs	r1, #11
+ 580 003c 2046     		mov	r0, r4
+ 581 003e FFF7FEFF 		bl	HDMI_IO_Read
+ 582              	.LVL77:
+ 285:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0B, tmp);
+ 583              		.loc 1 285 3 is_stmt 1 view .LVU131
+ 285:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0B, tmp);
+ 584              		.loc 1 285 7 is_stmt 0 view .LVU132
+ 585 0042 60F07F02 		orn	r2, r0, #127
+ 586              	.LVL78:
+ 286:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 587              		.loc 1 286 3 is_stmt 1 view .LVU133
+ 588 0046 D2B2     		uxtb	r2, r2
+ 286:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 589              		.loc 1 286 3 is_stmt 0 view .LVU134
+ 590 0048 0B21     		movs	r1, #11
+ 591 004a 2046     		mov	r0, r4
+ 592 004c FFF7FEFF 		bl	HDMI_IO_Write
+ 593              	.LVL79:
+ 289:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |=0x04;
+ 594              		.loc 1 289 3 is_stmt 1 view .LVU135
+ 289:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |=0x04;
+ 595              		.loc 1 289 9 is_stmt 0 view .LVU136
+ 596 0050 0C21     		movs	r1, #12
+ 597 0052 2046     		mov	r0, r4
+ 598 0054 FFF7FEFF 		bl	HDMI_IO_Read
+ 599              	.LVL80:
+ 290:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0C, tmp);
+ 600              		.loc 1 290 3 is_stmt 1 view .LVU137
+ 290:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0C, tmp);
+ 601              		.loc 1 290 7 is_stmt 0 view .LVU138
+ 602 0058 40F00402 		orr	r2, r0, #4
+ 603              	.LVL81:
+ 291:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 604              		.loc 1 291 3 is_stmt 1 view .LVU139
+ 605 005c D2B2     		uxtb	r2, r2
+ 291:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 606              		.loc 1 291 3 is_stmt 0 view .LVU140
+ 607 005e 0C21     		movs	r1, #12
+ 608 0060 2046     		mov	r0, r4
+ 609 0062 FFF7FEFF 		bl	HDMI_IO_Write
+ 610              	.LVL82:
+ 294:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 611              		.loc 1 294 3 is_stmt 1 view .LVU141
+ 612 0066 3146     		mov	r1, r6
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 22
+
+
+ 613 0068 2846     		mov	r0, r5
+ 614 006a FFF7FEFF 		bl	adv7533_SetFrequency
+ 615              	.LVL83:
+ 297:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &=~ 0x10;
+ 616              		.loc 1 297 3 view .LVU142
+ 297:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &=~ 0x10;
+ 617              		.loc 1 297 9 is_stmt 0 view .LVU143
+ 618 006e 0A21     		movs	r1, #10
+ 619 0070 7A20     		movs	r0, #122
+ 620 0072 FFF7FEFF 		bl	HDMI_IO_Read
+ 621              	.LVL84:
+ 298:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0x0A, tmp);
+ 622              		.loc 1 298 3 is_stmt 1 view .LVU144
+ 299:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 623              		.loc 1 299 3 view .LVU145
+ 624 0076 00F0EF02 		and	r2, r0, #239
+ 625 007a 0A21     		movs	r1, #10
+ 626 007c 2046     		mov	r0, r4
+ 627              	.LVL85:
+ 299:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 628              		.loc 1 299 3 is_stmt 0 view .LVU146
+ 629 007e FFF7FEFF 		bl	HDMI_IO_Write
+ 630              	.LVL86:
+ 302:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 631              		.loc 1 302 3 is_stmt 1 view .LVU147
+ 302:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 632              		.loc 1 302 9 is_stmt 0 view .LVU148
+ 633 0082 E421     		movs	r1, #228
+ 634 0084 2046     		mov	r0, r4
+ 635 0086 FFF7FEFF 		bl	HDMI_IO_Read
+ 636              	.LVL87:
+ 303:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0xE4, tmp);
+ 637              		.loc 1 303 3 is_stmt 1 view .LVU149
+ 303:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(DeviceAddr, 0xE4, tmp);
+ 638              		.loc 1 303 7 is_stmt 0 view .LVU150
+ 639 008a 60F07F02 		orn	r2, r0, #127
+ 640              	.LVL88:
+ 304:Drivers/BSP/Components/adv7533/adv7533.c ****  
+ 641              		.loc 1 304 3 is_stmt 1 view .LVU151
+ 642 008e D2B2     		uxtb	r2, r2
+ 304:Drivers/BSP/Components/adv7533/adv7533.c ****  
+ 643              		.loc 1 304 3 is_stmt 0 view .LVU152
+ 644 0090 E421     		movs	r1, #228
+ 645 0092 2046     		mov	r0, r4
+ 646 0094 FFF7FEFF 		bl	HDMI_IO_Write
+ 647              	.LVL89:
+ 306:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 648              		.loc 1 306 3 is_stmt 1 view .LVU153
+ 307:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 649              		.loc 1 307 1 is_stmt 0 view .LVU154
+ 650 0098 0020     		movs	r0, #0
+ 651 009a 70BD     		pop	{r4, r5, r6, pc}
+ 307:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 652              		.loc 1 307 1 view .LVU155
+ 653              		.cfi_endproc
+ 654              	.LFE6:
+ 656              		.section	.text.adv7533_DeInit,"ax",%progbits
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 23
+
+
+ 657              		.align	1
+ 658              		.global	adv7533_DeInit
+ 659              		.syntax unified
+ 660              		.thumb
+ 661              		.thumb_func
+ 663              	adv7533_DeInit:
+ 664              	.LFB7:
+ 315:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Deinitialize Audio adv7533 interface */
+ 665              		.loc 1 315 1 is_stmt 1 view -0
+ 666              		.cfi_startproc
+ 667              		@ args = 0, pretend = 0, frame = 0
+ 668              		@ frame_needed = 0, uses_anonymous_args = 0
+ 669 0000 08B5     		push	{r3, lr}
+ 670              		.cfi_def_cfa_offset 8
+ 671              		.cfi_offset 3, -8
+ 672              		.cfi_offset 14, -4
+ 317:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 673              		.loc 1 317 3 view .LVU157
+ 674 0002 FFF7FEFF 		bl	AUDIO_IO_DeInit
+ 675              	.LVL90:
+ 318:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 676              		.loc 1 318 1 is_stmt 0 view .LVU158
+ 677 0006 08BD     		pop	{r3, pc}
+ 678              		.cfi_endproc
+ 679              	.LFE7:
+ 681              		.section	.text.ADV7533_Init,"ax",%progbits
+ 682              		.align	1
+ 683              		.global	ADV7533_Init
+ 684              		.syntax unified
+ 685              		.thumb
+ 686              		.thumb_func
+ 688              	ADV7533_Init:
+ 689              	.LFB0:
+ 101:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Init();
+ 690              		.loc 1 101 1 is_stmt 1 view -0
+ 691              		.cfi_startproc
+ 692              		@ args = 0, pretend = 0, frame = 0
+ 693              		@ frame_needed = 0, uses_anonymous_args = 0
+ 694 0000 08B5     		push	{r3, lr}
+ 695              		.cfi_def_cfa_offset 8
+ 696              		.cfi_offset 3, -8
+ 697              		.cfi_offset 14, -4
+ 102:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 698              		.loc 1 102 3 view .LVU160
+ 699 0002 FFF7FEFF 		bl	HDMI_IO_Init
+ 700              	.LVL91:
+ 105:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 701              		.loc 1 105 3 view .LVU161
+ 702 0006 7822     		movs	r2, #120
+ 703 0008 E121     		movs	r1, #225
+ 704 000a 7A20     		movs	r0, #122
+ 705 000c FFF7FEFF 		bl	HDMI_IO_Write
+ 706              	.LVL92:
+ 107:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 707              		.loc 1 107 3 view .LVU162
+ 108:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 708              		.loc 1 108 1 is_stmt 0 view .LVU163
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 24
+
+
+ 709 0010 0020     		movs	r0, #0
+ 710 0012 08BD     		pop	{r3, pc}
+ 711              		.cfi_endproc
+ 712              	.LFE0:
+ 714              		.section	.text.ADV7533_PowerOn,"ax",%progbits
+ 715              		.align	1
+ 716              		.global	ADV7533_PowerOn
+ 717              		.syntax unified
+ 718              		.thumb
+ 719              		.thumb_func
+ 721              	ADV7533_PowerOn:
+ 722              	.LFB1:
+ 116:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp;
+ 723              		.loc 1 116 1 is_stmt 1 view -0
+ 724              		.cfi_startproc
+ 725              		@ args = 0, pretend = 0, frame = 0
+ 726              		@ frame_needed = 0, uses_anonymous_args = 0
+ 727 0000 08B5     		push	{r3, lr}
+ 728              		.cfi_def_cfa_offset 8
+ 729              		.cfi_offset 3, -8
+ 730              		.cfi_offset 14, -4
+ 117:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 731              		.loc 1 117 3 view .LVU165
+ 120:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 732              		.loc 1 120 3 view .LVU166
+ 120:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 733              		.loc 1 120 9 is_stmt 0 view .LVU167
+ 734 0002 4121     		movs	r1, #65
+ 735 0004 7A20     		movs	r0, #122
+ 736 0006 FFF7FEFF 		bl	HDMI_IO_Read
+ 737              	.LVL93:
+ 121:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 738              		.loc 1 121 3 is_stmt 1 view .LVU168
+ 122:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 739              		.loc 1 122 3 view .LVU169
+ 740 000a 00F0BF02 		and	r2, r0, #191
+ 741 000e 4121     		movs	r1, #65
+ 742 0010 7A20     		movs	r0, #122
+ 743              	.LVL94:
+ 122:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 744              		.loc 1 122 3 is_stmt 0 view .LVU170
+ 745 0012 FFF7FEFF 		bl	HDMI_IO_Write
+ 746              	.LVL95:
+ 123:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 747              		.loc 1 123 1 view .LVU171
+ 748 0016 08BD     		pop	{r3, pc}
+ 749              		.cfi_endproc
+ 750              	.LFE1:
+ 752              		.section	.text.ADV7533_PowerDown,"ax",%progbits
+ 753              		.align	1
+ 754              		.global	ADV7533_PowerDown
+ 755              		.syntax unified
+ 756              		.thumb
+ 757              		.thumb_func
+ 759              	ADV7533_PowerDown:
+ 760              	.LFB2:
+ 131:Drivers/BSP/Components/adv7533/adv7533.c ****    uint8_t tmp;
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 25
+
+
+ 761              		.loc 1 131 1 is_stmt 1 view -0
+ 762              		.cfi_startproc
+ 763              		@ args = 0, pretend = 0, frame = 0
+ 764              		@ frame_needed = 0, uses_anonymous_args = 0
+ 765 0000 08B5     		push	{r3, lr}
+ 766              		.cfi_def_cfa_offset 8
+ 767              		.cfi_offset 3, -8
+ 768              		.cfi_offset 14, -4
+ 132:Drivers/BSP/Components/adv7533/adv7533.c ****    
+ 769              		.loc 1 132 4 view .LVU173
+ 135:Drivers/BSP/Components/adv7533/adv7533.c ****    tmp |= 0x40;
+ 770              		.loc 1 135 4 view .LVU174
+ 135:Drivers/BSP/Components/adv7533/adv7533.c ****    tmp |= 0x40;
+ 771              		.loc 1 135 10 is_stmt 0 view .LVU175
+ 772 0002 4121     		movs	r1, #65
+ 773 0004 7A20     		movs	r0, #122
+ 774 0006 FFF7FEFF 		bl	HDMI_IO_Read
+ 775              	.LVL96:
+ 136:Drivers/BSP/Components/adv7533/adv7533.c ****    HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 776              		.loc 1 136 4 is_stmt 1 view .LVU176
+ 136:Drivers/BSP/Components/adv7533/adv7533.c ****    HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 777              		.loc 1 136 8 is_stmt 0 view .LVU177
+ 778 000a 40F04002 		orr	r2, r0, #64
+ 779              	.LVL97:
+ 137:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 780              		.loc 1 137 4 is_stmt 1 view .LVU178
+ 781 000e D2B2     		uxtb	r2, r2
+ 137:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 782              		.loc 1 137 4 is_stmt 0 view .LVU179
+ 783 0010 4121     		movs	r1, #65
+ 784 0012 7A20     		movs	r0, #122
+ 785 0014 FFF7FEFF 		bl	HDMI_IO_Write
+ 786              	.LVL98:
+ 138:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 787              		.loc 1 138 1 view .LVU180
+ 788 0018 08BD     		pop	{r3, pc}
+ 789              		.cfi_endproc
+ 790              	.LFE2:
+ 792              		.section	.text.ADV7533_Configure,"ax",%progbits
+ 793              		.align	1
+ 794              		.global	ADV7533_Configure
+ 795              		.syntax unified
+ 796              		.thumb
+ 797              		.thumb_func
+ 799              	ADV7533_Configure:
+ 800              	.LVL99:
+ 801              	.LFB3:
+ 147:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp;
+ 802              		.loc 1 147 1 is_stmt 1 view -0
+ 803              		.cfi_startproc
+ 804              		@ args = 0, pretend = 0, frame = 0
+ 805              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147:Drivers/BSP/Components/adv7533/adv7533.c ****   uint8_t tmp;
+ 806              		.loc 1 147 1 is_stmt 0 view .LVU182
+ 807 0000 10B5     		push	{r4, lr}
+ 808              		.cfi_def_cfa_offset 8
+ 809              		.cfi_offset 4, -8
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 26
+
+
+ 810              		.cfi_offset 14, -4
+ 811 0002 0446     		mov	r4, r0
+ 148:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 812              		.loc 1 148 3 is_stmt 1 view .LVU183
+ 154:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 813              		.loc 1 154 3 view .LVU184
+ 154:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 814              		.loc 1 154 9 is_stmt 0 view .LVU185
+ 815 0004 4121     		movs	r1, #65
+ 816 0006 7A20     		movs	r0, #122
+ 817              	.LVL100:
+ 154:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x40;
+ 818              		.loc 1 154 9 view .LVU186
+ 819 0008 FFF7FEFF 		bl	HDMI_IO_Read
+ 820              	.LVL101:
+ 155:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x41, tmp);
+ 821              		.loc 1 155 3 is_stmt 1 view .LVU187
+ 156:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HPD Override */
+ 822              		.loc 1 156 3 view .LVU188
+ 823 000c 00F0BF02 		and	r2, r0, #191
+ 824 0010 4121     		movs	r1, #65
+ 825 0012 7A20     		movs	r0, #122
+ 826              	.LVL102:
+ 156:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HPD Override */
+ 827              		.loc 1 156 3 is_stmt 0 view .LVU189
+ 828 0014 FFF7FEFF 		bl	HDMI_IO_Write
+ 829              	.LVL103:
+ 158:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 830              		.loc 1 158 3 is_stmt 1 view .LVU190
+ 158:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 831              		.loc 1 158 9 is_stmt 0 view .LVU191
+ 832 0018 D621     		movs	r1, #214
+ 833 001a 7A20     		movs	r0, #122
+ 834 001c FFF7FEFF 		bl	HDMI_IO_Read
+ 835              	.LVL104:
+ 159:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xD6, tmp);
+ 836              		.loc 1 159 3 is_stmt 1 view .LVU192
+ 159:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xD6, tmp);
+ 837              		.loc 1 159 7 is_stmt 0 view .LVU193
+ 838 0020 40F04002 		orr	r2, r0, #64
+ 839              	.LVL105:
+ 160:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Gate DSI LP Oscillator and DSI Bias Clock Powerdown */
+ 840              		.loc 1 160 3 is_stmt 1 view .LVU194
+ 841 0024 D2B2     		uxtb	r2, r2
+ 160:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Gate DSI LP Oscillator and DSI Bias Clock Powerdown */
+ 842              		.loc 1 160 3 is_stmt 0 view .LVU195
+ 843 0026 D621     		movs	r1, #214
+ 844 0028 7A20     		movs	r0, #122
+ 845 002a FFF7FEFF 		bl	HDMI_IO_Write
+ 846              	.LVL106:
+ 162:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x02;
+ 847              		.loc 1 162 3 is_stmt 1 view .LVU196
+ 162:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x02;
+ 848              		.loc 1 162 9 is_stmt 0 view .LVU197
+ 849 002e 0321     		movs	r1, #3
+ 850 0030 7820     		movs	r0, #120
+ 851 0032 FFF7FEFF 		bl	HDMI_IO_Read
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 27
+
+
+ 852              	.LVL107:
+ 163:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, tmp);
+ 853              		.loc 1 163 3 is_stmt 1 view .LVU198
+ 164:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 854              		.loc 1 164 3 view .LVU199
+ 855 0036 00F0FD02 		and	r2, r0, #253
+ 856 003a 0321     		movs	r1, #3
+ 857 003c 7820     		movs	r0, #120
+ 858              	.LVL108:
+ 164:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 859              		.loc 1 164 3 is_stmt 0 view .LVU200
+ 860 003e FFF7FEFF 		bl	HDMI_IO_Write
+ 861              	.LVL109:
+ 167:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x3E;
+ 862              		.loc 1 167 3 is_stmt 1 view .LVU201
+ 167:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x3E;
+ 863              		.loc 1 167 9 is_stmt 0 view .LVU202
+ 864 0042 1621     		movs	r1, #22
+ 865 0044 7A20     		movs	r0, #122
+ 866 0046 FFF7FEFF 		bl	HDMI_IO_Read
+ 867              	.LVL110:
+ 168:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x20; 
+ 868              		.loc 1 168 3 is_stmt 1 view .LVU203
+ 168:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x20; 
+ 869              		.loc 1 168 7 is_stmt 0 view .LVU204
+ 870 004a 00F0C102 		and	r2, r0, #193
+ 871              	.LVL111:
+ 169:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x16, tmp);
+ 872              		.loc 1 169 3 is_stmt 1 view .LVU205
+ 170:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x9A, 0xE0);
+ 873              		.loc 1 170 3 view .LVU206
+ 874 004e 42F02002 		orr	r2, r2, #32
+ 875              	.LVL112:
+ 170:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x9A, 0xE0);
+ 876              		.loc 1 170 3 is_stmt 0 view .LVU207
+ 877 0052 1621     		movs	r1, #22
+ 878 0054 7A20     		movs	r0, #122
+ 879              	.LVL113:
+ 170:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x9A, 0xE0);
+ 880              		.loc 1 170 3 view .LVU208
+ 881 0056 FFF7FEFF 		bl	HDMI_IO_Write
+ 882              	.LVL114:
+ 171:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_MAIN_I2C_ADDR, 0xBA);
+ 883              		.loc 1 171 3 is_stmt 1 view .LVU209
+ 884 005a E022     		movs	r2, #224
+ 885 005c 9A21     		movs	r1, #154
+ 886 005e 7A20     		movs	r0, #122
+ 887 0060 FFF7FEFF 		bl	HDMI_IO_Write
+ 888              	.LVL115:
+ 172:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF8;
+ 889              		.loc 1 172 3 view .LVU210
+ 172:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF8;
+ 890              		.loc 1 172 9 is_stmt 0 view .LVU211
+ 891 0064 BA21     		movs	r1, #186
+ 892 0066 7A20     		movs	r0, #122
+ 893 0068 FFF7FEFF 		bl	HDMI_IO_Read
+ 894              	.LVL116:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 28
+
+
+ 173:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x70; 
+ 895              		.loc 1 173 3 is_stmt 1 view .LVU212
+ 173:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x70; 
+ 896              		.loc 1 173 7 is_stmt 0 view .LVU213
+ 897 006c 00F00702 		and	r2, r0, #7
+ 898              	.LVL117:
+ 174:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xBA, tmp);
+ 899              		.loc 1 174 3 is_stmt 1 view .LVU214
+ 175:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xDE, 0x82);
+ 900              		.loc 1 175 3 view .LVU215
+ 901 0070 42F07002 		orr	r2, r2, #112
+ 902              	.LVL118:
+ 175:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xDE, 0x82);
+ 903              		.loc 1 175 3 is_stmt 0 view .LVU216
+ 904 0074 BA21     		movs	r1, #186
+ 905 0076 7A20     		movs	r0, #122
+ 906              	.LVL119:
+ 175:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xDE, 0x82);
+ 907              		.loc 1 175 3 view .LVU217
+ 908 0078 FFF7FEFF 		bl	HDMI_IO_Write
+ 909              	.LVL120:
+ 176:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 910              		.loc 1 176 3 is_stmt 1 view .LVU218
+ 911 007c 8222     		movs	r2, #130
+ 912 007e DE21     		movs	r1, #222
+ 913 0080 7A20     		movs	r0, #122
+ 914 0082 FFF7FEFF 		bl	HDMI_IO_Write
+ 915              	.LVL121:
+ 178:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 916              		.loc 1 178 3 view .LVU219
+ 178:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x40;
+ 917              		.loc 1 178 9 is_stmt 0 view .LVU220
+ 918 0086 E421     		movs	r1, #228
+ 919 0088 7A20     		movs	r0, #122
+ 920 008a FFF7FEFF 		bl	HDMI_IO_Read
+ 921              	.LVL122:
+ 179:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE4, tmp);
+ 922              		.loc 1 179 3 is_stmt 1 view .LVU221
+ 179:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE4, tmp);
+ 923              		.loc 1 179 7 is_stmt 0 view .LVU222
+ 924 008e 40F04002 		orr	r2, r0, #64
+ 925              	.LVL123:
+ 180:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE5, 0x80);
+ 926              		.loc 1 180 3 is_stmt 1 view .LVU223
+ 927 0092 D2B2     		uxtb	r2, r2
+ 180:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xE5, 0x80);
+ 928              		.loc 1 180 3 is_stmt 0 view .LVU224
+ 929 0094 E421     		movs	r1, #228
+ 930 0096 7A20     		movs	r0, #122
+ 931 0098 FFF7FEFF 		bl	HDMI_IO_Write
+ 932              	.LVL124:
+ 181:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 933              		.loc 1 181 3 is_stmt 1 view .LVU225
+ 934 009c 8022     		movs	r2, #128
+ 935 009e E521     		movs	r1, #229
+ 936 00a0 7A20     		movs	r0, #122
+ 937 00a2 FFF7FEFF 		bl	HDMI_IO_Write
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 29
+
+
+ 938              	.LVL125:
+ 183:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x30;
+ 939              		.loc 1 183 3 view .LVU226
+ 183:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x30;
+ 940              		.loc 1 183 9 is_stmt 0 view .LVU227
+ 941 00a6 1521     		movs	r1, #21
+ 942 00a8 7820     		movs	r0, #120
+ 943 00aa FFF7FEFF 		bl	HDMI_IO_Read
+ 944              	.LVL126:
+ 184:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x10; 
+ 945              		.loc 1 184 3 is_stmt 1 view .LVU228
+ 185:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x17);
+ 946              		.loc 1 185 3 view .LVU229
+ 186:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF0;
+ 947              		.loc 1 186 3 view .LVU230
+ 186:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0xF0;
+ 948              		.loc 1 186 9 is_stmt 0 view .LVU231
+ 949 00ae 1721     		movs	r1, #23
+ 950 00b0 7820     		movs	r0, #120
+ 951 00b2 FFF7FEFF 		bl	HDMI_IO_Read
+ 952              	.LVL127:
+ 187:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0xD0; 
+ 953              		.loc 1 187 3 is_stmt 1 view .LVU232
+ 187:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0xD0; 
+ 954              		.loc 1 187 7 is_stmt 0 view .LVU233
+ 955 00b6 00F00F02 		and	r2, r0, #15
+ 956              	.LVL128:
+ 188:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x17, tmp);
+ 957              		.loc 1 188 3 is_stmt 1 view .LVU234
+ 189:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x24);
+ 958              		.loc 1 189 3 view .LVU235
+ 959 00ba 42F0D002 		orr	r2, r2, #208
+ 960              	.LVL129:
+ 189:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x24);
+ 961              		.loc 1 189 3 is_stmt 0 view .LVU236
+ 962 00be 1721     		movs	r1, #23
+ 963 00c0 7820     		movs	r0, #120
+ 964              	.LVL130:
+ 189:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x24);
+ 965              		.loc 1 189 3 view .LVU237
+ 966 00c2 FFF7FEFF 		bl	HDMI_IO_Write
+ 967              	.LVL131:
+ 190:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x10;
+ 968              		.loc 1 190 3 is_stmt 1 view .LVU238
+ 190:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x10;
+ 969              		.loc 1 190 9 is_stmt 0 view .LVU239
+ 970 00c6 2421     		movs	r1, #36
+ 971 00c8 7820     		movs	r0, #120
+ 972 00ca FFF7FEFF 		bl	HDMI_IO_Read
+ 973              	.LVL132:
+ 191:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x24, tmp);
+ 974              		.loc 1 191 3 is_stmt 1 view .LVU240
+ 192:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x57);
+ 975              		.loc 1 192 3 view .LVU241
+ 976 00ce 00F0EF02 		and	r2, r0, #239
+ 977 00d2 2421     		movs	r1, #36
+ 978 00d4 7820     		movs	r0, #120
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 30
+
+
+ 979              	.LVL133:
+ 192:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp = HDMI_IO_Read(ADV7533_CEC_DSI_I2C_ADDR, 0x57);
+ 980              		.loc 1 192 3 is_stmt 0 view .LVU242
+ 981 00d6 FFF7FEFF 		bl	HDMI_IO_Write
+ 982              	.LVL134:
+ 193:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x01;
+ 983              		.loc 1 193 3 is_stmt 1 view .LVU243
+ 193:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x01;
+ 984              		.loc 1 193 9 is_stmt 0 view .LVU244
+ 985 00da 5721     		movs	r1, #87
+ 986 00dc 7820     		movs	r0, #120
+ 987 00de FFF7FEFF 		bl	HDMI_IO_Read
+ 988              	.LVL135:
+ 194:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x10;
+ 989              		.loc 1 194 3 is_stmt 1 view .LVU245
+ 195:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x57, tmp);
+ 990              		.loc 1 195 3 view .LVU246
+ 195:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x57, tmp);
+ 991              		.loc 1 195 7 is_stmt 0 view .LVU247
+ 992 00e2 40F01102 		orr	r2, r0, #17
+ 993              	.LVL136:
+ 196:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 994              		.loc 1 196 3 is_stmt 1 view .LVU248
+ 995 00e6 D2B2     		uxtb	r2, r2
+ 196:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 996              		.loc 1 196 3 is_stmt 0 view .LVU249
+ 997 00e8 5721     		movs	r1, #87
+ 998 00ea 7820     		movs	r0, #120
+ 999 00ec FFF7FEFF 		bl	HDMI_IO_Write
+ 1000              	.LVL137:
+ 199:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 1001              		.loc 1 199 3 is_stmt 1 view .LVU250
+ 199:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 1002              		.loc 1 199 56 is_stmt 0 view .LVU251
+ 1003 00f0 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
+ 199:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 1004              		.loc 1 199 3 view .LVU252
+ 1005 00f2 1201     		lsls	r2, r2, #4
+ 1006 00f4 02F0F002 		and	r2, r2, #240
+ 1007 00f8 1C21     		movs	r1, #28
+ 1008 00fa 7820     		movs	r0, #120
+ 1009 00fc FFF7FEFF 		bl	HDMI_IO_Write
+ 1010              	.LVL138:
+ 203:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x02;
+ 1011              		.loc 1 203 3 is_stmt 1 view .LVU253
+ 203:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x02;
+ 1012              		.loc 1 203 9 is_stmt 0 view .LVU254
+ 1013 0100 AF21     		movs	r1, #175
+ 1014 0102 7A20     		movs	r0, #122
+ 1015 0104 FFF7FEFF 		bl	HDMI_IO_Read
+ 1016              	.LVL139:
+ 204:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xAF, tmp); 
+ 1017              		.loc 1 204 3 is_stmt 1 view .LVU255
+ 204:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0xAF, tmp); 
+ 1018              		.loc 1 204 7 is_stmt 0 view .LVU256
+ 1019 0108 40F00202 		orr	r2, r0, #2
+ 1020              	.LVL140:
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 31
+
+
+ 205:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HDMI Output Enable */
+ 1021              		.loc 1 205 3 is_stmt 1 view .LVU257
+ 1022 010c D2B2     		uxtb	r2, r2
+ 205:Drivers/BSP/Components/adv7533/adv7533.c ****   /* HDMI Output Enable */
+ 1023              		.loc 1 205 3 is_stmt 0 view .LVU258
+ 1024 010e AF21     		movs	r1, #175
+ 1025 0110 7A20     		movs	r0, #122
+ 1026 0112 FFF7FEFF 		bl	HDMI_IO_Write
+ 1027              	.LVL141:
+ 207:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 1028              		.loc 1 207 3 is_stmt 1 view .LVU259
+ 207:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 1029              		.loc 1 207 9 is_stmt 0 view .LVU260
+ 1030 0116 0321     		movs	r1, #3
+ 1031 0118 7820     		movs	r0, #120
+ 1032 011a FFF7FEFF 		bl	HDMI_IO_Read
+ 1033              	.LVL142:
+ 208:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, tmp);
+ 1034              		.loc 1 208 3 is_stmt 1 view .LVU261
+ 208:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x03, tmp);
+ 1035              		.loc 1 208 7 is_stmt 0 view .LVU262
+ 1036 011e 60F07F02 		orn	r2, r0, #127
+ 1037              	.LVL143:
+ 209:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1038              		.loc 1 209 3 is_stmt 1 view .LVU263
+ 1039 0122 D2B2     		uxtb	r2, r2
+ 209:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1040              		.loc 1 209 3 is_stmt 0 view .LVU264
+ 1041 0124 0321     		movs	r1, #3
+ 1042 0126 7820     		movs	r0, #120
+ 1043 0128 FFF7FEFF 		bl	HDMI_IO_Write
+ 1044              	.LVL144:
+ 212:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 1045              		.loc 1 212 3 is_stmt 1 view .LVU265
+ 212:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x80;
+ 1046              		.loc 1 212 9 is_stmt 0 view .LVU266
+ 1047 012c 4021     		movs	r1, #64
+ 1048 012e 7A20     		movs	r0, #122
+ 1049 0130 FFF7FEFF 		bl	HDMI_IO_Read
+ 1050              	.LVL145:
+ 213:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x40, tmp);
+ 1051              		.loc 1 213 3 is_stmt 1 view .LVU267
+ 213:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x40, tmp);
+ 1052              		.loc 1 213 7 is_stmt 0 view .LVU268
+ 1053 0134 60F07F02 		orn	r2, r0, #127
+ 1054              	.LVL146:
+ 214:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Input color depth 24-bit per pixel */
+ 1055              		.loc 1 214 3 is_stmt 1 view .LVU269
+ 1056 0138 D2B2     		uxtb	r2, r2
+ 214:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Input color depth 24-bit per pixel */
+ 1057              		.loc 1 214 3 is_stmt 0 view .LVU270
+ 1058 013a 4021     		movs	r1, #64
+ 1059 013c 7A20     		movs	r0, #122
+ 1060 013e FFF7FEFF 		bl	HDMI_IO_Write
+ 1061              	.LVL147:
+ 216:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x0F;
+ 1062              		.loc 1 216 3 is_stmt 1 view .LVU271
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 32
+
+
+ 216:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x0F;
+ 1063              		.loc 1 216 9 is_stmt 0 view .LVU272
+ 1064 0142 4C21     		movs	r1, #76
+ 1065 0144 7A20     		movs	r0, #122
+ 1066 0146 FFF7FEFF 		bl	HDMI_IO_Read
+ 1067              	.LVL148:
+ 217:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x03;
+ 1068              		.loc 1 217 3 is_stmt 1 view .LVU273
+ 217:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp |= 0x03;
+ 1069              		.loc 1 217 7 is_stmt 0 view .LVU274
+ 1070 014a 00F0F002 		and	r2, r0, #240
+ 1071              	.LVL149:
+ 218:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_MAIN_I2C_ADDR, 0x4C, tmp);
+ 1072              		.loc 1 218 3 is_stmt 1 view .LVU275
+ 219:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Down dither output color depth */
+ 1073              		.loc 1 219 3 view .LVU276
+ 1074 014e 42F00302 		orr	r2, r2, #3
+ 1075              	.LVL150:
+ 219:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Down dither output color depth */
+ 1076              		.loc 1 219 3 is_stmt 0 view .LVU277
+ 1077 0152 4C21     		movs	r1, #76
+ 1078 0154 7A20     		movs	r0, #122
+ 1079              	.LVL151:
+ 219:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Down dither output color depth */
+ 1080              		.loc 1 219 3 view .LVU278
+ 1081 0156 FFF7FEFF 		bl	HDMI_IO_Write
+ 1082              	.LVL152:
+ 221:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 1083              		.loc 1 221 3 is_stmt 1 view .LVU279
+ 1084 015a FC22     		movs	r2, #252
+ 1085 015c 4921     		movs	r1, #73
+ 1086 015e 7A20     		movs	r0, #122
+ 1087 0160 FFF7FEFF 		bl	HDMI_IO_Write
+ 1088              	.LVL153:
+ 224:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x80;
+ 1089              		.loc 1 224 3 view .LVU280
+ 224:Drivers/BSP/Components/adv7533/adv7533.c ****   tmp &= ~0x80;
+ 1090              		.loc 1 224 9 is_stmt 0 view .LVU281
+ 1091 0164 2721     		movs	r1, #39
+ 1092 0166 7820     		movs	r0, #120
+ 1093 0168 FFF7FEFF 		bl	HDMI_IO_Read
+ 1094              	.LVL154:
+ 225:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x27, tmp);
+ 1095              		.loc 1 225 3 is_stmt 1 view .LVU282
+ 226:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 1096              		.loc 1 226 3 view .LVU283
+ 1097 016c 00F07F02 		and	r2, r0, #127
+ 1098 0170 2721     		movs	r1, #39
+ 1099 0172 7820     		movs	r0, #120
+ 1100              	.LVL155:
+ 226:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 1101              		.loc 1 226 3 is_stmt 0 view .LVU284
+ 1102 0174 FFF7FEFF 		bl	HDMI_IO_Write
+ 1103              	.LVL156:
+ 227:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1104              		.loc 1 227 1 view .LVU285
+ 1105 0178 10BD     		pop	{r4, pc}
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 33
+
+
+ 227:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1106              		.loc 1 227 1 view .LVU286
+ 1107              		.cfi_endproc
+ 1108              	.LFE3:
+ 1110              		.section	.text.ADV7533_PatternEnable,"ax",%progbits
+ 1111              		.align	1
+ 1112              		.global	ADV7533_PatternEnable
+ 1113              		.syntax unified
+ 1114              		.thumb
+ 1115              		.thumb_func
+ 1117              	ADV7533_PatternEnable:
+ 1118              	.LFB4:
+ 235:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Timing generator enable */
+ 1119              		.loc 1 235 1 is_stmt 1 view -0
+ 1120              		.cfi_startproc
+ 1121              		@ args = 0, pretend = 0, frame = 0
+ 1122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1123 0000 08B5     		push	{r3, lr}
+ 1124              		.cfi_def_cfa_offset 8
+ 1125              		.cfi_offset 3, -8
+ 1126              		.cfi_offset 14, -4
+ 237:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0x55, 0xA0); /* Color ramp */
+ 1127              		.loc 1 237 3 view .LVU288
+ 1128 0002 8022     		movs	r2, #128
+ 1129 0004 5521     		movs	r1, #85
+ 1130 0006 7820     		movs	r0, #120
+ 1131 0008 FFF7FEFF 		bl	HDMI_IO_Write
+ 1132              	.LVL157:
+ 238:Drivers/BSP/Components/adv7533/adv7533.c ****   
+ 1133              		.loc 1 238 3 view .LVU289
+ 1134 000c A022     		movs	r2, #160
+ 1135 000e 5521     		movs	r1, #85
+ 1136 0010 7820     		movs	r0, #120
+ 1137 0012 FFF7FEFF 		bl	HDMI_IO_Write
+ 1138              	.LVL158:
+ 240:Drivers/BSP/Components/adv7533/adv7533.c ****   HDMI_IO_Write(ADV7533_CEC_DSI_I2C_ADDR, 0xAF, 0x16);
+ 1139              		.loc 1 240 3 view .LVU290
+ 1140 0016 8922     		movs	r2, #137
+ 1141 0018 0321     		movs	r1, #3
+ 1142 001a 7820     		movs	r0, #120
+ 1143 001c FFF7FEFF 		bl	HDMI_IO_Write
+ 1144              	.LVL159:
+ 241:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 1145              		.loc 1 241 3 view .LVU291
+ 1146 0020 1622     		movs	r2, #22
+ 1147 0022 AF21     		movs	r1, #175
+ 1148 0024 7820     		movs	r0, #120
+ 1149 0026 FFF7FEFF 		bl	HDMI_IO_Write
+ 1150              	.LVL160:
+ 242:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1151              		.loc 1 242 1 is_stmt 0 view .LVU292
+ 1152 002a 08BD     		pop	{r3, pc}
+ 1153              		.cfi_endproc
+ 1154              	.LFE4:
+ 1156              		.section	.text.ADV7533_PatternDisable,"ax",%progbits
+ 1157              		.align	1
+ 1158              		.global	ADV7533_PatternDisable
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 34
+
+
+ 1159              		.syntax unified
+ 1160              		.thumb
+ 1161              		.thumb_func
+ 1163              	ADV7533_PatternDisable:
+ 1164              	.LFB5:
+ 250:Drivers/BSP/Components/adv7533/adv7533.c ****   /* Timing generator enable */
+ 1165              		.loc 1 250 1 is_stmt 1 view -0
+ 1166              		.cfi_startproc
+ 1167              		@ args = 0, pretend = 0, frame = 0
+ 1168              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1169 0000 08B5     		push	{r3, lr}
+ 1170              		.cfi_def_cfa_offset 8
+ 1171              		.cfi_offset 3, -8
+ 1172              		.cfi_offset 14, -4
+ 252:Drivers/BSP/Components/adv7533/adv7533.c **** }
+ 1173              		.loc 1 252 3 view .LVU294
+ 1174 0002 0022     		movs	r2, #0
+ 1175 0004 5521     		movs	r1, #85
+ 1176 0006 7820     		movs	r0, #120
+ 1177 0008 FFF7FEFF 		bl	HDMI_IO_Write
+ 1178              	.LVL161:
+ 253:Drivers/BSP/Components/adv7533/adv7533.c **** 
+ 1179              		.loc 1 253 1 is_stmt 0 view .LVU295
+ 1180 000c 08BD     		pop	{r3, pc}
+ 1181              		.cfi_endproc
+ 1182              	.LFE5:
+ 1184              		.global	adv7533_drv
+ 1185              		.section	.data.adv7533_drv,"aw"
+ 1186              		.align	2
+ 1189              	adv7533_drv:
+ 1190 0000 00000000 		.word	adv7533_AudioInit
+ 1191 0004 00000000 		.word	adv7533_DeInit
+ 1192 0008 00000000 		.word	adv7533_ReadID
+ 1193 000c 00000000 		.word	adv7533_Play
+ 1194 0010 00000000 		.word	adv7533_Pause
+ 1195 0014 00000000 		.word	adv7533_Resume
+ 1196 0018 00000000 		.word	adv7533_Stop
+ 1197 001c 00000000 		.word	adv7533_SetFrequency
+ 1198 0020 00000000 		.word	adv7533_SetVolume
+ 1199 0024 00000000 		.word	adv7533_SetMute
+ 1200 0028 00000000 		.word	adv7533_SetOutputMode
+ 1201 002c 00000000 		.word	adv7533_Reset
+ 1202              		.text
+ 1203              	.Letext0:
+ 1204              		.file 2 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1205              		.file 3 "/Users/killian/Library/Application Support/Code/User/globalStorage/bmd.stm32-for-vscode/@
+ 1206              		.file 4 "Drivers/BSP/Components/adv7533/../Common/audio.h"
+ 1207              		.file 5 "Drivers/BSP/Components/adv7533/adv7533.h"
+ARM GAS  /var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 adv7533.c
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:20     .text.adv7533_SetOutputMode:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:26     .text.adv7533_SetOutputMode:00000000 adv7533_SetOutputMode
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:44     .text.adv7533_SetVolume:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:50     .text.adv7533_SetVolume:00000000 adv7533_SetVolume
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:68     .text.adv7533_Reset:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:74     .text.adv7533_Reset:00000000 adv7533_Reset
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:92     .text.adv7533_ReadID:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:98     .text.adv7533_ReadID:00000000 adv7533_ReadID
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:143    .text.adv7533_SetMute:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:149    .text.adv7533_SetMute:00000000 adv7533_SetMute
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:215    .text.adv7533_Pause:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:221    .text.adv7533_Pause:00000000 adv7533_Pause
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:244    .text.adv7533_Resume:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:250    .text.adv7533_Resume:00000000 adv7533_Resume
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:273    .text.adv7533_Play:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:279    .text.adv7533_Play:00000000 adv7533_Play
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:304    .text.adv7533_Stop:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:310    .text.adv7533_Stop:00000000 adv7533_Stop
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:335    .text.adv7533_SetFrequency:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:341    .text.adv7533_SetFrequency:00000000 adv7533_SetFrequency
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:503    .text.adv7533_SetFrequency:000000a4 $d
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:511    .text.adv7533_AudioInit:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:517    .text.adv7533_AudioInit:00000000 adv7533_AudioInit
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:657    .text.adv7533_DeInit:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:663    .text.adv7533_DeInit:00000000 adv7533_DeInit
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:682    .text.ADV7533_Init:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:688    .text.ADV7533_Init:00000000 ADV7533_Init
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:715    .text.ADV7533_PowerOn:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:721    .text.ADV7533_PowerOn:00000000 ADV7533_PowerOn
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:753    .text.ADV7533_PowerDown:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:759    .text.ADV7533_PowerDown:00000000 ADV7533_PowerDown
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:793    .text.ADV7533_Configure:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:799    .text.ADV7533_Configure:00000000 ADV7533_Configure
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1111   .text.ADV7533_PatternEnable:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1117   .text.ADV7533_PatternEnable:00000000 ADV7533_PatternEnable
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1157   .text.ADV7533_PatternDisable:00000000 $t
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1163   .text.ADV7533_PatternDisable:00000000 ADV7533_PatternDisable
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1189   .data.adv7533_drv:00000000 adv7533_drv
+/var/folders/n6/c271nzx11xl4r4_m7sqjlt0m0000gn/T//ccGdbLAo.s:1186   .data.adv7533_drv:00000000 $d
+
+UNDEFINED SYMBOLS
+HDMI_IO_Read
+HDMI_IO_Write
+AUDIO_IO_DeInit
+HDMI_IO_Init
