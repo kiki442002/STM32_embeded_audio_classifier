@@ -13,3 +13,5 @@ void Draw_SD_Button(uint32_t color);
 void Draw_AI_Button(uint32_t color);
 void Clear_Log(void);
 void Draw_Output_Button(uint32_t color);
+void Draw_volume(uint8_t volume);
+void Draw_luminosity(uint8_t luminosity);

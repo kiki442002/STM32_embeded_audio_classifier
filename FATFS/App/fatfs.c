@@ -89,11 +89,11 @@ WAVHeader headerMono = {
 
 void MX_FATFS_Init(void)
 {
-  if (BSP_SD_Init() == MSD_ERROR)
+  BSP_SD_ITConfig();
+  if (BSP_SD_Init() == MSD_ERROR_SD_NOT_PRESENT)
   {
-    printf("\rError initializing SD card\n\r");
+    hApp.SD_state = SD_NOT_PRESENT;
   }
-  printf("\rSD card initialized\n\r");
 
   /*## FatFS: Link the SD driver ###########################*/
   retSD = FATFS_LinkDriver(&SD_Driver, SDPath);

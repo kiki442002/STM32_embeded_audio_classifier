@@ -40,12 +40,14 @@ void print_Menu_Interface(void)
     Draw_AI_Button(LCD_COLOR_WHITE);
 
     // Ligne pour Luminosité
-    BSP_LCD_DrawRect(20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
+    // BSP_LCD_DrawRect(20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
+    Draw_luminosity(50);
     BSP_LCD_SetFont(&Font20);
     BSP_LCD_DisplayStringAt(20, BSP_LCD_GetYSize() - 60, (uint8_t *)"Luminosite", LEFT_MODE);
 
     // Ligne pour Volume
-    BSP_LCD_DrawRect(BSP_LCD_GetXSize() / 2 + 20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
+    // BSP_LCD_DrawRect(BSP_LCD_GetXSize() / 2 + 20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
+    Draw_volume(50);
     BSP_LCD_DisplayStringAt(BSP_LCD_GetXSize() / 2 + 20, BSP_LCD_GetYSize() - 60, (uint8_t *)"Volume", LEFT_MODE);
     BSP_LCD_SetFont(&Font24);
 
@@ -159,4 +161,30 @@ void Clear_Log(void)
     BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
     BSP_LCD_FillRect(21, START_Y + BUTTON_WIDTH_HEIGHT + 51, BSP_LCD_GetXSize() - 40 - 2, BSP_LCD_GetYSize() / 2 - 60 - 2);
     BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+}
+
+void Draw_volume(uint8_t volume)
+{
+    if (volume > VOLUME_MAX)
+        volume = VOLUME_MAX;
+    else if (volume < VOLUME_MIN)
+        volume = VOLUME_MIN;
+
+    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_FillRect(BSP_LCD_GetXSize() / 2 + 21, BSP_LCD_GetYSize() - 39, (BSP_LCD_GetXSize() / 2 - 42) * (1 - volume / 100), 19);
+    BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+    BSP_LCD_FillRect(BSP_LCD_GetXSize() / 2 + 21, BSP_LCD_GetYSize() - 39, (BSP_LCD_GetXSize() / 2 - 42) * volume / 100, 19);
+    BSP_LCD_DrawRect(BSP_LCD_GetXSize() / 2 + 20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
+}
+void Draw_luminosity(uint8_t luminosity)
+{
+    if (luminosity > LUMINOSITY_MAX)
+        luminosity = LUMINOSITY_MAX;
+    else if (luminosity < LUMINOSITY_MIN)
+        luminosity = LUMINOSITY_MIN;
+    BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+    BSP_LCD_FillRect(21, BSP_LCD_GetYSize() - 39, (BSP_LCD_GetXSize() / 2 - 42) * (1 - luminosity / 100), 19);
+    BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+    BSP_LCD_FillRect(21, BSP_LCD_GetYSize() - 39, (BSP_LCD_GetXSize() / 2 - 42) * luminosity / 100, 19);
+    BSP_LCD_DrawRect(20, BSP_LCD_GetYSize() - 40, BSP_LCD_GetXSize() / 2 - 40, 20);
 }

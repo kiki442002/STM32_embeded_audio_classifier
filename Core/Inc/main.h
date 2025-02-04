@@ -391,6 +391,8 @@ extern "C"
 #define LUMINOSITY_MIN (uint8_t)10
 #define VOLUME_MAX (uint8_t)100
 #define VOLUME_MIN (uint8_t)0
+#define SD_APP_PRESENT (uint8_t)1
+#define SD_APP_NOT_PRESENT (uint8_t)0
 
     /* USER CODE END Private defines */
     typedef enum
@@ -407,6 +409,7 @@ extern "C"
         uint8_t record_activation;
         uint8_t play_activation;
         uint8_t output_activation;
+        uint8_t SD_state;
         uint8_t luminosity;
         uint8_t volume;
     } App_HandleTypeDef;

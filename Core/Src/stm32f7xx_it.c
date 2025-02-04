@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
+#include "bsp_driver_sd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -235,6 +236,19 @@ void DMA2_Stream1_IRQHandler(void)
 
 void EXTI15_10_IRQHandler(void)
 {
-  HAL_GPIO_EXTI_IRQHandler(TS_INT_PIN);
+
+  // Vérifiez si l'interruption a été générée par TS_INT_PIN
+  if (__HAL_GPIO_EXTI_GET_IT(TS_INT_PIN) != RESET)
+  {
+    // Appelez le gestionnaire d'interruption pour TS_INT_PIN
+    HAL_GPIO_EXTI_IRQHandler(TS_INT_PIN);
+  }
+
+  // Vérifiez si l'interruption a été générée par SD_DETECT_PIN
+  if (__HAL_GPIO_EXTI_GET_IT(SD_DETECT_PIN) != RESET)
+  {
+    // Appelez le gestionnaire d'interruption pour SD_DETECT_PIN
+    HAL_GPIO_EXTI_IRQHandler(SD_DETECT_PIN);
+  }
 }
 /* USER CODE END 1 */

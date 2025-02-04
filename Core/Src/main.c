@@ -45,12 +45,13 @@ int main(void)
 {
 
   uint8_t lcd_status = LCD_OK;
-  hApp.luminosity = 100;
-  hApp.volume = 100;
+  hApp.luminosity = 50;
+  hApp.volume = 50;
   hApp.IA_activation = IA_DESACTIVATE;
   hApp.record_activation = RECORD_DESACTIVATE;
   hApp.play_activation = PLAY_DESACTIVATE;
   hApp.output_activation = OUTPUT_DESACTIVATE;
+  hApp.SD_state = SD_PRESENT;
 
   /* Enable Cache ------------------------------------------------------------*/
   SCB_EnableICache();
@@ -77,9 +78,10 @@ int main(void)
   lcd_status = BSP_LCD_Init();
   while (lcd_status != LCD_OK)
     ;
+  BSP_LCD_SetBrightness(hApp.luminosity);
   BSP_LCD_LayerDefaultInit(0, LCD_FB_START_ADDRESS);
   BSP_LCD_Clear(LCD_COLOR_WHITE);
-  BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
+  // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Hello, world!", CENTER_MODE);
 
   // TouchScreen Initialisation
   if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) != TS_OK)
@@ -124,22 +126,24 @@ int main(void)
     Error_Handler();
   }
   BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
+  BSP_AUDIO_OUT_SetVolume(hApp.volume);
 
   /* END MCU Configuration---------------------------------------------------*/
 
   printf("\rHello, world!\n\r");
-  HAL_Delay(1000);
+  //HAL_Delay(1000);
 
   // Show Interface
   print_Menu_Interface();
   Draw_Output_Button(LCD_COLOR_GRAY);
   Draw_SD_Button(LCD_COLOR_GRAY);
   Draw_AI_Button(LCD_COLOR_GRAY);
+  Draw_volume(hApp.volume);
+  Draw_luminosity(hApp.luminosity);
   // Usefull variables
   audio_rec_buffer_state = BUFFER_OFFSET_NONE;
 
   // Start Recording
-  // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2, (uint8_t *)"Enregistrement Audio", CENTER_MODE);
   if (BSP_AUDIO_IN_Record((uint16_t *)&RecordBuffer[0], STEREO_RECORD_BUFFER_SIZE) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -164,27 +168,17 @@ int main(void)
   BSP_AUDIO_IN_Pause();
   BSP_AUDIO_OUT_Pause();
 
-  // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 40, (uint8_t *)"Retour Active", CENTER_MODE);
   //  Infinite Loop
   while (1)
   {
     if (feature_export_status == FEATURE_EXPORT_OK && hApp.IA_activation == IA_ACTIVATE)
     {
-      // BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 70, (uint8_t *)"Feature Export OK", CENTER_MODE);
-      //  BSP_AUDIO_OUT_Stop(CODEC_PDWN_HW);
-      //  WriteBufferFile_F32(MelData, 30 * 32, "mel_data.txt");
       transpose_matrix((float32_t *)MelData, ia_input, 32, 30);
-      // WriteBufferFile_F32(ia_input, 30 * 32, "data_in.txt");
       MX_X_CUBE_AI_Process();
-      // for (int i = 0; i < 4; i++)
-      // {
-      //   printf("IA_OUTPUT[%d] = %d.%02d\n\r", i, (int)(ia_output[i] * 100), ((int)(ia_output[i] * 10000) % 100));
-      // }
       char tmp_msg[30];
       max_output max_val = max(ia_output, 4);
       sprintf(tmp_msg, "      %s : %d.%02d %%       ", labels[max_val.arg], (int)(max_val.max * 100), ((int)(max_val.max * 10000) % 100));
       BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 65, (uint8_t *)tmp_msg, CENTER_MODE);
-      // printf("%s\n\r", tmp_msg);
       feature_export_status = FEATURE_EXPORT_PROGRESS;
     }
   }
@@ -195,5 +189,20 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   if (GPIO_Pin == TS_INT_PIN)
   {
     touchscreen_Handle();
+  }
+  else if (GPIO_Pin == SD_DETECT_PIN)
+  {
+    if (BSP_SD_IsDetected() == SD_PRESENT)
+    {
+      if (hApp.play_activation)
+        Draw_SD_Button(LCD_COLOR_WHITE);
+      hApp.SD_state = SD_APP_PRESENT;
+    }
+    else
+    {
+      if (hApp.play_activation)
+        Draw_SD_Button(LCD_COLOR_GRAY);
+      hApp.SD_state = SD_APP_NOT_PRESENT;
+    }
   }
 }
