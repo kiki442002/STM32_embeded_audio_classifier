@@ -383,6 +383,7 @@ extern "C"
 #define IA_DESACTIVATE (uint8_t)0
 #define RECORD_ACTIVATE (uint8_t)1
 #define RECORD_DESACTIVATE (uint8_t)0
+#define RECORD_ACTIVATE_END (uint8_t)2
 #define PLAY_ACTIVATE (uint8_t)1
 #define PLAY_DESACTIVATE (uint8_t)0
 #define OUTPUT_ACTIVATE (uint8_t)1
@@ -412,6 +413,7 @@ extern "C"
         uint8_t SD_state;
         uint8_t luminosity;
         uint8_t volume;
+        uint8_t record_state;
     } App_HandleTypeDef;
     extern App_HandleTypeDef hApp;
 
@@ -421,6 +423,7 @@ extern "C"
     extern volatile uint8_t feature_export_status;
     extern volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE];
     extern volatile float32_t MelData[30 * 32];
+    extern volatile uint16_t sd_wav_cache[STEREO_RECORD_BUFFER_SIZE ];
 
 #ifdef __cplusplus
 }

@@ -2,6 +2,7 @@
 #include "screen.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "filtrage.h"
+#include "fatfs.h"
 
 uint32_t last_tick = 0;
 
@@ -47,6 +48,11 @@ void touchscreen_Handle(void)
                 Draw_SD_Button(LCD_COLOR_GRAY);
                 Draw_Output_Button(LCD_COLOR_GRAY);
                 Draw_AI_Button(LCD_COLOR_GRAY);
+                if (hApp.record_activation == RECORD_ACTIVATE)
+                {
+                    hApp.record_activation = RECORD_ACTIVATE_END;
+                }
+
                 BSP_AUDIO_OUT_Pause();
                 BSP_AUDIO_IN_Pause();
             }
@@ -64,6 +70,8 @@ void touchscreen_Handle(void)
                 Draw_Output_Button(LCD_COLOR_WHITE);
             BSP_AUDIO_OUT_SetMute(!hApp.output_activation);
         }
+
+        // AI Button
         if (TS_State.touchX[0] > START_X + SPACE_BETWEEN_BUTTONS * 3 && TS_State.touchX[0] < START_X + SPACE_BETWEEN_BUTTONS * 3 + BUTTON_WIDTH_HEIGHT && hApp.play_activation)
         {
 
@@ -82,22 +90,28 @@ void touchscreen_Handle(void)
 
             hApp.IA_activation = !hApp.IA_activation;
         }
+
+        // Record Button
         if (TS_State.touchX[0] > START_X + SPACE_BETWEEN_BUTTONS * 2 && TS_State.touchX[0] < START_X + SPACE_BETWEEN_BUTTONS * 2 + BUTTON_WIDTH_HEIGHT && hApp.play_activation && hApp.SD_state == SD_APP_PRESENT)
         {
-            hApp.record_activation = !hApp.record_activation;
-            if (hApp.record_activation)
+            if (hApp.record_activation == RECORD_DESACTIVATE)
             {
                 Draw_SD_Button(LCD_COLOR_GREEN);
+                hApp.record_activation = RECORD_ACTIVATE;
             }
-            else
+            else if (hApp.record_activation == RECORD_ACTIVATE)
             {
                 Draw_SD_Button(LCD_COLOR_WHITE);
+                hApp.record_activation = RECORD_ACTIVATE_END;
             }
         }
         last_tick = HAL_GetTick();
     }
+
+    // Luminosity and Volume
     if (TS_State.touchY[0] > BSP_LCD_GetYSize() - 55 && TS_State.touchY[0] < BSP_LCD_GetYSize() - 5)
     {
+        // Luminosity
         if (TS_State.touchX[0] > 20 && TS_State.touchX[0] < BSP_LCD_GetXSize() / 2 - 20)
         {
             hApp.luminosity = (uint8_t)((TS_State.touchX[0]) * 100 / (BSP_LCD_GetXSize() / 2 - 20));
@@ -108,6 +122,7 @@ void touchscreen_Handle(void)
             Draw_luminosity(hApp.luminosity);
             BSP_LCD_SetBrightness(hApp.luminosity);
         }
+        // Volume
         if (TS_State.touchX[0] > BSP_LCD_GetXSize() / 2 + 20 && TS_State.touchX[0] < BSP_LCD_GetXSize() - 20)
         {
             hApp.volume = (uint8_t)((TS_State.touchX[0] - BSP_LCD_GetXSize() / 2) * 100 / (BSP_LCD_GetXSize() / 2 - 40));

@@ -1622,17 +1622,38 @@ void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai)
   BSP_AUDIO_IN_TransferComplete_CallBack();
 }
 
-int i = 0;
+void CopyRecordBufferWithStep(uint16_t *srcBuffer, uint16_t *destBuffer, uint32_t size)
+{
+  uint32_t j = 0;
+  for (uint32_t i = 0; i < size; i += 2)
+  {
+    destBuffer[j++] = srcBuffer[i];
+  }
+}
+
 void BSP_AUDIO_IN_TransferComplete_CallBack(void)
 {
   if (feature_export_status == FEATURE_EXPORT_PROGRESS && hApp.IA_activation == IA_ACTIVATE)
-    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL, AUDIO_NO_RECORD);
+    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_FULL, hApp.record_state);
+
+  if (hApp.record_state != RECORD_DESACTIVATE)
+  {
+    // CopyRecordBufferWithStep((uint16_t *)&RecordBuffer[MONO_RECORD_BUFFER_SIZE], (uint16_t *)&sd_wav_cache[FFT_BUFFER_SIZE], FFT_BUFFER_SIZE);
+    //  Configure the source and destination addresses and the data size
+    arm_copy_q15((int16_t *)&RecordBuffer[2048], (int16_t *)&sd_wav_cache[2048], 2048);
+  }
   audio_rec_buffer_state = BUFFER_OFFSET_FULL;
 }
 void BSP_AUDIO_IN_HalfTransfer_CallBack(void)
 {
   if (feature_export_status == FEATURE_EXPORT_PROGRESS && hApp.IA_activation == IA_ACTIVATE)
-    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF, AUDIO_NO_RECORD);
+    feature_export_status = Feature_Export((float32_t *)MelData, (int16_t *)RecordBuffer, BUFFER_OFFSET_HALF, hApp.record_state);
+
+  if (hApp.record_state != RECORD_DESACTIVATE)
+  {
+    // CopyRecordBufferWithStep(RecordBuffer, sd_wav_cache, FFT_BUFFER_SIZE);
+    arm_copy_q15((int16_t *)RecordBuffer, (int16_t *)sd_wav_cache, 2048);
+  }
   audio_rec_buffer_state = BUFFER_OFFSET_HALF;
 }
 

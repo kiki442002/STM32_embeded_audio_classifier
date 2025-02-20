@@ -48,7 +48,6 @@ FIL SDFile;     /* File object for SD */
 // Variables pour le fichier WAV
 FIL file;
 uint32_t totalDataSize = 0;
-uint8_t fileOpened = 0;
 char filename[] = "samp_001.wav";
 
 WAVHeader headerStereo = {
@@ -324,7 +323,6 @@ FRESULT WriteWAVFile(const uint8_t *audioData, uint32_t dataSize, uint8_t finali
     // Fermer le fichier
     f_close(&file);
     f_mount(0, SDPath, 1); // Démonter le système de fichiers
-    fileOpened = 0;
     totalDataSize = 0;
   }
   return res;

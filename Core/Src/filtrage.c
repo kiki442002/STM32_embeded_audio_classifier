@@ -12,7 +12,6 @@ int32_t cReadIndex = FILTRAGE_SIZE;
 
 int16_t distIndex = 0;
 int16_t rawPCMdata[FILTRAGE_SIZE];
-int16_t sd_wav_cache[(FILTRAGE_SIZE * 31 / 2 + FILTRAGE_SIZE) * 2];
 float32_t tmp_buf_1[FILTRAGE_SIZE];
 float32_t tmp_buf_2[FILTRAGE_SIZE];
 
@@ -244,13 +243,6 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            if (audio_record == AUDIO_RECORD)
-            {
-                OpenWavFile(MONO_WAV);
-                arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
-                WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
-                wav_indice = 0;
-            }
             buffer_run = BUFFER_HALF_FIRST;
             return FEATURE_EXPORT_OK;
         }
@@ -266,8 +258,6 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         buffer_run = BUFFER_HALF_NONE;
         mel_indice++;
-        if (audio_record == AUDIO_RECORD)
-            arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
     else if (bufferState == BUFFER_FULL)
     {
@@ -285,13 +275,6 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
         if (mel_indice == 32)
         {
             mel_indice = 0;
-            if (audio_record == AUDIO_RECORD)
-            {
-                OpenWavFile(MONO_WAV);
-                arm_copy_q15(&rawPCMdata[FILTRAGE_SIZE / 2], &sd_wav_cache[FILTRAGE_SIZE * wav_indice], FILTRAGE_SIZE / 2);
-                WriteWAVFile((uint8_t *)sd_wav_cache, sizeof(sd_wav_cache), END_WAV_FILE);
-                wav_indice = 0;
-            }
             buffer_run = BUFFER_HALF_FIRST;
             return FEATURE_EXPORT_OK;
         }
@@ -306,8 +289,6 @@ uint8_t Feature_Export(float32_t *pOut, int16_t *pIn, uint8_t bufferState, uint8
         MEL_Calculation(&pOut[mel_indice * N_MELS], tmp_buf_1);
         ZScore_Calculation(&pOut[mel_indice * N_MELS], N_MELS);
         mel_indice++;
-        if (audio_record == AUDIO_RECORD)
-            arm_copy_q15(rawPCMdata, &sd_wav_cache[FILTRAGE_SIZE * wav_indice++], FILTRAGE_SIZE);
     }
 
     return FEATURE_EXPORT_PROGRESS;

@@ -26,6 +26,7 @@
 /* Variables ---------------------------------------------------------------------*/
 volatile uint16_t RecordBuffer[STEREO_RECORD_BUFFER_SIZE] = {0};
 volatile float32_t MelData[30 * 32] = {0};
+volatile uint16_t sd_wav_cache[STEREO_RECORD_BUFFER_SIZE];
 float32_t ia_input[32 * 30];
 float32_t ia_output[4];
 const char *labels[4] = {"Pluie", "Pas", "Vent", "Voiture"};
@@ -131,7 +132,7 @@ int main(void)
   /* END MCU Configuration---------------------------------------------------*/
 
   printf("\rHello, world!\n\r");
-  //HAL_Delay(1000);
+  // HAL_Delay(1000);
 
   // Show Interface
   print_Menu_Interface();
@@ -171,6 +172,30 @@ int main(void)
   //  Infinite Loop
   while (1)
   {
+
+    if (hApp.record_state == RECORD_ACTIVATE && audio_rec_buffer_state == BUFFER_OFFSET_FULL && hApp.record_activation != RECORD_ACTIVATE_END)
+    {
+
+      WriteWAVFile((uint8_t *)sd_wav_cache, STEREO_RECORD_BUFFER_SIZE * 2, CONTINUE_WAV_FILE);
+      audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+    }
+    else if (hApp.record_state == RECORD_ACTIVATE && audio_rec_buffer_state != BUFFER_OFFSET_NONE && hApp.record_activation == RECORD_ACTIVATE_END)
+    {
+
+      WriteWAVFile((uint8_t *)sd_wav_cache, STEREO_RECORD_BUFFER_SIZE * 2, END_WAV_FILE);
+      audio_rec_buffer_state = BUFFER_OFFSET_NONE;
+      hApp.record_state = RECORD_DESACTIVATE;
+      hApp.record_activation = RECORD_DESACTIVATE;
+      printf("End recording\n\r");
+    }
+    else if (hApp.record_activation == RECORD_ACTIVATE && hApp.record_state == RECORD_DESACTIVATE)
+    {
+      BSP_SD_Init();
+      FRESULT res = OpenWavFile(STEREO_WAV);
+      hApp.record_state = RECORD_ACTIVATE;
+      printf("Recording %d\n\r", res);
+    }
+
     if (feature_export_status == FEATURE_EXPORT_OK && hApp.IA_activation == IA_ACTIVATE)
     {
       transpose_matrix((float32_t *)MelData, ia_input, 32, 30);
@@ -179,6 +204,7 @@ int main(void)
       max_output max_val = max(ia_output, 4);
       sprintf(tmp_msg, "      %s : %d.%02d %%       ", labels[max_val.arg], (int)(max_val.max * 100), ((int)(max_val.max * 10000) % 100));
       BSP_LCD_DisplayStringAt(0, BSP_LCD_GetYSize() / 2 + 65, (uint8_t *)tmp_msg, CENTER_MODE);
+
       feature_export_status = FEATURE_EXPORT_PROGRESS;
     }
   }

@@ -32,6 +32,8 @@ typedef struct
     uint32_t arg;
 } max_output;
 
+// extern int16_t sd_wav_cache[(FILTRAGE_SIZE * 31 / 2 + FILTRAGE_SIZE) * 2];
+
 uint8_t StereoToMono(int16_t *pOut, int16_t *pIn, uint32_t size);
 uint8_t Hamming_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type);
 uint8_t Hanning_window(float32_t *pOut, int16_t *pIn, uint32_t size, uint8_t signal_input_type);
