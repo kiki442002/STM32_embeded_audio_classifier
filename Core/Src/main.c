@@ -3,23 +3,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "crc.h"
-#include "rtc.h"
 #include "app_x-cube-ai.h"
 #include "fatfs.h"
 #include "rtc.h"
 #include "usart.h"
-#include "ai_datatypes_defines.h"
-#include "ai_platform.h"
-#include "audio_classifier.h"
-#include "audio_classifier_data.h"
+#include "filtrage.h"
+#include "screen.h"
+#include "touchscreen.h"
 
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_audio.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_lcd.h"
 #include "../../Drivers/BSP/STM32F769I-Discovery/stm32f769i_discovery_ts.h"
-#include "filtrage.h"
-#include "screen.h"
-#include "touchscreen.h"
 
 /* END Includes -------------------------------------------------------------------*/
 
@@ -117,8 +112,8 @@ int main(void)
   }
 
   // Audio Out Initialisation
-  if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_HEADPHONE,
-                         100,
+  if (BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_BOTH,
+                         hApp.volume,
                          BSP_AUDIO_FREQUENCY_16K) != AUDIO_OK)
   {
     BSP_LCD_SetTextColor(LCD_COLOR_RED);
@@ -127,7 +122,6 @@ int main(void)
     Error_Handler();
   }
   BSP_AUDIO_OUT_SetAudioFrameSlot(CODEC_AUDIOFRAME_SLOT_02);
-  BSP_AUDIO_OUT_SetVolume(hApp.volume);
 
   /* END MCU Configuration---------------------------------------------------*/
 
